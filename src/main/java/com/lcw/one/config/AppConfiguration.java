@@ -5,6 +5,7 @@ import com.lcw.one.modules.sys.security.FormAuthenticationFilter;
 import com.lcw.one.modules.sys.security.SystemAuthorizingRealm;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.c3p0.PooledDataSource;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -20,14 +21,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-import javax.servlet.Filter;
 import java.beans.PropertyVetoException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -125,11 +125,11 @@ public class AppConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/" + Global.getAdminPath() + "/login");
         shiroFilterFactoryBean.setSuccessUrl("/" + Global.getAdminPath());
-        Map<String, Filter> map = new HashMap();
+        Map<String, javax.servlet.Filter> map = new HashMap();
         map.put("authc", new FormAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(map);
 
-        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/userfiles/**", "anon");
@@ -140,7 +140,7 @@ public class AppConfiguration {
         return shiroFilterFactoryBean;
     }
 
-    @Bean
+    // @Bean
     public FilterRegistrationBean shiroFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new DelegatingFilterProxy());
@@ -154,6 +154,9 @@ public class AppConfiguration {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(systemAuthorizingRealm());
         defaultWebSecurityManager.setCacheManager(shiroCacheManager());
+
+        SecurityUtils.setSecurityManager(defaultWebSecurityManager);
+
         return defaultWebSecurityManager;
     }
 
