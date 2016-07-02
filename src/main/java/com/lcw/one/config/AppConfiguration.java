@@ -3,6 +3,7 @@ package com.lcw.one.config;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.c3p0.PooledDataSource;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,10 @@ public class AppConfiguration {
         LocalSessionFactoryBuilder localSessionFactoryBean = new LocalSessionFactoryBuilder(dataSource());
         localSessionFactoryBean.scanPackages("com.lcw");
         localSessionFactoryBean.addProperties(properties);
-        return localSessionFactoryBean.buildSessionFactory();
+        localSessionFactoryBean.setNamingStrategy(new ImprovedNamingStrategy());
+
+        SessionFactory sessionFactory =  localSessionFactoryBean.buildSessionFactory();
+        return sessionFactory;
     }
 
     @Bean(name="dataSource")

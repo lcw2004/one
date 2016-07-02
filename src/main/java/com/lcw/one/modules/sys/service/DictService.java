@@ -76,5 +76,9 @@ public class DictService extends BaseService {
 		dictDao.deleteById(id);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
+
+	public List<Dict> findAllList() {
+		return dictDao.findAllList();
+	}
 	
 }

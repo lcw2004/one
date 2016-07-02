@@ -11,6 +11,7 @@ import com.lcw.one.common.utils.CacheUtils;
 import com.lcw.one.common.utils.SpringContextHolder;
 import com.lcw.one.modules.sys.dao.DictDao;
 import com.lcw.one.modules.sys.entity.Dict;
+import com.lcw.one.modules.sys.service.DictService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class DictUtils {
 	
-	private static DictDao dictDao = SpringContextHolder.getBean(DictDao.class);
+	private static DictService dictService = SpringContextHolder.getBean(DictService.class);
 
 	public static final String CACHE_DICT_MAP = "dictMap";
 	
@@ -54,7 +55,7 @@ public class DictUtils {
 		Map<String, List<Dict>> dictMap = (Map<String, List<Dict>>)CacheUtils.get(CACHE_DICT_MAP);
 		if (dictMap == null){
 			dictMap = Maps.newHashMap();
-			for (Dict dict : dictDao.findAllList()){
+			for (Dict dict : dictService.findAllList()){
 				List<Dict> dictList = dictMap.get(dict.getType());
 				if (dictList != null){
 					dictList.add(dict);
