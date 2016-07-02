@@ -75,6 +75,16 @@
 			<artifactId>spring-tx</artifactId>
 			<version>4.2.3.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>repository.org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.2.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>repository.org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>3.2.5.RELEASE</version>
+		</dependency>
 		<!-- Spring Boot End -->
 
 		<dependency>
@@ -91,6 +101,23 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
 			<version>${hibernate-search.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.driver.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>${oracle.driver.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- EHCACHE begin -->
