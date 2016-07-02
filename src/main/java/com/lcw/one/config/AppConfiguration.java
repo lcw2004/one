@@ -1,10 +1,20 @@
 package com.lcw.one.config;
 
+import com.lcw.one.common.config.Global;
+import com.lcw.one.modules.sys.security.FormAuthenticationFilter;
+import com.lcw.one.modules.sys.security.SystemAuthorizingRealm;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mchange.v2.c3p0.PooledDataSource;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +23,16 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.servlet.Filter;
 import java.beans.PropertyVetoException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
 public class AppConfiguration {
-
-//    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-//    <property name="sessionFactory" ref="sessionFactory" />
-//    </bean>
 
     @Bean(name = "transactionManager")
     public HibernateTransactionManager hibernateTransactionManager() {
@@ -44,11 +54,11 @@ public class AppConfiguration {
         localSessionFactoryBean.addProperties(properties);
         localSessionFactoryBean.setNamingStrategy(new ImprovedNamingStrategy());
 
-        SessionFactory sessionFactory =  localSessionFactoryBean.buildSessionFactory();
+        SessionFactory sessionFactory = localSessionFactoryBean.buildSessionFactory();
         return sessionFactory;
     }
 
-    @Bean(name="dataSource")
+    @Bean(name = "dataSource")
     public PooledDataSource dataSource() {
         ComboPooledDataSource cpds = new ComboPooledDataSource();
         cpds.setAcquireIncrement(3);
@@ -78,17 +88,86 @@ public class AppConfiguration {
         return new LocalValidatorFactoryBean();
     }
 
-//    <!-- 缓存配置 -->
-//    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-//    <property name="configLocation" value="classpath:${ehcache.configFile}" />
-//    </bean>
     @Value("${ehcache.configFile}")
     private String ehcacheConfigPath;
+
     @Bean(name = "cacheManager")
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
         EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ClassPathResource classPathResource = new ClassPathResource(ehcacheConfigPath);
+        ClassPathResource classPathResource = new ClassPathResource("cache/ehcache-local.xml");
         ehCacheManagerFactoryBean.setConfigLocation(classPathResource);
         return ehCacheManagerFactoryBean;
     }
+
+
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
+        proxyCreator.setProxyTargetClass(true);
+        return proxyCreator;
+    }
+
+    @Bean(name = "lifecycleBeanPostProcessor")
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    @Bean(name = "shiroCacheManager")
+    public EhCacheManager shiroCacheManager() {
+        EhCacheManager ehCacheManager = new EhCacheManager();
+        ehCacheManager.setCacheManager(ehCacheManagerFactoryBean().getObject());
+        return ehCacheManager;
+    }
+
+    @Bean(name = "shiroFilter")
+    public ShiroFilterFactoryBean shiroFilterFactoryBean() {
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        shiroFilterFactoryBean.setSecurityManager(securityManager());
+        shiroFilterFactoryBean.setLoginUrl("/" + Global.getAdminPath() + "/login");
+        shiroFilterFactoryBean.setSuccessUrl("/" + Global.getAdminPath());
+        Map<String, Filter> map = new HashMap();
+        map.put("authc", new FormAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(map);
+
+        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        filterChainDefinitionMap.put("/api/**", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/userfiles/**", "anon");
+        filterChainDefinitionMap.put(String.format("/%s/login", Global.getAdminPath()), "authc");
+        filterChainDefinitionMap.put(String.format("/%s/logout", Global.getAdminPath()), "logout");
+        filterChainDefinitionMap.put(String.format("/%s/**", Global.getAdminPath()), "user");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        return shiroFilterFactoryBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean shiroFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new DelegatingFilterProxy());
+        registration.addUrlPatterns("/*");
+        registration.setName("DelegatingFilterProxy");
+        return registration;
+    }
+
+    @Bean(name = "securityManager")
+    public DefaultWebSecurityManager securityManager() {
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+        defaultWebSecurityManager.setRealm(systemAuthorizingRealm());
+        defaultWebSecurityManager.setCacheManager(shiroCacheManager());
+        return defaultWebSecurityManager;
+    }
+
+    @Bean
+    public SystemAuthorizingRealm systemAuthorizingRealm() {
+        return new SystemAuthorizingRealm();
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager());
+        return advisor;
+    }
+
+
 }
