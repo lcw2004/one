@@ -6,6 +6,8 @@
 package com.lcw.one.modules.sys.security;
 
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.util.ThreadContext;
+import org.apache.shiro.web.subject.WebSubject;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,12 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 	}
 
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
+		// TODO 不知道什么原因，在Spring Boot应用中，无法初始化WebSubject
+		WebSubject.Builder builder = new WebSubject.Builder(request, response);
+		WebSubject webSubject = builder.buildWebSubject();
+		ThreadContext.bind(webSubject);
+
+
 		String username = getUsername(request);
 		String password = getPassword(request);
 		if (password==null){

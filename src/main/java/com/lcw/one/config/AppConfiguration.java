@@ -15,18 +15,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 import java.beans.PropertyVetoException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -101,6 +99,7 @@ public class AppConfiguration {
 
 
     @Bean
+    @DependsOn({"lifecycleBeanPostProcessor"})
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
         proxyCreator.setProxyTargetClass(true);
@@ -113,6 +112,7 @@ public class AppConfiguration {
     }
 
     @Bean(name = "shiroCacheManager")
+    @DependsOn({"cacheManager"})
     public EhCacheManager shiroCacheManager() {
         EhCacheManager ehCacheManager = new EhCacheManager();
         ehCacheManager.setCacheManager(ehCacheManagerFactoryBean().getObject());
@@ -125,28 +125,20 @@ public class AppConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/" + Global.getAdminPath() + "/login");
         shiroFilterFactoryBean.setSuccessUrl("/" + Global.getAdminPath());
-        Map<String, javax.servlet.Filter> map = new HashMap();
-        map.put("authc", new FormAuthenticationFilter());
-        shiroFilterFactoryBean.setFilters(map);
+        Map<String, javax.servlet.Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("authc", new FormAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/userfiles/**", "anon");
-        filterChainDefinitionMap.put(String.format("/%s/login", Global.getAdminPath()), "authc");
-        filterChainDefinitionMap.put(String.format("/%s/logout", Global.getAdminPath()), "logout");
-        filterChainDefinitionMap.put(String.format("/%s/**", Global.getAdminPath()), "user");
+        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/login", "authc");
+        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/logout", "logout");
+        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        return shiroFilterFactoryBean;
-    }
 
-    // @Bean
-    public FilterRegistrationBean shiroFilter() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new DelegatingFilterProxy());
-        registration.addUrlPatterns("/*");
-        registration.setName("DelegatingFilterProxy");
-        return registration;
+        return shiroFilterFactoryBean;
     }
 
     @Bean(name = "securityManager")

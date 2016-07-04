@@ -77,7 +77,7 @@ public class BaseDao<T> {
 	 * 获取 Session
 	 */
 	public Session getSession(){
-	  return sessionFactory.getCurrentSession();
+	  return sessionFactory.openSession();
 	}
 
 	/**
