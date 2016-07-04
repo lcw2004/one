@@ -4,6 +4,7 @@
 <head>
 	<title>分配角色</title>
 	<meta name="decorator" content="default"/>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 	<ul class="nav nav-tabs">

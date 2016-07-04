@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>${fns:getConfig('productName')}</title>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<%@include file="/WEB-INF/views/include/dialog.jsp" %>
 	<meta name="decorator" content="default"/>
 	<style type="text/css">

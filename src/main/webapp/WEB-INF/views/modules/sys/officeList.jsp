@@ -5,6 +5,7 @@
 	<title>机构管理</title>
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#treeTable").treeTable({expandLevel : 5});

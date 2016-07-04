@@ -4,6 +4,7 @@
 <head>
 	<title>菜单管理</title>
 	<meta name="decorator" content="default"/>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
 	<style type="text/css">.table td i{margin:0 2px;}</style>
 	<script type="text/javascript">

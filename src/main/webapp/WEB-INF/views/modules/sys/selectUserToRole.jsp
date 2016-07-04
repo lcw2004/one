@@ -4,6 +4,7 @@
 <head>
 	<title>分配角色</title>
 	<%@include file="/WEB-INF/views/include/treeview.jsp" %>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	

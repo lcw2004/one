@@ -1,9 +1,10 @@
-]<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
 	<title>签章日志审计</title>
 	<meta name="decorator" content="default"/>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script>
 		function page(n,s){
 			$("#pageNo").val(n);

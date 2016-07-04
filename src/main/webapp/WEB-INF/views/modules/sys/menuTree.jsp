@@ -4,6 +4,7 @@
 <head>
 	<title>菜单导航</title>
 	<meta name="decorator" content="default"/>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript"> 
 		$(document).ready(function() {
 			$(".accordion-heading a").click(function(){
