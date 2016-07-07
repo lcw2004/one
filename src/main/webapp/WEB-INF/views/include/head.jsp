@@ -6,8 +6,14 @@
 <link href="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.method.js" type="text/javascript"></script>
-<link href="${ctxStatic}/bootstrap/2.3.1/css_${not empty cookie.theme.value ? cookie.theme.value:'cerulean'}/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+
+<%--<link href="${ctxStatic}/bootstrap/2.3.1/css_${not empty cookie.theme.value ? cookie.theme.value:'cerulean'}/bootstrap.min.css" type="text/css" rel="stylesheet" />--%>
+<%--<script src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>--%>
+
+<link href="${ctxStatic}/bootstrap/3.3.5/css_yeti/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/css/one.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+
 <!--[if lte IE 6]><link href="${ctxStatic}/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -22,6 +28,6 @@
 <script src="${ctxStatic}/x-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <link href="${ctxStatic}/fancyBox/source/jquery.fancybox.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/fancyBox/source/jquery.fancybox.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/jeesite.min.css" type="text/css" rel="stylesheet" />
+<%--<link href="${ctxStatic}/common/jeesite.min.css" type="text/css" rel="stylesheet" />--%>
 <script src="${ctxStatic}/common/jeesite.min.js" type="text/javascript"></script>
 <link rel="shortcut icon" href="${ctxStatic}/favicon.ico">
