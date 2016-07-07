@@ -1,33 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta http-equiv="Cache-Control" content="no-store" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />
-<meta name="author" content="http://thinkgem.iteye.com"/><meta http-equiv="X-UA-Compatible" content="IE=7,IE=9,IE=10" />
-<script src="${ctxStatic}/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/jquery/jquery-migrate-1.1.1.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.method.js" type="text/javascript"></script>
+<%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-<%--<link href="${ctxStatic}/bootstrap/2.3.1/css_${not empty cookie.theme.value ? cookie.theme.value:'cerulean'}/bootstrap.min.css" type="text/css" rel="stylesheet" />--%>
-<%--<script src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>--%>
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-<link href="${ctxStatic}/bootstrap/3.3.5/css_yeti/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="${ctxStatic}/css/one.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="${ctxStatic}/AdminLTE-2.3.5/https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="${ctxStatic}/AdminLTE-2.3.5/https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 
-<!--[if lte IE 6]><link href="${ctxStatic}/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]> <script src="${ctxStatic}/common/html5.js"></script><![endif]-->
-<script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
-<script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/list/list.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/select2/select2.js" type="text/javascript"></script>
-<script src="${ctxStatic}/select2/select2_locale_zh-CN.js" type="text/javascript"></script>
-<link href="${ctxStatic}/select2/select2.css" type="text/css" rel="stylesheet" />
-<link href="${ctxStatic}/x-editable/css/bootstrap-editable.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/x-editable/js/bootstrap-editable.js" type="text/javascript"></script>
-<link href="${ctxStatic}/fancyBox/source/jquery.fancybox.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/fancyBox/source/jquery.fancybox.js" type="text/javascript"></script>
-<%--<link href="${ctxStatic}/common/jeesite.min.css" type="text/css" rel="stylesheet" />--%>
-<script src="${ctxStatic}/common/jeesite.min.js" type="text/javascript"></script>
-<link rel="shortcut icon" href="${ctxStatic}/favicon.ico">
+<%-- AdminLET Start --%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="${ctxStatic}/lib/AdminLTE-2.3.5/css/AdminLTE.css">
+<link rel="stylesheet" href="${ctxStatic}/lib/AdminLTE-2.3.5/css/skins/skin-blue.min.css">
+<script src="${ctxStatic}/lib/AdminLTE-2.3.5/js/app.min.js"></script>
+<%-- AdminLET End --%>
+
+<%-- Jquery Start --%>
+<script src="${ctxStatic}/lib/jQuery/jquery-2.2.3.min.js"></script>
+<%-- Jqyery End --%>
+
+<%-- bootstrap Start --%>
+<link rel="stylesheet" href="${ctxStatic}/lib/bootstrap/css/bootstrap.min.css">
+<script src="${ctxStatic}/lib/bootstrap/js/bootstrap.min.js"></script>
+<%-- bootstrap End --%>
+
+<%-- vue Start --%>
+<script src="${ctxStatic}/vue/vue.js"></script>
+<%-- vue End --%>
+
+
+
+<%-- Icon --%>
+<link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico">
