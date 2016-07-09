@@ -35,20 +35,19 @@
 	</script>
 </head>
 
-
 <body>
-<div id="container" class="cls-container">
+<div class="login-container">
 
 	<!-- BACKGROUND IMAGE -->
 	<!--===================================================-->
-	<div id="bg-overlay" class="bg-img img-balloon"></div>
+	<div class="bg-img img-balloon"></div>
 
 	<!-- HEADER -->
 	<!--===================================================-->
 	<div class="cls-header cls-header-lg">
 		<div class="cls-brand">
-			<a class="box-inline" href="#">
-				<span class="brand-title">${fns:getConfig('productName')}</span>
+			<a>
+				<span>${fns:getConfig('productName')}</span>
 			</a>
 		</div>
 	</div>
@@ -56,20 +55,20 @@
 
 	<!-- LOGIN FORM -->
 	<!--===================================================-->
-	<div class="cls-content">
-		<div class="cls-content-sm panel" style="width: 450px">
+	<div class="cls-body">
+		<div class="cls-login-panel">
 			<div class="panel-body">
 				<p class="pad-btm">Sign In to your account</p>
-				<form id="loginForm"  class="form login-form" action="${ctx}/login" method="post">
+				<form id="loginForm" class="form login-form" action="${ctx}/login" method="post">
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-addon"><i class="fa fa-user"></i></div>
+							<div class="input-group-addon login-icon"><i class="fa fa-user"></i></div>
 							<input type="text" id="username" name="username" class="form-control" style="height: 38px" placeholder="登录名">
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
+							<div class="input-group-addon login-icon"><i class="fa fa-asterisk"></i></div>
 							<input type="password" id="password" name="password" class="form-control" style="height: 38px" placeholder="密码">
 						</div>
 					</div>
@@ -101,7 +100,7 @@
 	</div>
 	<!--===================================================-->
 
-	<footer class="white navbar-fixed-bottom">
+	<footer class="navbar-fixed-bottom login-footer">
 		Copyright &copy; 2012-${fns:getConfig('copyrightYear')} <a href="${pageContext.request.contextPath}${fns:getFrontPath()}">${fns:getConfig('productName')}</a> - Powered By <a href="https://github.com/thinkgem/jeesite" target="_blank">JeeSite</a> ${fns:getConfig('version')}
 	</footer>
 </div>

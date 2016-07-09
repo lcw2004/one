@@ -1,0 +1,119 @@
+.login-container {
+    background-color: #212124;
+    color: #515151;
+    text-align: center;
+    font-size: 12px;
+    padding: 0px;
+    vertical-align: middle;
+    width: auto;
+    min-height: 100vh;
+}
+
+.bg-img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: .55;
+    background: no-repeat fixed center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover
+}
+
+/*背景图片*/
+.img-balloon {
+    background-image: url("../images/bg-img-2.jpg");
+}
+
+.cls-header {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    font-size: 30px;;
+}
+
+.cls-header.cls-header-lg .cls-brand .brand-icon {
+    width: 60px;
+    height: 60px
+}
+
+#container.cls-container .cls-header .cls-header.cls-header-lg .cls-brand .brand-title {
+    font-size: 27px
+}
+
+.cls-brand {
+    display: inline-block;
+    padding: 20px 0;
+    line-height: 60px;
+}
+
+.cls-brand a {
+    color: #bebebe
+}
+
+.cls-brand a:hover {
+    color: #ffffff;
+}
+
+.cls-body {
+    padding: 10vh 15px 15px;
+    position: relative;
+    margin-top: 50px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.cls-login-panel {
+    width: 70%;
+    min-width: 250px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+.cls-login-panel i {
+
+}
+
+.pad-btm {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.pad-ver {
+
+}
+
+.login-footer {
+    font-size: 15px;
+    color: #e0e0e0;
+}
+
+.login-footer a {
+    color: #e0e0e0;
+}
+
+.login-footer a:hover {
+    color: #FFFFFF;
+}
+
+.mar-rgt {
+    margin-right: 15px;
+}
+
+.mar-lft {
+    margin-left: 15px;
+}
+.login-icon {
+    padding-left: 18px;
+    padding-right: 18px;
+}
