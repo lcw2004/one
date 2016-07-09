@@ -2,47 +2,15 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AdminLTE 2 | Starter</title>
-	<!-- Tell the browser to be responsive to screen width -->
+	<title>${fns:getConfig('productName')}</title>
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-
 	<%@ include file="/WEB-INF/views/include/head.jsp"%>
-
-
-
-
-
-	<![endif]-->
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -50,11 +18,11 @@ desired effect
 	<header class="main-header">
 
 		<!-- Logo -->
-		<a href="index2.html" class="logo">
+		<a href="#" class="logo">
 			<!-- mini logo for sidebar mini 50x50 pixels -->
-			<span class="logo-mini"><b>A</b>LT</span>
+			<span class="logo-mini"><b>${fns:getConfig('productShortName')}</b></span>
 			<!-- logo for regular state and mobile devices -->
-			<span class="logo-lg"><b>Admin</b>LTE</span>
+			<span class="logo-lg"><b>${fns:getConfig('productName')}</b></span>
 		</a>
 
 		<!-- Header Navbar -->
@@ -63,6 +31,23 @@ desired effect
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 				<span class="sr-only">Toggle navigation</span>
 			</a>
+
+			<!-- Navbar Right Menu -->
+			<div class="">
+				<ul id="menu" class="nav navbar-nav navbar-left">
+					<c:set var="firstMenu" value="true"/>
+					<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+						<c:if test="${menu.parent.id eq '1' && menu.isShow eq '1'}">
+							<li class="${firstMenu ? ' active' : ''}"><a href="${ctx}/sys/menu/tree?parentId=${menu.id}" target="menuFrame" >${menu.name}</a></li>
+							<c:if test="${firstMenu}">
+								<c:set var="firstMenuId" value="${menu.id}"/>
+							</c:if>
+							<c:set var="firstMenu" value="false"/>
+						</c:if>
+					</c:forEach>
+				</ul>
+			</div>
+
 			<!-- Navbar Right Menu -->
 			<div class="navbar-custom-menu">
 				<ul class="nav navbar-nav">
@@ -169,7 +154,7 @@ desired effect
 							<!-- The user image in the navbar-->
 							<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="user-image" alt="User Image">
 							<!-- hidden-xs hides the username on small devices so only the image appears. -->
-							<span class="hidden-xs">Alexander Pierce</span>
+							<span class="hidden-xs"><shiro:principal property="name"/></span>
 						</a>
 						<ul class="dropdown-menu">
 							<!-- The user image in the menu -->
@@ -177,7 +162,7 @@ desired effect
 								<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
 								<p>
-									Alexander Pierce - Web Developer
+									<shiro:principal property="name"/> - Web Developer
 									<small>Member since Nov. 2012</small>
 								</p>
 							</li>
@@ -199,10 +184,11 @@ desired effect
 							<!-- Menu Footer-->
 							<li class="user-footer">
 								<div class="pull-left">
-									<a href="#" class="btn btn-default btn-flat">Profile</a>
+									<a href="${ctx}/sys/user/info" class="btn btn-default btn-flat">个人信息</a>
+									<a href="${ctx}/sys/user/modifyPwd" class="btn btn-default btn-flat">修改密码</a>
 								</div>
 								<div class="pull-right">
-									<a href="#" class="btn btn-default btn-flat">Sign out</a>
+									<a href="${ctx}/logout" class="btn btn-default btn-flat">退出</a>
 								</div>
 							</li>
 						</ul>
@@ -299,7 +285,7 @@ desired effect
 			Anything you want
 		</div>
 		<!-- Default to the left -->
-		<strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+		<strong>Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="https://github.com/thinkgem/jeesite" target="_blank">JeeSite</a> ${fns:getConfig('version')}.</strong>
 	</footer>
 
 	<!-- Control Sidebar -->
