@@ -40,12 +40,12 @@
 
 	<!-- BACKGROUND IMAGE -->
 	<!--===================================================-->
-	<div class="bg-img img-balloon"></div>
+	<div class="login-bg-img login-bg-img-balloon"></div>
 
 	<!-- HEADER -->
 	<!--===================================================-->
-	<div class="cls-header cls-header-lg">
-		<div class="cls-brand">
+	<div class="login-header">
+		<div class="login-header-title">
 			<a>
 				<span>${fns:getConfig('productName')}</span>
 			</a>
@@ -55,10 +55,10 @@
 
 	<!-- LOGIN FORM -->
 	<!--===================================================-->
-	<div class="cls-body">
-		<div class="cls-login-panel">
+	<div class="login-body">
+		<div class="login-body-panel">
 			<div class="panel-body">
-				<p class="pad-btm">Sign In to your account</p>
+				<p class="login-body-panel-head">Sign In to your account</p>
 				<form id="loginForm" class="form login-form" action="${ctx}/login" method="post">
 					<div class="form-group">
 						<div class="input-group">
@@ -93,9 +93,9 @@
 				</form>
 			</div>
 		</div>
-		<div class="pad-ver">
-			<a href="pages-password-reminder.html" class="btn-link mar-rgt">忘记密码 ?</a>
-			<a href="pages-register.html" class="btn-link mar-lft">注册帐号</a>
+		<div class="login-body-panel1">
+			<a href="pages-password-reminder.html" class="btn-link login-mar-rgt">忘记密码 ?</a>
+			<a href="pages-register.html" class="btn-link login-mar-lft">注册帐号</a>
 		</div>
 	</div>
 	<!--===================================================-->

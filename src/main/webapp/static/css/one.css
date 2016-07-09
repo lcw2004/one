@@ -1,3 +1,4 @@
+/*登录 Start */
 .login-container {
     background-color: #212124;
     color: #515151;
@@ -9,7 +10,7 @@
     min-height: 100vh;
 }
 
-.bg-img {
+.login-bg-img {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -24,41 +25,41 @@
 }
 
 /*背景图片*/
-.img-balloon {
+.login-bg-img-balloon {
     background-image: url("../images/bg-img-2.jpg");
 }
 
-.cls-header {
+.login-header {
     position: relative;
     background-color: rgba(0, 0, 0, 0.1);
     font-weight: 600;
     font-size: 30px;;
 }
 
-.cls-header.cls-header-lg .cls-brand .brand-icon {
+.login-header .login-header-title .brand-icon {
     width: 60px;
     height: 60px
 }
 
-#container.cls-container .cls-header .cls-header.cls-header-lg .cls-brand .brand-title {
+.cls-container .login-header .login-header .login-header-title .brand-title {
     font-size: 27px
 }
 
-.cls-brand {
+.login-header-title {
     display: inline-block;
     padding: 20px 0;
     line-height: 60px;
 }
 
-.cls-brand a {
+.login-header-title a {
     color: #bebebe
 }
 
-.cls-brand a:hover {
+.login-header-title a:hover {
     color: #ffffff;
 }
 
-.cls-body {
+.login-body {
     padding: 10vh 15px 15px;
     position: relative;
     margin-top: 50px;
@@ -66,7 +67,7 @@
     margin-right: 5px;
 }
 
-.cls-login-panel {
+.login-body-panel {
     width: 70%;
     min-width: 250px;
     max-width: 400px;
@@ -79,18 +80,11 @@
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
-.cls-login-panel i {
 
-}
-
-.pad-btm {
+.login-body-panel-head {
     margin-top: 10px;
     margin-bottom: 20px;
     font-size: 15px;
-}
-
-.pad-ver {
-
 }
 
 .login-footer {
@@ -106,14 +100,15 @@
     color: #FFFFFF;
 }
 
-.mar-rgt {
+.login-mar-rgt {
     margin-right: 15px;
 }
 
-.mar-lft {
+.login-mar-lft {
     margin-left: 15px;
 }
 .login-icon {
     padding-left: 18px;
     padding-right: 18px;
 }
+/*登录 End */
