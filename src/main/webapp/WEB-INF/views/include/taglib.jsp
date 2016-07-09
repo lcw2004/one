@@ -6,5 +6,10 @@
 <%@ taglib prefix="fns" uri="/WEB-INF/tlds/fns.tld" %>
 <%@ taglib prefix="fnc" uri="/WEB-INF/tlds/fnc.tld" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}${fns:getAdminPath()}"/>
-<c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+%>
+<c:set var="basePath" value="<%=basePath%>"></c:set>
+<c:set var="ctx" value="${basePath}${fns:getAdminPath()}"/>
+<c:set var="ctxStatic" value="${basePath}/static"/>

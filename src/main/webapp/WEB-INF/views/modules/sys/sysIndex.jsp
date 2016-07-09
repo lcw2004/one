@@ -1,15 +1,48 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
-<!DOCTYPE html>
 
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>AdminLTE 2 | Starter</title>
-	<%@ include file="/WEB-INF/views/include/head_new.jsp"%>
-</head>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
+
+	<%@ include file="/WEB-INF/views/include/head.jsp"%>
+
+
+
+
+
+	<![endif]-->
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -17,11 +50,11 @@
 	<header class="main-header">
 
 		<!-- Logo -->
-		<a href="#" class="logo">
+		<a href="index2.html" class="logo">
 			<!-- mini logo for sidebar mini 50x50 pixels -->
-			<span class="logo-mini"><b>${fns:getConfig('productShortName')}</b></span>
+			<span class="logo-mini"><b>A</b>LT</span>
 			<!-- logo for regular state and mobile devices -->
-			<span class="logo-lg"><b>${fns:getConfig('productName')}</b></span>
+			<span class="logo-lg"><b>Admin</b>LTE</span>
 		</a>
 
 		<!-- Header Navbar -->
@@ -30,22 +63,8 @@
 			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 				<span class="sr-only">Toggle navigation</span>
 			</a>
-
 			<!-- Navbar Right Menu -->
 			<div class="navbar-custom-menu">
-				<ul id="menu" class="nav navbar-nav navbar-left">
-					<c:set var="firstMenu" value="true"/>
-					<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
-						<c:if test="${menu.parent.id eq '1' && menu.isShow eq '1'}">
-							<li class="${firstMenu ? ' active' : ''}"><a href="${ctx}/sys/menu/tree?parentId=${menu.id}" target="menuFrame" >${menu.name}</a></li>
-							<c:if test="${firstMenu}">
-								<c:set var="firstMenuId" value="${menu.id}"/>
-							</c:if>
-							<c:set var="firstMenu" value="false"/>
-						</c:if>
-					</c:forEach>
-				</ul>
-
 				<ul class="nav navbar-nav">
 					<!-- Messages: style can be found in dropdown.less-->
 					<li class="dropdown messages-menu">
@@ -63,7 +82,8 @@
 										<a href="#">
 											<div class="pull-left">
 												<!-- User Image -->
-												<img src="${ctxStatic}/AdminLTE-2.3.5/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+												<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 											</div>
 											<!-- Message title and timestamp -->
 											<h4>
@@ -147,14 +167,14 @@
 						<!-- Menu Toggle Button -->
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<!-- The user image in the navbar-->
-							<img src="${ctxStatic}/AdminLTE-2.3.5/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+							<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="user-image" alt="User Image">
 							<!-- hidden-xs hides the username on small devices so only the image appears. -->
 							<span class="hidden-xs">Alexander Pierce</span>
 						</a>
 						<ul class="dropdown-menu">
 							<!-- The user image in the menu -->
 							<li class="user-header">
-								<img src="${ctxStatic}/AdminLTE-2.3.5/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+								<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
 								<p>
 									Alexander Pierce - Web Developer
@@ -204,7 +224,7 @@
 			<!-- Sidebar user panel (optional) -->
 			<div class="user-panel">
 				<div class="pull-left image">
-					<img src="${ctxStatic}/AdminLTE-2.3.5/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+					<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 				</div>
 				<div class="pull-left info">
 					<p>Alexander Pierce</p>
@@ -360,5 +380,6 @@
 	<div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+
 </body>
 </html>
