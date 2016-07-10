@@ -5,6 +5,7 @@
  */
 package com.lcw.one.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
 import org.apache.commons.lang3.ObjectUtils;
@@ -32,6 +33,8 @@ import java.util.List;
 public class Menu extends IdEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
+
+	@JsonIgnore
 	private Menu parent;	// 父级菜单
 	private String parentIds; // 所有父级编号
 	private String name; 	// 名称
@@ -42,8 +45,10 @@ public class Menu extends IdEntity<Menu> {
 	private String isShow; 	// 是否在菜单中显示（1：显示；0：不显示）
 	private String isActiviti; 	// 是否同步到工作流（1：同步；0：不同步）
 	private String permission; // 权限标识
-	
+
 	private List<Menu> childList = Lists.newArrayList();// 拥有子菜单列表
+
+	@JsonIgnore
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 
 	public Menu(){

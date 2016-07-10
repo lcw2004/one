@@ -19,6 +19,13 @@
     <example>${fns:getAdminPath()}</example>
   </function>
   <function>
+    <description>获取RestApi路径</description>
+    <name>getRestApiPath</name>
+    <function-class>com.lcw.one.common.config.Global</function-class>
+    <function-signature>java.lang.String getRestApiPath()()</function-signature>
+    <example>${fns:getRestApiPath()}</example>
+  </function>
+  <function>
     <description>获取网站路径</description>
     <name>getFrontPath</name>
     <function-class>com.lcw.one.common.config.Global</function-class>

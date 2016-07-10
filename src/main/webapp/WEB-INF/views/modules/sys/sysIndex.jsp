@@ -234,18 +234,14 @@
 			<!-- Sidebar Menu -->
 			<ul class="sidebar-menu">
 				<li class="header">HEADER</li>
-				<!-- Optionally, you can add icons to the links -->
-				<li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-				<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-				<li class="treeview">
-					<a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+				<li class="treeview" v-for="menuLevel2 of menuLevel1.childList">
+					<a href="#"><i class="fa fa-link"></i> <span>{{ menuLevel2.name }}</span>
+						<span class="pull-right-container">
+						  <i class="fa fa-angle-left pull-right"></i>
+						</span>
 					</a>
 					<ul class="treeview-menu">
-						<li><a href="#">Link in level 2</a></li>
-						<li><a href="#">Link in level 2</a></li>
+						<li v-for="menuLevel3 of menuLevel2.childList"><a target="contentIframe" href="${ctx}/{{menuLevel3.href}}">{{ menuLevel3.name }}</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -256,25 +252,7 @@
 
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
-		<!-- Content Header (Page header) -->
-		<section class="content-header">
-			<h1>
-				Page Header
-				<small>Optional description</small>
-			</h1>
-			<ol class="breadcrumb">
-				<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-				<li class="active">Here</li>
-			</ol>
-		</section>
-
-		<!-- Main content -->
-		<section class="content">
-
-			<!-- Your Page Content Here -->
-
-		</section>
-		<!-- /.content -->
+		<iframe id="contentIframe" name="contentIframe" src="http://www.baidu.com" style="width: 100%; height: 100%"></iframe>
 	</div>
 	<!-- /.content-wrapper -->
 
@@ -366,6 +344,27 @@
 	<div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+
+{{ menuLevel2 | json }}
+<script>
+	var v;
+	$(document).ready(function () {
+		v = new Vue({
+			el: "body",
+			data: {
+				menuLevel1: {}
+			},
+			ready: function () {
+				this.$http.get('${ctxRest}/sys/menu/27').then(function (response) {
+					this.menuLevel1 = response.json();
+				}, function (response) {
+				});
+			}
+		});
+
+		$("#contentIframe").height($(".content-wrapper").height());
+	});
+</script>
 
 </body>
 </html>

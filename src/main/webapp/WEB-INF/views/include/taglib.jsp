@@ -13,3 +13,4 @@
 <c:set var="basePath" value="<%=basePath%>"></c:set>
 <c:set var="ctx" value="${basePath}${fns:getAdminPath()}"/>
 <c:set var="ctxStatic" value="${basePath}/static"/>
+<c:set var="ctxRest" value="${basePath}${fns:getRestApiPath()}"/>
