@@ -48,7 +48,14 @@ public class Global {
 	public static String getAdminPath() {
 		return getConfig("adminPath");
 	}
-	
+
+	/**
+	 * 获取管理端根路径
+	 */
+	public static String getRestApiPath() {
+		return getConfig("restPath");
+	}
+
 	/**
 	 * 获取前端根路径
 	 */

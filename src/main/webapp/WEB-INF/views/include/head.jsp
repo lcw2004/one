@@ -26,6 +26,7 @@
 
 <%-- vue Start --%>
 <script src="${ctxStatic}/lib/vue/vue.js"></script>
+<script src="${ctxStatic}/lib/vue/vue-resource.min.js"></script>
 <%-- vue End --%>
 
 <%-- Icon --%>
