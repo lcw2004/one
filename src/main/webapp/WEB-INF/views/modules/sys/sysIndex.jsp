@@ -68,7 +68,7 @@
 											<div class="pull-left">
 												<!-- User Image -->
 
-												<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+												<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 											</div>
 											<!-- Message title and timestamp -->
 											<h4>
@@ -152,14 +152,14 @@
 						<!-- Menu Toggle Button -->
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<!-- The user image in the navbar-->
-							<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="user-image" alt="User Image">
+							<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="user-image" alt="User Image">
 							<!-- hidden-xs hides the username on small devices so only the image appears. -->
 							<span class="hidden-xs"><shiro:principal property="name"/></span>
 						</a>
 						<ul class="dropdown-menu">
 							<!-- The user image in the menu -->
 							<li class="user-header">
-								<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+								<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
 								<p>
 									<shiro:principal property="name"/> - Web Developer
@@ -184,8 +184,8 @@
 							<!-- Menu Footer-->
 							<li class="user-footer">
 								<div class="pull-left">
-									<a href="${ctx}/sys/user/info" class="btn btn-default btn-flat">个人信息</a>
-									<a href="${ctx}/sys/user/modifyPwd" class="btn btn-default btn-flat">修改密码</a>
+									<a href="${ctx}/sys/user/info" target="contentIframe" class="btn btn-default btn-flat">个人信息</a>
+									<a href="${ctx}/sys/user/modifyPwd" target="contentIframe" class="btn btn-default btn-flat">修改密码</a>
 								</div>
 								<div class="pull-right">
 									<a href="${ctx}/logout" class="btn btn-default btn-flat">退出</a>
@@ -210,7 +210,7 @@
 			<!-- Sidebar user panel (optional) -->
 			<div class="user-panel">
 				<div class="pull-left image">
-					<img src="http://192.168.0.106:8081/one/static/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+					<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 				</div>
 				<div class="pull-left info">
 					<p>Alexander Pierce</p>
