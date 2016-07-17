@@ -1,3 +1,13 @@
+# IDEA
 .idea/
-target/
 *.iml
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# Compile
+target/
+*.class
+*.jar
