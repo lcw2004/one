@@ -31,10 +31,8 @@ public class MenuRestController {
 
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
-    public List<Menu> listByUser() {
-        String menuId = "60076411112b4dbe93d126ed9865621f";
-        Menu menu = systemService.getMenu(menuId);
-        return UserUtils.getMenuList();
+    public Menu listByUser() {
+        return UserUtils.getMenu();
     }
 
     @RequiresPermissions("sys:menu:view")
@@ -43,4 +41,5 @@ public class MenuRestController {
         Menu menu = systemService.getMenu(id);
         return menu;
     }
+
 }

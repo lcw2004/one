@@ -35,10 +35,12 @@
 			<!-- Navbar Right Menu -->
 			<div class="">
 				<ul id="menu" class="nav navbar-nav navbar-left">
+					<li v-for="system of menu.childList"><a @click="loadSystemMenu('{{ system.id }}')">{{ system.name }}</a></li>
+
 					<c:set var="firstMenu" value="true"/>
 					<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
 						<c:if test="${menu.parent.id eq '1' && menu.isShow eq '1'}">
-							<li class="${firstMenu ? ' active' : ''}"><a href="${ctx}/sys/menu/tree?parentId=${menu.id}" target="menuFrame" >${menu.name}</a></li>
+							<li class="${firstMenu ? ' active' : ''}"><a @click="loadSystemMenu('${menu.id}')">${menu.name}</a></li>
 							<c:if test="${firstMenu}">
 								<c:set var="firstMenuId" value="${menu.id}"/>
 							</c:if>
@@ -234,14 +236,14 @@
 			<!-- Sidebar Menu -->
 			<ul class="sidebar-menu">
 				<li class="header">HEADER</li>
-				<li class="treeview" v-for="menuLevel2 of menuLevel1.childList">
-					<a href="#"><i class="fa fa-link"></i> <span>{{ menuLevel2.name }}</span>
+				<li class="treeview" v-for="menuLevel1 of system.childList">
+					<a href="#"><i class="fa fa-link"></i> <span>{{ menuLevel1.name }}</span>
 						<span class="pull-right-container">
 						  <i class="fa fa-angle-left pull-right"></i>
 						</span>
 					</a>
 					<ul class="treeview-menu">
-						<li v-for="menuLevel3 of menuLevel2.childList"><a target="contentIframe" href="${ctx}/{{menuLevel3.href}}">{{ menuLevel3.name }}</a></li>
+						<li v-for="menuLevel2 of menuLevel1.childList"><a target="contentIframe" href="${ctx}/{{menuLevel2.href}}">{{ menuLevel2.name }}</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -296,12 +298,12 @@
 				<h3 class="control-sidebar-heading">Tasks Progress</h3>
 				<ul class="control-sidebar-menu">
 					<li>
-						<a href="javascript::;">
+						<a>
 							<h4 class="control-sidebar-subheading">
 								Custom Template Design
-                <span class="pull-right-container">
-                  <span class="label label-danger pull-right">70%</span>
-                </span>
+								<span class="pull-right-container">
+								  <span class="label label-danger pull-right">70%</span>
+								</span>
 							</h4>
 
 							<div class="progress progress-xxs">
@@ -349,16 +351,35 @@
 <script>
 	var v;
 	$(document).ready(function () {
+		var customActions = {
+			querySystemMenu: {method: 'get', url: '${ctxRest}/sys/menu/{/id}'},
+			quertMenu: {method: 'get', url: '${ctxRest}/sys/menu/user'}
+		};
+
 		v = new Vue({
 			el: "body",
 			data: {
-				menuLevel1: {}
+				menu : {},
+				system: {},
+				systemId : 27
 			},
 			ready: function () {
-				this.$http.get('${ctxRest}/sys/menu/27').then(function (response) {
-					this.menuLevel1 = response.json();
-				}, function (response) {
+				var resource = this.$resource(null, {}, customActions);
+				resource.querySystemMenu({id : 27}).then(function (response) {
+					this.system = response.json();
 				});
+				resource.quertMenu().then(function (response) {
+					this.menu = response.json();
+				});
+			},
+			methods: {
+				loadSystemMenu : function (systemId) {
+					var resource = this.$resource(null, {}, customActions);
+					resource.querySystemMenu({id : systemId}).then(function (response) {
+						this.system = response.json();
+					});
+					this.systemId = systemId;
+				}
 			}
 		});
 

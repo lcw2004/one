@@ -40,6 +40,7 @@ public class UserUtils extends BaseService {
 	public static final String CACHE_USER = "user";
 	public static final String CACHE_ROLE_LIST = "roleList";
 	public static final String CACHE_MENU_LIST = "menuList";
+	public static final String CACHE_MENU = "menu";
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	
@@ -111,7 +112,17 @@ public class UserUtils extends BaseService {
 		}
 		return menuList;
 	}
-	
+
+	public static Menu getMenu(){
+		@SuppressWarnings("unchecked")
+		Menu menu = (Menu)getCache(CACHE_MENU);
+		if (menu == null){
+			menu = menuDao.organizeMenuListAsTopMenu(menuDao.get("1"), getMenuList());
+			putCache(CACHE_MENU, menu);
+		}
+		return menu;
+	}
+
 	public static List<Area> getAreaList(){
 		@SuppressWarnings("unchecked")
 		List<Area> areaList = (List<Area>)getCache(CACHE_AREA_LIST);
