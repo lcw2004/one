@@ -35,18 +35,7 @@
 			<!-- Navbar Right Menu -->
 			<div class="">
 				<ul id="menu" class="nav navbar-nav navbar-left">
-					<li v-for="system of menu.childList"><a @click="loadSystemMenu('{{ system.id }}')">{{ system.name }}</a></li>
-
-					<c:set var="firstMenu" value="true"/>
-					<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
-						<c:if test="${menu.parent.id eq '1' && menu.isShow eq '1'}">
-							<li class="${firstMenu ? ' active' : ''}"><a @click="loadSystemMenu('${menu.id}')">${menu.name}</a></li>
-							<c:if test="${firstMenu}">
-								<c:set var="firstMenuId" value="${menu.id}"/>
-							</c:if>
-							<c:set var="firstMenu" value="false"/>
-						</c:if>
-					</c:forEach>
+					<li v-for="system of menu.childList"><a @click="loadleftMenu(system)">{{ system.name }}</a></li>
 				</ul>
 			</div>
 
@@ -236,7 +225,7 @@
 			<!-- Sidebar Menu -->
 			<ul class="sidebar-menu">
 				<li class="header">HEADER</li>
-				<li class="treeview" v-for="menuLevel1 of system.childList">
+				<li class="treeview" v-for="menuLevel1 of leftMenu.childList">
 					<a href="#"><i class="fa fa-link"></i> <span>{{ menuLevel1.name }}</span>
 						<span class="pull-right-container">
 						  <i class="fa fa-angle-left pull-right"></i>
@@ -351,34 +340,25 @@
 <script>
 	var v;
 	$(document).ready(function () {
-		var customActions = {
-			querySystemMenu: {method: 'get', url: '${ctxRest}/sys/menu/{/id}'},
-			quertMenu: {method: 'get', url: '${ctxRest}/sys/menu/user'}
+		var actions = {
+			queryMenu: {method: 'get', url: '${ctxRest}/sys/menu/user'}
 		};
 
 		v = new Vue({
 			el: "body",
 			data: {
 				menu : {},
-				system: {},
-				systemId : 27
+				leftMenu : {}
 			},
 			ready: function () {
-				var resource = this.$resource(null, {}, customActions);
-				resource.querySystemMenu({id : 27}).then(function (response) {
-					this.system = response.json();
-				});
-				resource.quertMenu().then(function (response) {
+				var resource = this.$resource(null, {}, actions);
+				resource.queryMenu().then(function (response) {
 					this.menu = response.json();
 				});
 			},
 			methods: {
-				loadSystemMenu : function (systemId) {
-					var resource = this.$resource(null, {}, customActions);
-					resource.querySystemMenu({id : systemId}).then(function (response) {
-						this.system = response.json();
-					});
-					this.systemId = systemId;
+				loadleftMenu : function (systemId) {
+					this.leftMenu = systemId;
 				}
 			}
 		});

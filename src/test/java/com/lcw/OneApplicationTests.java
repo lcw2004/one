@@ -19,16 +19,16 @@ public class OneApplicationTests {
 	@Autowired
 	private DictService dictService;
 
+	@Autowired
+	private SystemService systemService;
+
+
 	@Test
 	public void testFindAllList() throws Exception {
 		List<Dict> dictList = dictService.findAllList();
 		for (Dict dict : dictList) {
 			System.out.println(dict.getId());
 		}
-	}
-
-	@Test
-	public void contextLoads() {
 	}
 
 }
