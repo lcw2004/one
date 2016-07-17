@@ -50,22 +50,4 @@ public class FreeMarkers {
 		return cfg;
 	}
 	
-	public static void main(String[] args) throws IOException {
-//		// renderString
-//		Map<String, String> model = com.google.common.collect.Maps.newHashMap();
-//		model.put("userName", "calvin");
-//		String result = FreeMarkers.renderString("hello ${userName}", model);
-//		System.out.println(result);
-//		// renderTemplate
-//		Configuration cfg = FreeMarkers.buildConfiguration("classpath:/");
-//		Template template = cfg.getTemplate("testTemplate.ftl");
-//		String result2 = FreeMarkers.renderTemplate(template, model);
-//		System.out.println(result2);
-		
-//		Map<String, String> model = com.google.common.collect.Maps.newHashMap();
-//		model.put("userName", "calvin");
-//		String result = FreeMarkers.renderString("hello ${userName} ${r'${userName}'}", model);
-//		System.out.println(result);
-	}
-	
 }
