@@ -12,6 +12,13 @@
 	<%@ include file="/WEB-INF/views/include/head.jsp"%>
 
 	<script>
+		$(document).ready(function () {
+			$('body').bind('keypress', function (e) {
+				if (e.keyCode == 13) {
+					login();
+				}
+			});
+		});
 
 		function login() {
 			// TODO 首页的提示信息需要优化
@@ -105,6 +112,5 @@
 	</footer>
 </div>
 
-<script src="${ctxStatic}/lib/nifty/js/nifty.min.js"></script>
 </body>
 </html>
