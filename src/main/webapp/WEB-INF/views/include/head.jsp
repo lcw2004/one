@@ -33,8 +33,8 @@
 <link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico">
 
 <!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="${ctxStatic}/lib/other/html5shiv.min.js"></script>
+<script src="${ctxStatic}/lib/other/respond.min.js"></script>
 <![endif]-->
 
 
