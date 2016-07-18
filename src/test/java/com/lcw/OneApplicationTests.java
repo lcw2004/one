@@ -19,10 +19,6 @@ public class OneApplicationTests {
 	@Autowired
 	private DictService dictService;
 
-	@Autowired
-	private SystemService systemService;
-
-
 	@Test
 	public void testFindAllList() throws Exception {
 		List<Dict> dictList = dictService.findAllList();
