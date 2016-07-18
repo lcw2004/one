@@ -10,6 +10,8 @@ import com.lcw.one.common.config.Global;
 import com.lcw.one.common.utils.CacheUtils;
 import com.lcw.one.common.utils.CookieUtils;
 import com.lcw.one.common.utils.StringUtils;
+import com.lcw.one.common.utils.validatecode.EnCharValidateCode;
+import com.lcw.one.common.utils.validatecode.ValidateCodeInterface;
 import com.lcw.one.common.web.BaseController;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.utils.UserUtils;
@@ -34,6 +36,23 @@ import java.util.Map;
  */
 @Controller
 public class LoginController extends BaseController {
+
+    /**
+     * 管理登录
+     */
+    @RequestMapping(value = "/validateCode", method = RequestMethod.GET)
+    public void validateCode(HttpServletRequest request, HttpServletResponse response, Model model) {
+        ValidateCodeInterface validateCode = new EnCharValidateCode();
+        try {
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("image/jpeg");
+            validateCode.generate(100, 20, response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 管理登录

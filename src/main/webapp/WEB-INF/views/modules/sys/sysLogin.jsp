@@ -88,12 +88,10 @@
 						<div class="col-xs-4">
 						</div>
 					</div>
-					<c:if test="${isValidateCodeLogin}">
 						<div class="validateCode">
 							<label for="validateCode">验证码：</label>
 							<tags:validateCode name="validateCode" inputCssStyle="margin-bottom:0;"/>
 						</div>
-					</c:if>
 					<a class="btn btn-primary btn-lg btn-block" onclick="login()">
 						登     录
 					</a>
