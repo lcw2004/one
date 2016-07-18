@@ -123,8 +123,8 @@ public class AppConfiguration {
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
-        shiroFilterFactoryBean.setLoginUrl("/" + Global.getAdminPath() + "/login");
-        shiroFilterFactoryBean.setSuccessUrl("/" + Global.getAdminPath());
+        shiroFilterFactoryBean.setLoginUrl(Global.getAdminPath() + "/login");
+        shiroFilterFactoryBean.setSuccessUrl(Global.getAdminPath());
         Map<String, javax.servlet.Filter> filterMap = new LinkedHashMap<>();
         filterMap.put("authc", new FormAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
@@ -133,9 +133,9 @@ public class AppConfiguration {
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/userfiles/**", "anon");
-        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/login", "authc");
-        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/logout", "logout");
-        filterChainDefinitionMap.put("/" + Global.getAdminPath() + "/**", "user");
+        filterChainDefinitionMap.put(Global.getAdminPath() + "/login", "authc");
+        filterChainDefinitionMap.put(Global.getAdminPath() + "/logout", "logout");
+        filterChainDefinitionMap.put(Global.getAdminPath() + "/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;
