@@ -88,10 +88,17 @@
 						<div class="col-xs-4">
 						</div>
 					</div>
-						<div class="validateCode">
-							<label for="validateCode">验证码：</label>
-							<tags:validateCode name="validateCode" inputCssStyle="margin-bottom:0;"/>
+					<c:if test="${isValidateCodeLogin}">
+						<div class="text-left" style="margin-bottom: 10px;">
+							<label>验证码：</label>
+							<input type="text" id="validateCode" name="validateCode" style="min-width: 20px;width: 35%;max-width: 150px;height: 28px;font-size: 15px" maxlength="4">
+						<span >
+							<img id="validateCodeImg" src="${pageContext.request.contextPath}/validateCode" onclick="$('#validateCodeImg').attr('src','/one/validateCode?' + new Date().getTime());"  style="margin-bottom: 4px">
+						</span>
+							<a onclick="$('#validateCodeImg').attr('src','/one/validateCode?' + new Date().getTime());" class="form-icon" ><i class="fa fa-refresh" aria-hidden="true"></i></a>
 						</div>
+					</c:if>
+
 					<a class="btn btn-primary btn-lg btn-block" onclick="login()">
 						登     录
 					</a>

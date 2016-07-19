@@ -48,7 +48,8 @@ public class LoginController extends BaseController {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
             response.setContentType("image/jpeg");
-            validateCode.generate(100, 20, response.getOutputStream());
+            String code = validateCode.generate(80, 28, response.getOutputStream());
+            request.getSession().setAttribute("ValidateCode", code);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,5 +8,5 @@ import java.io.OutputStream;
  */
 public interface ValidateCodeInterface {
 
-    void generate(int width, int height, OutputStream os) throws IOException;
+    String generate(int width, int height, OutputStream os) throws IOException;
 }

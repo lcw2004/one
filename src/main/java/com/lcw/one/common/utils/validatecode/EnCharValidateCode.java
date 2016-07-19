@@ -1,11 +1,8 @@
 package com.lcw.one.common.utils.validatecode;
 
-import com.lcw.one.common.utils.StringUtils;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
@@ -18,25 +15,19 @@ public class EnCharValidateCode implements ValidateCodeInterface {
             'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9'};
     private static final String[] fontTypes = {"\u5b8b\u4f53", "\u65b0\u5b8b\u4f53", "\u9ed1\u4f53", "\u6977\u4f53", "\u96b6\u4e66"};
     private static Random random = new Random();
+    private static final int VALICATE_CODE_LENGTH = 4;
 
     @Override
-    public void generate(int width, int height, OutputStream os) throws IOException {
+    public String generate(int width, int height, OutputStream os) throws IOException {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = image.getGraphics();
         fillBackground(graphics, width, height);
-        String randomStr = randomString(4);
+        String randomStr = randomString(VALICATE_CODE_LENGTH);
         createCharacter(graphics, randomStr);
         graphics.dispose();
         ImageIO.write(image, "JPEG", os);
-    }
 
-    public static void main(String[] args)  {
-        EnCharValidateCode validateCodeGen = new EnCharValidateCode();
-        try {
-            validateCodeGen.generate(100, 100, new FileOutputStream("E:\\1.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return randomStr;
     }
 
     public static final String randomString(int length) {

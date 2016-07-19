@@ -58,7 +58,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		if (LoginController.isValidateCodeLogin(token.getUsername(), false, false)){
 			// 判断验证码
 			Session session = SecurityUtils.getSubject().getSession();
-			String code = (String)session.getAttribute(ValidateCodeServlet.VALIDATE_CODE);
+			String code = (String)session.getAttribute("ValidateCode");
 			if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)){
 				throw new CaptchaException("验证码错误.");
 			}
