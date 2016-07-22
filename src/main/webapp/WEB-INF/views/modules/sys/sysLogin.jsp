@@ -44,6 +44,9 @@
 
 <body>
 <div class="login-container">
+	<!--[if lte IE 6]>
+	<br/><div class='alert alert-block' style="text-align:left;padding-bottom:10px;"><a class="close" data-dismiss="alert">x</a><h4>温馨提示：</h4><p>你使用的浏览器版本过低。为了获得更好的浏览体验，我们强烈建议您 <a href="http://browsehappy.com" target="_blank">升级</a> 到最新版本的IE浏览器，或者使用较新版本的 Chrome、Firefox、Safari 等。</p></div>
+	<![endif]-->
 
 	<!-- BACKGROUND IMAGE -->
 	<!--===================================================-->
@@ -59,6 +62,7 @@
 		</div>
 	</div>
 	<!--===================================================-->
+
 
 	<!-- LOGIN FORM -->
 	<!--===================================================-->
@@ -92,16 +96,23 @@
 						<div class="text-left" style="margin-bottom: 10px;">
 							<label>验证码：</label>
 							<input type="text" id="validateCode" name="validateCode" style="min-width: 20px;width: 35%;max-width: 150px;height: 28px;font-size: 15px" maxlength="4">
-						<span >
 							<img id="validateCodeImg" src="${pageContext.request.contextPath}/validateCode" onclick="$('#validateCodeImg').attr('src','/one/validateCode?' + new Date().getTime());"  style="margin-bottom: 4px">
-						</span>
-							<a onclick="$('#validateCodeImg').attr('src','/one/validateCode?' + new Date().getTime());" class="form-icon" ><i class="fa fa-refresh" aria-hidden="true"></i></a>
+							<a onclick="$('#validateCodeImg').attr('src','${pageContext.request.contextPath}/validateCode?' + new Date().getTime());" class="form-icon" ><i class="fa fa-refresh" aria-hidden="true"></i></a>
 						</div>
 					</c:if>
 
 					<a class="btn btn-primary btn-lg btn-block" onclick="login()">
 						登     录
 					</a>
+
+					<div id="messageBox" class="alert alert-error" style='margin-top: 10px;display: <c:if test="${empty shiroLoginFailure}">none</c:if> '><button data-dismiss="alert" class="close">×</button>
+						<label id="loginError" class="error">
+							<c:if test="${empty shiroLoginFailure}">用户或密码错误, 请重试.</c:if>
+							<c:if test="${shiroLoginFailure eq 'com.lcw.one.modules.sys.security.CaptchaException'}">验证码错误, 请重试.</c:if>
+							<c:if test="${shiroLoginFailure eq 'org.apache.shiro.authc.UnknownAccountException'}">用户不存在或者密码错误.</c:if>
+							<c:if test="${shiroLoginFailure eq 'org.apache.shiro.authc.IncorrectCredentialsException'}">用户不存在或者密码错误.</c:if>
+						</label>
+					</div>
 				</form>
 			</div>
 		</div>
