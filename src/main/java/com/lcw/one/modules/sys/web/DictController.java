@@ -47,11 +47,7 @@ public class DictController extends BaseController {
 	
 	@RequiresPermissions("sys:dict:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(Dict dict, HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<String> typeList = dictService.findTypeList();
-		model.addAttribute("typeList", typeList);
-        Page<Dict> page = dictService.find(new Page<Dict>(request, response), dict); 
-        model.addAttribute("page", page);
+	public String list() {
 		return "modules/sys/dictList";
 	}
 
@@ -63,7 +59,7 @@ public class DictController extends BaseController {
 	}
 
 	@RequiresPermissions("sys:dict:edit")
-	@RequestMapping(value = "save")//@Valid
+	@RequestMapping(value = "save")
 	public String save(Dict dict, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");

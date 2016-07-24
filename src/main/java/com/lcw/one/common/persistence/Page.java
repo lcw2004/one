@@ -27,6 +27,7 @@ public class Page<T> {
 	private int pageSize = Integer.valueOf(Global.getConfig("page.pageSize")); // 页面大小，设置为“-1”表示不进行分页（分页无效）
 	
 	private long count;// 总记录数，设置为“-1”表示不查询总数
+	private long pageCount;
 	
 	private int first;// 首页索引
 	private int last;// 尾页索引
@@ -541,5 +542,10 @@ public class Page<T> {
 //		this.count = page.getTotalElements();
 //		this.list = page.getContent();
 //	}
-	
+
+
+	public long getPageCount() {
+		return count / pageSize + 1;
+	}
+
 }

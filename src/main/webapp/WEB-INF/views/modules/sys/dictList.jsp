@@ -6,6 +6,31 @@
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
+		var v;
+		$(document).ready(function () {
+			var actions = {
+				list: {method: 'get', url: '${ctxRest}/sys/dict'}
+			};
+
+			v = new Vue({
+				el : "body",
+				data : {
+					page : {}
+				},
+				ready: function () {
+					resource.list().then(function (response) {
+						this.page = response.json();
+					});
+				},
+				methods: {
+					listData: function () {
+
+					}
+				}
+			})
+
+			var resource = v.$resource(null, {}, actions);
+		})
 	</script>
 </head>
 <body>
@@ -28,30 +53,28 @@
 						<table class="table table-bordered table-hover">
 							<thead>
 							<tr>
-								<th>Rendering engine</th>
-								<th>colspan</th>
-								<th>Platform</th>
-								<th>version</th>
-								<th>CSS grade</th>
+								<th>键值</th>
+								<th>标签</th>
+								<th>类型</th>
+								<th>描述</th>
+								<th>排序</th>
+								<th>操作</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr role="row" class="odd">
-								<td class="">Gecko</td>
-								<td class="">Seamonkey 1.1</td>
-								<td class="sorting_1">Win 98+ / OSX.2+</td>
-								<td class="">1.8</td>
-								<td class="">A</td>
-							</tr>
-							<tr role="row" class="even">
-								<td class="">Gecko</td>
-								<td class="">Mozilla 1.7</td>
-								<td class="sorting_1">Win 98+ / OSX.1+</td>
-								<td class="">1.7</td>
-								<td class="">A</td>
+							<tr v-for="obj of page.list">
+								<td><span v-text="obj.value"></span></td>
+								<td><span v-text="obj.label"></span></td>
+								<td><span v-text="obj.type"></span></td>
+								<td><span v-text="obj.description"></span></td>
+								<td><span v-text="obj.sort"></span></td>
+								<td>
+									<a href="${ctx}/sys/dict/form?id={{obj.id}}">修改</a>
+								</td>
 							</tr>
 							</tbody>
 						</table>
+						<pagination :page="page"></pagination>
 						<%@include file="/WEB-INF/views/include/page.jsp" %>
 					</div>
 				</div>
