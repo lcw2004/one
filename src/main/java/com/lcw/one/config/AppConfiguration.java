@@ -1,6 +1,7 @@
 package com.lcw.one.config;
 
 import com.lcw.one.common.config.Global;
+import com.lcw.one.common.filter.RequestInfoFilter;
 import com.lcw.one.modules.sys.security.FormAuthenticationFilter;
 import com.lcw.one.modules.sys.security.SystemAuthorizingRealm;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -15,6 +16,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +33,15 @@ import java.util.Properties;
 
 @Configuration
 public class AppConfiguration {
+
+    @Bean
+    public FilterRegistrationBean requestInfoFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new RequestInfoFilter());
+        registration.addUrlPatterns("/*");
+        registration.setName("RequestInfoFilter");
+        return registration;
+    }
 
     @Bean(name = "transactionManager")
     public HibernateTransactionManager hibernateTransactionManager() {
