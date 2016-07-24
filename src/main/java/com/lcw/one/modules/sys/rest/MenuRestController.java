@@ -29,6 +29,10 @@ public class MenuRestController {
         return list;
     }
 
+    /**
+     * 首页，根据用户获取用户的权限列表树
+     * @return
+     */
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
     public Menu listByUser() {
