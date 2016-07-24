@@ -9,7 +9,7 @@
 		var v;
 		$(document).ready(function () {
 			var actions = {
-				list: {method: 'get', url: '${ctxRest}/sys/dict'}
+				list: {method: 'get', url: '${ctxRest}/sys/dict?pageNo={pageNo}'}
 			};
 
 			v = new Vue({
@@ -18,18 +18,19 @@
 					page : {}
 				},
 				ready: function () {
-					resource.list().then(function (response) {
-						this.page = response.json();
-					});
+					this.query(1);
 				},
 				methods: {
-					listData: function () {
-
+					query: function (pageNo) {
+						var resource = this.$resource(null, {}, actions);
+						resource.list({pageNo: pageNo}).then(function (response) {
+							this.page = response.json();
+						});
 					}
 				}
-			})
+			});
 
-			var resource = v.$resource(null, {}, actions);
+
 		})
 	</script>
 </head>
@@ -74,12 +75,13 @@
 							</tr>
 							</tbody>
 						</table>
-						<pagination :page="page"></pagination>
-						<%@include file="/WEB-INF/views/include/page.jsp" %>
+						<pagination :page="page" :callback="query"></pagination>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
