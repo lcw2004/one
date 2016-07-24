@@ -114,7 +114,7 @@ public class SystemService extends BaseService  {
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
 		userDao.clear();
-		userDao.save(user);
+		userDao.getSession().merge(user);
 		systemRealm.clearAllCachedAuthorizationInfo();
 	}
 
