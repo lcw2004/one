@@ -12,11 +12,16 @@
             },
             callback: {
                 type: Function,
-                required: true
+                required: false
+            },
+            pageNo: {
+                type: Object,
+                required: false
             }
         },
         methods : {
             goToPage : function (pageNum) {
+                this.pageNo = pageNum;
                 this.callback(pageNum);
             }
         },

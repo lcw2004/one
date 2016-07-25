@@ -21,37 +21,36 @@
 					dictTypeList : []
 				},
 				ready: function () {
-					this.query(1);
+					// 设置页码
+					Vue.set(this.param, "pageNo", 1);
 
+					// 加载字典列表
 					var resource = this.$resource(null, {}, actions);
 					resource.listType().then(function (response) {
 						this.dictTypeList = response.json();
 					})
 				},
 				methods: {
-					query: function (pageNo) {
+					setPageNo: function (pageNo) {
 						this.param.pageNo = pageNo;
-						var resource = this.$resource(null, {}, actions);
-						resource.list(this.param).then(function (response) {
-							this.page = response.json();
-						});
 					},
-					queryThisType: function (type) {
+					setDictType: function (type) {
 						this.param.type = type;
-						var resource = this.$resource(null, {}, actions);
-						resource.list(this.param).then(function (response) {
-							this.page = response.json();
-						});
+					}
+				},
+				watch: {
+					'param': {
+						handler: function () {
+							// 监听查询条件对象，如果有更改就查询数据
+							var resource = this.$resource(null, {}, actions);
+							resource.list(this.param).then(function (response) {
+								this.page = response.json();
+							});
+						},
+						deep: true
 					}
 				}
 			});
-
-//			v.$watch("param", function () {
-//				var resource = v.$resource(null, {}, actions);
-//				resource.list(v.param).then(function (response) {
-//					this.page = response.json();
-//				});
-//			})
 		});
 	</script>
 </head>
@@ -70,7 +69,6 @@
 				<div class="box">
 					<div class="box-header">
 						<div class="col-xs-4">
-							{{ param | json}}
 							类型
 							<select class="form-control" v-model="param.type">
 								<option value="">全部</option>
@@ -107,7 +105,7 @@
 							</tr>
 							</tbody>
 						</table>
-						<pagination :page="page" :callback="query"></pagination>
+						<pagination :page="page" ></pagination>
 					</div>
 				</div>
 			</div>
