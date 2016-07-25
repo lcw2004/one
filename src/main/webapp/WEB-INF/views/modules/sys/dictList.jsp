@@ -6,14 +6,13 @@
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
-		var v;
 		$(document).ready(function () {
 			var actions = {
 				list: {method: 'get', url: '${ctxRest}/sys/dict?pageNo={pageNo}&type={type}&description={description}'},
 				listType: {method: 'get', url: '${ctxRest}/sys/dict/type'}
 			};
 
-			v = new Vue({
+			new Vue({
 				el : "body",
 				data : {
 					param : {},
@@ -71,7 +70,7 @@
 						<div class="col-xs-4">
 							类型
 							<select class="form-control" v-model="param.type">
-								<option value="">全部</option>
+								<option value="" selected>全部</option>
 								<option v-for="dictType of dictTypeList">{{ dictType }}</option>
 							</select>
 						</div>
@@ -94,7 +93,7 @@
 							</thead>
 							<tbody>
 							<tr v-for="obj of page.list">
-								<td><a @click="queryThisType(obj.type)"><span v-text="obj.type"></span></a></td>
+								<td><a @click="setDictType(obj.type)"><span v-text="obj.type"></span></a></td>
 								<td><span v-text="obj.description"></span></td>
 								<td><span v-text="obj.label"></span></td>
 								<td><span v-text="obj.value"></span></td>
@@ -105,7 +104,8 @@
 							</tr>
 							</tbody>
 						</table>
-						<pagination :page="page" ></pagination>
+
+						<pagination :page="page"  v-bind:page-no.sync="param.pageNo"></pagination>
 					</div>
 				</div>
 			</div>

@@ -10,19 +10,14 @@
                 type: Object,
                 required: true
             },
-            callback: {
-                type: Function,
-                required: false
-            },
             pageNo: {
-                type: Object,
-                required: false
+                type: Number,
+                required: true
             }
         },
         methods : {
             goToPage : function (pageNum) {
                 this.pageNo = pageNum;
-                this.callback(pageNum);
             }
         },
         computed: {
@@ -43,7 +38,6 @@
                 }
             },
             showPageNos: function () {
-
                 var from = this.page.pageNo - offset;
                 if(from < 1) {
                     from = 1;
@@ -62,6 +56,7 @@
             }
         }
     });
+
     Vue.component('pagination', pagination);
 </script>
 <template id="pagination">
