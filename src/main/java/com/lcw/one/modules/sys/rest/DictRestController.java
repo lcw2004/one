@@ -29,4 +29,10 @@ public class DictRestController {
         return page;
     }
 
+    @RequiresPermissions("sys:menu:view")
+    @RequestMapping(value = "/type", method = RequestMethod.GET, produces = "application/json")
+    public List<String> dictTypeList() {
+        List<String> typeList = dictService.findTypeList();
+        return typeList;
+    }
 }

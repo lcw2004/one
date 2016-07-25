@@ -243,7 +243,7 @@
 
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
-		<iframe id="contentIframe" name="contentIframe" src="http://www.baidu.com" style="width: 100%; height: 100%"></iframe>
+		<iframe id="contentIframe" name="contentIframe" style="width: 100%; height: 100%"></iframe>
 	</div>
 	<!-- /.content-wrapper -->
 
