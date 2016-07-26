@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>字典管理</title>
@@ -35,16 +36,19 @@
 					},
 					setDictType: function (type) {
 						this.param.type = type;
+					},
+					query : function () {
+						var resource = this.$resource(null, {}, actions);
+						resource.list(this.param).then(function (response) {
+							this.page = response.json();
+						});
 					}
 				},
 				watch: {
 					'param': {
 						handler: function () {
 							// 监听查询条件对象，如果有更改就查询数据
-							var resource = this.$resource(null, {}, actions);
-							resource.list(this.param).then(function (response) {
-								this.page = response.json();
-							});
+							this.query();
 						},
 						deep: true
 					}
@@ -67,17 +71,23 @@
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-header">
-						<div class="col-xs-4">
-							类型
-							<select class="form-control" v-model="param.type">
-								<option value="" selected>全部</option>
-								<option v-for="dictType of dictTypeList">{{ dictType }}</option>
-							</select>
-						</div>
-						<div class="col-xs-4">
-							描述
-							<input type="text" class="form-control" v-model="param.description">
-						</div>
+						<form class="form-inline">
+							<div class="col-md-3">
+								<label class="control-label">类型</label>
+								<select class="form-control inline-block" v-model="param.type">
+									<option value="" selected>全部</option>
+									<option v-for="dictType of dictTypeList">{{ dictType }}</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<label class="control-label">描述</label>
+								<input class="form-control inline-block" type="text" v-model="param.description">
+							</div>
+							<div class="col-md-3">
+								<a class="btn btn-primary" @click="query()" >查询</a>
+								<a class="btn btn-primary" href="${ctx}/sys/dict/form">添加</a>
+							</div>
+						</form>
 					</div>
 					<div class="box-body">
 						<table class="table table-bordered table-hover">
