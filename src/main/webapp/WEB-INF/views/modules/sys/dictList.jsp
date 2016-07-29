@@ -10,9 +10,11 @@
 		$(document).ready(function () {
 			var actions = {
 				list: {method: 'get', url: '${ctxRest}/sys/dict?pageNo={pageNo}&type={type}&description={description}'},
-				listType: {method: 'get', url: '${ctxRest}/sys/dict/type'}
+				listType: {method: 'get', url: '${ctxRest}/sys/dict/type'},
+				delete: {method: 'delete', url: '${ctxRest}/sys/dict{/id}'}
 			};
 
+			var resource;
 			new Vue({
 				el : "body",
 				data : {
@@ -21,11 +23,12 @@
 					dictTypeList : []
 				},
 				ready: function () {
+					resource = this.$resource(null, {}, actions);
+
 					// 设置页码
 					Vue.set(this.param, "pageNo", 1);
 
 					// 加载字典列表
-					var resource = this.$resource(null, {}, actions);
 					resource.listType().then(function (response) {
 						this.dictTypeList = response.json();
 					})
@@ -38,9 +41,13 @@
 						this.param.type = type;
 					},
 					query : function () {
-						var resource = this.$resource(null, {}, actions);
 						resource.list(this.param).then(function (response) {
 							this.page = response.json();
+						});
+					},
+					delete : function (id) {
+						resource.delete({id : id}).then(function (response) {
+							alert("删除成功！");
 						});
 					}
 				},
@@ -110,6 +117,7 @@
 								<td><span v-text="obj.sort"></span></td>
 								<td>
 									<a href="${ctx}/sys/dict/form?id={{obj.id}}">修改</a>
+									<a @click="delete(obj.id)">删除</a>
 								</td>
 							</tr>
 							</tbody>
