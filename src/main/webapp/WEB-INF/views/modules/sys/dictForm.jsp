@@ -12,21 +12,24 @@
 				get: {method: 'get', url: '${ctxRest}/sys/dict{/id}'},
 				save: {method: 'post', url: '${ctxRest}/sys/dict'}
 			};
-
+			var resource;
 			new Vue({
 				el:"body",
 				data : {
 					obj : {}
 				},
 				ready: function () {
-					var resource = this.$resource(null, {}, actions);
-					resource.get({id : $("#id").val()}).then(function (response) {
-						this.obj = response.json();
-					})
+					resource = this.$resource(null, {}, actions);
+
+					var id = $("#id").val();
+					if (id) {
+						resource.get({id: id}).then(function (response) {
+							this.obj = response.json();
+						})
+					}
 				},
 				methods: {
 					save : function () {
-						var resource = this.$resource(null, {}, actions);
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
 							alert("保存成功");
 						})
@@ -85,7 +88,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">排序</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" v-model="obj.sort"/>
+							<input type="number" class="form-control" v-model="obj.sort"/>
 						</div>
 					</div>
 				</div>

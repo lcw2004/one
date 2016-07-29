@@ -11,6 +11,7 @@ import com.lcw.one.common.utils.SpringContextHolder;
 import com.lcw.one.modules.sys.dao.*;
 import com.lcw.one.modules.sys.entity.*;
 import com.lcw.one.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.lcw.one.modules.sys.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
@@ -20,6 +21,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import java.util.Map;
  * @author ThinkGem
  * @version 2013-5-29
  */
+@Transactional
 public class UserUtils extends BaseService {
 
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
@@ -36,6 +39,9 @@ public class UserUtils extends BaseService {
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
 	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
+
+	private static SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+	private static MenuServices menuServices = SpringContextHolder.getBean(MenuServices.class);
 
 	public static final String CACHE_USER = "user";
 	public static final String CACHE_ROLE_LIST = "roleList";
@@ -51,7 +57,8 @@ public class UserUtils extends BaseService {
 				Subject subject = SecurityUtils.getSubject();
 				Principal principal = (Principal)subject.getPrincipal();
 				if (principal!=null){
-					user = userDao.get(principal.getId());
+					user = systemService.getUser(principal.getId());
+//					user = userDao.get(principal.getId());
 //					Hibernate.initialize(user.getRoleList());
 					putCache(CACHE_USER, user);
 				}
@@ -104,9 +111,9 @@ public class UserUtils extends BaseService {
 		if (menuList == null){
 			User user = getUser();
 			if (user.isAdmin()){
-				menuList = menuDao.findAllList();
+				menuList = menuServices.findAllList();
 			}else{
-				menuList = menuDao.findByUserId(user.getId());
+				menuList = menuServices.findByUserId(user.getId());
 			}
 			putCache(CACHE_MENU_LIST, menuList);
 		}
@@ -117,7 +124,7 @@ public class UserUtils extends BaseService {
 		@SuppressWarnings("unchecked")
 		Menu menu = (Menu)getCache(CACHE_MENU);
 		if (menu == null){
-			menu = menuDao.organizeMenuListAsTopMenu(menuDao.get("1"), getMenuList());
+			menu = menuServices.organizeMenuListAsTopMenu(menuServices.get("1"), getMenuList());
 			putCache(CACHE_MENU, menu);
 		}
 		return menu;

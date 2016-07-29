@@ -26,6 +26,7 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -68,12 +69,12 @@ public class AppConfiguration {
     }
 
     @Bean(name = "dataSource")
-    public PooledDataSource dataSource() {
+    public DataSource dataSource() {
         ComboPooledDataSource cpds = new ComboPooledDataSource();
         cpds.setAcquireIncrement(3);
         cpds.setInitialPoolSize(10);
         cpds.setMinPoolSize(3);
-        cpds.setMaxPoolSize(500);
+        cpds.setMaxPoolSize(20);
         cpds.setMaxIdleTime(600);
         cpds.setIdleConnectionTestPeriod(500);
         cpds.setMaxStatements(0);
