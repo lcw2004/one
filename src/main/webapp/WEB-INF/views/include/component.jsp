@@ -75,3 +75,48 @@
     </nav>
 </template>
 <%-- Vue 分页组件 End --%>
+
+
+<%-- Vue alert 组件--%>
+<script>
+    var alert = Vue.extend({
+        template : "#alert",
+        props : {
+            type: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            msg : {
+                type : String,
+                required: true
+            }
+        }
+    });
+
+    Vue.component("alert", alert);
+</script>
+<template id="alert">
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> {{ title }}</h4>
+        {{ msg }}
+    </div>
+</template>
+<%-- Vue alert 组件 End --%>
+
+
+<%-- Vue test 组件--%>
+<script>
+    var test = Vue.extend({
+        template : "#test"
+    });
+
+    Vue.component("test", test);
+</script>
+<template id="test">
+
+</template>
