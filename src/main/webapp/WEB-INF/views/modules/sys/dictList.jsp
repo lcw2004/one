@@ -18,7 +18,7 @@
 			new Vue({
 				el : "body",
 				data : {
-					param : {},
+					param: {pageNo: 0},
 					page : {},
 					dictTypeList : []
 				},
@@ -26,7 +26,7 @@
 					resource = this.$resource(null, {}, actions);
 
 					// 设置页码
-					Vue.set(this.param, "pageNo", 1);
+					this.param.pageNo = 1;
 
 					// 加载字典列表
 					resource.listType().then(function (response) {
@@ -34,9 +34,6 @@
 					})
 				},
 				methods: {
-					setPageNo: function (pageNo) {
-						this.param.pageNo = pageNo;
-					},
 					setDictType: function (type) {
 						this.param.type = type;
 					},
@@ -45,10 +42,14 @@
 							this.page = response.json();
 						});
 					},
-					delete : function (id) {
-						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
+					deleteData : function (id) {
+						myConfirm("", "确认删除吗？", function () {
+							alert(123);
 						});
+
+//						resource.delete({id : id}).then(function (response) {
+//							alert("删除成功！");
+//						});
 					}
 				},
 				watch: {
@@ -117,13 +118,13 @@
 								<td><span v-text="obj.sort"></span></td>
 								<td>
 									<a href="${ctx}/sys/dict/form?id={{obj.id}}">修改</a>
-									<a @click="delete(obj.id)">删除</a>
+									<a @click="deleteData(obj.id)">删除</a>
 								</td>
 							</tr>
 							</tbody>
 						</table>
 
-						<pagination :page="page"  v-bind:page-no.sync="param.pageNo"></pagination>
+						<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
 					</div>
 				</div>
 			</div>

@@ -11,7 +11,7 @@
 	<%@ include file="/WEB-INF/views/include/head.jsp"%>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" style="overflow-y: hidden">
 <div class="wrapper">
 
 	<!-- Main Header -->
@@ -246,16 +246,6 @@
 		<iframe id="contentIframe" name="contentIframe" style="width: 100%; height: 100%"></iframe>
 	</div>
 	<!-- /.content-wrapper -->
-
-	<!-- Main Footer -->
-	<footer class="main-footer">
-		<!-- To the right -->
-		<div class="pull-right hidden-xs">
-			Anything you want
-		</div>
-		<!-- Default to the left -->
-		<strong>Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="https://github.com/thinkgem/jeesite" target="_blank">JeeSite</a> ${fns:getConfig('version')}.</strong>
-	</footer>
 
 	<!-- Control Sidebar -->
 	<aside class="control-sidebar control-sidebar-dark">
