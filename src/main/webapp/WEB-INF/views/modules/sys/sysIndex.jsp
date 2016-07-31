@@ -35,7 +35,11 @@
 			<!-- Navbar Right Menu -->
 			<div class="">
 				<ul id="menu" class="nav navbar-nav navbar-left">
-					<li v-for="system of menu.childList"><a @click="loadleftMenu(system)">{{ system.name }}</a></li>
+					<li v-for="system of menu.childList"
+						:class="{ 'active': leftMenu.id == system.id}"
+						@click="loadleftMenu(system)">
+						<a  v-text="system.name"></a>
+					</li>
 				</ul>
 			</div>
 
@@ -326,7 +330,7 @@
 </div>
 <!-- ./wrapper -->
 
-{{ menuLevel2 | json }}
+
 <script>
 	var v;
 	$(document).ready(function () {
@@ -337,18 +341,22 @@
 		v = new Vue({
 			el: "body",
 			data: {
-				menu : {},
-				leftMenu : {}
+				menu : {}, // 整个菜单树
+				leftMenu : {} // 左侧菜单树
 			},
 			ready: function () {
 				var resource = this.$resource(null, {}, actions);
 				resource.queryMenu().then(function (response) {
+					var m = response.json();
 					this.menu = response.json();
+					if(m.childList.length > 0) {
+						this.leftMenu = this.menu.childList[0];
+					}
 				});
 			},
 			methods: {
-				loadleftMenu : function (systemId) {
-					this.leftMenu = systemId;
+				loadleftMenu : function (system) {
+					this.leftMenu = system;
 				}
 			}
 		});
