@@ -154,11 +154,7 @@ public class Menu extends IdEntity<Menu> {
 		this.permission = permission;
 	}
 
-	@OneToMany(mappedBy = "parent", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="sort") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Menu> getChildList() {
 		return childList;
 	}

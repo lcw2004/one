@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>字典管理</title>
@@ -7,57 +8,99 @@
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#value").focus();
-			$("#inputForm").validate();
+			var actions = {
+				get: {method: 'get', url: '${ctxRest}/sys/dict{/id}'},
+				save: {method: 'post', url: '${ctxRest}/sys/dict'}
+			};
+			var resource;
+			new Vue({
+				el:"body",
+				data : {
+					obj : {}
+				},
+				ready: function () {
+					resource = this.$resource(null, {}, actions);
+
+					var id = $("#id").val();
+					if (id) {
+						resource.get({id: id}).then(function (response) {
+							this.obj = response.json();
+						})
+					}
+				},
+				methods: {
+					save : function () {
+						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
+							alert("保存成功");
+						})
+					}
+				}
+			})
 		});
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/dict/">字典列表</a></li>
-		<li class="active"><a href="${ctx}/sys/dict/form?id=${dict.id}">字典<shiro:hasPermission name="sys:dict:edit">${not empty dict.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:dict:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	
-	<form:form id="inputForm" modelAttribute="dict" action="${ctx}/sys/dict/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<tags:message content="${message}"/>
-		
-		<div class="control-group">
-			<label class="control-label" for="value">键值:</label>
-			<div class="controls">
-				<form:input path="value" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
+<section class="content-header">
+	<h1>字典信息
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i>字典管理</a></li>
+		<li><a href="#"><i class="fa fa-dashboard"></i>字典列表</a></li>
+		<li class="active">字典信息</li>
+	</ol>
+</section>
+<form id="inputForm" class="form-horizontal">
+	<input type="hidden" id="id" value="${id}">
+	<section class="content">
+		<div class="box box-info">
+			<form class="form-horizontal">
+				<div class="box-body">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">ID</label>
+						<div class="col-sm-4">
+							<p class="form-control-static">${id}</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">类型</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.type"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">描述</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.description"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">标签</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.label"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">键值</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.value"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">排序</label>
+						<div class="col-sm-4">
+							<input type="number" class="form-control" v-model="obj.sort"/>
+						</div>
+					</div>
+				</div>
+				<div class="box-footer">
+					<div class="col-sm-offset-2 col-sm-2">
+						<a class="btn btn-primary pull-left" @click="save()">保存</a>
+						<a class="btn btn-info pull-left" href="${ctx}/sys/dict/list">返回</a>
+					</div>
+				</div>
+			</form>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="label">标签:</label>
-			<div class="controls">
-				<form:input path="label" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="type">类型:</label>
-			<div class="controls">
-				<form:input path="type" htmlEscape="false" maxlength="50" class="required abc"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="description">描述:</label>
-			<div class="controls">
-				<form:input path="description" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="sort">排序:</label>
-			<div class="controls">
-				<form:input path="sort" htmlEscape="false" maxlength="11" class="required digits"/>
-			</div>
-		</div>
-		<div class="form-actions">
-			<shiro:hasPermission name="sys:dict:edit">
-				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
-			</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
-		</div>
-	</form:form>
+	</section>
+</form>
 </body>
 </html>

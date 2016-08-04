@@ -11,7 +11,7 @@
 	<%@ include file="/WEB-INF/views/include/head.jsp"%>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" style="overflow-y: hidden">
 <div class="wrapper">
 
 	<!-- Main Header -->
@@ -35,7 +35,11 @@
 			<!-- Navbar Right Menu -->
 			<div class="">
 				<ul id="menu" class="nav navbar-nav navbar-left">
-					<li v-for="system of menu.childList"><a @click="loadleftMenu(system)">{{ system.name }}</a></li>
+					<li v-for="system of menu.childList"
+						:class="{ 'active': leftMenu.id == system.id}"
+						@click="loadleftMenu(system)">
+						<a  v-text="system.name"></a>
+					</li>
 				</ul>
 			</div>
 
@@ -243,19 +247,9 @@
 
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
-		<iframe id="contentIframe" name="contentIframe" src="http://www.baidu.com" style="width: 100%; height: 100%"></iframe>
+		<iframe id="contentIframe" name="contentIframe" style="width: 100%; height: 100%"></iframe>
 	</div>
 	<!-- /.content-wrapper -->
-
-	<!-- Main Footer -->
-	<footer class="main-footer">
-		<!-- To the right -->
-		<div class="pull-right hidden-xs">
-			Anything you want
-		</div>
-		<!-- Default to the left -->
-		<strong>Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="https://github.com/thinkgem/jeesite" target="_blank">JeeSite</a> ${fns:getConfig('version')}.</strong>
-	</footer>
 
 	<!-- Control Sidebar -->
 	<aside class="control-sidebar control-sidebar-dark">
@@ -336,7 +330,7 @@
 </div>
 <!-- ./wrapper -->
 
-{{ menuLevel2 | json }}
+
 <script>
 	var v;
 	$(document).ready(function () {
@@ -347,18 +341,22 @@
 		v = new Vue({
 			el: "body",
 			data: {
-				menu : {},
-				leftMenu : {}
+				menu : {}, // 整个菜单树
+				leftMenu : {} // 左侧菜单树
 			},
 			ready: function () {
 				var resource = this.$resource(null, {}, actions);
 				resource.queryMenu().then(function (response) {
+					var m = response.json();
 					this.menu = response.json();
+					if(m.childList.length > 0) {
+						this.leftMenu = this.menu.childList[0];
+					}
 				});
 			},
 			methods: {
-				loadleftMenu : function (systemId) {
-					this.leftMenu = systemId;
+				loadleftMenu : function (system) {
+					this.leftMenu = system;
 				}
 			}
 		});

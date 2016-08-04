@@ -7,9 +7,7 @@ import com.lcw.one.modules.sys.service.DictService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +20,41 @@ public class DictRestController {
     @Autowired
     private DictService dictService;
 
-    @RequiresPermissions("sys:menu:view")
+    @RequiresPermissions("sys:dict:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public Page list(Dict dict, HttpServletRequest request, HttpServletResponse response) {
         Page<Dict> page = dictService.find(new Page<Dict>(request, response), dict);
         return page;
     }
 
+    @RequiresPermissions("sys:dict:edit")
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json")
+    public void update(@RequestBody Dict dict) {
+        dictService.save(dict);
+    }
+
+    @RequiresPermissions("sys:dict:edit")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    public void add(@RequestBody Dict dict) {
+        dictService.save(dict);
+    }
+
+    @RequiresPermissions("sys:dict:view")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    public Dict get(@PathVariable String id) {
+        return dictService.get(id);
+    }
+
+    @RequiresPermissions("sys:dict:edit")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public void delete(@PathVariable String id) {
+        dictService.delete(id);
+    }
+
+    @RequiresPermissions("sys:menu:view")
+    @RequestMapping(value = "/type", method = RequestMethod.GET, produces = "application/json")
+    public List<String> dictTypeList() {
+        List<String> typeList = dictService.findTypeList();
+        return typeList;
+    }
 }
