@@ -4,3 +4,4 @@
 <%@include file="/WEB-INF/views/include/vue-componets/alert.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/confirm.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/pagination.jsp" %>
+<%@include file="/WEB-INF/views/include/vue-componets/treetable.jsp" %>

@@ -2,6 +2,7 @@ package com.lcw.one.modules.sys.rest;
 
 import com.google.common.collect.Lists;
 import com.lcw.one.modules.sys.entity.Menu;
+import com.lcw.one.modules.sys.service.MenuServices;
 import com.lcw.one.modules.sys.service.SystemService;
 import com.lcw.one.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -20,6 +21,9 @@ public class MenuRestController {
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private MenuServices menuServices;
+
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public List<Menu> list() {
@@ -27,6 +31,12 @@ public class MenuRestController {
         List<Menu> sourcelist = systemService.findAllMenu();
         Menu.sortList(list, sourcelist, "1");
         return list;
+    }
+
+    @RequiresPermissions("sys:menu:view")
+    @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
+    public Menu listAsTree() {
+        return menuServices.organizeMenuListAsTopMenu(menuServices.get("1"), list());
     }
 
     /**
