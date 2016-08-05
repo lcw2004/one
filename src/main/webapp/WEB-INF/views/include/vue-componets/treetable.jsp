@@ -3,7 +3,7 @@
 <%-- Vue Treetable 组件--%>
 <%-- 参考：http://blog.fengxiaotx.com/archives/545 --%>
 <script>
-    Vue.filter('space', function (value) {
+    Vue.filter('fillSpace', function (value) {
         var space = "";
         for (var i = 0;i < value; i++) {
             space += "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -34,6 +34,9 @@
                     me.dataList = tempList;
                 }
 
+                /**
+                 * 递归初始化菜单列表
+                 * */
                 function initData(menu, level, parent) {
                     var childList = menu.childList;
                     if(!childList) {
@@ -43,9 +46,33 @@
                         var childMenu = childList[i];
 
                         childMenu.level = level;
+                        childMenu.isShow = level <= 3; // 是否显示，1,2,3级菜单默认显示
+                        childMenu.isExpanded = level <= 2; // 是否展开菜单，1,2,3级菜单默认展开
                         tempList.push(childMenu);
 
                         initData(childMenu, level + 1, childMenu);
+                    }
+                }
+            },
+            toggole : function (menu) {
+                debugger;
+
+                /**
+                 * 递归切换菜单的展开和收缩状态
+                 */
+                var isExpanded = menu.isExpanded;
+                toggleChildMenuList(menu, !isExpanded);
+                menu.isExpanded = !isExpanded;
+
+                function toggleChildMenuList(menu, isShow) {
+                    var list = menu.childList;
+                    if(list == null) {
+                        return;
+                    }
+                    for (var i = 0; i < list.length; i++) {
+                        var childMenu = list[i];
+                        childMenu.isShow = isShow;
+                        toggleChildMenuList(childMenu, isShow);
                     }
                 }
             }
@@ -58,7 +85,6 @@
     });
 </script>
 <template id="treetable">
-    <button>测试</button>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -71,9 +97,14 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="obj of dataList" v-show="obj.level <= 3">
+            <tr v-for="obj of dataList" v-show="obj.isShow">
                 <td>
-                    {{{ obj.level | space }}}
+                    {{{ obj.level | fillSpace }}}
+                    <a @click="toggole(obj)">
+                        {{ obj.isExpanded }}
+                        <i v-show="obj.isExpanded" class="fa fa-caret-right"></i>
+                        <i v-show="!obj.isExpanded" class="fa fa-caret-down"></i>
+                    </a>
                     <span v-text="obj.name"></span>
                 </td>
                 <td><span v-text="obj.href"></span></td>
