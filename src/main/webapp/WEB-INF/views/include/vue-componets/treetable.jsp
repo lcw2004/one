@@ -3,6 +3,11 @@
 <%-- Vue Treetable 组件--%>
 <%-- 参考：http://blog.fengxiaotx.com/archives/545 --%>
 <script>
+    Vue.filter('prettyJson', function (value) {
+        var jsonStr = JSON.stringify(value, undefined, 4);
+        return jsonStr;
+    });
+
     Vue.filter('fillSpace', function (value) {
         var space = "";
         for (var i = 0;i < value; i++) {
@@ -44,7 +49,6 @@
                     }
                     for(var i = 0; i < childList.length; i++) {
                         var childMenu = childList[i];
-
                         childMenu.level = level;
                         childMenu.isShow = level <= 3; // 是否显示，1,2,3级菜单默认显示
                         childMenu.isExpanded = level <= 2; // 是否展开菜单，1,2,3级菜单默认展开
@@ -61,7 +65,7 @@
                  * 递归切换菜单的展开和收缩状态
                  */
                 var isExpanded = menu.isExpanded;
-                toggleChildMenuList(menu, !isExpanded);
+                // toggleChildMenuList(menu, !isExpanded);
                 menu.isExpanded = !isExpanded;
 
                 function toggleChildMenuList(menu, isShow) {
@@ -118,5 +122,6 @@
             </tr>
         </tbody>
     </table>
+    {{{ dataList | prettyJson }}}
 </template>
 <%-- Vue alert 组件 End --%>
