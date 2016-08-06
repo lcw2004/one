@@ -124,7 +124,7 @@
                         <i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
                         <i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
                     </a>
-                    <span v-text="obj.name"></span>
+                    <span @click="toggole(obj)" v-text="obj.name"></span>
                 </td>
                 <td><span v-text="obj.href"></span></td>
                 <td><span v-text="obj.sort"></span></td>
