@@ -3,19 +3,6 @@
 <%-- Vue Treetable 组件--%>
 <%-- 参考：http://blog.fengxiaotx.com/archives/545 --%>
 <script>
-    Vue.filter('prettyJson', function (value) {
-        var jsonStr = JSON.stringify(value, undefined, 4);
-        return jsonStr;
-    });
-
-    Vue.filter('fillSpace', function (value) {
-        var space = "";
-        for (var i = 0;i < value; i++) {
-            space += "&nbsp;&nbsp;&nbsp;&nbsp;";
-        }
-        return space;
-    });
-
     Vue.component("treetable", {
         template : "#treetable",
         props : {
@@ -65,10 +52,11 @@
                  * 递归切换菜单的展开和收缩状态
                  */
                 var isExpanded = menu.isExpanded;
-                // toggleChildMenuList(menu, !isExpanded);
                 menu.isExpanded = !isExpanded;
+                toggleChildMenuListRecursion(menu, !isExpanded);
 
-                function toggleChildMenuList(menu, isShow) {
+
+                function toggleChildMenuListRecursion(menu, isShow) {
                     var list = menu.childList;
                     if(list == null) {
                         return;
@@ -76,7 +64,8 @@
                     for (var i = 0; i < list.length; i++) {
                         var childMenu = list[i];
                         childMenu.isShow = isShow;
-                        toggleChildMenuList(childMenu, isShow);
+                        childMenu.isExpanded = isShow;
+                        toggleChildMenuListRecursion(childMenu, isShow);
                     }
                 }
             }
@@ -101,7 +90,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="obj of dataList" v-show="obj.isShow">
+            <tr v-for="obj of dataList" v-show="obj.isShow" track-by="id">
                 <td>
                     {{{ obj.level | fillSpace }}}
                     <a @click="toggole(obj)">

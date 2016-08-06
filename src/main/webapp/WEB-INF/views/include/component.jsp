@@ -5,3 +5,4 @@
 <%@include file="/WEB-INF/views/include/vue-componets/confirm.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/pagination.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/treetable.jsp" %>
+<%@include file="/WEB-INF/views/include/vue-componets/filter.jsp" %>
