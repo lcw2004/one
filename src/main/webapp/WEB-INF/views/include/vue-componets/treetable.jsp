@@ -37,8 +37,8 @@
                     for(var i = 0; i < childList.length; i++) {
                         var childMenu = childList[i];
                         childMenu.level = level;
-                        childMenu.isShow = level <= 3; // 是否显示，1,2,3级菜单默认显示
-                        childMenu.isExpanded = level <= 2; // 是否展开菜单，1,2,3级菜单默认展开
+                        Vue.set(childMenu, "isShow", level <= 3);// 是否显示，1,2,3级菜单默认显示
+                        Vue.set(childMenu, "isExpanded", level <= 2);// 是否展开菜单，1,2,3级菜单默认展开
                         tempList.push(childMenu);
 
                         initData(childMenu, level + 1, childMenu);
@@ -46,17 +46,43 @@
                 }
             },
             toggole : function (menu) {
-                debugger;
+                var isExpanded = menu.isExpanded;
+                if(isExpanded) {
+                    toggleChildMenuListRecursion(menu, !isExpanded);
+                } else {
+                    toggleChildMenuList(menu, !isExpanded);
+                }
 
                 /**
-                 * 递归切换菜单的展开和收缩状态
+                 * 切换下一级菜单的状态，主要用于打开，打开的时候只显示下一级，且只修改本级的显示状态
+                 * @param menu
+                 * @param isShow
                  */
-                var isExpanded = menu.isExpanded;
-                menu.isExpanded = !isExpanded;
-                toggleChildMenuListRecursion(menu, !isExpanded);
+                function toggleChildMenuList(menu, isShow) {
+                    // 修改展开状态
+                    menu.isExpanded = isShow;
 
+                    // 修改子节点的现实状态
+                    var list = menu.childList;
+                    if(list == null) {
+                        return;
+                    }
+                    for (var i = 0; i < list.length; i++) {
+                        var childMenu = list[i];
+                        childMenu.isShow = isShow;
+                    }
+                }
 
+                /**
+                 * 递归切换所有菜单的状态，主要用于关闭，关闭的时候需要修改所有子节点的展开及显示状态
+                 * @param menu
+                 * @param isShow
+                 */
                 function toggleChildMenuListRecursion(menu, isShow) {
+                    // 修改展开状态
+                    menu.isExpanded = isShow;
+
+                    // 修改子节点的现实状态
                     var list = menu.childList;
                     if(list == null) {
                         return;
@@ -65,6 +91,7 @@
                         var childMenu = list[i];
                         childMenu.isShow = isShow;
                         childMenu.isExpanded = isShow;
+
                         toggleChildMenuListRecursion(childMenu, isShow);
                     }
                 }
@@ -94,9 +121,8 @@
                 <td>
                     {{{ obj.level | fillSpace }}}
                     <a @click="toggole(obj)">
-                        {{ obj.isExpanded }}
-                        <i v-show="obj.isExpanded" class="fa fa-caret-right"></i>
-                        <i v-show="!obj.isExpanded" class="fa fa-caret-down"></i>
+                        <i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
+                        <i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
                     </a>
                     <span v-text="obj.name"></span>
                 </td>
@@ -111,6 +137,5 @@
             </tr>
         </tbody>
     </table>
-    {{{ dataList | prettyJson }}}
 </template>
 <%-- Vue alert 组件 End --%>
