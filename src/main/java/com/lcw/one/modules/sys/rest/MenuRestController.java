@@ -1,5 +1,8 @@
 package com.lcw.one.modules.sys.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Lists;
 import com.lcw.one.modules.sys.entity.Menu;
 import com.lcw.one.modules.sys.service.MenuServices;
@@ -7,10 +10,7 @@ import com.lcw.one.modules.sys.service.SystemService;
 import com.lcw.one.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,15 +45,28 @@ public class MenuRestController {
      */
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
-    public Menu listByUser() {
+    public Menu listUserPermisions() {
         return UserUtils.getMenu();
     }
 
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Menu getMenuById(@PathVariable String id) {
+    public Menu get(@PathVariable String id) {
         Menu menu = systemService.getMenu(id);
+        // TODO 忽略不必要的属性
         return menu;
     }
 
+    @RequiresPermissions("sys:menu:edit")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public void delete(@PathVariable String id) {
+        systemService.deleteMenu(id);
+    }
+
+
+    @RequiresPermissions("sys:menu:view")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    public void save(@RequestBody Menu menu) {
+        systemService.saveMenu(menu);
+    }
 }
