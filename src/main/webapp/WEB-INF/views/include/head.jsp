@@ -35,4 +35,8 @@
 <![endif]-->
 
 <link rel="stylesheet" href="${ctxStatic}/css/one.css">
-<link rel="stylesheet" href="${ctxStatic}/js/common.js">
+<script src="${ctxStatic}/js/common.js"></script>
+
+<script>
+    var ctxRest = "${ctxRest}";
+</script>

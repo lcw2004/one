@@ -9,6 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var actions = {
+				getMenuTree : {method : "get", url :'${ctxRest}/sys/menu/tree'},
 				get: {method: 'get', url: '${ctxRest}/sys/menu{/id}'},
 				save: {method: 'post', url: '${ctxRest}/sys/menu'}
 			};
@@ -17,7 +18,8 @@
 				el:"body",
 				data : {
 					obj : {},
-					showHideDictList : []
+					showHideDictList : [],
+					menuTree : {}
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
@@ -35,7 +37,11 @@
 					var me = this;
 					getDictList(function (response) {
 						me.showHideDictList = response.json();
-					})
+					});
+
+					resource.getMenuTree().then(function () {
+						this.menuTree = response.json();
+					});
 				},
 				methods: {
 					save : function () {
@@ -47,10 +53,6 @@
 				}
 			})
 		});
-
-		function getDictList(callback) {
-			Vue.http.get('${ctxRest}/sys/dict/listByType/show_hide', null).then(callback);
-		}
 	</script>
 </head>
 <body>
@@ -146,5 +148,8 @@
 		</div>
 	</section>
 </form>
+
+<menu-tree :menu="menuTree"></menu-tree>
+<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
