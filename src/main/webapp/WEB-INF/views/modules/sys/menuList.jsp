@@ -87,7 +87,7 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr v-for="obj of dataList" v-show="obj.isShow" track-by="id">
+						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
 							<td>
 								{{{ obj.level | fillSpace }}}
 								<a @click="toggole(obj)">

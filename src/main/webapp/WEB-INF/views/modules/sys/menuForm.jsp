@@ -16,17 +16,26 @@
 			new Vue({
 				el:"body",
 				data : {
-					obj : {}
+					obj : {},
+					showHideDictList : []
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
 
+					// 加载数据
 					var id = $("#id").val();
 					if (id) {
 						resource.get({id: id}).then(function (response) {
 							this.obj = response.json();
 						})
 					}
+
+					// TODO 优化，整个系统使用一个字典
+					// 加载数据字典
+					var me = this;
+					getDictList(function (response) {
+						me.showHideDictList = response.json();
+					})
 				},
 				methods: {
 					save : function () {
@@ -38,6 +47,10 @@
 				}
 			})
 		});
+
+		function getDictList(callback) {
+			Vue.http.get('${ctxRest}/sys/dict/listByType/show_hide', null).then(callback);
+		}
 	</script>
 </head>
 <body>
@@ -52,11 +65,11 @@
 </section>
 <form id="inputForm" class="form-horizontal">
 	<input type="hidden" id="id" value="${id}">
-	<section class="content">
+	<section class="content">{{obj | json}}
 		<div class="box box-info">
 			<form class="form-horizontal">
 				<div class="box-body">
-					{{ obj | json}}
+					{{ showHide | json}}
 					<div class="form-group">
 						<label class="col-sm-2 control-label">ID</label>
 						<div class="col-sm-4">
@@ -95,14 +108,19 @@
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">图标</label>
-						<div class="col-sm-4">
+							<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.icon"/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">可见</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" v-model="obj.isShow"/>
+							<div class="radio">
+								<label v-for="dict of showHideDictList">
+									<input type="radio" :value="dict.value" v-model="obj.isShow">
+									{{ dict.label }}
+								</label>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -121,7 +139,7 @@
 				<div class="box-footer">
 					<div class="col-sm-offset-2 col-sm-2">
 						<a class="btn btn-primary pull-left" @click="save()">保存</a>
-						<a class="btn btn-info pull-left" href="${ctx}/sys/dict/list">返回</a>
+						<a class="btn btn-info pull-left" href="${ctx}/sys/menu">返回</a>
 					</div>
 				</div>
 			</form>

@@ -4,6 +4,7 @@ import com.lcw.one.common.persistence.Page;
 import com.lcw.one.modules.sys.entity.Dict;
 import com.lcw.one.modules.sys.entity.Menu;
 import com.lcw.one.modules.sys.service.DictService;
+import com.lcw.one.modules.sys.utils.DictUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -56,5 +57,10 @@ public class DictRestController {
     public List<String> dictTypeList() {
         List<String> typeList = dictService.findTypeList();
         return typeList;
+    }
+
+    @RequestMapping(value = "/listByType/{type}", method = RequestMethod.GET, produces = "application/json")
+    public List<Dict> getDictListByType(@PathVariable String type) {
+        return DictUtils.getDictList(type);
     }
 }
