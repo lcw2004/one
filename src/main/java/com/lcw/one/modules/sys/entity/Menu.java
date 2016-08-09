@@ -8,6 +8,7 @@ package com.lcw.one.modules.sys.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
@@ -34,8 +35,7 @@ public class Menu extends IdEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonIgnore
-	private Menu parent;	// 父级菜单
+	@JsonIgnore private Menu parent;	// 父级菜单
 	private String parentIds; // 所有父级编号
 	private String name; 	// 名称
 	private String href; 	// 链接
@@ -43,13 +43,11 @@ public class Menu extends IdEntity<Menu> {
 	private String icon; 	// 图标
 	private Integer sort; 	// 排序
 	private String isShow; 	// 是否在菜单中显示（1：显示；0：不显示）
+	private String isShowCN; 	// 是否在菜单中显示（1：显示；0：不显示）
 	private String isActiviti; 	// 是否同步到工作流（1：同步；0：不同步）
 	private String permission; // 权限标识
-
 	private List<Menu> childList = Lists.newArrayList();// 拥有子菜单列表
-
-	@JsonIgnore
-	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+	@JsonIgnore private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 
 	public Menu(){
 		super();
@@ -216,4 +214,12 @@ public class Menu extends IdEntity<Menu> {
 		return ObjectUtils.toString(getId());
 	}
 
+	@Transient
+	public String getIsShowCN() {
+		return DictUtils.getDictLabel(isShow, "show_hide", null);
+	}
+
+	public void setIsShowCN(String isShowCN) {
+		this.isShowCN = isShowCN;
+	}
 }

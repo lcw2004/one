@@ -90,7 +90,7 @@
 						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
 							<td>
 								{{{ obj.level | fillSpace }}}
-								<a @click="toggole(obj)">
+								<a @click="toggole(obj)" v-if="obj.childList.length > 0">
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
 								</a>
@@ -98,7 +98,7 @@
 							</td>
 							<td><span v-text="obj.href"></span></td>
 							<td><span v-text="obj.sort"></span></td>
-							<td><span v-text="obj.isShow"></span></td>
+							<td><span v-text="obj.isShowCN"></span></td>
 							<td><span v-text="obj.permission"></span></td>
 							<td>
 								<a href="${ctx}/sys/menu/form?id={{obj.id}}">修改</a>

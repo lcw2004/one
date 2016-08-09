@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lcw.one.common.utils.CacheUtils;
 import com.lcw.one.common.utils.SpringContextHolder;
-import com.lcw.one.modules.sys.dao.DictDao;
 import com.lcw.one.modules.sys.entity.Dict;
 import com.lcw.one.modules.sys.service.DictService;
 import org.apache.commons.lang3.StringUtils;
@@ -23,11 +22,10 @@ import java.util.Map;
  * @version 2013-5-29
  */
 public class DictUtils {
-	
-	private static DictService dictService = SpringContextHolder.getBean(DictService.class);
 
 	public static final String CACHE_DICT_MAP = "dictMap";
-	
+	private static DictService dictService = SpringContextHolder.getBean(DictService.class);
+
 	public static String getDictLabel(String value, String type, String defaultValue){
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)){
 			for (Dict dict : getDictList(type)){
@@ -49,7 +47,7 @@ public class DictUtils {
 		}
 		return defaultLabel;
 	}
-	
+
 	public static List<Dict> getDictList(String type){
 		@SuppressWarnings("unchecked")
 		Map<String, List<Dict>> dictMap = (Map<String, List<Dict>>)CacheUtils.get(CACHE_DICT_MAP);
