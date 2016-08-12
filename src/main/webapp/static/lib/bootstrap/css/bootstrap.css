@@ -5904,6 +5904,7 @@ button.close {
   position: relative;
   width: auto;
   margin: 10px;
+  overflow-y: initial !important;
 }
 .modal-content {
   position: relative;
@@ -5948,6 +5949,9 @@ button.close {
 .modal-body {
   position: relative;
   padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 450px;
 }
 .modal-footer {
   padding: 15px;
