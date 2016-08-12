@@ -8,7 +8,7 @@
 <%-- Jqyery End --%>
 
 <%-- bootstrap Start --%>
-<link rel="stylesheet" href="${ctxStatic}/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${ctxStatic}/lib/bootstrap/css/bootstrap.css">
 <script src="${ctxStatic}/lib/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="${ctxStatic}/lib/bootstrap-slider/slider.css">
 <script src="${ctxStatic}/lib/bootstrap-slider/bootstrap-slider.js"></script>

@@ -6,3 +6,5 @@
 <%@include file="/WEB-INF/views/include/vue-componets/pagination.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/treetable.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/filter.jsp" %>
+
+<%@include file="/WEB-INF/views/include/vue-componets/menutree.jsp" %>

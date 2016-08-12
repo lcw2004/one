@@ -39,7 +39,7 @@
 						me.showHideDictList = response.json();
 					});
 
-					resource.getMenuTree().then(function () {
+					resource.getMenuTree().then(function (response) {
 						this.menuTree = response.json();
 					});
 				},
@@ -67,11 +67,10 @@
 </section>
 <form id="inputForm" class="form-horizontal">
 	<input type="hidden" id="id" value="${id}">
-	<section class="content">{{obj | json}}
+	<section class="content">
 		<div class="box box-info">
 			<form class="form-horizontal">
 				<div class="box-body">
-					{{ showHide | json}}
 					<div class="form-group">
 						<label class="col-sm-2 control-label">ID</label>
 						<div class="col-sm-4">
