@@ -1,7 +1,7 @@
 /**
  * 递归初始化菜单列表，将menu下的子菜单添加tempList中
  * */
-    function initMenu(menu, level, tempList) {
+function initMenu(menu, level, tempList) {
     var childList = menu.childList;
     if (!childList) {
         return;
