@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-<%--<modal is-show="true" msg="123123123" callback="okCallback"></modal>--%>
-
 <script>
     Vue.component("menuTree", {
         template: "#menuTree",
@@ -10,32 +8,45 @@
             menu: {
                 type: Object,
                 require: true
+            },
+            config: {
+                type: Object,
+                required: true
+            },
+            value: {
+                type: Object,
+                required: true
             }
         },
         data: function () {
             return {
-                selectedValue: ""
+                selected: ""
             }
         },
-        methods: {}
+        methods: {
+            selectOk : function () {
+                this.value = this.selected;
+                this.config.show = false;
+            }
+        }
     });
 </script>
 <template id="menuTree">
-    <div class="modal" style="display: block">
+    <div class="modal" v-show="config.show">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">确认信息</h4>
+                    <h4 class="modal-title" v-text="config.title"></h4>
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
-                    <tree-element :parent="menu" :level="1" :value.sync="selectedValue"></tree-element>
+                    <tree-element :parent="menu" :level="1" :value.sync="selected"></tree-element>
                 </div>
                 <div class="modal-footer">
-                    <span class="pull-left">{{ selectedValue.name | json}}</span>
-                    <button type="button" class="btn btn-default " data-dismiss="modal" @click="hide()">取消</button>
-                    <button type="button" class="btn btn-primary" @click="">确认</button>
+                    <span class="pull-left">选择：{{ selected.name }}</span>
+                    <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
+                    <button type="button" class="btn btn-primary" @click="selectOk()">确认</button>
                 </div>
             </div>
         </div>
@@ -61,8 +72,7 @@
         },
         data: function () {
             return {
-                isExpanded: this.level < 2,
-                selected: ""
+                isExpanded: this.level < 2
             }
         },
         methods: {

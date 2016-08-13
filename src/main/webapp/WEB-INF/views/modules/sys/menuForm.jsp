@@ -19,7 +19,14 @@
 				data : {
 					obj : {},
 					showHideDictList : [],
-					menuTree : {}
+					menuTree : {},
+
+
+                    // 模态窗属性
+					modalConfig: {
+						show : false,
+						title : "选择上级菜单"
+					}
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
@@ -29,6 +36,9 @@
 					if (id) {
 						resource.get({id: id}).then(function (response) {
 							this.obj = response.json();
+
+
+							Vue.set(this.obj, "parent", new Object());
 						})
 					}
 
@@ -65,6 +75,7 @@
 		<li class="active">菜单信息</li>
 	</ol>
 </section>
+{{ obj | json}}
 <form id="inputForm" class="form-horizontal">
 	<input type="hidden" id="id" value="${id}">
 	<section class="content">
@@ -81,6 +92,8 @@
 						<label class="col-sm-2 control-label">上级菜单</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.parent.name"/>
+							<a class="btn btn-info" @click="modalConfig.show = true">Select</a>
+							<menu-tree :menu="menuTree" :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree>
 						</div>
 					</div>
 					<div class="form-group">
@@ -148,7 +161,7 @@
 	</section>
 </form>
 
-<menu-tree :menu="menuTree"></menu-tree>
+
 <%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
