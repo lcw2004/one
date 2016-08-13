@@ -9,7 +9,6 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var actions = {
-				getMenuTree : {method : "get", url :'${ctxRest}/sys/menu/tree'},
 				get: {method: 'get', url: '${ctxRest}/sys/menu{/id}'},
 				save: {method: 'post', url: '${ctxRest}/sys/menu'}
 			};
@@ -48,10 +47,6 @@
 					getDictList(function (response) {
 						me.showHideDictList = response.json();
 					});
-
-					resource.getMenuTree().then(function (response) {
-						this.menuTree = response.json();
-					});
 				},
 				methods: {
 					save : function () {
@@ -75,7 +70,6 @@
 		<li class="active">菜单信息</li>
 	</ol>
 </section>
-{{ obj | json}}
 <form id="inputForm" class="form-horizontal">
 	<input type="hidden" id="id" value="${id}">
 	<section class="content">
@@ -92,8 +86,8 @@
 						<label class="col-sm-2 control-label">上级菜单</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.parent.name"/>
-							<a class="btn btn-info" @click="modalConfig.show = true">Select</a>
-							<menu-tree :menu="menuTree" :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree>
+							<a class="btn btn-info" @click="modalConfig.show = true">选择</a>
+							<menu-tree :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree>
 						</div>
 					</div>
 					<div class="form-group">
@@ -160,7 +154,6 @@
 		</div>
 	</section>
 </form>
-
 
 <%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>

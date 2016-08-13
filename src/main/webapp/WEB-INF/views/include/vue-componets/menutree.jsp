@@ -1,25 +1,35 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
+<%--菜单树模态窗--%>
 <script>
     Vue.component("menuTree", {
         template: "#menuTree",
         props: {
-            menu: {
-                type: Object,
-                require: true
-            },
+            // 模态窗属性配置
             config: {
                 type: Object,
                 required: true
             },
+            // 选中的数据的值
             value: {
                 type: Object,
                 required: true
             }
         },
+        ready : function () {
+            // Init
+            var actions = {
+                getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}
+            };
+            var resource = this.$resource(null, {}, actions);
+            resource.getMenuTree().then(function (response) {
+                this.menu = response.json();
+            });
+        },
         data: function () {
             return {
+                menu : {},
                 selected: ""
             }
         },
@@ -53,6 +63,7 @@
     </div>
 </template>
 
+<%--菜单树组件--%>
 <script>
     Vue.component("treeElement", {
         template: "#treeElement",
