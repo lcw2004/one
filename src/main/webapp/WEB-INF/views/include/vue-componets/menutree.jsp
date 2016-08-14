@@ -30,12 +30,14 @@
         data: function () {
             return {
                 menu : {},
-                selected: ""
+                selected: {}
             }
         },
         methods: {
             selectOk : function () {
-                this.value = this.selected;
+                this.value = {};
+                this.value.id = this.selected.id;
+                this.value.name = this.selected.name;
                 this.config.show = false;
             }
         }
@@ -51,7 +53,7 @@
                     <h4 class="modal-title" v-text="config.title"></h4>
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
-                    <tree-element :parent="menu" :level="1" :value.sync="selected"></tree-element>
+                    <tree-element :element="menu" :level="1" :value.sync="selected"></tree-element>
                 </div>
                 <div class="modal-footer">
                     <span class="pull-left">选择：{{ selected.name }}</span>
@@ -68,14 +70,23 @@
     Vue.component("treeElement", {
         template: "#treeElement",
         props: {
-            parent: {
+            /**
+             * 元素
+             */
+            element: {
                 type: Object,
                 require: true
             },
+            /**
+             * 当前遍历的级别
+             */
             level: {
                 type: Number,
                 require: true
             },
+            /**
+             * 选中的项
+             */
             value: {
                 type: Object,
                 require: true
@@ -87,31 +98,41 @@
             }
         },
         methods: {
+            /**
+             * 切换展开 / 关闭状态
+             */
             toggole: function () {
                 this.isExpanded = !this.isExpanded
             },
+            /**
+             * 选中元素
+             */
             select: function () {
-                this.value = this.parent;
+                this.value = this.element;
             }
         },
         computed: {
+            /**
+             * 是否显示文件夹图片
+             * @returns {boolean}
+             */
             isFolder: function () {
-                return this.parent.childList != null && this.parent.childList.length > 0;
+                return this.element.childList != null && this.element.childList.length > 0;
             }
         }
     });
 </script>
 <template id="treeElement">
-    <span v-show="parent.id != 1">
-        <a @click="select()">选中</a>
+    <span v-show="element.id != 1">
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open-o"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa  fa-folder-o"></i>
-        <span @click="toggole()" v-text="parent.name"></span>
+        <span @click="toggole()" v-text="element.name"></span>
+        <a @click="select()">选中</a>
     </span>
 
-    <ul v-for="child of parent.childList" v-show="isExpanded">
+    <ul v-for="child of element.childList" v-show="isExpanded">
         <li>
-            <tree-element :parent="child" :level="level + 1" :value.sync="value"></tree-element>
+            <tree-element :element="child" :level="level + 1" :value.sync="value"></tree-element>
         </li>
     </ul>
 </template>
