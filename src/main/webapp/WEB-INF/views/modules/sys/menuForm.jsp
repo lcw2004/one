@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>字典管理</title>
+	<title>菜单信息</title>
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
@@ -62,11 +62,11 @@
 </head>
 <body>
 <section class="content-header">
-	<h1>菜单列表
+	<h1>菜单信息
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i>系统设置</a></li>
-		<li><a href="#"><i class="fa fa-dashboard"></i>菜单列表</a></li>
+		<li><a><i class="fa fa-dashboard"></i>系统设置</a></li>
+		<li><a href="${ctx}/sys/menu"><i class="fa fa-dashboard"></i>菜单列表</a></li>
 		<li class="active">菜单信息</li>
 	</ol>
 </section>

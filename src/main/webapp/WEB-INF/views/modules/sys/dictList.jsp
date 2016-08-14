@@ -70,7 +70,7 @@
 		<h1>字典列表
 		</h1>
 		<ol class="breadcrumb">
-			<li><a><i class="fa fa-dashboard"></i>系统设置</a></li>
+			<li><a href="${ctx}/sys/dict"><i class="fa fa-dashboard"></i>系统设置</a></li>
 			<li class="active">字典列表</li>
 		</ol>
 	</section>
