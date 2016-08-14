@@ -21,19 +21,19 @@
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
-
-					resource.getMenuTree().then(function (response) {
-						this.topMenu = response.json();
-						this.loadTreeTable();
-					})
+					this.loadTreeTable();
 				},
 				methods: {
 					loadTreeTable: function () {
-						if (this.topMenu) {
-							var tempList = [];
-							initMenu(this.topMenu, 1, tempList);
-							this.dataList = tempList;
-						}
+						resource.getMenuTree().then(function (response) {
+							this.topMenu = response.json();
+
+							if (this.topMenu) {
+								var tempList = [];
+								initMenu(this.topMenu, 1, tempList);
+								this.dataList = tempList;
+							}
+						});
 					},
 					toggole: function (menu) {
 						var isExpanded = menu.isExpanded;
@@ -45,7 +45,7 @@
 					},
 					deleteData : function (id) {
 						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
+							this.loadTreeTable();
 						});
 					}
 				}

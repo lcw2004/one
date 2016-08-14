@@ -18,8 +18,6 @@
 				data : {
 					obj : {},
 					showHideDictList : [],
-					menuTree : {},
-
 
                     // 模态窗属性
 					modalConfig: {
@@ -51,8 +49,7 @@
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							alert("保存成功");
-							this.obj = response.json();
+							window.location.href = "${ctx}/sys/menu";
 						})
 					}
 				}
