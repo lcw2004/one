@@ -33,9 +33,6 @@
 					if (id) {
 						resource.get({id: id}).then(function (response) {
 							this.obj = response.json();
-
-
-							Vue.set(this.obj, "parent", new Object());
 						})
 					}
 
