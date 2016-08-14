@@ -124,7 +124,7 @@ public class UserUtils extends BaseService {
 		@SuppressWarnings("unchecked")
 		Menu menu = (Menu)getCache(CACHE_MENU);
 		if (menu == null){
-			menu = menuServices.organizeMenuListAsTopMenu(menuServices.get("1"), getMenuList());
+			menu = menuServices.organizeMenuListAsMenuTree(menuServices.get("1"), getMenuList());
 			putCache(CACHE_MENU, menu);
 		}
 		return menu;

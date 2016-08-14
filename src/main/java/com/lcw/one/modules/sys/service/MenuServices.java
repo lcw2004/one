@@ -37,16 +37,29 @@ public class MenuServices extends BaseService {
      * @param list
      * @return
      */
-    public Menu organizeMenuListAsTopMenu(Menu topMenu, List<Menu> list) {
+    public Menu organizeMenuListAsMenuTree(Menu topMenu, List<Menu> list) {
         // 按父ID将菜单归类
+        Map<String, List<Menu>> childMenuListMap = organizeListAsMapByParentId(list);
+
+        // 递归组织菜单结构
+        recursionChildMenuList(childMenuListMap, topMenu);
+
+        return topMenu;
+    }
+
+    /**
+     * 将菜单列表重新组织为Map，以父ID为键，Menu List为值
+     *
+     * @param list
+     * @return
+     */
+    private Map<String, List<Menu>> organizeListAsMapByParentId(List<Menu> list) {
         Map<String, List<Menu>> childMenuListMap = new HashMap<>();
         for (Menu menu : list) {
-            menu.setChildList(null);
-
-            if(menu.getParent() != null) {
+            if (menu.getParent() != null) {
                 String parentId = menu.getParent().getId();
                 List<Menu> menuList;
-                if(childMenuListMap.containsKey(parentId)) {
+                if (childMenuListMap.containsKey(parentId)) {
                     menuList = childMenuListMap.get(parentId);
                 } else {
                     menuList = new ArrayList<>();
@@ -55,25 +68,28 @@ public class MenuServices extends BaseService {
                 menuList.add(menu);
                 childMenuListMap.put(parentId, menuList);
             }
+
+            menu.setChildList(null);
+            menu.setParent(null);
         }
-
-        // 递归组织菜单结构
-        recursionChildMenuList(childMenuListMap, topMenu);
-
-        return  topMenu;
+        return childMenuListMap;
     }
 
+    /**
+     * 递归从Map中将Menu List设置到对应的Menu的childList属性中
+     *
+     * @param childMenuListMap
+     * @param parentMenu
+     */
     private void recursionChildMenuList(Map<String, List<Menu>> childMenuListMap, Menu parentMenu) {
-        if(parentMenu.getChildList() == null || parentMenu.getChildList().size() == 0) {
+        if(childMenuListMap != null && childMenuListMap.containsKey(parentMenu.getId())) {
             parentMenu.setChildList(childMenuListMap.get(parentMenu.getId()));
         }
-        for (Menu childMenu: parentMenu.getChildList()) {
-            if(!childMenuListMap.containsKey(childMenu.getId())) {
-                continue;
-            }
-            childMenu.setChildList(childMenuListMap.get(childMenu.getId()));
 
-            recursionChildMenuList(childMenuListMap, childMenu);
+        if(parentMenu.getChildList() != null &&parentMenu.getChildList().size() > 0) {
+            for (Menu childMenu : parentMenu.getChildList()) {
+                recursionChildMenuList(childMenuListMap, childMenu);
+            }
         }
     }
 }

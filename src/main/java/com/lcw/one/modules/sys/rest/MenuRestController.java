@@ -1,8 +1,5 @@
 package com.lcw.one.modules.sys.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Lists;
 import com.lcw.one.modules.sys.entity.Menu;
 import com.lcw.one.modules.sys.service.MenuServices;
@@ -27,16 +24,13 @@ public class MenuRestController {
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public List<Menu> list() {
-        List<Menu> list = Lists.newArrayList();
-        List<Menu> sourcelist = systemService.findAllMenu();
-        Menu.sortList(list, sourcelist, "1");
-        return list;
+        return menuServices.findAllList();
     }
 
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
     public Menu listAsTree() {
-        return menuServices.organizeMenuListAsTopMenu(menuServices.get("1"), list());
+        return menuServices.organizeMenuListAsMenuTree(menuServices.get("1"), list());
     }
 
     /**

@@ -35,7 +35,7 @@ public class Menu extends IdEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonIgnore private Menu parent;	// 父级菜单
+	private Menu parent;	// 父级菜单
 	private String parentIds; // 所有父级编号
 	private String name; 	// 名称
 	private String href; 	// 链接
@@ -58,7 +58,7 @@ public class Menu extends IdEntity<Menu> {
 		this();
 		this.id = id;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_id")
 	@NotFound(action = NotFoundAction.IGNORE)
