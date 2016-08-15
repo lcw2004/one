@@ -7,9 +7,9 @@
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script src="${ctxStatic}/js/sys/menu.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function () {
 			var actions = {
-				getMenuTree : {method : "get", url :'${ctxRest}/sys/menu/tree'},
+				getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'},
 				delete: {method: 'delete', url: '${ctxRest}/sys/menu{/id}'}
 			};
 			var resource;
@@ -17,7 +17,9 @@
 				el: "body",
 				data: {
 					topMenu: {},
-					dataList: []
+					dataList: [],
+
+					toggleStatus: true
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
@@ -35,16 +37,21 @@
 							}
 						});
 					},
-					toggole: function (menu) {
+					toggle: function (menu) {
 						var isExpanded = menu.isExpanded;
 						if (isExpanded) {
 							toggleChildMenuListRecursion(menu, !isExpanded);
 						} else {
 							toggleChildMenuList(menu, !isExpanded);
 						}
+						menu.isExpanded = !isExpanded;
 					},
-					deleteData : function (id) {
-						resource.delete({id : id}).then(function (response) {
+					toggleAll: function () {
+						toggleAllMenu(this.topMenu, !this.toggleStatus);
+						this.toggleStatus = !this.toggleStatus;
+					},
+					deleteData: function (id) {
+						resource.delete({id: id}).then(function (response) {
 							this.loadTreeTable();
 						});
 					}
@@ -69,7 +76,7 @@
 				<div class="box-header">
 					<form class="form-inline">
 						<div class="col-md-3">
-							<a class="btn btn-primary" @click="query()" >展开（收缩）全部</a>
+							<a class="btn btn-primary" @click="toggleAll()" ><span v-if="toggleStatus">收缩</span><span v-else>展开</span>全部</a>
 							<a class="btn btn-primary" href="${ctx}/sys/menu/form">添加</a>
 						</div>
 					</form>
@@ -90,11 +97,11 @@
 						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
 							<td>
 								{{{ obj.level | fillSpace }}}
-								<a @click="toggole(obj)" v-if="obj.childList.length > 0">
+								<a @click="toggle(obj)" v-if="obj.childList.length > 0">
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
 								</a>
-								<span @click="toggole(obj)" v-text="obj.name"></span>
+								<span @click="toggle(obj)" v-text="obj.name"></span>
 							</td>
 							<td><span v-text="obj.href"></span></td>
 							<td><span v-text="obj.sort"></span></td>

@@ -93,8 +93,10 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<div class="col-sm-offset-2 col-sm-2">
+					<div class="col-sm-offset-2 col-sm-1">
 						<a class="btn btn-primary pull-left" @click="save()">保存</a>
+					</div>
+					<div class="col-sm-1">
 						<a class="btn btn-info pull-left" href="${ctx}/sys/dict/list">返回</a>
 					</div>
 				</div>

@@ -79,8 +79,12 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">上级菜单</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" v-model="obj.parent.name"/>
-							<a class="btn btn-info" @click="modalConfig.show = true">选择</a>
+							<div class="input-group">
+								<input type="text" class="form-control" v-model="obj.parent.name"/>
+								<span class="input-group-btn">
+									<button class="btn btn-primary" type="button" @click="modalConfig.show = true">选择</button>
+								</span>
+							</div>
 							<menu-tree :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree>
 						</div>
 					</div>
@@ -139,8 +143,10 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<div class="col-sm-offset-2 col-sm-2">
+					<div class="col-sm-offset-2 col-sm-1">
 						<a class="btn btn-primary pull-left" @click="save()">保存</a>
+					</div>
+					<div class="col-sm-1">
 						<a class="btn btn-info pull-left" href="${ctx}/sys/menu">返回</a>
 					</div>
 				</div>

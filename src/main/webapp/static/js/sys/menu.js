@@ -23,10 +23,7 @@ function initMenu(menu, level, tempList) {
  * @param isShowInTable
  */
 function toggleChildMenuList(menu, isShowInTable) {
-    // 修改展开状态
-    menu.isExpanded = isShowInTable;
-
-    // 修改子节点的现实状态
+    // 修改子节点的显示状态
     var list = menu.childList;
     if (list == null) {
         return;
@@ -43,9 +40,6 @@ function toggleChildMenuList(menu, isShowInTable) {
  * @param isShowInTable
  */
 function toggleChildMenuListRecursion(menu, isShowInTable) {
-    // 修改展开状态
-    menu.isExpanded = isShowInTable;
-
     // 修改子节点的现实状态
     var list = menu.childList;
     if (list == null) {
@@ -56,6 +50,20 @@ function toggleChildMenuListRecursion(menu, isShowInTable) {
         childMenu.isShowInTable = isShowInTable;
         childMenu.isExpanded = isShowInTable;
 
+        toggleChildMenuListRecursion(childMenu, isShowInTable);
+    }
+}
+
+/**
+ * 收缩 / 展开 全部菜单
+ * @param topMenu
+ * @param isShowInTable
+ */
+function toggleAllMenu(topMenu, isShowInTable) {
+    var list = topMenu.childList;
+    for (var i = 0; i < list.length; i++) {
+        var childMenu = list[i];
+        childMenu.isExpanded = !isShowInTable;
         toggleChildMenuListRecursion(childMenu, isShowInTable);
     }
 }
