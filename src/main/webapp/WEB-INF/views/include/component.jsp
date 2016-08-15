@@ -9,4 +9,4 @@
 <%@include file="/WEB-INF/views/include/vue-componets/pagination.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/treetable.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/tree-element.jsp" %>
-<%@include file="/WEB-INF/views/include/vue-componets/menutree.jsp" %>
+<%@include file="/WEB-INF/views/include/vue-componets/menu-tree-dialog.jsp" %>

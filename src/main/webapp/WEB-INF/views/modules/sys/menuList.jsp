@@ -97,7 +97,7 @@
 						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
 							<td>
 								{{{ obj.level | fillSpace }}}
-								<a @click="toggle(obj)" v-if="obj.childList.length > 0">
+								<a @click="toggle(obj)" v-if="obj.childList != null && obj.childList.length > 0">
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
 								</a>

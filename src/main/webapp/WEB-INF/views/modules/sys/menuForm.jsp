@@ -82,10 +82,10 @@
 							<div class="input-group">
 								<input type="text" class="form-control" v-model="obj.parent.name"/>
 								<span class="input-group-btn">
-									<button class="btn btn-primary" type="button" @click="modalConfig.show = true">选择</button>
+									<button class="btn btn-info" type="button" @click="modalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<menu-tree :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree>
+							<menu-tree-dialog :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree-dialog>
 						</div>
 					</div>
 					<div class="form-group">
@@ -114,8 +114,13 @@
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">图标</label>
-							<div class="col-sm-4">
-							<input type="text" class="form-control" v-model="obj.icon"/>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input type="text" class="form-control" v-model="obj.icon"/>
+								<span class="input-group-btn">
+									<button class="btn btn-info" type="button" @click="modalConfig.show = true">选择</button>
+								</span>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
