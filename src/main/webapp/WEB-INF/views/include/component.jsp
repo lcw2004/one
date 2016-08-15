@@ -6,7 +6,11 @@
 <%@include file="/WEB-INF/views/include/vue-componets/alert.jsp" %><%-- TODO 未完成--%>
 <%@include file="/WEB-INF/views/include/vue-componets/confirm.jsp" %><%-- TODO 未完成--%>
 
+<%--通用组件--%>
 <%@include file="/WEB-INF/views/include/vue-componets/pagination.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/treetable.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/tree-element.jsp" %>
-<%@include file="/WEB-INF/views/include/vue-componets/menu-tree-dialog.jsp" %>
+
+<%--页面组件--%>
+<%@include file="/WEB-INF/views/include/vue-componets/menu-tree-modal.jsp" %>
+<%@include file="/WEB-INF/views/include/vue-componets/icon-modal.jsp" %>

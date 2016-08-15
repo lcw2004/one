@@ -20,9 +20,14 @@
 					showHideDictList : [],
 
                     // 模态窗属性
-					modalConfig: {
+					menuTreeModalConfig: {
 						show : false,
 						title : "选择上级菜单"
+					},
+					// 模态窗属性
+					iconModalConfig: {
+						show : false,
+						title : "选择图标"
 					}
 				},
 				ready: function () {
@@ -82,10 +87,10 @@
 							<div class="input-group">
 								<input type="text" class="form-control" v-model="obj.parent.name"/>
 								<span class="input-group-btn">
-									<button class="btn btn-info" type="button" @click="modalConfig.show = true">选择</button>
+									<button class="btn btn-info" type="button" @click="menuTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<menu-tree-dialog :config.sync="modalConfig" :value.sync="obj.parent"></menu-tree-dialog>
+							<menu-tree-modal :config.sync="menuTreeModalConfig" :value.sync="obj.parent"></menu-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">
@@ -118,8 +123,9 @@
 							<div class="input-group">
 								<input type="text" class="form-control" v-model="obj.icon"/>
 								<span class="input-group-btn">
-									<button class="btn btn-info" type="button" @click="modalConfig.show = true">选择</button>
+									<button class="btn btn-info" type="button" @click="iconModalConfig.show = true">选择</button>
 								</span>
+								<icon-modal :config.sync="iconModalConfig" :value.sync="obj.icon"></icon-modal>
 							</div>
 						</div>
 					</div>

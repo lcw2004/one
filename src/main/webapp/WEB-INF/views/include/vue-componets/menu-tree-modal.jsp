@@ -3,8 +3,8 @@
 
 <%--菜单树模态窗--%>
 <script>
-    Vue.component("menu-tree-dialog", {
-        template: "#menuTreeDialog",
+    Vue.component("menu-tree-modal", {
+        template: "#menuTreeModal",
         props: {
             // 模态窗属性配置
             config: {
@@ -42,7 +42,7 @@
         }
     });
 </script>
-<template id="menuTreeDialog">
+<template id="menuTreeModal">
     <div class="modal" v-show="config.show">
         <div class="modal-dialog">
             <div class="modal-content">
