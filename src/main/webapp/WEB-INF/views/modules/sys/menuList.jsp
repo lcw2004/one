@@ -101,6 +101,7 @@
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
 								</a>
+								<i v-if="obj.icon" class="{{ obj.icon }}" style="font-size: 16px"></i>
 								<span @click="toggle(obj)" v-text="obj.name"></span>
 							</td>
 							<td><span v-text="obj.href"></span></td>

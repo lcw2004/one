@@ -120,13 +120,11 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">图标</label>
 						<div class="col-sm-4">
-							<div class="input-group">
-								<input type="text" class="form-control" v-model="obj.icon"/>
-								<span class="input-group-btn">
-									<button class="btn btn-info" type="button" @click="iconModalConfig.show = true">选择</button>
-								</span>
-								<icon-modal :config.sync="iconModalConfig" :value.sync="obj.icon"></icon-modal>
+							<div class="col-sm-2">
+								<button class="btn btn-info" type="button" @click="iconModalConfig.show = true">选择</button>
 							</div>
+							<div class="col-sm-2  control-label menu-form-icon"><i v-if="obj.icon" class="{{ obj.icon }}" style="font-size: 25px"></i></div>
+							<icon-modal :config.sync="iconModalConfig" :value.sync="obj.icon"></icon-modal>
 						</div>
 					</div>
 					<div class="form-group">
