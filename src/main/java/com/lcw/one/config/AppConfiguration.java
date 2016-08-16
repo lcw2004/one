@@ -55,6 +55,7 @@ public class AppConfiguration {
     public SessionFactory localSessionFactoryBean() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
         properties.setProperty("hibernate.cache.use_query_cache", "true");
         properties.setProperty("hibernate.cache.use_second_level_cache", "true");
@@ -89,7 +90,7 @@ public class AppConfiguration {
         }
         cpds.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/jeesite?useUnicode=true&characterEncoding=utf-8");
         cpds.setUser("root");
-        cpds.setPassword("root");
+        cpds.setPassword("one");
         return cpds;
     }
 
