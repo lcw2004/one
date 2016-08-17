@@ -16,7 +16,9 @@
 			new Vue({
 				el:"body",
 				data : {
-					obj : {},
+					obj : {
+						isShow : 1
+					},
 					showHideDictList : [],
 
                     // 模态窗属性
