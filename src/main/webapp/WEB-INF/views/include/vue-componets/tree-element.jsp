@@ -61,12 +61,12 @@
     });
 </script>
 <template id="tree-element">
-    <span>
-        <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open-o"></i>
-        <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa  fa-folder-o"></i>
+    <div>
+        <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
+        <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
         <span @click="toggole()" v-text="element.name"></span>
         <a @click="select()">选中</a>
-    </span>
+    </div>
 
     <ul v-for="child of element.childList" v-show="isExpanded">
         <li>

@@ -52,7 +52,9 @@
                     <h4 class="modal-title" v-text="config.title"></h4>
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
-                    <tree-element :element="menu" :level="1" :value.sync="selected"></tree-element>
+                    <div class="menu-tree">
+                        <tree-element :element="menu" :level="1" :value.sync="selected"></tree-element>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <span class="pull-left">选择：{{ selected.name }}</span>

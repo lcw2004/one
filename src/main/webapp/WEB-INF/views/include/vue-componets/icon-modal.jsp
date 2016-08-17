@@ -33,23 +33,6 @@
         }
     });
 </script>
-<style>
-    .font-div {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        margin-left: 10px;
-    }
-    .font-div h2 {
-
-    }
-    .font-div span {
-        font-size: 20px;
-        color: #656d6d;
-    }
-    .font-div span :hover {
-        color: #000000;
-    }
-</style>
 <template id="iconModal">
     <div class="modal" v-show="config.show">
         <div class="modal-dialog">
@@ -60,7 +43,7 @@
                     <h4 class="modal-title" v-text="config.title"></h4>
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
-                    <div class="font-div row" v-for="icons of iconList">
+                    <div class="icon-modal-div row" v-for="icons of iconList">
                         <h2>{{ icons.type }}</h2>
                         <span class="col-sm-2" v-for="icon of icons.iconList" >
                             <i class="{{icon}}" @click="selectOk(icon)"></i>

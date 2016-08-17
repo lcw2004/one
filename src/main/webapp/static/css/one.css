@@ -112,3 +112,37 @@
     padding-right: 18px;
 }
 /*登录 End */
+
+/* 菜单树 */
+.menu-tree {
+
+}
+.menu-tree ul{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    list-style: none;
+    padding-left: 20px;
+}
+.menu-tree li {
+    list-style: none;
+}
+.menu-tree  li :after {
+    font-weight: bold;
+}
+.menu-tree i {
+    color: #367fa9;
+}
+
+/* Icon列表 */
+.icon-modal-div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+.icon-modal-div span {
+    font-size: 20px;
+    color: #656d6d;
+}
+.icon-modal-div span :hover {
+    color: #000000;
+}
