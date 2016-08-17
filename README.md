@@ -3,16 +3,9 @@
 本项目衍生自 [jeesite](https://github.com/thinkgem/jeesite "https://github.com/thinkgem/jeesite")，使用的是hibernate版本，除了基础平台的功能，其余的功能都删除了。
 
 ## 演示地址
-
-[http://104.128.81.94:8080/one/a](http://104.128.81.94:8080/one/a "http://104.128.81.94:8080/one/a")
-登录名：admin
-密码：admin
-服务器在国外，访问起来会有些慢
-
-## 系统部分截图 
-
-	![image](https://github.com/lcw2004/lcw2004.github.io/blob/master/images/dict_list.bmp)
-	![image](https://github.com/lcw2004/lcw2004.github.io/blob/master/images/menu_list.bmp)
+-   [http://104.128.81.94:8080/one/a](http://104.128.81.94:8080/one/a "http://104.128.81.94:8080/one/a")
+-   登录名：admin，密码：admin
+-   服务器在国外，访问起来会有些慢
 
 # 在Jeesite上的改动 #
 -	支持Spring Boot
