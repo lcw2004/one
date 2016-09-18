@@ -14,3 +14,4 @@
 <%--页面组件--%>
 <%@include file="/WEB-INF/views/include/vue-componets/menu-tree-modal.jsp" %>
 <%@include file="/WEB-INF/views/include/vue-componets/icon-modal.jsp" %>
+<%@include file="/WEB-INF/views/include/vue-componets/area-tree-modal.jsp" %>
