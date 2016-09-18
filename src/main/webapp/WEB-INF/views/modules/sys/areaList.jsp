@@ -5,40 +5,120 @@
 	<title>区域管理</title>
 	<meta name="decorator" content="default"/>
 	<%@include file="/WEB-INF/views/include/head.jsp" %>
-	<%@include file="/WEB-INF/views/include/treetable.jsp" %>
+	<script src="${ctxStatic}/js/sys/menu.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#treeTable").treeTable({expandLevel : 5});
+		$(document).ready(function () {
+			var actions = {
+				getMenuTree: {method: "get", url: '${ctxRest}/sys/area/tree'},
+				delete: {method: 'delete', url: '${ctxRest}/sys/area{/id}'}
+			};
+			var resource;
+			new Vue({
+				el: "body",
+				data: {
+					topMenu: {},
+					dataList: [],
+
+					toggleStatus: true
+				},
+				ready: function () {
+					resource = this.$resource(null, {}, actions);
+					this.loadTreeTable();
+				},
+				methods: {
+					loadTreeTable: function () {
+						resource.getMenuTree().then(function (response) {
+							this.topMenu = response.json();
+
+							if (this.topMenu) {
+								var tempList = [];
+								initMenu(this.topMenu, 1, tempList);
+								this.dataList = tempList;
+							}
+						});
+					},
+					toggle: function (menu) {
+						var isExpanded = menu.isExpanded;
+						if (isExpanded) {
+							toggleChildMenuListRecursion(menu, !isExpanded);
+						} else {
+							toggleChildMenuList(menu, !isExpanded);
+						}
+						menu.isExpanded = !isExpanded;
+					},
+					toggleAll: function () {
+						toggleAllMenu(this.topMenu, !this.toggleStatus);
+						this.toggleStatus = !this.toggleStatus;
+					},
+					deleteData: function (id) {
+						resource.delete({id: id}).then(function (response) {
+							this.loadTreeTable();
+						});
+					}
+				}
+			})
 		});
-		function page(n,s){
-			$("#pageNo").val(n);
-			$("#pageSize").val(s);
-			$("#searchForm").submit();
-	    	return false;
-	    }
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/sys/area/">区域列表</a></li>
-		<shiro:hasPermission name="sys:area:edit"><li><a href="${ctx}/sys/area/form">区域添加</a></li></shiro:hasPermission>
-	</ul>
-	<tags:message content="${message}"/>
-	<table id="treeTable" class="table table-striped table-bordered table-condensed">
-		<tr><th>区域名称</th><th>区域编码</th><th>区域类型</th><th>备注</th><shiro:hasPermission name="sys:area:edit"><th>操作</th></shiro:hasPermission></tr>
-		<c:forEach items="${list}" var="area">
-			<tr id="${area.id}" pId="${area.parent.id ne requestScope.area.id?area.parent.id:'0'}">
-				<td><a href="${ctx}/sys/area/form?id=${area.id}">${area.name}</a></td>
-				<td>${area.code}</td>
-				<td>${fns:getDictLabel(area.type, 'sys_area_type', '无')}</td>
-				<td>${area.remarks}</td>
-				<shiro:hasPermission name="sys:area:edit"><td>
-					<a href="${ctx}/sys/area/form?id=${area.id}">修改</a>
-					<a href="${ctx}/sys/area/delete?id=${area.id}" onclick="return confirmx('要删除该区域及所有子区域项吗？', this.href)">删除</a>
-					<a href="${ctx}/sys/area/form?parent.id=${area.id}">添加下级区域</a> 
-				</td></shiro:hasPermission>
-			</tr>
-		</c:forEach>
-	</table>
+<section class="content-header">
+	<h1>区域列表
+	</h1>
+	<ol class="breadcrumb">
+		<li><a><i class="fa fa-dashboard"></i>系统设置</a></li>
+		<li class="active">区域列表</li>
+	</ol>
+</section>
+<section class="content">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<form class="form-inline">
+						<div class="col-md-3">
+							<a class="btn btn-primary" @click="toggleAll()" ><span v-if="toggleStatus">收缩</span><span v-else>展开</span>全部</a>
+							<a class="btn btn-primary" href="${ctx}/sys/area/form">添加</a>
+						</div>
+					</form>
+				</div>
+				<div class="box-body">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+							<th>区域名称</th>
+							<th>区域编码</th>
+							<th>区域类型</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
+							<td>
+								{{{ obj.level | fillSpace }}}
+								<a @click="toggle(obj)" v-if="obj.childList != null && obj.childList.length > 0">
+									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
+									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
+								</a>
+								<i v-if="obj.icon" class="{{ obj.icon }}" style="font-size: 16px"></i>
+								<span @click="toggle(obj)" v-text="obj.name"></span>
+							</td>
+							<td><span v-text="obj.code"></span></td>
+							<td><span v-text="obj.typeCN"></span></td>
+							<td><span v-text="obj.remarks"></span></td>
+							<td>
+								<a href="${ctx}/sys/area/form?id={{obj.id}}">修改</a>
+								<a @click="deleteData(obj.id)">删除</a>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
