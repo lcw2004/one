@@ -147,6 +147,7 @@ public class Area extends IdEntity<Area> {
 		return id != null && id.equals("1");
 	}
 
+	@Transient
 	public String getTypeCN() {
 		return DictUtils.getDictLabel(type, "sys_area_type", null);
 	}

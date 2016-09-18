@@ -33,7 +33,7 @@ public class AreaRestController {
         areaService.delete(id);
     }
 
-    @RequiresPermissions("sys:area:update")
+    @RequiresPermissions("sys:area:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@RequestBody Area area) {
         areaService.save(area);

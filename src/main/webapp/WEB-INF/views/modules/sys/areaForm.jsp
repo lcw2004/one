@@ -108,9 +108,9 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">区域类型</label>
 						<div class="col-sm-4">
-							<select  v-model="obj.type">
+							<select class="form-control" v-model="obj.type">
 								<c:forEach var="i" items="${fns:getDictList('sys_area_type')}">
-									<option v-model="${i.value}">${i.label}</option>
+									<option value="${i.value}">${i.label}</option>
 								</c:forEach>
 							</select>
 						</div>
