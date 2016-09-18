@@ -7,6 +7,7 @@ package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
@@ -36,7 +37,8 @@ public class Area extends IdEntity<Area> {
 	private String code; 	// 区域编码
 	private String name; 	// 区域名称
 	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
-	
+	private String typeCN; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
+
 	private List<Office> officeList = Lists.newArrayList(); // 部门列表
 	private List<Area> childList = Lists.newArrayList();	// 拥有子区域列表
 
@@ -97,11 +99,7 @@ public class Area extends IdEntity<Area> {
 		this.code = code;
 	}
 
-	@OneToMany(mappedBy = "area", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Office> getOfficeList() {
 		return officeList;
 	}
@@ -110,11 +108,7 @@ public class Area extends IdEntity<Area> {
 		this.officeList = officeList;
 	}
 
-	@OneToMany(mappedBy = "parent", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Area> getChildList() {
 		return childList;
 	}
@@ -151,5 +145,14 @@ public class Area extends IdEntity<Area> {
 	@Transient
 	public static boolean isAdmin(String id){
 		return id != null && id.equals("1");
+	}
+
+	@Transient
+	public String getTypeCN() {
+		return DictUtils.getDictLabel(type, "sys_area_type", null);
+	}
+
+	public void setTypeCN(String typeCN) {
+		this.typeCN = typeCN;
 	}
 }

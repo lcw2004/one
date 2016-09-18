@@ -43,13 +43,9 @@
 						});
 					},
 					deleteData : function (id) {
-						myConfirm("", "确认删除吗？", function () {
-							alert(123);
+						resource.delete({id : id}).then(function (response) {
+							alert("删除成功！");
 						});
-
-//						resource.delete({id : id}).then(function (response) {
-//							alert("删除成功！");
-//						});
 					}
 				},
 				watch: {
