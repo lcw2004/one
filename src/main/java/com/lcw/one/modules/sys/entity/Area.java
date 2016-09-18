@@ -97,11 +97,7 @@ public class Area extends IdEntity<Area> {
 		this.code = code;
 	}
 
-	@OneToMany(mappedBy = "area", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Office> getOfficeList() {
 		return officeList;
 	}
@@ -110,11 +106,7 @@ public class Area extends IdEntity<Area> {
 		this.officeList = officeList;
 	}
 
-	@OneToMany(mappedBy = "parent", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Area> getChildList() {
 		return childList;
 	}
