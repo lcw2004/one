@@ -180,11 +180,7 @@ public class Office extends IdEntity<Office> {
 		this.code = code;
 	}
 	
-	@OneToMany(mappedBy = "office", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="id") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<User> getUserList() {
 		return userList;
 	}
@@ -193,37 +189,13 @@ public class Office extends IdEntity<Office> {
 		this.userList = userList;
 	}
 
-	@OneToMany(mappedBy = "parent", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Office> getChildList() {
 		return childList;
 	}
 
 	public void setChildList(List<Office> childList) {
 		this.childList = childList;
-	}
-
-	@Transient
-	public static void sortList(List<Office> list, List<Office> sourcelist, String parentId){
-		for (int i=0; i<sourcelist.size(); i++){
-			Office e = sourcelist.get(i);
-			if (e.getParent()!=null && e.getParent().getId()!=null
-					&& e.getParent().getId().equals(parentId)){
-				list.add(e);
-				// 判断是否还有子节点, 有则继续获取子节点
-				for (int j=0; j<sourcelist.size(); j++){
-					Office child = sourcelist.get(j);
-					if (child.getParent()!=null && child.getParent().getId()!=null
-							&& child.getParent().getId().equals(e.getId())){
-						sortList(list, sourcelist, e.getId());
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	@Transient
