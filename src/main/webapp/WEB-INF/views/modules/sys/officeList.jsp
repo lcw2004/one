@@ -77,7 +77,7 @@
 					<form class="form-inline">
 						<div class="col-md-3">
 							<a class="btn btn-primary" @click="toggleAll()" ><span v-if="toggleStatus">收缩</span><span v-else>展开</span>全部</a>
-							<a class="btn btn-primary" href="${ctx}/sys/area/form">添加</a>
+							<a class="btn btn-primary" href="${ctx}/sys/office/form">添加</a>
 						</div>
 					</form>
 				</div>
