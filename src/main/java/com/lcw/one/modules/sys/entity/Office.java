@@ -7,6 +7,7 @@ package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
@@ -37,6 +38,7 @@ public class Office extends IdEntity<Office> {
 	private String code; 	// 机构编码
 	private String name; 	// 机构名称
 	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
+	private String typeCN; 	// 机构类型（1：公司；2：部门；3：小组）
 	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码
@@ -207,5 +209,13 @@ public class Office extends IdEntity<Office> {
 	public static boolean isRoot(String id){
 		return id != null && id.equals("1");
 	}
-	
+
+	@Transient
+	public String getTypeCN() {
+		return DictUtils.getDictLabel(type, "sys_office_type", "无");
+	}
+
+	public void setTypeCN(String typeCN) {
+		this.typeCN = typeCN;
+	}
 }
