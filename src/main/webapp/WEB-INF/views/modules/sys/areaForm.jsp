@@ -118,7 +118,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">备注</label>
 						<div class="col-sm-4">
-							<input type="number" class="form-control" v-model="obj.remarks"/>
+							<input type="text" class="form-control" v-model="obj.remarks"/>
 						</div>
 					</div>
 				</div>
