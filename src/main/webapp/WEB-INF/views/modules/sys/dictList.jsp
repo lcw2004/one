@@ -34,9 +34,6 @@
 					})
 				},
 				methods: {
-					setDictType: function (type) {
-						this.param.type = type;
-					},
 					query : function () {
 						resource.list(this.param).then(function (response) {
 							this.page = response.json();
@@ -107,7 +104,7 @@
 							</thead>
 							<tbody>
 							<tr v-for="obj of page.list">
-								<td><a @click="setDictType(obj.type)"><span v-text="obj.type"></span></a></td>
+								<td><a @click="param.type = obj.type"><span v-text="obj.type"></span></a></td>
 								<td><span v-text="obj.description"></span></td>
 								<td><span v-text="obj.label"></span></td>
 								<td><span v-text="obj.value"></span></td>
