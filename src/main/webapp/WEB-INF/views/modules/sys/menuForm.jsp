@@ -133,10 +133,12 @@
 						<label class="col-sm-2 control-label">可见</label>
 						<div class="col-sm-4">
 							<div class="radio">
-								<label v-for="dict of showHideDictList">
-									<input type="radio" :value="dict.value" v-model="obj.isShow">
-									{{ dict.label }}
-								</label>
+								<c:forEach var="dict" items="${fns:getDictList('show_hide')}">
+									<label>
+										<input type="radio" value="${dict.value}" v-model="obj.isShow">
+										${dict.label}
+									</label>
+								</c:forEach>
 							</div>
 						</div>
 					</div>

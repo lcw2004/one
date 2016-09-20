@@ -17,7 +17,6 @@
 				el:"body",
 				data : {
 					obj : {},
-					showHideDictList : [],
 
 					// 模态窗属性
 					areaTreeModalConfig: {
@@ -40,13 +39,6 @@
 							this.obj = response.json();
 						})
 					}
-
-					// TODO 优化，整个系统使用一个字典
-					// 加载数据字典
-					var me = this;
-					getDictList(function (response) {
-						me.showHideDictList = response.json();
-					});
 				},
 				methods: {
 					save : function () {
@@ -109,8 +101,8 @@
 						<label class="col-sm-2 control-label">区域类型</label>
 						<div class="col-sm-4">
 							<select class="form-control" v-model="obj.type">
-								<c:forEach var="i" items="${fns:getDictList('sys_area_type')}">
-									<option value="${i.value}">${i.label}</option>
+								<c:forEach var="dict" items="${fns:getDictList('sys_area_type')}">
+									<option value="${dict.value}">${dict.label}</option>
 								</c:forEach>
 							</select>
 						</div>
