@@ -19,14 +19,10 @@
 					obj : {
 						isShow : 1
 					},
-					showHideDictList : [],
-
-                    // 模态窗属性
 					menuTreeModalConfig: {
 						show : false,
 						title : "选择上级菜单"
 					},
-					// 模态窗属性
 					iconModalConfig: {
 						show : false,
 						title : "选择图标"
@@ -42,13 +38,6 @@
 							this.obj = response.json();
 						})
 					}
-
-					// TODO 优化，整个系统使用一个字典
-					// 加载数据字典
-					var me = this;
-					getDictList(function (response) {
-						me.showHideDictList = response.json();
-					});
 				},
 				methods: {
 					save : function () {
