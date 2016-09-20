@@ -56,12 +56,6 @@
 			<form class="form-horizontal">
 				<div class="box-body">
 					<div class="form-group">
-						<label class="col-sm-2 control-label">ID</label>
-						<div class="col-sm-4">
-							<p class="form-control-static">${id}</p>
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-sm-2 control-label">类型</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.type"/>
