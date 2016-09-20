@@ -65,7 +65,6 @@ public class User extends IdEntity<User> {
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JsonIgnore
 	@NotNull(message="归属公司不能为空")
 	@ExcelField(title="归属公司", align=2, sort=20)
 	public Office getCompany() {
@@ -79,7 +78,6 @@ public class User extends IdEntity<User> {
 	@ManyToOne
 	@JoinColumn(name="office_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JsonIgnore
 	@NotNull(message="归属部门不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {

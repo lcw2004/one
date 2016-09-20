@@ -57,112 +57,21 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping({"list", ""})
 	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<User> page = systemService.findUser(new Page<User>(request, response), user); 
-        model.addAttribute("page", page);
 		return "modules/sys/userList";
 	}
 
 	@RequestMapping({"selectUser"})
-	public String selectUser(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
-		model.addAttribute("page", page);
+	public String selectUser() {
 		return "modules/esign/common/select_user";
 	}
 
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping("form")
-	public String form(User user, Model model) {
-		if (user.getCompany() == null || user.getCompany().getId() == null) {
-			user.setCompany(UserUtils.getUser().getCompany());
-		}
-		if (user.getOffice() == null || user.getOffice().getId() == null) {
-			user.setOffice(UserUtils.getUser().getOffice());
-		}
-
-		// 判断显示的用户是否在授权范围内
-		String officeId = user.getOffice().getId();
-		User currentUser = UserUtils.getUser();
-		if (!currentUser.isAdmin()) {
-			String dataScope = systemService.getDataScope(currentUser);
-			// System.out.println(dataScope);
-			if (dataScope.indexOf("office.id=") != -1) {
-				String AuthorizedOfficeId = dataScope.substring(dataScope.indexOf("office.id=") + 10, dataScope.indexOf(" or"));
-				if (!AuthorizedOfficeId.equalsIgnoreCase(officeId)) {
-					return "error/403";
-				}
-			}
-		}
-
-		model.addAttribute("user", user);
-		model.addAttribute("allRoles", systemService.findAllRole());
+	public String form(String id, Model model) {
+		model.addAttribute("id", id);
 		return "modules/sys/userForm";
 	}
 
-	@RequiresPermissions("sys:user:edit")
-	@RequestMapping("save")
-	public String save(User user, String oldLoginName, String newPassword, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		if (Global.isDemoMode()) {
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
-		}
-		
-		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
-		user.setCompany(new Office(request.getParameter("company.id")));
-		user.setOffice(new Office(request.getParameter("office.id")));
-		
-		// 如果新密码为空，则不更换密码
-		if (StringUtils.isNotBlank(newPassword)) {
-			user.setPassword(SystemService.entryptPassword(newPassword));
-		}
-		if (!beanValidator(model, user)) {
-			return form(user, model);
-		}
-		if (!"true".equals(checkLoginName(oldLoginName, user.getLoginName()))) {
-			addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
-			return form(user, model);
-		}
-		
-		// 角色数据有效性验证，过滤不在授权内的角色
-		List<Role> roleList = Lists.newArrayList();
-		List<String> roleIdList = user.getRoleIdList();
-		for (Role r : systemService.findAllRole()) {
-			if (roleIdList.contains(r.getId())) {
-				roleList.add(r);
-			}
-		}
-		user.setRoleList(roleList);
-		
-		// 保存用户信息
-		systemService.saveUser(user);
-		
-		// 清除当前用户缓存
-		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())) {
-			UserUtils.getCacheMap().clear();
-		}
-		
-		addMessage(redirectAttributes, "保存用户'" + user.getLoginName() + "'成功");
-		return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
-	}
-	
-	@RequiresPermissions("sys:user:edit")
-	@RequestMapping("delete")
-	public String delete(String id, RedirectAttributes redirectAttributes) {
-		if (Global.isDemoMode()) {
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
-		}
-		
-		if (UserUtils.getUser().getId().equals(id)) {
-			addMessage(redirectAttributes, "删除用户失败, 不允许删除当前用户");
-		} else if (User.isAdmin(id)) {
-			addMessage(redirectAttributes, "删除用户失败, 不允许删除超级管理员用户");
-		} else {
-			systemService.deleteUser(id);
-			addMessage(redirectAttributes, "删除用户成功");
-		}
-		return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
-	}
-	
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "export", method= RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
