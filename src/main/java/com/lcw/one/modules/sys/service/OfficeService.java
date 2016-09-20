@@ -8,8 +8,8 @@ package com.lcw.one.modules.sys.service;
 import com.lcw.one.common.service.BaseService;
 import com.lcw.one.modules.sys.dao.OfficeDao;
 import com.lcw.one.modules.sys.entity.Office;
-import com.lcw.one.modules.sys.entity.Office;
 import com.lcw.one.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -94,8 +94,8 @@ public class OfficeService extends BaseService {
 	private Map<String, List<Office>> organizeListAsMapByParentId(List<Office> list) {
 		Map<String, List<Office>> childMenuListMap = new HashMap<>();
 		for (Office menu : list) {
-			if (menu.getParent() != null) {
-				String parentId = menu.getParent().getId();
+			if (StringUtils.isNotEmpty(menu.getParentId())) {
+				String parentId = menu.getParentId();
 				List<Office> menuList;
 				if (childMenuListMap.containsKey(parentId)) {
 					menuList = childMenuListMap.get(parentId);

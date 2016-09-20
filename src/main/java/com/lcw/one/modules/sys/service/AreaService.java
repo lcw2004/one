@@ -9,6 +9,7 @@ import com.lcw.one.common.service.BaseService;
 import com.lcw.one.modules.sys.dao.AreaDao;
 import com.lcw.one.modules.sys.entity.Area;
 import com.lcw.one.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,8 +87,8 @@ public class AreaService extends BaseService {
 	private Map<String, List<Area>> organizeListAsMapByParentId(List<Area> list) {
 		Map<String, List<Area>> childMenuListMap = new HashMap<>();
 		for (Area menu : list) {
-			if (menu.getParent() != null) {
-				String parentId = menu.getParent().getId();
+			if (StringUtils.isNotEmpty(menu.getParentId())) {
+				String parentId = menu.getParentId();
 				List<Area> menuList;
 				if (childMenuListMap.containsKey(parentId)) {
 					menuList = childMenuListMap.get(parentId);

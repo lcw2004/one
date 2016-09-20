@@ -32,6 +32,7 @@ import java.util.List;
 public class Area extends IdEntity<Area> {
 
 	private static final long serialVersionUID = 1L;
+	private String parentId;
 	private Area parent;	// 父级编号
 	private String parentIds; // 所有父级编号
 	private String code; 	// 区域编码
@@ -50,11 +51,16 @@ public class Area extends IdEntity<Area> {
 		this();
 		this.id = id;
 	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="parent_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@NotNull
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	@Transient
 	public Area getParent() {
 		return parent;
 	}
