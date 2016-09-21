@@ -57,7 +57,7 @@ public class Log extends BaseEntity<Log> {
 	public void prePersist(){
 		this.id = IdGen.uuid();
 	}
-	
+
 	@Id
 	public String getId() {
 		return id;
@@ -75,7 +75,6 @@ public class Log extends BaseEntity<Log> {
 		this.type = type;
 	}
 
-	@JsonIgnore
 	@ManyToOne(fetch= FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
 	public User getCreateBy() {

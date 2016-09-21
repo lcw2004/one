@@ -29,15 +29,9 @@ import java.util.Map;
 @RequestMapping(value = "${adminPath}/sys/log")
 public class LogController extends BaseController {
 
-	@Autowired
-	private LogService logService;
-	
 	@RequiresPermissions("sys:log:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(@RequestParam Map<String, Object> paramMap, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<Log> page = logService.find(new Page<Log>(request, response), paramMap); 
-        model.addAttribute("page", page);
-        model.addAllAttributes(paramMap);
+	public String list() {
 		return "modules/sys/logList";
 	}
 
