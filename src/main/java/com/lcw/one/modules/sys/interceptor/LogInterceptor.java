@@ -9,12 +9,14 @@ import com.lcw.one.common.config.Global;
 import com.lcw.one.common.service.BaseService;
 import com.lcw.one.common.utils.SpringContextHolder;
 import com.lcw.one.common.utils.StringUtils;
-import com.lcw.one.modules.sys.dao.LogDao;
 import com.lcw.one.modules.sys.entity.Log;
 import com.lcw.one.modules.sys.entity.User;
+import com.lcw.one.modules.sys.service.LogService;
 import com.lcw.one.modules.sys.utils.UserUtils;
 import eu.bitwalker.useragentutils.DeviceType;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,25 +24,28 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 系统拦截器
  * @author ThinkGem
  * @version 2013-6-6
  */
+@Transactional
 public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
-	private static LogDao logDao = SpringContextHolder.getBean(LogDao.class);
+	private static LogService logService = SpringContextHolder.getBean(LogService.class);
+	private static final Logger logger = LoggerFactory.getLogger(LogInterceptor.class.getName());
 	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-							 Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		logger.info("--- preHandle ---");
 		return true;
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-						   ModelAndView modelAndView) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		logger.info("--- postHandle ---");
 		if(modelAndView!=null) {
 			String viewName = modelAndView.getViewName();
 			UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent")); 
@@ -52,16 +57,12 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-								Object handler, Exception ex) throws Exception {
-		
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		logger.info("--- afterCompletion ---");
 		String requestRri = request.getRequestURI();
-		String uriPrefix = request.getContextPath() + Global.getAdminPath();
+		String uriPrefix = request.getContextPath() + Global.getRestApiPath();
 		
-		if ((StringUtils.startsWith(requestRri, uriPrefix) && (StringUtils.endsWith(requestRri, "/save")
-				|| StringUtils.endsWith(requestRri, "/delete") || StringUtils.endsWith(requestRri, "/import")
-				|| StringUtils.endsWith(requestRri, "/updateSort"))) || ex!=null){
-		
+		if (StringUtils.startsWith(requestRri, uriPrefix)){
 			User user = UserUtils.getUser();
 			if (user!=null && user.getId()!=null){
 				
@@ -74,6 +75,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 				}
 				
 				Log log = new Log();
+				log.setId(UUID.randomUUID().toString());
 				log.setType(ex == null ? Log.TYPE_ACCESS : Log.TYPE_EXCEPTION);
 				log.setCreateBy(user);
 				log.setCreateDate(new Date());
@@ -83,10 +85,9 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 				log.setMethod(request.getMethod());
 				log.setParams(params.toString());
 				log.setException(ex != null ? ex.toString() : "");
-				logDao.save(log);
-				
+				logService.save(log);
+
 				logger.info("save log {type: {}, loginName: {}, uri: {}}, ", log.getType(), user.getLoginName(), log.getRequestUri());
-				
 			}
 		}
 		

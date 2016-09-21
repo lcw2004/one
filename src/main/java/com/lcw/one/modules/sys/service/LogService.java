@@ -71,5 +71,8 @@ public class LogService extends BaseService {
 		dc.addOrder(Order.desc("id"));
 		return logDao.find(page, dc);
 	}
-	
+
+	public void save(Log log) {
+		logDao.save(log);
+	}
 }
