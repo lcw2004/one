@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			var actions = {
-				list: {method: 'get', url: '${ctxRest}/sys/user?pageNo={pageNo}&type={type}&description={description}'},
+				list: {method: 'get', url: '${ctxRest}/sys/user'},
 				listType: {method: 'get', url: '${ctxRest}/sys/user/type'},
 				delete: {method: 'delete', url: '${ctxRest}/sys/user{/id}'}
 			};
