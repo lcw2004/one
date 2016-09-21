@@ -74,12 +74,6 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">登录名</label>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" v-model="obj.loginName"/>
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-sm-2 control-label">工号</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.no"/>
@@ -89,6 +83,12 @@
 						<label class="col-sm-2 control-label">姓名</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.name"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">登录名</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.loginName"/>
 						</div>
 					</div>
 					<div class="form-group">
