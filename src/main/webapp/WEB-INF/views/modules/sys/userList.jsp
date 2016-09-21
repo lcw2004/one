@@ -68,6 +68,10 @@
 				<div class="box-header">
 					<form class="form-inline">
 						<div class="col-md-3">
+							<label class="control-label">姓名</label>
+							<input class="form-control inline-block" type="text" placeholder="姓名" v-model="param.name">
+						</div>
+						<div class="col-md-3">
 							<a class="btn btn-primary" @click="query()" >查询</a>
 							<a class="btn btn-primary" href="${ctx}/sys/user/form">添加</a>
 						</div>

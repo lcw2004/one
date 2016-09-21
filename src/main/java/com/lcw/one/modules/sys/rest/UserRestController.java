@@ -20,7 +20,9 @@ public class UserRestController {
 
     @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public Page<User> listAsTree(User user, HttpServletRequest request, HttpServletResponse response) {
+    public Page<User> listAsTree(String name, HttpServletRequest request, HttpServletResponse response) {
+        User user = new User();
+        user.setName(name);
         Page<User> page = systemService.findUser(new Page<User>(request, response), user);
         for (User userDb: page.getList()) {
             userDb.getCompany();
