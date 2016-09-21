@@ -14,8 +14,6 @@ import com.lcw.one.common.utils.StringUtils;
 import com.lcw.one.common.utils.excel.ExportExcel;
 import com.lcw.one.common.utils.excel.ImportExcel;
 import com.lcw.one.common.web.BaseController;
-import com.lcw.one.modules.sys.entity.Office;
-import com.lcw.one.modules.sys.entity.Role;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.service.SystemService;
 import com.lcw.one.modules.sys.utils.UserUtils;
@@ -77,7 +75,7 @@ public class UserController extends BaseController {
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
 			String fileName = "用户数据" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx"; 
-    		Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user); 
+    		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
     		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
