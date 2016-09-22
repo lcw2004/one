@@ -14,6 +14,11 @@
 <script src="${ctxStatic}/lib/bootstrap-slider/bootstrap-slider.js"></script>
 <%-- bootstrap End --%>
 
+<%-- datetimepicker Start --%>
+<link rel="stylesheet" href="${ctxStatic}/lib/datetimepicker/datetimepicker.min.css">
+<script src="${ctxStatic}/lib/datetimepicker/datetimepicker.min.js"></script>
+<%-- datetimepicker End --%>
+
 <%-- AdminLET Start --%>
 <script src="${ctxStatic}/lib/AdminLTE-2.3.5/js/app.js"></script>
 <link rel="stylesheet" href="${ctxStatic}/lib/font-awesome/css/font-awesome.min.css">
