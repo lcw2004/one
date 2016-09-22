@@ -42,7 +42,27 @@
 					}
 				}
 			});
+
+			bindDataTimePicker();
 		});
+
+		/**
+		 * 绑定事件选择控件
+		 */
+		function bindDataTimePicker() {
+			$('.form-date').datetimepicker({
+				language: 'zh-CN',
+				todayBtn: 1,
+				autoclose: 1,
+				todayHighlight: 1,
+				forceParse: 0,
+				viewMode: 'days',
+				format: 'yyyy-mm-dd',
+				startView : 'month',
+				minView : 'month',
+				maxView : 'year'
+			});
+		}
 	</script>
 </head>
 <body>
@@ -61,8 +81,24 @@
 				<div class="box-header">
 					<form class="form-inline">
 						<div class="col-md-3">
-							<label class="control-label">描述</label>
+							<label class="control-label">URI</label>
 							<input class="form-control inline-block" type="text" v-model="param.requestUri">
+						</div>
+						<div class="col-sm-8">
+							<label class="control-label">时间</label>
+							<div class='input-group date'>
+								<input type='text' class="form-control form-date" readonly  v-model="param.beginDate" value='<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>'/>
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
+							-
+							<div class='input-group date'>
+								<input type='text' class="form-control form-date" readonly v-model="param.endDate" value='<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>'/>
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+							</div>
 						</div>
 					</form>
 				</div>
