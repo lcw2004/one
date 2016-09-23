@@ -80,11 +80,15 @@
 			<div class="box">
 				<div class="box-header">
 					<form class="form-inline">
-						<div class="col-md-3">
+						<div class="form-group">
 							<label class="control-label">URI</label>
 							<input class="form-control inline-block" type="text" v-model="param.requestUri">
 						</div>
-						<div class="col-sm-8">
+						<div class="form-group">
+							<label class="control-label">操作用户</label>
+							<input class="form-control inline-block" type="text" v-model="param.createByName" placeholder="姓名/登录名">
+						</div>
+						<div class="form-group">
 							<label class="control-label">时间</label>
 							<div class='input-group date'>
 								<input type='text' class="form-control form-date" readonly  v-model="param.beginDate" value='<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>'/>
@@ -119,7 +123,7 @@
 						<tr v-for="obj of page.list">
 							<td><span v-text="obj.createBy.company.name"></span></td>
 							<td><span v-text="obj.createBy.office.name"></span></td>
-							<td><span v-text="obj.createBy.name"></span></td>
+							<td><span v-text="obj.createBy.name"></span>（<span v-text="obj.createBy.loginName"></span>）</td>
 							<td><span v-text="obj.requestUri"></span></td>
 							<td><span v-text="obj.method"></span></td>
 							<td><span v-text="obj.remoteAddr"></span></td>

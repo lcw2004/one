@@ -76,6 +76,7 @@ public class Log extends BaseEntity<Log> {
 	}
 
 	@ManyToOne(fetch= FetchType.LAZY)
+	@JoinColumn(name="create_by")
 	@NotFound(action = NotFoundAction.IGNORE)
 	public User getCreateBy() {
 		return createBy;
@@ -142,4 +143,6 @@ public class Log extends BaseEntity<Log> {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
+
+
 }
