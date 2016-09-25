@@ -38,8 +38,7 @@
 						handler: function () {
 							// 监听查询条件对象，如果有更改就查询数据
 							this.query();
-						},
-						deep: true
+						}
 					}
 				}
 			});
@@ -80,7 +79,7 @@
 		<div class="col-xs-12">
 			<div class="box">
 				<div class="box-header">
-					<form class="form-inline">
+					<form class="form-inline" @keyup.enter="query()">
 						<div class="form-group">
 							<label class="control-label">URI</label>
 							<input class="form-control inline-block" type="text" v-model="param.requestUri">
@@ -106,7 +105,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<a class="btn btn-primary" @click="query()" >查询</a>
+							<a class="btn btn-primary" @click="query()">查询</a>
 						</div>
 					</form>
 				</div>
