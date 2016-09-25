@@ -75,6 +75,7 @@ public class LogService extends BaseService {
 		return logDao.find(page, dc);
 	}
 
+	@Transactional(readOnly = false)
 	public void save(Log log) {
 		logDao.save(log);
 	}
