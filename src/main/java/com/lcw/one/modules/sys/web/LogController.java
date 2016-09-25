@@ -5,20 +5,14 @@
  */
 package com.lcw.one.modules.sys.web;
 
-import com.lcw.one.common.persistence.Page;
+import com.lcw.one.common.utils.DateUtils;
 import com.lcw.one.common.web.BaseController;
-import com.lcw.one.modules.sys.entity.Log;
-import com.lcw.one.modules.sys.service.LogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * 日志Controller
@@ -29,15 +23,13 @@ import java.util.Map;
 @RequestMapping(value = "${adminPath}/sys/log")
 public class LogController extends BaseController {
 
-	@Autowired
-	private LogService logService;
-	
 	@RequiresPermissions("sys:log:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(@RequestParam Map<String, Object> paramMap, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<Log> page = logService.find(new Page<Log>(request, response), paramMap); 
-        model.addAttribute("page", page);
-        model.addAllAttributes(paramMap);
+	public String list(Model model) {
+		Date beginDate  = DateUtils.setDays(new Date(), 1);
+		Date endDate = DateUtils.addDays(DateUtils.addMonths(beginDate, 1), -1);
+		model.addAttribute("beginDate", beginDate);
+		model.addAttribute("endDate", endDate);
 		return "modules/sys/logList";
 	}
 
