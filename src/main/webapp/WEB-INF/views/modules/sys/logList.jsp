@@ -24,6 +24,7 @@
 
 					// 设置页码
 					this.param.pageNo = 1;
+					this.query();
 				},
 				methods: {
 					query : function () {
@@ -33,7 +34,7 @@
 					}
 				},
 				watch: {
-					'param': {
+					'param.pageNo': {
 						handler: function () {
 							// 监听查询条件对象，如果有更改就查询数据
 							this.query();
@@ -103,6 +104,9 @@
 									<span class="glyphicon glyphicon-calendar"></span>
 								</span>
 							</div>
+						</div>
+						<div class="form-group">
+							<a class="btn btn-primary" @click="query()" >查询</a>
 						</div>
 					</form>
 				</div>

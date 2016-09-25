@@ -70,8 +70,7 @@ public class LogService extends BaseService {
 			paramMap.put("endDate", DateUtils.formatDate(endDate, "yyyy-MM-dd"));
 		}
 		dc.add(Restrictions.between("createDate", beginDate, endDate));
-		
-		dc.addOrder(Order.desc("id"));
+		dc.addOrder(Order.desc("createDate"));
 		return logDao.find(page, dc);
 	}
 
