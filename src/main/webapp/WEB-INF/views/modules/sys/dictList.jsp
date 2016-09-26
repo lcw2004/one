@@ -43,6 +43,11 @@
 						resource.delete({id : id}).then(function (response) {
 							alert("删除成功！");
 						});
+					},
+					test: function () {
+						Vue.$confirm("123123123", function() {
+							alert(1);
+						});
 					}
 				},
 				watch: {
@@ -86,7 +91,7 @@
 							</div>
 							<div class="col-md-3">
 								<a class="btn btn-primary" @click="query()" >查询</a>
-								<a class="btn btn-primary" href="${ctx}/sys/dict/form">添加</a>
+								<a class="btn btn-primary" @click="test()">测试</a>
 							</div>
 						</form>
 					</div>

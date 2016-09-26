@@ -2,6 +2,7 @@
 
 <div id="VMessage">
     <alert :config="alertConfig"></alert>
+    <confirm :config="confirmConfig" :callback="callback"></confirm>
 </div>
 <script>
     var VMessage = {};
@@ -9,16 +10,27 @@
         el: '#VMessage',
         data: {
             alertConfig: {
-                isShow: false,
-                message: ""
+                show: false,
+                message: String
+            },
+            confirmConfig: {
+                show: false,
+                message: String,
+                callback: Function
             }
         }
     });
 
     VMessage.alert = function (message) {
         vueMessage.alertConfig.message = message;
-        vueMessage.alertConfig.isShow = true;
+        vueMessage.alertConfig.show = true;
+    };
+    VMessage.confirm = function (message, callback) {
+        vueMessage.confirmConfig.message = message;
+        vueMessage.confirmConfig.show = true;
+        vueMessage.confirmConfig.callback = callback;
     };
 
     Vue.$alert = VMessage.alert;
+    Vue.$confirm = VMessage.confirm;
 </script>
