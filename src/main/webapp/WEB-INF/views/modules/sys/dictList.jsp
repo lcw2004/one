@@ -40,13 +40,11 @@
 						});
 					},
 					deleteData : function (id) {
-						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
-						});
-					},
-					test: function () {
-						Vue.$confirm("123123123", function() {
-							alert(1);
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.query();
+								Vue.$alert("删除成功！");
+							});
 						});
 					}
 				},
@@ -91,7 +89,7 @@
 							</div>
 							<div class="col-md-3">
 								<a class="btn btn-primary" @click="query()" >查询</a>
-								<a class="btn btn-primary" @click="test()">测试</a>
+								<a class="btn btn-primary" href="${ctx}/sys/dict/form">添加</a>
 							</div>
 						</form>
 					</div>

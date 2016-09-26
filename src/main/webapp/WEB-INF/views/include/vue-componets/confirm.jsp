@@ -13,11 +13,16 @@
                 type: Function,
                 require : true
             }
+        },
+        methods: {
+            okCallback : function () {
+                this.config.show = false;
+                this.config.callback();
+            }
         }
     });
 </script>
 <template id="confirm">
-    {{ msg }}
     <div class="modal" v-show="config.show">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -31,7 +36,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"  @click="config.show = false">取消</button>
-                    <button type="button" class="btn btn-primary" @click="config.callback()">确认</button>
+                    <button type="button" class="btn btn-primary" @click="okCallback()">确认</button>
                 </div>
             </div>
         </div>
