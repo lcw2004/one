@@ -87,11 +87,11 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<div class="col-sm-offset-2 col-sm-1">
-						<a class="btn btn-primary pull-left" @click="save()">保存</a>
-					</div>
-					<div class="col-sm-1">
-						<a class="btn btn-info pull-left" href="${ctx}/sys/dict/list">返回</a>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<a class="btn btn-primary" @click="save()">保存</a>
+							<a type="submit" class="btn btn-info" href="${ctx}/sys/dict/list">返回</a>
+						</div>
 					</div>
 				</div>
 			</form>
