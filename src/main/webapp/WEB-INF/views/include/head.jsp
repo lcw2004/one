@@ -45,3 +45,5 @@
 <script>
     var ctxRest = "${ctxRest}";
 </script>
+
+<%@include file="/WEB-INF/views/include/component.jsp" %>

@@ -31,7 +31,7 @@
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							alert("保存成功");
+							Vue.$alert("保存成功");
 						})
 					}
 				}
