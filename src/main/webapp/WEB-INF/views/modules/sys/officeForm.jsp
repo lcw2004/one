@@ -43,7 +43,7 @@
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							window.location.href = "${ctx}/sys/office";
+							Vue.$alert("保存成功！");
 						})
 					}
 				}
@@ -178,7 +178,5 @@
 		</div>
 	</section>
 </form>
-
-<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
