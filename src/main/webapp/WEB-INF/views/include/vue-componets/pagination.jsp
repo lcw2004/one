@@ -13,6 +13,10 @@
             pageNo: {
                 type: Number,
                 required: true
+            },
+            pageSize: {
+                type: Number,
+                required: true
             }
         },
         methods : {
@@ -58,18 +62,39 @@
     });
 </script>
 <template id="pagination">
-    <nav>
-        <ul class="pagination">
-            <li>
-                <a @click="goToPage(lastPageNo)">上一页</a>
-            </li>
-            <li v-for="pageNo of showPageNos" :class="{'active': pageNo ==page.pageNo}">
-                <a @click="goToPage(pageNo)">{{ pageNo }}</a>
-            </li>
-            <li>
-                <a @click="goToPage(nextPageNo)">下一页</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="pagination">
+                <li>
+                    <a @click="goToPage(lastPageNo)">上一页</a>
+                </li>
+                <li v-for="pageNo of showPageNos" :class="{'active': pageNo ==page.pageNo}">
+                    <a @click="goToPage(pageNo)">{{ pageNo }}</a>
+                </li>
+                <li>
+                    <a @click="goToPage(nextPageNo)">下一页</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <ul class="pagination  pull-right navbar-static-top">
+                <li>
+                    共 {{ page.count }} 条，每页
+                    <div class="btn-group dropup">
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                            {{ pageSize }} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a @click="pageSize = 10">10</a></li>
+                            <li><a @click="pageSize = 25">25</a></li>
+                            <li><a @click="pageSize = 50">50</a></li>
+                            <li><a @click="pageSize = 100">100</a></li>
+                        </ul>
+                    </div>
+                    条
+                </li>
+            </ul>
+        </div>
+    </div>
 </template>
 <%-- Vue 分页组件 End --%>

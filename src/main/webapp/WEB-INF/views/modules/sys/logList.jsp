@@ -16,7 +16,7 @@
 			new Vue({
 				el : "body",
 				data : {
-					param: {pageNo: 0},
+					param: {pageNo: 0, pageSize: 10},
 					page : {}
 				},
 				ready: function () {
@@ -35,6 +35,12 @@
 				},
 				watch: {
 					'param.pageNo': {
+						handler: function () {
+							// 监听查询条件对象，如果有更改就查询数据
+							this.query();
+						}
+					},
+					'param.pageSize': {
 						handler: function () {
 							// 监听查询条件对象，如果有更改就查询数据
 							this.query();
@@ -135,7 +141,7 @@
 						</tbody>
 					</table>
 
-					<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
+					<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
 				</div>
 			</div>
 		</div>

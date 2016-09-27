@@ -18,7 +18,7 @@
 			new Vue({
 				el : "body",
 				data : {
-					param: {pageNo: 0},
+					param: {pageNo: 0, pageSize: 10},
 					page : {},
 					dictTypeList : []
 				},
@@ -120,7 +120,7 @@
 							</tbody>
 						</table>
 
-						<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
+						<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
 					</div>
 				</div>
 			</div>
