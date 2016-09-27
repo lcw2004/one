@@ -34,8 +34,11 @@
 						});
 					},
 					deleteData : function (id) {
-						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.query();
+								Vue.$alert("删除成功！");
+							});
 						});
 					}
 				},
@@ -108,7 +111,6 @@
 						</tr>
 						</tbody>
 					</table>
-
 					<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
 				</div>
 			</div>
@@ -116,6 +118,5 @@
 	</div>
 </section>
 
-<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>

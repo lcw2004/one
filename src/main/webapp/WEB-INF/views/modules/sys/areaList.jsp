@@ -51,8 +51,11 @@
 						this.toggleStatus = !this.toggleStatus;
 					},
 					deleteData: function (id) {
-						resource.delete({id: id}).then(function (response) {
-							this.loadTreeTable();
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.loadTreeTable();
+								Vue.$alert("删除成功！");
+							});
 						});
 					}
 				}
@@ -118,7 +121,5 @@
 		</div>
 	</div>
 </section>
-
-<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
