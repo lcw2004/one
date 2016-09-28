@@ -24,7 +24,6 @@
 
 					// 设置页码
 					this.param.pageNo = 1;
-					this.query();
 				},
 				methods: {
 					query : function () {
@@ -34,17 +33,12 @@
 					}
 				},
 				watch: {
-					'param.pageNo': {
+					'param': {
 						handler: function () {
 							// 监听查询条件对象，如果有更改就查询数据
 							this.query();
-						}
-					},
-					'param.pageSize': {
-						handler: function () {
-							// 监听查询条件对象，如果有更改就查询数据
-							this.query();
-						}
+						},
+						deep: true
 					}
 				}
 			});

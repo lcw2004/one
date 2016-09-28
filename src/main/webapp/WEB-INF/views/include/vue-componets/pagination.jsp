@@ -19,6 +19,11 @@
                 required: true
             }
         },
+        ready : function () {
+            if(this.pageSize == undefined || this.pageSize == null || this.pageSize == 0) {
+                this.pageSize = 10;
+            }
+        },
         methods : {
             goToPage : function (pageNum) {
                 this.pageNo = pageNum;
