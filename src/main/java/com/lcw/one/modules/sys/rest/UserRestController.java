@@ -47,6 +47,8 @@ public class UserRestController {
     @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@RequestBody User user) {
+        User userInDb = systemService.getUser(user.getId());
+        user.setPassword(userInDb.getPassword());
         systemService.saveUser(user);
     }
 
