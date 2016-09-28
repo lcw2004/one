@@ -34,8 +34,11 @@
 						});
 					},
 					deleteData : function (id) {
-						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.query();
+								Vue.$alert("删除成功！");
+							});
 						});
 					}
 				},
