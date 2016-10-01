@@ -3,11 +3,11 @@
 本项目衍生自 [jeesite](https://github.com/thinkgem/jeesite "https://github.com/thinkgem/jeesite")，使用的是hibernate版本，除了基础平台的功能，其余的功能都删除了。
 
 ## 演示地址
--   [http://104.128.81.94:8080/one/a](http://104.128.81.94:8080/one/a "http://104.128.81.94:8080/one/a")
+-   [http://www.lumuxi.me/one](http://www.lumuxi.me/one/ "http://www.lumuxi.me/one/")
 -   登录名：admin，密码：admin
 -   服务器在国外，访问起来会有些慢
 
-# 在Jeesite上的改动 #
+# 在Jeesite上的改动
 -	支持Spring Boot
 -	前后端分离，前端通过Rest API调用后端数据（主要是为了做App以及手机端应用）
 -	前端UI改为 [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")，目前正在改动中，前端大部分样式错乱。
