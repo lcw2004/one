@@ -190,7 +190,7 @@ public class User extends IdEntity<User> {
 		this.loginIp = loginIp;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
 	@ExcelField(title="最后登录日期", type=1, align=1, sort=110)
 	public Date getLoginDate() {
 		return loginDate;
