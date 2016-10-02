@@ -35,14 +35,14 @@
 </script>
 <template id="iconModal">
     <div class="modal" v-show="config.show">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scroll">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
                         <span aria-hidden="true">×</span></button>
                     <h4 class="modal-title" v-text="config.title"></h4>
                 </div>
-                <div class="modal-body" style="overflow-y: auto">
+                <div class="modal-body modal-body-scroll" style="overflow-y: auto">
                     <div class="icon-modal-div row" v-for="icons of iconList">
                         <h2>{{ icons.type }}</h2>
                         <span class="col-sm-2" v-for="icon of icons.iconList" >
