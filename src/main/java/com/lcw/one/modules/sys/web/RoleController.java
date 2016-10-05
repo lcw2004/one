@@ -60,60 +60,15 @@ public class RoleController extends BaseController {
 	
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(Role role, Model model) {
-		List<Role> list = systemService.findAllRole();
-		model.addAttribute("list", list);
+	public String list() {
 		return "modules/sys/roleList";
 	}
 
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "form")
-	public String form(Role role, Model model) {
-		if (role.getOffice()==null){
-			role.setOffice(UserUtils.getUser().getOffice());
-		}
-		model.addAttribute("role", role);
-		model.addAttribute("menuList", systemService.findAllMenu());
-//		model.addAttribute("categoryList", categoryService.findByUser(false, null));
-		model.addAttribute("officeList", officeService.findAll());
+	public String form(String id, Model model) {
+		model.addAttribute("id", id);
 		return "modules/sys/roleForm";
-	}
-	
-	@RequiresPermissions("sys:role:edit")
-	@RequestMapping(value = "save")
-	public String save(Role role, Model model, String oldName, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:"+Global.getAdminPath()+"/sys/role/?repage";
-		}
-		if (!beanValidator(model, role)){
-			return form(role, model);
-		}
-		if (!"true".equals(checkName(oldName, role.getName()))){
-			addMessage(model, "保存角色'" + role.getName() + "'失败, 角色名已存在");
-			return form(role, model);
-		}
-		systemService.saveRole(role);
-		addMessage(redirectAttributes, "保存角色'" + role.getName() + "'成功");
-		return "redirect:"+Global.getAdminPath()+"/sys/role/?repage";
-	}
-	
-	@RequiresPermissions("sys:role:edit")
-	@RequestMapping(value = "delete")
-	public String delete(@RequestParam String id, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:"+Global.getAdminPath()+"/sys/role/?repage";
-		}
-		if (Role.isAdmin(id)){
-			addMessage(redirectAttributes, "删除角色失败, 不允许内置角色或编号空");
-//		}else if (UserUtils.getUser().getRoleIdList().contains(id)){
-//			addMessage(redirectAttributes, "删除角色失败, 不能删除当前用户所在角色");
-		}else{
-			systemService.deleteRole(id);
-			addMessage(redirectAttributes, "删除角色成功");
-		}
-		return "redirect:"+Global.getAdminPath()+"/sys/role/?repage";
 	}
 	
 	@RequiresPermissions("sys:role:edit")

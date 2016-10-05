@@ -3,6 +3,7 @@ package com.lcw.one.modules.sys.rest;
 import com.lcw.one.common.persistence.Page;
 import com.lcw.one.modules.sys.entity.Role;
 import com.lcw.one.modules.sys.rest.bean.BeanUtils;
+import com.lcw.one.modules.sys.rest.bean.Role4Rest;
 import com.lcw.one.modules.sys.service.RoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,10 @@ public class RoleRestController {
 
     @RequiresPermissions("sys:role:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Role get(@PathVariable String id) {
+    public Role4Rest get(@PathVariable String id) {
         Role role = roleService.get(id);
-        role.setUserList(null);
-        role.setMenuList(null);
-        role.setUserList(null);
         role.getOffice();
-        role.getOfficeList();
-        return role;
+        return new Role4Rest(role);
     }
 
     @RequiresPermissions("sys:role:edit")
