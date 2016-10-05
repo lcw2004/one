@@ -54,7 +54,7 @@ public class UserController extends BaseController {
 	
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping({"list", ""})
-	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list() {
 		return "modules/sys/userList";
 	}
 
@@ -70,6 +70,7 @@ public class UserController extends BaseController {
 		return "modules/sys/userForm";
 	}
 
+	// 	TODO REST
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "export", method= RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -84,6 +85,7 @@ public class UserController extends BaseController {
 		return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
 
+	// 	TODO REST
 	@RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "import", method= RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
@@ -129,7 +131,8 @@ public class UserController extends BaseController {
 		}
 		return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
-	
+
+	// 	TODO REST
 	@RequiresPermissions("sys:user:view")
     @RequestMapping("import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -145,6 +148,7 @@ public class UserController extends BaseController {
 		return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
 
+	// 	TODO REST
 	@ResponseBody
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping("checkLoginName")
@@ -160,65 +164,8 @@ public class UserController extends BaseController {
 	@RequiresUser
 	@RequestMapping("info")
 	public String info(User user, Model model) {
-		User currentUser = UserUtils.getUser();
-		if (StringUtils.isNotBlank(user.getName())){
-			if(Global.isDemoMode()){
-				model.addAttribute("message", "演示模式，不允许操作！");
-				return "modules/sys/userInfo";
-			}
-			
-			currentUser = UserUtils.getUser(true);
-			currentUser.setEmail(user.getEmail());
-			currentUser.setPhone(user.getPhone());
-			currentUser.setMobile(user.getMobile());
-			currentUser.setRemarks(user.getRemarks());
-			systemService.saveUser(currentUser);
-			model.addAttribute("message", "保存用户信息成功");
-		}
-		model.addAttribute("user", currentUser);
 		return "modules/sys/userInfo";
 	}
 
-	@RequiresUser
-	@RequestMapping("modifyPwd")
-	public String modifyPwd(String oldPassword, String newPassword, Model model) {
-		User user = UserUtils.getUser();
-		if (StringUtils.isNotBlank(oldPassword) && StringUtils.isNotBlank(newPassword)){
-			if(Global.isDemoMode()){
-				model.addAttribute("message", "演示模式，不允许操作！");
-				return "modules/sys/userModifyPwd";
-			}
-			
-			if (SystemService.validatePassword(oldPassword, user.getPassword())){
-				systemService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
-				model.addAttribute("message", "修改密码成功");
-			}else{
-				model.addAttribute("message", "修改密码失败，旧密码错误");
-			}
-		}
-		model.addAttribute("user", user);
-		return "modules/sys/userModifyPwd";
-	}
-    
-//	@InitBinder
-//	public void initBinder(WebDataBinder b) {
-//		b.registerCustomEditor(List.class, "roleList", new PropertyEditorSupport(){
-//			@Autowired
-//			private SystemService systemService;
-//			@Override
-//			public void setAsText(String text) throws IllegalArgumentException {
-//				String[] ids = StringUtils.split(text, ",");
-//				List<Role> roles = new ArrayList<Role>();
-//				for (String id : ids) {
-//					Role role = systemService.getRole(Long.valueOf(id));
-//					roles.add(role);
-//				}
-//				setValue(roles);
-//			}
-//			@Override
-//			public String getAsText() {
-//				return Collections3.extractToString((List) getValue(), "id", ",");
-//			}
-//		});
-//	}
+
 }

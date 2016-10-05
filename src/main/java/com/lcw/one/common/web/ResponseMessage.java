@@ -11,6 +11,11 @@ public class ResponseMessage {
     public ResponseMessage() {
     }
 
+    public ResponseMessage(String desc) {
+        this.code = "0000";
+        this.desc = desc;
+    }
+
     public ResponseMessage(String code, String desc) {
         this.code = code;
         this.desc = desc;

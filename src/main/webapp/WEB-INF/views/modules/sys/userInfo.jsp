@@ -8,8 +8,8 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var actions = {
-				get: {method: 'get', url: '${ctxRest}/sys/user{/id}'},
-				save: {method: 'post', url: '${ctxRest}/sys/user'}
+				get: {method: 'get', url: '${ctxRest}/sys/user/info'},
+				save: {method: 'put', url: '${ctxRest}/sys/user/info'}
 			};
 			var resource;
 			new Vue({
@@ -21,17 +21,15 @@
 					resource = this.$resource(null, {}, actions);
 
 					// 加载数据
-					var id = $("#id").val();
-					if (id) {
-						resource.get({id: id}).then(function (response) {
-							this.obj = response.json();
-						})
-					}
+					resource.get({id: id}).then(function (response) {
+						this.obj = response.json();
+					})
 				},
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							Vue.$alert("保存成功！");
+							var result = response.json();
+							Vue.$alert(result.desc);
 						})
 					}
 				}
@@ -71,6 +69,12 @@
 					<label class="col-sm-2 control-label">工号</label>
 					<div class="col-sm-4">
 						<p class="form-control-static" v-text="obj.no"></p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">登录名</label>
+					<div class="col-sm-4">
+						<p class="form-control-static" v-text="obj.loginName"></p>
 					</div>
 				</div>
 				<div class="form-group">
