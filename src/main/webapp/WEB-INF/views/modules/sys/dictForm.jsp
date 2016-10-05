@@ -31,7 +31,7 @@
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							alert("保存成功");
+							Vue.$alert("保存成功");
 						})
 					}
 				}
@@ -55,12 +55,6 @@
 		<div class="box box-info">
 			<form class="form-horizontal">
 				<div class="box-body">
-					<div class="form-group">
-						<label class="col-sm-2 control-label">ID</label>
-						<div class="col-sm-4">
-							<p class="form-control-static">${id}</p>
-						</div>
-					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">类型</label>
 						<div class="col-sm-4">
@@ -93,11 +87,11 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<div class="col-sm-offset-2 col-sm-1">
-						<a class="btn btn-primary pull-left" @click="save()">保存</a>
-					</div>
-					<div class="col-sm-1">
-						<a class="btn btn-info pull-left" href="${ctx}/sys/dict/list">返回</a>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<a class="btn btn-primary" @click="save()">保存</a>
+							<a type="submit" class="btn btn-info" href="${ctx}/sys/dict/list">返回</a>
+						</div>
 					</div>
 				</div>
 			</form>

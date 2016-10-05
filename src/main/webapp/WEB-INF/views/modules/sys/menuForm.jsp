@@ -19,14 +19,10 @@
 					obj : {
 						isShow : 1
 					},
-					showHideDictList : [],
-
-                    // 模态窗属性
 					menuTreeModalConfig: {
 						show : false,
 						title : "选择上级菜单"
 					},
-					// 模态窗属性
 					iconModalConfig: {
 						show : false,
 						title : "选择图标"
@@ -42,18 +38,11 @@
 							this.obj = response.json();
 						})
 					}
-
-					// TODO 优化，整个系统使用一个字典
-					// 加载数据字典
-					var me = this;
-					getDictList(function (response) {
-						me.showHideDictList = response.json();
-					});
 				},
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							window.location.href = "${ctx}/sys/menu";
+							Vue.$alert("保存成功");
 						})
 					}
 				}
@@ -77,12 +66,6 @@
 		<div class="box box-info">
 			<form class="form-horizontal">
 				<div class="box-body">
-					<div class="form-group">
-						<label class="col-sm-2 control-label">ID</label>
-						<div class="col-sm-4">
-							<p class="form-control-static">${id}</p>
-						</div>
-					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">上级菜单</label>
 						<div class="col-sm-4">
@@ -122,10 +105,8 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">图标</label>
 						<div class="col-sm-4">
-							<div class="col-sm-2">
-								<button class="btn btn-info" type="button" @click="iconModalConfig.show = true">选择</button>
-							</div>
-							<div class="col-sm-2  control-label menu-form-icon"><i v-if="obj.icon" class="{{ obj.icon }}" style="font-size: 25px"></i></div>
+							<button class="btn btn-info" type="button" @click="iconModalConfig.show = true">选择</button>
+							<i v-if="obj.icon" class="{{ obj.icon }}" style="font-size: 25px"></i>
 							<icon-modal :config.sync="iconModalConfig" :value.sync="obj.icon"></icon-modal>
 						</div>
 					</div>
@@ -133,10 +114,12 @@
 						<label class="col-sm-2 control-label">可见</label>
 						<div class="col-sm-4">
 							<div class="radio">
-								<label v-for="dict of showHideDictList">
-									<input type="radio" :value="dict.value" v-model="obj.isShow">
-									{{ dict.label }}
-								</label>
+								<c:forEach var="dict" items="${fns:getDictList('show_hide')}">
+									<label>
+										<input type="radio" value="${dict.value}" v-model="obj.isShow">
+										${dict.label}
+									</label>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -154,18 +137,16 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<div class="col-sm-offset-2 col-sm-1">
-						<a class="btn btn-primary pull-left" @click="save()">保存</a>
-					</div>
-					<div class="col-sm-1">
-						<a class="btn btn-info pull-left" href="${ctx}/sys/menu">返回</a>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<a class="btn btn-primary" @click="save()">保存</a>
+							<a class="btn btn-info" href="${ctx}/sys/menu">返回</a>
+						</div>
 					</div>
 				</div>
 			</form>
 		</div>
 	</section>
 </form>
-
-<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>

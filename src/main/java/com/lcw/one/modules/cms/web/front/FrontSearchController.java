@@ -81,13 +81,11 @@ public class FrontSearchController extends BaseController{
 			// 文章检索
 			if (StringUtils.isBlank(t) || "article".equals(t)){
 				Page<Article> page = articleService.search(new Page<Article>(request, response), qStr, cid, bd, ed);
-				page.setMessage("匹配结果，共耗时 " + (System.currentTimeMillis() - start) + "毫秒。");
 				model.addAttribute("page", page);
 			}
 			// 留言检索
 			else if ("guestbook".equals(t)){
 				Page<Guestbook> page = guestbookService.search(new Page<Guestbook>(request, response), qStr, bd, ed);
-				page.setMessage("匹配结果，共耗时 " + (System.currentTimeMillis() - start) + "毫秒。");
 				model.addAttribute("page", page);
 			}
 			

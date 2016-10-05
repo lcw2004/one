@@ -41,7 +41,7 @@ public class LoginController extends BaseController {
      * 管理登录
      */
     @RequestMapping(value = "/validateCode", method = RequestMethod.GET)
-    public void validateCode(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public void validateCode(HttpServletRequest request, HttpServletResponse response) {
         ValidateCodeInterface validateCode = new EnCharValidateCode();
         try {
             response.setHeader("Pragma", "no-cache");
@@ -56,7 +56,7 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * 管理登录
+     * 首页，http://127.0.0.1:8080/one
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
@@ -64,10 +64,10 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * 管理登录
+     * 登录页，http://127.0.0.1:8080/one/a/login
      */
     @RequestMapping(value = "${adminPath}/login", method = RequestMethod.GET)
-    public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String login() {
         User user = UserUtils.getUser();
         // 如果已经登录，则跳转到管理首页
         if (user.getId() != null) {
@@ -77,10 +77,11 @@ public class LoginController extends BaseController {
     }
 
     /**
+     * TODO 需要重构至rest接口里面
      * 登录失败，真正登录的POST请求由Filter完成
      */
     @RequestMapping(value = "${adminPath}/login", method = RequestMethod.POST)
-    public String login(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String username, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String login(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String username, Model model) {
         User user = UserUtils.getUser();
         // 如果已经登录，则跳转到管理首页
         if (user.getId() != null) {
@@ -92,6 +93,7 @@ public class LoginController extends BaseController {
     }
 
     /**
+     * TODO 需要重构至rest接口里面
      * 登录成功，进入管理首页
      */
     @RequiresUser
@@ -123,7 +125,7 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * 是否是验证码登录
+     * TODO REST 是否是验证码登录
      * @param useruame 用户名
      * @param isFail 计数加1
      * @param clean 计数清零
@@ -150,30 +152,4 @@ public class LoginController extends BaseController {
         return loginFailNum >= 3;
     }
 
-
-    @SuppressWarnings("resource")
-    @RequestMapping("${adminPath}/download")
-    public String download(@RequestParam String filePath, HttpServletResponse response) {
-        File file = new File(filePath);
-        InputStream inputStream;
-        try {
-            inputStream = new FileInputStream(filePath);
-            response.reset();
-            response.setContentType("application/octet-stream;charset=UTF-8");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-            OutputStream outputStream = new BufferedOutputStream(
-                    response.getOutputStream());
-            byte data[] = new byte[1024];
-            while (inputStream.read(data, 0, 1024) >= 0) {
-                outputStream.write(data);
-            }
-            outputStream.flush();
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

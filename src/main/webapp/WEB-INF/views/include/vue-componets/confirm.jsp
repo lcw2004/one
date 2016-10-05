@@ -1,56 +1,45 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-<%--<modal is-show="true" msg="123123123" callback="okCallback"></modal>--%>
-
 <%-- Vue Confirm 组件--%>
 <script>
-    Vue.component("modal", {
-        template : "#modal",
+    Vue.component("confirm", {
+        template : "#confirm",
         props: {
-            msg : {
-                type : String,
-                require : true
+            config: {
+                type: Object,
+                required: true
             },
             callback : {
                 type: Function,
                 require : true
             }
         },
-        data : function () {
-            return {
-                isShow : true
-            }
-        },
-        methods : {
-            hide : function () {
-                this.isShow = false
-            },
-            okCallBack : function () {
-                this.callback();
+        methods: {
+            okCallback : function () {
+                this.config.show = false;
+                this.config.callback();
             }
         }
     });
 </script>
-<template id="modal">
-    {{ msg }}
-    <div class="modal modal-primary" v-if="isShow == true" style="display: block">1111
+<template id="confirm">
+    <div class="modal" v-show="config.show">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hide()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">确认信息</h4>
+                    <h4 class="modal-title">确认</h4>
                 </div>
                 <div class="modal-body">
-                    <p>{{ msg }}</p>
+                    <p>{{ config.message }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-dismiss="modal"  @click="hide()">取消</button>
-                    <button type="button" class="btn btn-outline" @click="">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"  @click="config.show = false">取消</button>
+                    <button type="button" class="btn btn-primary" @click="okCallback()">确认</button>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 </template>
+<%-- Vue Confirm 组件--%>

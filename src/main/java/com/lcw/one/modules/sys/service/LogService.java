@@ -41,18 +41,21 @@ public class LogService extends BaseService {
 	public Page<Log> find(Page<Log> page, Map<String, Object> paramMap) {
 		DetachedCriteria dc = logDao.createDetachedCriteria();
 
-		Long createById = StringUtils.toLong(paramMap.get("createById"));
-		if (createById > 0){
-			dc.add(Restrictions.eq("createBy.id", createById));
+		String createByName = ObjectUtils.toString(paramMap.get("createByName"));
+		if (StringUtils.isNotEmpty(createByName)) {
+			dc.createAlias("createBy", "createByAlias");
+			dc.add(Restrictions.disjunction().
+					add(Restrictions.eq("createByAlias.name", createByName)).
+					add(Restrictions.eq("createByAlias.loginName", createByName)));
 		}
-		
+
 		String requestUri = ObjectUtils.toString(paramMap.get("requestUri"));
-		if (StringUtils.isNotBlank(requestUri)){
-			dc.add(Restrictions.like("requestUri", "%"+requestUri+"%"));
+		if (StringUtils.isNotBlank(requestUri)) {
+			dc.add(Restrictions.like("requestUri", "%" + requestUri + "%"));
 		}
 
 		String exception = ObjectUtils.toString(paramMap.get("exception"));
-		if (StringUtils.isNotBlank(exception)){
+		if (StringUtils.isNotBlank(exception)) {
 			dc.add(Restrictions.eq("type", Log.TYPE_EXCEPTION));
 		}
 		
@@ -67,9 +70,12 @@ public class LogService extends BaseService {
 			paramMap.put("endDate", DateUtils.formatDate(endDate, "yyyy-MM-dd"));
 		}
 		dc.add(Restrictions.between("createDate", beginDate, endDate));
-		
-		dc.addOrder(Order.desc("id"));
+		dc.addOrder(Order.desc("createDate"));
 		return logDao.find(page, dc);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void save(Log log) {
+		logDao.save(log);
+	}
 }

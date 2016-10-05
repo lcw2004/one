@@ -6,13 +6,36 @@
     <meta name="decorator" content="default"/>
     <%@include file="/WEB-INF/views/include/head.jsp" %>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#oldPassword").focus();
-            $("#inputForm").validate({
-                messages: {
-                    confirmNewPassword: {equalTo: "输入与上面相同的密码"}
+        $(document).ready(function() {
+            var actions = {
+                putPassword: {method: 'put', url: '${ctxRest}/sys/user/password'}
+            };
+            var resource;
+            new Vue({
+                el:"body",
+                data : {
+                    obj : {
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmNewPassword: ""
+                    }
+                },
+                ready: function () {
+                    resource = this.$resource(null, {}, actions, {emulateJSON: true});
+                },
+                methods: {
+                    save : function () {
+                        resource.putPassword(null, this.obj).then(function (response) {
+                            var result = response.json();
+                            if(result.code != "0000") {
+                                Vue.$alert(result.desc);
+                            } else {
+                                Vue.$alert("修改成功！");
+                            }
+                        })
+                    }
                 }
-            });
+            })
         });
     </script>
 </head>
@@ -31,27 +54,29 @@
         <form class="form-horizontal">
             <div class="box-body">
                 <div class="form-group">
-                    <label for="oldPassword" class="col-sm-2 control-label">旧密码</label>
+                    <label class="col-sm-2 control-label">旧密码</label>
                     <div class="col-sm-4">
-                        <input class="form-control" id="oldPassword" name="oldPassword" type="password" placeholder="旧密码">
+                        <input class="form-control" v-model="obj.oldPassword" type="password" placeholder="旧密码">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="newPassword" class="col-sm-2 control-label">新密码</label>
+                    <label class="col-sm-2 control-label">新密码</label>
                     <div class="col-sm-4">
-                        <input class="form-control" id="newPassword" name="newPassword" type="password" placeholder="新密码">
+                        <input class="form-control" v-model="obj.newPassword" type="password" placeholder="新密码">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="newPassword" class="col-sm-2 control-label">确认密码</label>
+                    <label class="col-sm-2 control-label">确认密码</label>
                     <div class="col-sm-4">
-                        <input class="form-control" id="confirmNewPassword" name="confirmNewPassword" type="password" placeholder="确认密码">
+                        <input class="form-control" v-model="obj.confirmNewPassword" type="password" placeholder="确认密码">
                     </div>
                 </div>
             </div>
             <div class="box-footer">
-                <div class="col-sm-offset-2 col-sm-2">
-                    <button type="submit" class="btn btn-primary pull-left">保存</button>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <a class="btn btn-primary" @click="save()">保存</a>
+                    </div>
                 </div>
             </div>
         </form>

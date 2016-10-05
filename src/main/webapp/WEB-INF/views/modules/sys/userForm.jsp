@@ -1,137 +1,133 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>用户管理</title>
-	<%@include file="/WEB-INF/views/include/head.jsp" %>
+	<title>用户信息</title>
 	<meta name="decorator" content="default"/>
+	<%@include file="/WEB-INF/views/include/head.jsp" %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#loginName").focus();
-			$("#inputForm").validate({
-				rules: {
-					loginName: {remote: "${ctx}/sys/user/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')}
+			var actions = {
+				get: {method: 'get', url: '${ctxRest}/sys/user{/id}'},
+				save: {method: 'post', url: '${ctxRest}/sys/user'}
+			};
+			var resource;
+			new Vue({
+				el:"body",
+				data : {
+					obj : {},
+
+					// 模态窗属性
+					companyTreeModalConfig: {
+						show : false,
+						title : "选择所属机构"
+					}
 				},
-				messages: {
-					loginName: {remote: "用户登录名已存在"},
-					confirmNewPassword: {equalTo: "输入与上面相同的密码"}
+				ready: function () {
+					resource = this.$resource(null, {}, actions);
+
+					// 加载数据
+					var id = $("#id").val();
+					if (id) {
+						resource.get({id: id}).then(function (response) {
+							this.obj = response.json();
+						})
+					}
+				},
+				methods: {
+					save : function () {
+						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
+							Vue.$alert("保存成功！");
+						})
+					}
 				}
-			});
+			})
 		});
 	</script>
 </head>
 <body>
-	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/user/">用户列表</a></li>
-		<li class="active"><a href="${ctx}/sys/user/form?id=${user.id}">用户<shiro:hasPermission name="sys:user:edit">${not empty user.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:user:edit">查看</shiro:lacksPermission></a></li>
-	</ul><br/>
-	
-	<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<tags:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label" for="company">归属公司:</label>
-			<div class="controls">
-                <tags:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
-					title="公司" url="/sys/office/treeData?type=1" cssClass="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="office">归属部门:</label>
-			<div class="controls">
-                <tags:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="oldLoginName">登录名:</label>
-			<div class="controls">
-				<input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-				<form:input path="loginName" htmlEscape="false" maxlength="50" class="required userName"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="no">工号:</label>
-			<div class="controls">
-				<form:input path="no" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="name">姓名:</label>
-			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="newPassword">密码:</label>
-			<div class="controls">
-				<input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3" class="${empty user.id?'required':''}"/>
-				<c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="confirmNewPassword">确认密码:</label>
-			<div class="controls">
-				<input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50" minlength="3" equalTo="#newPassword"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="email">邮箱:</label>
-			<div class="controls">
-				<form:input path="email" htmlEscape="false" maxlength="100" class="email"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="phone">电话:</label>
-			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="100"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="mobile">手机:</label>
-			<div class="controls">
-				<form:input path="mobile" htmlEscape="false" maxlength="100"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="remarks">备注:</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="userType">用户类型:</label>
-			<div class="controls">
-				<form:select path="userType">
-					<form:option value="" label="请选择"/>
-					<form:options items="${fns:getDictList('sys_user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="roleIdList">用户角色:</label>
-			<div class="controls">
-				<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" class="required"/>
-			</div>
-		</div>
-		<c:if test="${not empty user.id}">
-			<div class="control-group">
-				<label class="control-label">创建时间:</label>
-				<div class="controls">
-					<label class="lbl"><fmt:formatDate value="${user.createDate}" type="both" dateStyle="full"/></label>
+<section class="content-header">
+	<h1>用户信息
+	</h1>
+	<ol class="breadcrumb">
+		<li><a><i class="fa fa-dashboard"></i>系统设置</a></li>
+		<li><a href="${ctx}/sys/user"><i class="fa fa-dashboard"></i>用户列表</a></li>
+		<li class="active">用户信息</li>
+	</ol>
+</section>
+<form id="inputForm" class="form-horizontal">
+	<input type="hidden" id="id" value="${id}">
+	<section class="content">
+		<div class="box box-info">
+			<form class="form-horizontal">
+				<div class="box-body">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">归属公司</label>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input type="text" class="form-control" v-model="obj.company.name"/>
+								<span class="input-group-btn">
+									<button class="btn btn-info" type="button" @click="companyTreeModalConfig.show = true">选择</button>
+								</span>
+							</div>
+							<office-tree-modal :config.sync="companyTreeModalConfig" :value.sync="obj.company"></office-tree-modal>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">工号</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.no"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">姓名</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.name"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">登录名</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.loginName"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">邮箱</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.email"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">电话</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.phone"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">手机</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" v-model="obj.mobile"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-4">
+							<textarea type="text" class="form-control" v-model="obj.remarks"></textarea>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">最后登陆:</label>
-				<div class="controls">
-					<label class="lbl">IP: ${user.loginIp}&nbsp;&nbsp;&nbsp;&nbsp;时间：<fmt:formatDate value="${user.loginDate}" type="both" dateStyle="full"/></label>
+				<div class="box-footer">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<a class="btn btn-primary" @click="save()">保存</a>
+							<a class="btn btn-info" href="${ctx}/sys/user">返回</a>
+						</div>
+					</div>
 				</div>
-			</div>
-		</c:if>
-		<div class="form-actions">
-			<shiro:hasPermission name="sys:user:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			</form>
 		</div>
-	</form:form>
+	</section>
+</form>
 </body>
 </html>

@@ -7,21 +7,35 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+			var actions = {
+				get: {method: 'get', url: '${ctxRest}/sys/user{/id}'},
+				save: {method: 'post', url: '${ctxRest}/sys/user'}
+			};
+			var resource;
+			new Vue({
+				el:"body",
+				data : {
+					obj : {}
 				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
+				ready: function () {
+					resource = this.$resource(null, {}, actions);
+
+					// 加载数据
+					var id = $("#id").val();
+					if (id) {
+						resource.get({id: id}).then(function (response) {
+							this.obj = response.json();
+						})
+					}
+				},
+				methods: {
+					save : function () {
+						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
+							Vue.$alert("保存成功！");
+						})
 					}
 				}
-			});
+			})
 		});
 	</script>
 </head>
@@ -35,8 +49,8 @@
 	</ol>
 </section>
 
-<form:form id="inputForm" modelAttribute="user" action="${ctx}/sys/user/info" method="post" class="form-horizontal">
-<tags:message content="${message}"/>
+<form id="inputForm" class="form-horizontal">
+<input type="hidden" id="id" value="1">
 <section class="content">
 	<div class="box box-info">
 		<form class="form-horizontal">
@@ -44,73 +58,81 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">归属公司</label>
 					<div class="col-sm-4">
-						<p class="form-control-static">${user.company.name}</p>
+						<p class="form-control-static" v-text="obj.company.name"></p>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">归属部门</label>
 					<div class="col-sm-4">
-						<p class="form-control-static">${user.office.name}</p>
+						<p class="form-control-static" v-text="obj.office.name"></p>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="name" class="col-sm-2 control-label">姓名</label>
+					<label class="col-sm-2 control-label">工号</label>
 					<div class="col-sm-4">
-						<form:input path="name" htmlEscape="false" maxlength="50" class="form-control" placeholder="姓名"/>
+						<p class="form-control-static" v-text="obj.no"></p>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="email" class="col-sm-2 control-label">邮箱</label>
+					<label class="col-sm-2 control-label">姓名</label>
 					<div class="col-sm-4">
-						<form:input path="email" htmlEscape="false" maxlength="50" class="form-control" placeholder="姓名"/>
+						<input type="text" class="form-control" v-model="obj.name"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="phone" class="col-sm-2 control-label">电话</label>
+					<label class="col-sm-2 control-label">邮箱</label>
 					<div class="col-sm-4">
-						<form:input path="phone" htmlEscape="false" maxlength="50" class="form-control" placeholder="姓名"/>
+						<input type="text" class="form-control" v-model="obj.email"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="col-sm-2 control-label">手机</label>
+					<label class="col-sm-2 control-label">电话</label>
 					<div class="col-sm-4">
-						<form:input path="mobile" htmlEscape="false" maxlength="50" class="form-control" placeholder="姓名"/>
+						<input type="text" class="form-control" v-model="obj.phone"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="col-sm-2 control-label">备注</label>
+					<label class="col-sm-2 control-label">手机</label>
 					<div class="col-sm-4">
-						<form:textarea class="form-control" path="remarks" htmlEscape="false" rows="3" maxlength="200"/>
+						<input type="text" class="form-control" v-model="obj.mobile"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="col-sm-2 control-label">用户类型</label>
+					<label class="col-sm-2 control-label">备注</label>
 					<div class="col-sm-4">
-						<p class="form-control-static">${fns:getDictLabel(user.userType, 'sys_user_type', '无')}</p>
+						<textarea type="text" class="form-control" v-model="obj.remarks"></textarea>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="col-sm-2 control-label">用户角色</label>
+					<label class="col-sm-2 control-label">用户类型</label>
 					<div class="col-sm-4">
-						<p class="form-control-static">${user.roleNames}</p>
+						<p class="form-control-static">{{ obj.userType }}</p>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="col-sm-2 control-label">最后登陆</label>
+					<label class="col-sm-2 control-label">用户角色</label>
 					<div class="col-sm-4">
-						<p class="form-control-static">IP: ${user.loginIp}&nbsp;&nbsp;&nbsp;&nbsp;时间：<fmt:formatDate value="${user.loginDate}" type="both" dateStyle="full"/></p>
+						<p class="form-control-static">{{ obj.roleNames }}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">最后登陆</label>
+					<div class="col-sm-4">
+						<p class="form-control-static">IP: {{obj.loginIp}}&nbsp;&nbsp;&nbsp;&nbsp;时间：{{obj.loginDate}}</p>
 					</div>
 				</div>
 			</div>
 			<div class="box-footer">
-				<div class="col-sm-offset-2 col-sm-2">
-					<button type="submit" class="btn btn-primary pull-left">保存</button>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<a class="btn btn-primary" @click="save()">保存</a>
+					</div>
 				</div>
 			</div>
 		</form>
 	</div>
 </section>
 
-</form:form>
+</form>
 </body>
 </html>

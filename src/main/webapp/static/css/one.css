@@ -146,3 +146,13 @@
 .icon-modal-div span :hover {
     color: #000000;
 }
+.modal-dialog-scroll {
+    overflow-y: initial !important;
+}
+.modal-body-scroll {
+    position: relative;
+    padding: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 450px;
+}

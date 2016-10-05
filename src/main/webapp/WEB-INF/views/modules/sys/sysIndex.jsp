@@ -37,8 +37,8 @@
 				<ul id="menu" class="nav navbar-nav navbar-left">
 					<li v-for="system of menu.childList"
 						:class="{ 'active': leftMenu.id == system.id}"
-						@click="loadleftMenu(system)">
-						<a  v-text="system.name"></a>
+						@click="leftMenu = system">
+						<a v-text="system.name"></a>
 					</li>
 				</ul>
 			</div>
@@ -237,7 +237,7 @@
 					</a>
 					<ul class="treeview-menu">
 						<li v-for="menuLevel2 of menuLevel1.childList">
-							<a target="contentIframe" href="${ctx}/{{menuLevel2.href}}"><i :class="menuLevel2.icon"></i> {{ menuLevel2.name }}</a>
+							<a target="contentIframe" href="${ctx}{{menuLevel2.href}}"><i :class="menuLevel2.icon"></i> {{ menuLevel2.name }}</a>
 						</li>
 					</ul>
 				</li>
@@ -355,11 +355,6 @@
 						this.leftMenu = this.menu.childList[0];
 					}
 				});
-			},
-			methods: {
-				loadleftMenu : function (system) {
-					this.leftMenu = system;
-				}
 			}
 		});
 

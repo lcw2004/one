@@ -1,30 +1,35 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
 <%-- Vue alert 组件--%>
+<template id="alert" >
+    <div class="modal" v-show="config.show">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" @click="config.show = false">×</span></button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ config.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @click="config.show = false">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script>
     Vue.component("alert", {
-        template : "#alert",
-        props : {
-            type: {
-                type: String,
-                required: true
-            },
-            title: {
-                type: String,
-                required: true
-            },
-            msg : {
-                type : String,
+        template: "#alert",
+        props: {
+            config: {
+                type: Object,
                 required: true
             }
         }
     });
 </script>
-<template id="alert">
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> {{ title }}</h4>
-        {{ msg }}
-    </div>
-</template>
 <%-- Vue alert 组件 End --%>

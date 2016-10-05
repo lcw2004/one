@@ -89,7 +89,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> implements Serializabl
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -109,7 +109,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> implements Serializabl
 		this.updateBy = updateBy;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
 	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES)
 	@DateBridge(resolution = Resolution.DAY)
 	public Date getUpdateDate() {

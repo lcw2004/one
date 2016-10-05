@@ -7,6 +7,7 @@ package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
@@ -32,11 +33,13 @@ public class Office extends IdEntity<Office> {
 
 	private static final long serialVersionUID = 1L;
 	private Office parent;	// 父级编号
+	private String parentId; // 父级编号
 	private String parentIds; // 所有父级编号
 	private Area area;		// 归属区域
 	private String code; 	// 机构编码
 	private String name; 	// 机构名称
 	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
+	private String typeCN; 	// 机构类型（1：公司；2：部门；3：小组）
 	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码
@@ -56,11 +59,16 @@ public class Office extends IdEntity<Office> {
 		this();
 		this.id = id;
 	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="parent_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@NotNull
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	@Transient
 	public Office getParent() {
 		return parent;
 	}
@@ -180,11 +188,7 @@ public class Office extends IdEntity<Office> {
 		this.code = code;
 	}
 	
-	@OneToMany(mappedBy = "office", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="id") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<User> getUserList() {
 		return userList;
 	}
@@ -193,37 +197,13 @@ public class Office extends IdEntity<Office> {
 		this.userList = userList;
 	}
 
-	@OneToMany(mappedBy = "parent", fetch= FetchType.LAZY)
-	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
-	@OrderBy(value="code") @Fetch(FetchMode.SUBSELECT)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	@Transient
 	public List<Office> getChildList() {
 		return childList;
 	}
 
 	public void setChildList(List<Office> childList) {
 		this.childList = childList;
-	}
-
-	@Transient
-	public static void sortList(List<Office> list, List<Office> sourcelist, String parentId){
-		for (int i=0; i<sourcelist.size(); i++){
-			Office e = sourcelist.get(i);
-			if (e.getParent()!=null && e.getParent().getId()!=null
-					&& e.getParent().getId().equals(parentId)){
-				list.add(e);
-				// 判断是否还有子节点, 有则继续获取子节点
-				for (int j=0; j<sourcelist.size(); j++){
-					Office child = sourcelist.get(j);
-					if (child.getParent()!=null && child.getParent().getId()!=null
-							&& child.getParent().getId().equals(e.getId())){
-						sortList(list, sourcelist, e.getId());
-						break;
-					}
-				}
-			}
-		}
 	}
 
 	@Transient
@@ -235,5 +215,13 @@ public class Office extends IdEntity<Office> {
 	public static boolean isRoot(String id){
 		return id != null && id.equals("1");
 	}
-	
+
+	@Transient
+	public String getTypeCN() {
+		return DictUtils.getDictLabel(type, "sys_office_type", "无");
+	}
+
+	public void setTypeCN(String typeCN) {
+		this.typeCN = typeCN;
+	}
 }

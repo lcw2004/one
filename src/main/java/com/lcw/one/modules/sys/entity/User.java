@@ -65,7 +65,6 @@ public class User extends IdEntity<User> {
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JsonIgnore
 	@NotNull(message="归属公司不能为空")
 	@ExcelField(title="归属公司", align=2, sort=20)
 	public Office getCompany() {
@@ -79,7 +78,6 @@ public class User extends IdEntity<User> {
 	@ManyToOne
 	@JoinColumn(name="office_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JsonIgnore
 	@NotNull(message="归属部门不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {
@@ -192,7 +190,7 @@ public class User extends IdEntity<User> {
 		this.loginIp = loginIp;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
 	@ExcelField(title="最后登录日期", type=1, align=1, sort=110)
 	public Date getLoginDate() {
 		return loginDate;

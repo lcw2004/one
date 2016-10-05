@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			var actions = {
-				list: {method: 'get', url: '${ctxRest}/sys/dict?pageNo={pageNo}&type={type}&description={description}'},
+				list: {method: 'get', url: '${ctxRest}/sys/dict'},
 				listType: {method: 'get', url: '${ctxRest}/sys/dict/type'},
 				delete: {method: 'delete', url: '${ctxRest}/sys/dict{/id}'}
 			};
@@ -18,7 +18,7 @@
 			new Vue({
 				el : "body",
 				data : {
-					param: {pageNo: 0},
+					param: {pageNo: 0, pageSize: 10},
 					page : {},
 					dictTypeList : []
 				},
@@ -34,22 +34,18 @@
 					})
 				},
 				methods: {
-					setDictType: function (type) {
-						this.param.type = type;
-					},
 					query : function () {
 						resource.list(this.param).then(function (response) {
 							this.page = response.json();
 						});
 					},
 					deleteData : function (id) {
-						myConfirm("", "确认删除吗？", function () {
-							alert(123);
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.query();
+								Vue.$alert("删除成功！");
+							});
 						});
-
-//						resource.delete({id : id}).then(function (response) {
-//							alert("删除成功！");
-//						});
 					}
 				},
 				watch: {
@@ -111,7 +107,7 @@
 							</thead>
 							<tbody>
 							<tr v-for="obj of page.list">
-								<td><a @click="setDictType(obj.type)"><span v-text="obj.type"></span></a></td>
+								<td><a @click="param.type = obj.type"><span v-text="obj.type"></span></a></td>
 								<td><span v-text="obj.description"></span></td>
 								<td><span v-text="obj.label"></span></td>
 								<td><span v-text="obj.value"></span></td>
@@ -124,13 +120,11 @@
 							</tbody>
 						</table>
 
-						<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
+						<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-
-	<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
