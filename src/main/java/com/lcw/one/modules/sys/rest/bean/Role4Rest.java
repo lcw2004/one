@@ -7,6 +7,7 @@ public class Role4Rest {
 
     private String id;
     private String name;
+    private String dataScope;
     private Office office;
 
     public Role4Rest() {
@@ -15,6 +16,7 @@ public class Role4Rest {
     public Role4Rest(Role role) {
         this.id = role.getId();
         this.name = role.getName();
+        this.dataScope = role.getDataScope();
         this.office = role.getOffice();
     }
 
@@ -42,4 +44,11 @@ public class Role4Rest {
         this.office = office;
     }
 
+    public String getDataScope() {
+        return dataScope;
+    }
+
+    public void setDataScope(String dataScope) {
+        this.dataScope = dataScope;
+    }
 }
