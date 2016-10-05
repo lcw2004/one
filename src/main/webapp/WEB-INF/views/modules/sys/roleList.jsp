@@ -1,4 +1,4 @@
-]<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
@@ -16,7 +16,7 @@
 			new Vue({
 				el : "body",
 				data : {
-					param: {pageNo: 0},
+					param: {pageNo: 0, pageSize: 10},
 					page : {}
 				},
 				ready: function () {
@@ -32,8 +32,11 @@
 						});
 					},
 					deleteData : function (id) {
-						resource.delete({id : id}).then(function (response) {
-							alert("删除成功！");
+						Vue.$confirm("确认删除吗？", function() {
+							resource.delete({id : id}).then(function (response) {
+								this.query();
+								Vue.$alert("删除成功！");
+							});
 						});
 					}
 				},
@@ -67,8 +70,12 @@
 					<div class="box-header">
 						<form class="form-inline">
 							<div class="col-md-3">
+								<label class="control-label">名称</label>
+								<input class="form-control inline-block" type="text" placeholder="姓名" v-model="param.name">
+							</div>
+							<div class="col-md-3">
 								<a class="btn btn-primary" @click="query()" >查询</a>
-								<a class="btn btn-primary" href="${ctx}/sys/dict/form">添加</a>
+								<a class="btn btn-primary" href="${ctx}/sys/role/form">添加</a>
 							</div>
 						</form>
 					</div>
@@ -84,11 +91,11 @@
 							</thead>
 							<tbody>
 							<tr v-for="obj of page.list">
-								<td><span v-text="obj.label"></span></td>
-								<td><span v-text="obj.value"></span></td>
+								<td><span v-text="obj.name"></span></td>
+								<td><span v-text="obj.office.name"></span></td>
 								<td><span v-text="obj.sort"></span></td>
 								<td>
-									<a href="${ctx}/sys/dict/form?id={{obj.id}}">修改</a>
+									<a href="${ctx}/sys/role/form?id={{obj.id}}">修改</a>
 									<a @click="deleteData(obj.id)">删除</a>
 								</td>
 							</tr>

@@ -2,6 +2,7 @@ package com.lcw.one.modules.sys.rest;
 
 import com.lcw.one.common.persistence.Page;
 import com.lcw.one.modules.sys.entity.Role;
+import com.lcw.one.modules.sys.rest.bean.BeanUtils;
 import com.lcw.one.modules.sys.service.RoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class RoleRestController {
     @RequiresPermissions("sys:role:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public Page list(HttpServletRequest request, HttpServletResponse response) {
-        Page<Role> page = roleService.find(new Page<Role>(request, response));
+        Page page = roleService.find(new Page<Role>(request, response));
+        page.setList(BeanUtils.to(page.getList()));
         return page;
     }
 
