@@ -10,6 +10,7 @@
 		$(document).ready(function() {
 			var actions = {
 				get: {method: 'get', url: '${ctxRest}/sys/user{/id}'},
+				getRole: {method: 'get', url: '${ctxRest}/sys/role'},
 				save: {method: 'post', url: '${ctxRest}/sys/user'}
 			};
 			var resource;
@@ -17,6 +18,7 @@
 				el:"body",
 				data : {
 					obj : {},
+					roles : {},
 
 					// 模态窗属性
 					companyTreeModalConfig: {
@@ -34,6 +36,11 @@
 							this.obj = response.json();
 						})
 					}
+
+					// 加载角色
+					resource.getRole().then(function (response) {
+						this.roles = response.json();
+					})
 				},
 				methods: {
 					save : function () {
@@ -108,6 +115,16 @@
 						<label class="col-sm-2 control-label">手机</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" v-model="obj.mobile"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">角色</label>
+						<div class="col-sm-8">
+							<div class="checkbox">
+								<label v-for="role of roles.list">
+									<input type="checkbox" :value="role.id" v-model="obj.roleIdList"> {{ role.name }} &nbsp;
+								</label>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">

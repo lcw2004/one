@@ -216,24 +216,16 @@ public class User extends IdEntity<User> {
 		this.roleList = roleList;
 	}
 
+	private List<String> roleIdList = Lists.newArrayList();
+
 	@Transient
-	@JsonIgnore
 	public List<String> getRoleIdList() {
-		List<String> roleIdList = Lists.newArrayList();
-		for (Role role : roleList) {
-			roleIdList.add(role.getId());
-		}
 		return roleIdList;
 	}
 
 	@Transient
 	public void setRoleIdList(List<String> roleIdList) {
-		roleList = Lists.newArrayList();
-		for (String roleId : roleIdList) {
-			Role role = new Role();
-			role.setId(roleId);
-			roleList.add(role);
-		}
+		this.roleIdList = roleIdList;
 	}
 	
 	/**

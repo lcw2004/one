@@ -1,7 +1,9 @@
 package com.lcw.one.modules.sys.rest;
 
+import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.web.ResponseMessage;
+import com.lcw.one.modules.sys.entity.Role;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.service.SystemService;
 import com.lcw.one.modules.sys.utils.UserUtils;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "${restPath}/sys/user")
@@ -38,6 +41,13 @@ public class UserRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public User get(@PathVariable String id) {
         User user = systemService.getUser(id);
+
+        List<String> roleIdList = Lists.newArrayList();
+        for (Role role : user.getRoleList()) {
+            roleIdList.add(role.getId());
+        }
+        user.setRoleIdList(roleIdList);
+
         return user;
     }
 
@@ -50,8 +60,20 @@ public class UserRestController {
     @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@RequestBody User user) {
+        // 保存用户基础信息
         User userInDb = systemService.getUser(user.getId());
         user.setPassword(userInDb.getPassword());
+
+        // 保存用户角色信息
+        List<Role> roleList = Lists.newArrayList();
+        List<String> roleIdList = user.getRoleIdList();
+        for (Role r : systemService.findAllRole()) {
+            if (roleIdList.contains(r.getId())) {
+                roleList.add(r);
+            }
+        }
+        user.setRoleList(roleList);
+
         systemService.saveUser(user);
     }
 
