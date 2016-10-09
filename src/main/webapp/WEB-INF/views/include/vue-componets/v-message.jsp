@@ -11,7 +11,8 @@
         data: {
             alertConfig: {
                 show: false,
-                message: String
+                message: String,
+                callback: Function
             },
             confirmConfig: {
                 show: false,
@@ -21,9 +22,10 @@
         }
     });
 
-    VMessage.alert = function (message) {
+    VMessage.alert = function (message, callback) {
         vueMessage.alertConfig.message = message;
         vueMessage.alertConfig.show = true;
+        vueMessage.alertConfig.callback = callback;
     };
     VMessage.confirm = function (message, callback) {
         vueMessage.confirmConfig.message = message;

@@ -30,7 +30,14 @@
                             if(result.code != "0000") {
                                 Vue.$alert(result.desc);
                             } else {
-                                Vue.$alert("修改成功！");
+                                Vue.$alert(result.desc, function () {
+                                    // 修改密码成功，退出重新登录
+                                    if(window.parent) {
+                                        window.parent.location.href = "${ctx}/logout";
+                                    } else {
+                                        window.location.href = "${ctx}/logout";
+                                    }
+                                });
                             }
                         })
                     }

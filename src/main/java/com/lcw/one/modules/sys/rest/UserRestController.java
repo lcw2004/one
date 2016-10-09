@@ -106,6 +106,7 @@ public class UserRestController {
         }
 
         systemService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
-        return ResponseMessage.SUCCESS;
+        UserUtils.logout();
+        return new ResponseMessage("修改密码成功，请重新登录");
     }
 }

@@ -163,9 +163,14 @@ public class UserController extends BaseController {
 
 	@RequiresUser
 	@RequestMapping("info")
-	public String info(User user, Model model) {
+	public String info() {
 		return "modules/sys/userInfo";
 	}
 
+	@RequiresUser
+	@RequestMapping("modifyPwd")
+	public String modifyPwd() {
+		return "modules/sys/userModifyPwd";
+	}
 
 }

@@ -14,7 +14,7 @@
                     <p>{{ config.message }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="config.show = false">确定</button>
+                    <button type="button" class="btn btn-primary" @click="okCallback()">确定</button>
                 </div>
             </div>
         </div>
@@ -28,6 +28,12 @@
             config: {
                 type: Object,
                 required: true
+            }
+        },
+        methods: {
+            okCallback : function () {
+                this.config.show = false;
+                this.config.callback();
             }
         }
     });

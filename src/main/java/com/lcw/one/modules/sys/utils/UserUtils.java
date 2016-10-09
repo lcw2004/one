@@ -70,17 +70,21 @@ public class UserUtils extends BaseService {
 		}
 		if (user == null){
 			user = new User();
-			try{
-				SecurityUtils.getSubject().logout();
-			}catch (UnavailableSecurityManagerException e) {
-				
-			}catch (InvalidSessionException e){
-				
-			}
+			logout();
 		}
 		return user;
 	}
-	
+
+	public static void logout() {
+		try{
+            SecurityUtils.getSubject().logout();
+        }catch (UnavailableSecurityManagerException e) {
+			e.printStackTrace();
+        }catch (InvalidSessionException e){
+			e.printStackTrace();
+        }
+	}
+
 	public static User getUser(boolean isRefresh){
 		if (isRefresh){
 			removeCache(CACHE_USER);
