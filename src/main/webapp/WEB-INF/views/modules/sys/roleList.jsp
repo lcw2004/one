@@ -108,7 +108,5 @@
 			</div>
 		</div>
 	</section>
-
-	<%@include file="/WEB-INF/views/include/component.jsp" %>
 </body>
 </html>
