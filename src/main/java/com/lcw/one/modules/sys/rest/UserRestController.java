@@ -6,6 +6,7 @@ import com.lcw.one.common.web.ResponseMessage;
 import com.lcw.one.modules.sys.entity.Role;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.service.SystemService;
+import com.lcw.one.modules.sys.service.UserService;
 import com.lcw.one.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,9 +25,12 @@ public class UserRestController {
     @Autowired
     private SystemService systemService;
 
+    @Autowired
+    private UserService userService;
+
     @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public Page<User> listAsTree(String name, HttpServletRequest request, HttpServletResponse response) {
+    public Page<User> list(String name, HttpServletRequest request, HttpServletResponse response) {
         User user = new User();
         user.setName(name);
         Page<User> page = systemService.findUser(new Page<User>(request, response), user);
@@ -58,10 +62,10 @@ public class UserRestController {
     }
 
     @RequiresPermissions("sys:user:edit")
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-    public void save(@RequestBody User user) {
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json")
+    public void update(@RequestBody User user) {
         // 保存用户基础信息
-        User userInDb = systemService.getUser(user.getId());
+        User userInDb = userService.get(user.getId());
         user.setPassword(userInDb.getPassword());
 
         // 保存用户角色信息
@@ -74,7 +78,25 @@ public class UserRestController {
         }
         user.setRoleList(roleList);
 
-        systemService.saveUser(user);
+        userService.save(user);
+    }
+
+    @RequiresPermissions("sys:user:edit")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
+    public void save(@RequestBody User user) {
+        user.setPassword(SystemService.entryptPassword("123456"));
+
+        // 保存用户角色信息
+        List<Role> roleList = Lists.newArrayList();
+        List<String> roleIdList = user.getRoleIdList();
+        for (Role r : systemService.findAllRole()) {
+            if (roleIdList.contains(r.getId())) {
+                roleList.add(r);
+            }
+        }
+        user.setRoleList(roleList);
+
+        userService.save(user);
     }
 
     /**

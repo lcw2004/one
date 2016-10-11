@@ -11,28 +11,35 @@
 			var actions = {
 				get: {method: 'get', url: '${ctxRest}/sys/user{/id}'},
 				getRole: {method: 'get', url: '${ctxRest}/sys/role'},
-				save: {method: 'post', url: '${ctxRest}/sys/user'}
+				save: {method: 'post', url: '${ctxRest}/sys/user'},
+				update: {method: 'put', url: '${ctxRest}/sys/user'}
 			};
 			var resource;
 			new Vue({
 				el:"body",
 				data : {
-					obj : {},
+					id : "${id}",
+					obj : {
+						roleIdList: []
+					},
 					roles : {},
 
 					// 模态窗属性
 					companyTreeModalConfig: {
 						show : false,
 						title : "选择所属机构"
+					},
+					officeTreeModalConfig: {
+						show : false,
+						title : "选择所属部门"
 					}
 				},
 				ready: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 加载数据
-					var id = $("#id").val();
-					if (id) {
-						resource.get({id: id}).then(function (response) {
+					if (this.id) {
+						resource.get({id: this.id}).then(function (response) {
 							this.obj = response.json();
 						})
 					}
@@ -44,9 +51,15 @@
 				},
 				methods: {
 					save : function () {
-						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							Vue.$alert("保存成功！");
-						})
+						if (this.id) {
+							resource.update(null, JSON.stringify(this.obj)).then(function (response) {
+								Vue.$alert("修改成功！");
+							})
+						} else {
+							resource.save(null, JSON.stringify(this.obj)).then(function (response) {
+								Vue.$alert("保存成功！");
+							})
+						}
 					}
 				}
 			})
@@ -64,7 +77,6 @@
 	</ol>
 </section>
 <form id="inputForm" class="form-horizontal">
-	<input type="hidden" id="id" value="${id}">
 	<section class="content">
 		<div class="box box-info">
 			<form class="form-horizontal">
@@ -79,6 +91,18 @@
 								</span>
 							</div>
 							<office-tree-modal :config.sync="companyTreeModalConfig" :value.sync="obj.company"></office-tree-modal>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">归属部门</label>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<input type="text" class="form-control" v-model="obj.office.name"/>
+								<span class="input-group-btn">
+									<button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
+								</span>
+							</div>
+							<office-tree-modal :config.sync="officeTreeModalConfig" :value.sync="obj.office"></office-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">
