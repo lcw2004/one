@@ -19,6 +19,7 @@
 				data : {
 					obj : {},
 					menu: {},
+					value: [],
 
 					// 模态窗属性
 					companyTreeModalConfig: {
@@ -103,10 +104,12 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">角色授权</label>
 						<div class="col-sm-4">
-							<tree :element="menu" :value.sync="selected"></tree>
+							<tree :element="menu" :value.sync="value"></tree>
 						</div>
 					</div>
-
+					<div>
+						{{ value | json }}
+					</div>
 				</div>
 				<div class="box-footer">
 					<div class="form-group">

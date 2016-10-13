@@ -23,7 +23,7 @@
              * 选中的项
              */
             value: {
-                type: Object,
+                type: Array,
                 require: true
             }
         },
@@ -33,7 +33,7 @@
                  * 展开的菜单的级数，默认展开三级
                  */
                 isExpanded: this.level <= 2,
-                selected : true
+                selected : false
             }
         },
         methods: {
@@ -58,14 +58,27 @@
             isFolder: function () {
                 return this.element.childList != null && this.element.childList.length > 0;
             }
+        },
+        watch: {
+            value: function () {
+                if(this.selected) {
+                    this.value.push(this.element.id);
+
+                    addChildTo(this.element.childList, this.value);
+                } else {
+                    remove(this.value, this.element.id);
+                }
+            }
         }
     });
 
-    function equels(obj1, obj2) {
-        if(obj1 != null && obj2 != null) {
-            return obj1.id == obj2.id;
-        } else {
-            return false;
+    function addChildTo(childList, arr) {
+        if(childList) {
+            for(var i = 0; i < childList.length; i++) {
+                var elmt = childList[i];
+                arr.push(elmt.id);
+                addChildTo(elmt.childList, arr);
+            }
         }
     }
 </script>
@@ -74,7 +87,7 @@
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
 
-        <input type="checkbox" v-model="selected">
+        <input type="checkbox" v-model="value" :value="element.id">
 
         <span @click="toggole()" v-text="element.name"></span>
         <a @click="select()">选中</a>

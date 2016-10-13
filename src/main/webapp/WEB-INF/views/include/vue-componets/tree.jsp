@@ -16,7 +16,7 @@
              * 选中的项
              */
             value: {
-                type: Object,
+                type: Array,
                 require: true
             }
         },
@@ -38,6 +38,14 @@
             return obj1.id == obj2.id;
         } else {
             return false;
+        }
+    }
+
+    function remove(arr, item) {
+        for(var i = arr.length; i--;) {
+            if(arr[i] === item) {
+                arr.splice(i, 1);
+            }
         }
     }
 </script>
