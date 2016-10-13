@@ -32,7 +32,8 @@
                 /**
                  * 展开的菜单的级数，默认展开三级
                  */
-                isExpanded: this.level <= 2
+                isExpanded: this.level <= 2,
+                selected : true
             }
         },
         methods: {
@@ -59,11 +60,22 @@
             }
         }
     });
+
+    function equels(obj1, obj2) {
+        if(obj1 != null && obj2 != null) {
+            return obj1.id == obj2.id;
+        } else {
+            return false;
+        }
+    }
 </script>
 <template id="tree-element">
     <div>
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
+
+        <input type="checkbox" v-model="selected">
+
         <span @click="toggole()" v-text="element.name"></span>
         <a @click="select()">选中</a>
     </div>

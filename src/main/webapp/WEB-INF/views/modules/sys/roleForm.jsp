@@ -10,13 +10,15 @@
 		$(document).ready(function() {
 			var actions = {
 				get: {method: 'get', url: '${ctxRest}/sys/role{/id}'},
-				save: {method: 'post', url: '${ctxRest}/sys/role'}
+				save: {method: 'post', url: '${ctxRest}/sys/role'},
+				getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}
 			};
 			var resource;
 			new Vue({
 				el:"body",
 				data : {
 					obj : {},
+					menu: {},
 
 					// 模态窗属性
 					companyTreeModalConfig: {
@@ -34,12 +36,19 @@
 							this.obj = response.json();
 						})
 					}
+
+					this.loadTree();
 				},
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
 							Vue.$alert("保存成功！");
 						})
+					},
+					loadTree: function () {
+						resource.getMenuTree().then(function (response) {
+							this.menu = response.json();
+						});
 					}
 				}
 			})
@@ -94,8 +103,10 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">角色授权</label>
 						<div class="col-sm-4">
+							<tree :element="menu" :value.sync="selected"></tree>
 						</div>
 					</div>
+
 				</div>
 				<div class="box-footer">
 					<div class="form-group">
