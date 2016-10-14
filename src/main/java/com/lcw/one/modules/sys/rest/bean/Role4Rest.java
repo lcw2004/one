@@ -3,12 +3,15 @@ package com.lcw.one.modules.sys.rest.bean;
 import com.lcw.one.modules.sys.entity.Office;
 import com.lcw.one.modules.sys.entity.Role;
 
+import java.util.List;
+
 public class Role4Rest {
 
     private String id;
     private String name;
     private String dataScope;
     private Office office;
+    private List<String> menuIdList;
 
     public Role4Rest() {
     }
@@ -18,6 +21,7 @@ public class Role4Rest {
         this.name = role.getName();
         this.dataScope = role.getDataScope();
         this.office = role.getOffice();
+        this.menuIdList = role.getMenuIdList();
     }
 
     public String getId() {
@@ -50,5 +54,13 @@ public class Role4Rest {
 
     public void setDataScope(String dataScope) {
         this.dataScope = dataScope;
+    }
+
+    public List<String> getMenuIdList() {
+        return menuIdList;
+    }
+
+    public void setMenuIdList(List<String> menuIdList) {
+        this.menuIdList = menuIdList;
     }
 }

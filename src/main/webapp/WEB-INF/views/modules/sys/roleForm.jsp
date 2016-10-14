@@ -49,6 +49,20 @@
 					loadTree: function () {
 						resource.getMenuTree().then(function (response) {
 							this.menu = response.json();
+
+							var setPropOfElement = function (element, isSelected) {
+								Vue.set(element, "isSelected", isSelected);
+
+								var childList = element.childList;
+								if (childList) {
+									for (var i = 0; i < childList.length; i++) {
+										var child = childList[i];
+										setPropOfElement(child, isSelected);
+									}
+								}
+							};
+
+							setPropOfElement(this.menu, true);
 						});
 					}
 				}

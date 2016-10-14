@@ -33,7 +33,7 @@
                  * 展开的菜单的级数，默认展开三级
                  */
                 isExpanded: this.level <= 2,
-                selected : false
+                selected : true
             }
         },
         methods: {
@@ -60,35 +60,27 @@
             }
         },
         watch: {
-            value: function () {
-                if(this.selected) {
-                    this.value.push(this.element.id);
-
-                    addChildTo(this.element.childList, this.value);
-                } else {
-                    remove(this.value, this.element.id);
-                }
+            "element.isSelected": {
+                handler: function () {
+                    var childList = this.element.childList;
+                    if (childList) {
+                        for (var i = 0; i < childList.length; i++) {
+                            var child = childList[i];
+                            child.isSelected = this.element.isSelected;
+                        }
+                    }
+                },
+                deep : true
             }
         }
     });
-
-    function addChildTo(childList, arr) {
-        if(childList) {
-            for(var i = 0; i < childList.length; i++) {
-                var elmt = childList[i];
-                arr.push(elmt.id);
-                addChildTo(elmt.childList, arr);
-            }
-        }
-    }
 </script>
 <template id="tree-element">
     <div>
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
 
-        <input type="checkbox" v-model="value" :value="element.id">
-
+        <input type="checkbox" v-model="element.isSelected">
         <span @click="toggole()" v-text="element.name"></span>
         <a @click="select()">选中</a>
     </div>

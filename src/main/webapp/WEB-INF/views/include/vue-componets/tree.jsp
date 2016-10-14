@@ -20,34 +20,40 @@
                 require: true
             }
         },
-        data: function () {
-            return {
-
-            }
+        ready: function () {
+            console.log(this.element);
         },
         methods: {
+            getSelectedValue: function () {
+                var self = this;
+                self.value = [];
+                var getValueOfElement = function (element) {
+                    if(element.isSelected) {
+                        self.value.push(element.id);
+                    }
 
+                    var childList = element.childList;
+                    if (childList) {
+                        for (var i = 0; i < childList.length; i++) {
+                            var child = childList[i];
+                            getValueOfElement(child);
+                        }
+                    }
+                };
+                getValueOfElement(self.element);
+            }
         },
-        computed: {
-
+        watch: {
+            "element": {
+                handler: function () {
+                    this.getSelectedValue();
+                },
+                deep :true
+            }
         }
     });
 
-    function equels(obj1, obj2) {
-        if(obj1 != null && obj2 != null) {
-            return obj1.id == obj2.id;
-        } else {
-            return false;
-        }
-    }
 
-    function remove(arr, item) {
-        for(var i = arr.length; i--;) {
-            if(arr[i] === item) {
-                arr.splice(i, 1);
-            }
-        }
-    }
 </script>
 <template id="tree">
     <tree-element :element="element" :level="1" :value.sync="value"></tree-element>

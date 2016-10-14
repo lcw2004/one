@@ -23,7 +23,9 @@ public class RoleService {
     }
 
     public Role get(String id) {
-        return roleDao.get(id);
+        Role role = roleDao.get(id);
+        role.getMenuIdList();
+        return role;
     }
 
     public List<Role> findAll() {
