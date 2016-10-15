@@ -19,7 +19,6 @@
 				data : {
 					obj : {},
 					menu: {},
-					value: [],
 
 					// 模态窗属性
 					companyTreeModalConfig: {
@@ -31,16 +30,17 @@
 					resource = this.$resource(null, {}, actions);
 
 					// 加载数据
-					var id = $("#id").val();
-					if (id) {
-						resource.get({id: id}).then(function (response) {
-							this.obj = response.json();
-						})
-					}
-
 					this.loadTree();
 				},
 				methods: {
+					loadData: function () {
+						var id = $("#id").val();
+						if (id) {
+							resource.get({id: id}).then(function (response) {
+								this.obj = response.json();
+							})
+						}
+					},
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
 							Vue.$alert("保存成功！");
@@ -49,25 +49,9 @@
 					loadTree: function () {
 						resource.getMenuTree().then(function (response) {
 							this.menu = response.json();
-							var menuIdList = this.obj.menuIdList;
-
-							var setPropOfElement = function (element) {
-								var isSelected = $.inArray(element.id, menuIdList) > 0;
-								Vue.set(element, "isSelected", isSelected);
-
-								var childList = element.childList;
-								if (childList) {
-									for (var i = 0; i < childList.length; i++) {
-										var child = childList[i];
-										setPropOfElement(child);
-									}
-								}
-							};
-
-							setPropOfElement(this.menu, true);
+							this.loadData();
 						});
-					}
-				}
+					}}
 			})
 		});
 	</script>
@@ -122,9 +106,6 @@
 						<div class="col-sm-4">
 							<tree :element="menu" :value.sync="obj.menuIdList"></tree>
 						</div>
-					</div>
-					<div>
-						{{ obj | json }}
 					</div>
 				</div>
 				<div class="box-footer">
