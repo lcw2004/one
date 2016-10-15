@@ -24,10 +24,13 @@
             console.log(this.element);
         },
         methods: {
-            getSelectedValue: function () {
+            /**
+             * 遍历所有的节点，获取选中节点的值
+             */
+            getValue: function () {
                 var self = this;
                 self.value = [];
-                var getValueOfElement = function (element) {
+                var getValueRecursion = function (element) {
                     if(element.isSelected) {
                         self.value.push(element.id);
                     }
@@ -35,18 +38,20 @@
                     var childList = element.childList;
                     if (childList) {
                         for (var i = 0; i < childList.length; i++) {
-                            var child = childList[i];
-                            getValueOfElement(child);
+                            getValueRecursion(childList[i]);
                         }
                     }
                 };
-                getValueOfElement(self.element);
+                getValueRecursion(self.element);
             }
         },
         watch: {
+            /**
+             * 修改选中状态的时候自动修改Value的值
+             */
             "element": {
                 handler: function () {
-                    this.getSelectedValue();
+                     this.getValue();
                 },
                 deep :true
             }

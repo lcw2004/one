@@ -49,15 +49,17 @@
 					loadTree: function () {
 						resource.getMenuTree().then(function (response) {
 							this.menu = response.json();
+							var menuIdList = this.obj.menuIdList;
 
-							var setPropOfElement = function (element, isSelected) {
+							var setPropOfElement = function (element) {
+								var isSelected = $.inArray(element.id, menuIdList) > 0;
 								Vue.set(element, "isSelected", isSelected);
 
 								var childList = element.childList;
 								if (childList) {
 									for (var i = 0; i < childList.length; i++) {
 										var child = childList[i];
-										setPropOfElement(child, isSelected);
+										setPropOfElement(child);
 									}
 								}
 							};
@@ -118,11 +120,11 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">角色授权</label>
 						<div class="col-sm-4">
-							<tree :element="menu" :value.sync="value"></tree>
+							<tree :element="menu" :value.sync="obj.menuIdList"></tree>
 						</div>
 					</div>
 					<div>
-						{{ value | json }}
+						{{ obj | json }}
 					</div>
 				</div>
 				<div class="box-footer">

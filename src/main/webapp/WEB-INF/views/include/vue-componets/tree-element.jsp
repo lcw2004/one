@@ -48,6 +48,24 @@
              */
             select: function () {
                 this.value = this.element;
+            },
+            /**
+             * 处理复选框选择事件，修改状态之后递归修改复选框的状态
+             */
+            handlerSelectChange: function () {
+                var setSelectRecursion = function (element, isSelected) {
+                    var childList = element.childList;
+
+                    if (childList) {
+                        for (var i = 0; i < childList.length; i++) {
+                            var child = childList[i];
+                            child.isSelected = isSelected;
+                            setSelectRecursion(child, isSelected);
+                        }
+                    }
+                };
+
+                setSelectRecursion(this.element, this.element.isSelected);
             }
         },
         computed: {
@@ -58,20 +76,6 @@
             isFolder: function () {
                 return this.element.childList != null && this.element.childList.length > 0;
             }
-        },
-        watch: {
-            "element.isSelected": {
-                handler: function () {
-                    var childList = this.element.childList;
-                    if (childList) {
-                        for (var i = 0; i < childList.length; i++) {
-                            var child = childList[i];
-                            child.isSelected = this.element.isSelected;
-                        }
-                    }
-                },
-                deep : true
-            }
         }
     });
 </script>
@@ -79,8 +83,7 @@
     <div>
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
-
-        <input type="checkbox" v-model="element.isSelected">
+        <input type="checkbox" v-model="element.isSelected" @change="handlerSelectChange()">
         <span @click="toggole()" v-text="element.name"></span>
         <a @click="select()">选中</a>
     </div>
