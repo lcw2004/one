@@ -76,12 +76,12 @@
 						<label class="col-sm-2 control-label">归属机构</label>
 						<div class="col-sm-4">
 							<div class="input-group">
-								<input type="text" class="form-control" v-model="obj.company.name"/>
+								<input type="text" class="form-control" v-model="obj.office.name"/>
 								<span class="input-group-btn">
 									<button class="btn btn-info" type="button" @click="companyTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<office-tree-modal :config.sync="companyTreeModalConfig" :value.sync="obj.company"></office-tree-modal>
+							<office-tree-modal :config.sync="companyTreeModalConfig" :value.sync="obj.office"></office-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">

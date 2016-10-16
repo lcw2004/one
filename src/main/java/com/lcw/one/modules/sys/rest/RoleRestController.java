@@ -44,7 +44,12 @@ public class RoleRestController {
     public Role4Rest get(@PathVariable String id) {
         Role role = roleService.get(id);
         role.getOffice();
-        return new Role4Rest(role);
+        role.getMenuIdList();
+
+        Role4Rest role4Rest = new Role4Rest(role);
+        role4Rest.setOffice(role.getOffice());
+        role4Rest.setMenuIdList(role.getMenuIdList());
+        return role4Rest;
     }
 
     @RequiresPermissions("sys:role:edit")

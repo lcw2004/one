@@ -21,7 +21,6 @@ public class Role4Rest {
         this.name = role.getName();
         this.dataScope = role.getDataScope();
         this.office = role.getOffice();
-        this.menuIdList = role.getMenuIdList();
     }
 
     public String getId() {

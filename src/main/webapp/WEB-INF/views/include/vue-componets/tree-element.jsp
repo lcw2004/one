@@ -80,8 +80,8 @@
 </script>
 <template id="tree-element">
     <div>
-        <input type="checkbox" v-show='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
-        <input type="radio" v-show='selectType == "radio"' v-model="value" :value="element">
+        <input type="checkbox" v-if='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
+        <input type="radio" v-if='selectType == "radio"' v-model="value" :value="element">
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
         <span @click="toggole()" v-text="element.name"></span>
