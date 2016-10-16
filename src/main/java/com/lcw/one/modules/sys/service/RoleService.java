@@ -5,6 +5,9 @@ import com.lcw.one.modules.sys.dao.RoleDao;
 import com.lcw.one.modules.sys.entity.Dict;
 import com.lcw.one.modules.sys.entity.Role;
 import com.lcw.one.modules.sys.utils.UserUtils;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +22,10 @@ public class RoleService {
     private RoleDao roleDao;
 
     public Page<Role> find(Page<Role> page) {
-        return roleDao.find(page);
+        DetachedCriteria dc = roleDao.createDetachedCriteria();
+        dc.add(Restrictions.eq(Dict.FIELD_DEL_FLAG, Dict.DEL_FLAG_NORMAL));
+        dc.addOrder(Order.desc("createDate"));
+        return roleDao.find(page, dc);
     }
 
     public Role get(String id) {
