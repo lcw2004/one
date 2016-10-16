@@ -25,12 +25,22 @@
                 type: String
             }
         },
-        data: function () {
-            return {
-                isInited: false
-            }
+        ready: function () {
+            this.registerInitEvent();
         },
         methods: {
+            /**
+             * 注册init事件，供父组件调用，根据value值修改复选框的状态
+             */
+            registerInitEvent: function () {
+                var self = this;
+                if(self.selectType == 'checkbox') {
+                    this.$on("init", function () {
+                        self.initSelectValueByMenuIdList();
+                    })
+                }
+            },
+
             /**
              * 遍历所有的节点，获取选中节点的值
              */
@@ -53,14 +63,10 @@
             },
 
             /**
-             * 第一次传入value值的时候，需要根据value值初始化复选框的状态
+             * 根据value值初始化复选框的状态
              */
-            setValue: function () {
+            initSelectValueByMenuIdList: function () {
                 var menuIdList = this.value;
-                // 如果值未传入或者已经初始化过状态，则不再初始化
-                if(menuIdList == null || menuIdList.length == 0 ||this.isInited) {
-                    return;
-                }
 
                 // 遍历检查菜单ID，是否存在于value中，如果在，则改为选中状态
                 var setPropOfElement = function (element) {
@@ -76,7 +82,27 @@
                 };
 
                 setPropOfElement(this.element);
-                this.isInited = true;
+            },
+
+            /**
+             * 判断element中是否包含isSelected属性，如果不包含，则初始化，默认值为false
+             */
+            initDefaultSelectValue: function () {
+                var setPropOfElement = function (element, isSelected) {
+                    Vue.set(element, "isSelected", isSelected);
+
+                    var childList = element.childList;
+                    if (childList) {
+                        for (var i = 0; i < childList.length; i++) {
+                            setPropOfElement(childList[i], isSelected);
+                        }
+                    }
+                };
+
+                var isSelected = this.$get("element.isSelected");
+                if (isSelected == undefined) {
+                    setPropOfElement(this.element, false);
+                }
             }
         },
         watch: {
@@ -86,20 +112,11 @@
             "element": {
                 handler: function () {
                     if(this.selectType == 'checkbox') {
+                        this.initDefaultSelectValue();
                         this.getValue();
                     }
                 },
                 deep :true
-            },
-            /**
-             * 根据传入的Value值，初始化复选框状态，即：value-> 选框状态
-             */
-            "value": {
-                handler: function () {
-                    if(this.selectType == 'checkbox') {
-                        this.setValue();
-                    }
-                }
             }
         }
     });

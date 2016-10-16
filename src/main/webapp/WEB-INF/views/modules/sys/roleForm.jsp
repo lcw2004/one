@@ -38,9 +38,16 @@
 						if (id) {
 							resource.get({id: id}).then(function (response) {
 								this.obj = response.json();
+
+								// TODO 调用tree组件的init事件，由于设置obj值有延迟？广播事件的时候需要延迟一下。
+								// TODO 但是为什么延迟时间为0也能生效，而去掉setTimeout则不能生效，这是什么鬼。
+								var self = this;
+								setTimeout(function () {
+									self.$broadcast("init");
+								}, 0);
 							})
 						} else {
-							this.$set(obj, "menuIdList", []);
+							this.$set(this.obj, "menuIdList", []);
 						}
 					},
 					save : function () {
