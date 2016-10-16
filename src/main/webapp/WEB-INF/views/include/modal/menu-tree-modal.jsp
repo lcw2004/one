@@ -53,7 +53,7 @@
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
                     <div class="menu-tree">
-                        <tree-element :element="menu" :level="1" :value.sync="selected"></tree-element>
+                        <tree :element="menu" :value.sync="selected" select-type="radio"></tree>
                     </div>
                 </div>
                 <div class="modal-footer">
