@@ -15,9 +15,14 @@
             /**
              * 选中的项
              */
-            value: {
-                type: Array,
-                require: true
+            value: {},
+            /**
+             * 选择的类型：
+             * radio:单选框，value的值为选中的元素
+             * checkbox: 复选框，value的值为选中的元素的ID数组
+             */
+            selectType: {
+                type: String
             }
         },
         data: {
@@ -78,7 +83,9 @@
              */
             "element": {
                 handler: function () {
-                    this.getValue();
+                    if(this.selectType == 'checkbox') {
+                        this.getValue();
+                    }
                 },
                 deep :true
             },
@@ -87,13 +94,15 @@
              */
             "value": {
                 handler: function () {
-                    this.setValue();
+                    if(this.selectType == 'checkbox') {
+                        this.setValue();
+                    }
                 }
             }
         }
     });
 </script>
 <template id="tree">
-    <tree-element :element="element" :level="1" :value.sync="value"></tree-element>
+    <tree-element :element="element" :level="1" :value.sync="value" :select-type="selectType"></tree-element>
 </template>
 <%--菜单树组件--%>

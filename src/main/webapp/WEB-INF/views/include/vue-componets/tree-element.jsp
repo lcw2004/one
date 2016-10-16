@@ -22,9 +22,14 @@
             /**
              * 选中的项
              */
-            value: {
-                type: Array,
-                require: true
+            value: {},
+            /**
+             * 选择的类型：
+             * radio:单选框，value的值为选中的元素
+             * checkbox: 复选框，value的值为选中的元素的ID数组
+             */
+            selectType: {
+                type: String
             }
         },
         data: function () {
@@ -42,12 +47,6 @@
              */
             toggole: function () {
                 this.isExpanded = !this.isExpanded
-            },
-            /**
-             * 选中元素
-             */
-            select: function () {
-                this.value = this.element;
             },
             /**
              * 处理复选框选择事件，修改状态之后递归修改复选框的状态
@@ -81,16 +80,16 @@
 </script>
 <template id="tree-element">
     <div>
+        <input type="checkbox" v-show='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
+        <input type="radio" v-show='selectType == "radio"' v-model="value" :value="element">
         <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
         <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
-        <input type="checkbox" v-model="element.isSelected" @change="handlerSelectChange()">
         <span @click="toggole()" v-text="element.name"></span>
-        <a @click="select()">选中</a>
     </div>
 
     <ul v-for="child of element.childList" v-show="isExpanded">
         <li>
-            <tree-element :element="child" :level="level + 1" :value.sync="value"></tree-element>
+            <tree-element :element="child" :level="level + 1" :value.sync="value" :select-type="selectType"></tree-element>
         </li>
     </ul>
 </template>

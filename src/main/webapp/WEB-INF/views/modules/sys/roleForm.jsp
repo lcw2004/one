@@ -104,7 +104,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">角色授权</label>
 						<div class="col-sm-4">
-							<tree :element="menu" :value.sync="obj.menuIdList"></tree>
+							<tree :element="menu" :value.sync="obj.menuIdList" select-type="checkbox"></tree>
 						</div>
 					</div>
 				</div>
