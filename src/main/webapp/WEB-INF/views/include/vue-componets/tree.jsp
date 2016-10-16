@@ -25,8 +25,10 @@
                 type: String
             }
         },
-        data: {
-            isInited: false
+        data: function () {
+            return {
+                isInited: false
+            }
         },
         methods: {
             /**
@@ -54,13 +56,13 @@
              * 第一次传入value值的时候，需要根据value值初始化复选框的状态
              */
             setValue: function () {
+                var menuIdList = this.value;
                 // 如果值未传入或者已经初始化过状态，则不再初始化
-                if(this.value == null || this.value.length == 0 || this.isInited) {
+                if(menuIdList == null || menuIdList.length == 0 ||this.isInited) {
                     return;
                 }
 
                 // 遍历检查菜单ID，是否存在于value中，如果在，则改为选中状态
-                var menuIdList = this.value;
                 var setPropOfElement = function (element) {
                     var isSelected = $.inArray(element.id, menuIdList) > 0;
                     Vue.set(element, "isSelected", isSelected);

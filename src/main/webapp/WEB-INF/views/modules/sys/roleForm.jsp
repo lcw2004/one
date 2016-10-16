@@ -17,7 +17,7 @@
 			new Vue({
 				el:"body",
 				data : {
-					obj : {},
+					obj: {},
 					menu: {},
 
 					// 模态窗属性
@@ -39,6 +39,8 @@
 							resource.get({id: id}).then(function (response) {
 								this.obj = response.json();
 							})
+						} else {
+							this.$set(obj, "menuIdList", []);
 						}
 					},
 					save : function () {
