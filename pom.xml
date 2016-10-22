@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>sys</module>
+		<module>demo</module>
 	</modules>
 
 	<parent>
