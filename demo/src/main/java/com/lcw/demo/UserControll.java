@@ -36,4 +36,9 @@ public class UserControll {
     public String getUser5() {
         return "getUser5";
     }
+
+    @RequestMapping(value = "/get7", method = RequestMethod.GET)
+    public String getUser7() {
+        return "getUser766633";
+    }
 }
