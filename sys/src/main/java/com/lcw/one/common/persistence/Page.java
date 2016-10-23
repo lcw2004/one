@@ -28,7 +28,7 @@ public class Page<T> {
     // 当前页码
     private int pageNo = 1;
     // 每页显示数据条数
-    private int pageSize = Integer.valueOf(Global.getConfig("page.pageSize")); // 页面大小，设置为“-1”表示不进行分页（分页无效）
+    private int pageSize = 10; // 页面大小，设置为“-1”表示不进行分页（分页无效）
     // 总记录数
     private long count;// 总记录数，设置为“-1”表示不查询总数
     // 总页数

@@ -179,6 +179,12 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.8</version>
 		</dependency>
+		<!-- google java library -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
 		<!--Utils End-->
 
 		<dependency>
