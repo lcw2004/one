@@ -3,9 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils.excel.fieldtype;
+package com.lcw.one.modules.sys.utils.fieldtype;
 
-import com.lcw.one.modules.sys.entity.Area;
+import com.lcw.one.modules.sys.entity.Office;
 import com.lcw.one.modules.sys.utils.UserUtils;
 
 /**
@@ -13,13 +13,13 @@ import com.lcw.one.modules.sys.utils.UserUtils;
  * @author ThinkGem
  * @version 2013-03-10
  */
-public class AreaType {
+public class OfficeType {
 
 	/**
 	 * 获取对象值（导入）
 	 */
 	public static Object getValue(String val) {
-		for (Area e : UserUtils.getAreaList()){
+		for (Office e : UserUtils.getOfficeList()){
 			if (val.equals(e.getName())){
 				return e;
 			}
@@ -28,11 +28,11 @@ public class AreaType {
 	}
 
 	/**
-	 * 获取对象值（导出）
+	 * 设置对象值（导出）
 	 */
 	public static String setValue(Object val) {
-		if (val != null && ((Area)val).getName() != null){
-			return ((Area)val).getName();
+		if (val != null && ((Office)val).getName() != null){
+			return ((Office)val).getName();
 		}
 		return "";
 	}

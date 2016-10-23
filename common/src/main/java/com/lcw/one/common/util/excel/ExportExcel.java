@@ -3,13 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils.excel;
+package com.lcw.one.common.util.excel;
 
-import com.google.common.collect.Lists;
 import com.lcw.one.common.util.Encodes;
 import com.lcw.one.common.util.Reflections;
-import com.lcw.one.common.utils.excel.annotation.ExcelField;
-import com.lcw.one.modules.sys.utils.DictUtils;
+import com.lcw.one.common.util.excel.annotation.ExcelField;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -60,7 +58,7 @@ public class ExportExcel {
 	/**
 	 * 注解列表（Object[]{ ExcelField, Field/Method }）
 	 */
-	List<Object[]> annotationList = Lists.newArrayList();
+	List<Object[]> annotationList = new ArrayList<>();
 	
 	/**
 	 * 构造函数
@@ -135,7 +133,7 @@ public class ExportExcel {
 			};
 		});
 		// Initialize
-		List<String> headerList = Lists.newArrayList();
+		List<String> headerList = new ArrayList<>();
 		for (Object[] os : annotationList){
 			String t = ((ExcelField)os[0]).title();
 			// 如果是导出，则去掉注释
@@ -156,7 +154,7 @@ public class ExportExcel {
 	 * @param headers 表头数组
 	 */
 	public ExportExcel(String title, String[] headers) {
-		initialize(title, Lists.newArrayList(headers));
+		initialize(title, Arrays.asList(headers));
 	}
 	
 	/**
@@ -370,7 +368,8 @@ public class ExportExcel {
 					}
 					// If is dict, get dict label
 					if (StringUtils.isNotBlank(ef.dictType())){
-						val = DictUtils.getDictLabel(val==null?"":val.toString(), ef.dictType(), "");
+						// TODO 此处工程不合理，需要重构
+//						val = DictUtils.getDictLabel(val==null?"":val.toString(), ef.dictType(), "");
 					}
 				}catch(Exception ex) {
 					// Failure to ignore
@@ -423,42 +422,5 @@ public class ExportExcel {
 		wb.dispose();
 		return this;
 	}
-	
-//	/**
-//	 * 导出测试
-//	 */
-//	public static void main(String[] args) throws Throwable {
-//		
-//		List<String> headerList = Lists.newArrayList();
-//		for (int i = 1; i <= 10; i++) {
-//			headerList.add("表头"+i);
-//		}
-//		
-//		List<String> dataRowList = Lists.newArrayList();
-//		for (int i = 1; i <= headerList.size(); i++) {
-//			dataRowList.add("数据"+i);
-//		}
-//		
-//		List<List<String>> dataList = Lists.newArrayList();
-//		for (int i = 1; i <=1000000; i++) {
-//			dataList.add(dataRowList);
-//		}
-//
-//		ExportExcel ee = new ExportExcel("表格标题", headerList);
-//		
-//		for (int i = 0; i < dataList.size(); i++) {
-//			Row row = ee.addRow();
-//			for (int j = 0; j < dataList.get(i).size(); j++) {
-//				ee.addCell(row, j, dataList.get(i).get(j));
-//			}
-//		}
-//		
-//		ee.writeFile("target/export.xlsx");
-//
-//		ee.dispose();
-//		
-//		log.debug("Export success.");
-//		
-//	}
 
 }

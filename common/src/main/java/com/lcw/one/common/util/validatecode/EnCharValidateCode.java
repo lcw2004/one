@@ -1,4 +1,4 @@
-package com.lcw.one.common.utils.validatecode;
+package com.lcw.one.common.util.validatecode;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

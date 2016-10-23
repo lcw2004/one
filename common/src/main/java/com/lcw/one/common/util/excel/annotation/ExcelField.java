@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils.excel.annotation;
+package com.lcw.one.common.util.excel.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

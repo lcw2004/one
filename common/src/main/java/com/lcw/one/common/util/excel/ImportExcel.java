@@ -3,12 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils.excel;
+package com.lcw.one.common.util.excel;
 
-import com.google.common.collect.Lists;
 import com.lcw.one.common.util.Reflections;
-import com.lcw.one.common.utils.excel.annotation.ExcelField;
-import com.lcw.one.modules.sys.utils.DictUtils;
+import com.lcw.one.common.util.excel.annotation.ExcelField;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -24,10 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 导入Excel文件（支持“XLS”和“XLSX”格式）
@@ -211,7 +206,7 @@ public class ImportExcel {
 	 * @param groups 导入分组
 	 */
 	public <E> List<E> getDataList(Class<E> cls, int... groups) throws InstantiationException, IllegalAccessException{
-		List<Object[]> annotationList = Lists.newArrayList();
+		List<Object[]> annotationList = new ArrayList<>();
 		// Get annotation field 
 		Field[] fs = cls.getDeclaredFields();
 		for (Field f : fs){
@@ -269,7 +264,7 @@ public class ImportExcel {
 		});
 		//log.debug("Import column count:"+annotationList.size());
 		// Get excel data
-		List<E> dataList = Lists.newArrayList();
+		List<E> dataList = new ArrayList<>();
 		for (int i = this.getDataRowNum(); i < this.getLastDataRowNum(); i++) {
 			E e = (E)cls.newInstance();
 			int column = 0;
@@ -281,7 +276,8 @@ public class ImportExcel {
 					ExcelField ef = (ExcelField)os[0];
 					// If is dict type, get dict value
 					if (StringUtils.isNotBlank(ef.dictType())){
-						val = DictUtils.getDictValue(val.toString(), ef.dictType(), "");
+						// TODO 此处不合理，需重构
+//						val = DictUtils.getDictValue(val.toString(), ef.dictType(), "");
 						//log.debug("Dictionary type value: ["+i+","+colunm+"] " + val);
 					}
 					// Get param type and type cast

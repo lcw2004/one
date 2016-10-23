@@ -1,4 +1,4 @@
-package com.lcw.one.common.utils.validatecode;
+package com.lcw.one.common.util.validatecode;
 
 import java.io.IOException;
 import java.io.OutputStream;
