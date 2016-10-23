@@ -6,9 +6,8 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lcw.one.common.persistence.BaseEntity;
-import com.lcw.one.common.utils.IdGen;
+import com.lcw.one.common.util.IdGen;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 

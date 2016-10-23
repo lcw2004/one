@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils;
+package com.lcw.one.common.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 

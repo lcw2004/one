@@ -6,7 +6,7 @@
 package com.lcw.one.common.web;
 
 import com.google.common.net.HttpHeaders;
-import com.lcw.one.common.utils.Encodes;
+import com.lcw.one.common.util.Encodes;
 import org.apache.commons.lang3.Validate;
 
 import javax.servlet.ServletRequest;

@@ -6,7 +6,7 @@
 package com.lcw.one.common.web;
 
 import com.lcw.one.common.beanvalidator.BeanValidators;
-import com.lcw.one.common.utils.DateUtils;
+import com.lcw.one.common.util.DateUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.lcw.one.common.web;
 
-import com.lcw.one.common.utils.Reflections;
+import com.lcw.one.common.util.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

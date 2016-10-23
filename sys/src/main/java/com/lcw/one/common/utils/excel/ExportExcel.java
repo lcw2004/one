@@ -6,8 +6,8 @@
 package com.lcw.one.common.utils.excel;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.utils.Encodes;
-import com.lcw.one.common.utils.Reflections;
+import com.lcw.one.common.util.Encodes;
+import com.lcw.one.common.util.Reflections;
 import com.lcw.one.common.utils.excel.annotation.ExcelField;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.StringUtils;

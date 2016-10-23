@@ -5,8 +5,8 @@
  */
 package com.lcw.one.common.persistence;
 
-import com.lcw.one.common.utils.Reflections;
-import com.lcw.one.common.utils.StringUtils;
+import com.lcw.one.common.util.Reflections;
+import com.lcw.one.common.util.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;

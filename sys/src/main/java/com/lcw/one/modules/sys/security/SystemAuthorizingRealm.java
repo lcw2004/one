@@ -5,9 +5,8 @@
  */
 package com.lcw.one.modules.sys.security;
 
-import com.lcw.one.common.servlet.ValidateCodeServlet;
-import com.lcw.one.common.utils.Encodes;
-import com.lcw.one.common.utils.SpringContextHolder;
+import com.lcw.one.common.util.Encodes;
+import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.modules.sys.entity.Menu;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.service.SystemService;

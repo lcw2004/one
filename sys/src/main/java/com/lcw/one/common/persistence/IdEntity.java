@@ -5,7 +5,7 @@
  */
 package com.lcw.one.common.persistence;
 
-import com.lcw.one.common.utils.IdGen;
+import com.lcw.one.common.util.IdGen;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

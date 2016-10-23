@@ -56,19 +56,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- EHCACHE begin -->
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>${ehcache.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-web</artifactId>
-			<version>2.0.4</version>
-		</dependency>
-		<!-- EHCACHE end -->
-
 		<!-- freemarker engine -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -105,11 +92,7 @@
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.2</version>
 		</dependency>
-		<dependency>
-			<groupId>com.ckfinder</groupId>
-			<artifactId>apache-ant-zip</artifactId>
-			<version>2.3</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.ckfinder</groupId>
 			<artifactId>ckfinder</artifactId>
@@ -134,28 +117,7 @@
 			<version>${guava.version}</version>
 		</dependency>
 
-		<!-- SECURITY begin -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<!-- SECURITY end -->
+
 
 		<dependency>
 			<groupId>org.wltea</groupId>

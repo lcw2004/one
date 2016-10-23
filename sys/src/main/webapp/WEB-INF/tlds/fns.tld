@@ -124,28 +124,28 @@
   <function>
     <description>URL编码</description>
     <name>urlEncode</name>
-    <function-class>com.lcw.one.common.utils.Encodes</function-class>
+    <function-class>com.lcw.one.common.util.Encodes</function-class>
     <function-signature>java.lang.String urlEncode(java.lang.String)</function-signature>
     <example>${fns:urlEncode(part)}</example>  
   </function>
   <function>
     <description>URL解码</description>
     <name>urlDecode</name>
-    <function-class>com.lcw.one.common.utils.Encodes</function-class>
+    <function-class>com.lcw.one.common.util.Encodes</function-class>
     <function-signature>java.lang.String urlDecode(java.lang.String)</function-signature>
     <example>${fns:urlDecode(part)}</example>  
   </function>
   <function>
     <description>HTML编码</description>
     <name>escapeHtml</name>
-    <function-class>com.lcw.one.common.utils.Encodes</function-class>
+    <function-class>com.lcw.one.common.util.Encodes</function-class>
     <function-signature>java.lang.String escapeHtml(java.lang.String)</function-signature>
     <example>${fns:escapeHtml(html)}</example>  
   </function>
   <function>
     <description>HTML解码</description>
     <name>unescapeHtml</name>
-    <function-class>com.lcw.one.common.utils.Encodes</function-class>
+    <function-class>com.lcw.one.common.util.Encodes</function-class>
     <function-signature>java.lang.String unescapeHtml(java.lang.String)</function-signature>
     <example>${fns:unescapeHtml(html)}</example>  
   </function>
@@ -175,21 +175,21 @@
   <function>
     <description>缩写字符串，超过最大宽度用“...”表示</description>
     <name>abbr</name>
-    <function-class>com.lcw.one.common.utils.StringUtils</function-class>
+    <function-class>com.lcw.one.common.util.StringUtils</function-class>
     <function-signature>java.lang.String abbr(java.lang.String, int)</function-signature>
     <example>${fns:abbr(str,length)}</example>  
   </function>
   <function>
     <description>替换掉HTML标签后缩写字符串，超过最大宽度用“...”表示</description>
     <name>rabbr</name>
-    <function-class>com.lcw.one.common.utils.StringUtils</function-class>
+    <function-class>com.lcw.one.common.util.StringUtils</function-class>
     <function-signature>java.lang.String rabbr(java.lang.String, int)</function-signature>
     <example>${fns:rabbr(str,length)}</example>
   </function>
   <function>
     <description>替换掉HTML标签</description>
     <name>replaceHtml</name>
-    <function-class>com.lcw.one.common.utils.StringUtils</function-class>
+    <function-class>com.lcw.one.common.util.StringUtils</function-class>
     <function-signature>java.lang.String replaceHtml(java.lang.String)</function-signature>
     <example>${fns:replaceHtml(html)}</example>  
   </function>
@@ -198,14 +198,14 @@
   <function>
     <description>获取当前日期</description>
     <name>getDate</name>
-    <function-class>com.lcw.one.common.utils.DateUtils</function-class>
+    <function-class>com.lcw.one.common.util.DateUtils</function-class>
     <function-signature>java.lang.String getDate(java.lang.String)</function-signature>
     <example>${fns:getDate(pattern)}</example>  
   </function>
   <function>
     <description>获取过去的天数</description>
     <name>pastDays</name>
-    <function-class>com.lcw.one.common.utils.DateUtils</function-class>
+    <function-class>com.lcw.one.common.util.DateUtils</function-class>
     <function-signature>long pastDays(java.util.Date)</function-signature>
     <example>${fns:pastDays(date)}</example>  
   </function>

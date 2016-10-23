@@ -7,8 +7,8 @@ package com.lcw.one.modules.sys.utils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.lcw.one.common.utils.CacheUtils;
-import com.lcw.one.common.utils.SpringContextHolder;
+import com.lcw.one.common.util.CacheUtils;
+import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.modules.sys.entity.Dict;
 import com.lcw.one.modules.sys.service.DictService;
 import org.apache.commons.lang3.StringUtils;

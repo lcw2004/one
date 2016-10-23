@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.lcw.one.common.persistence.IdEntity;
-import com.lcw.one.common.utils.Collections3;
+import com.lcw.one.common.util.Collections3;
 import com.lcw.one.common.utils.excel.annotation.ExcelField;
 import com.lcw.one.common.utils.excel.fieldtype.RoleListType;
 import org.hibernate.annotations.Cache;

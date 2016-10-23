@@ -102,6 +102,42 @@
 		</dependency>
 		<!-- Spring Boot End -->
 
+		<!-- EHCACHE begin -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-web</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<!-- EHCACHE end -->
+
+		<!-- SECURITY begin -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<!-- SECURITY end -->
+
 		<!--Utils Start-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -144,6 +180,12 @@
 			<version>1.8</version>
 		</dependency>
 		<!--Utils End-->
+
+		<dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>apache-ant-zip</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 
 </project>

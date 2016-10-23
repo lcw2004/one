@@ -5,9 +5,9 @@
  */
 package com.lcw.one.common.mapper;
 
-import com.lcw.one.common.utils.Exceptions;
-import com.lcw.one.common.utils.Reflections;
-import com.lcw.one.common.utils.StringUtils;
+import com.lcw.one.common.util.Exceptions;
+import com.lcw.one.common.util.Reflections;
+import com.lcw.one.common.util.StringUtils;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.util.Assert;
 

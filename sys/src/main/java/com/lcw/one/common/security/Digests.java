@@ -5,7 +5,7 @@
  */
 package com.lcw.one.common.security;
 
-import com.lcw.one.common.utils.Exceptions;
+import com.lcw.one.common.util.Exceptions;
 import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;

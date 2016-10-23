@@ -7,14 +7,12 @@ package com.lcw.one.modules.sys.interceptor;
 
 import com.lcw.one.common.config.Global;
 import com.lcw.one.common.service.BaseService;
-import com.lcw.one.common.utils.SpringContextHolder;
-import com.lcw.one.common.utils.StringUtils;
+import com.lcw.one.common.util.SpringContextHolder;
+import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.modules.sys.entity.Log;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.service.LogService;
 import com.lcw.one.modules.sys.utils.UserUtils;
-import eu.bitwalker.useragentutils.DeviceType;
-import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

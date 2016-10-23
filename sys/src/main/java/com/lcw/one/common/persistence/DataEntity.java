@@ -7,7 +7,7 @@ package com.lcw.one.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lcw.one.common.utils.DateUtils;
+import com.lcw.one.common.util.DateUtils;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;

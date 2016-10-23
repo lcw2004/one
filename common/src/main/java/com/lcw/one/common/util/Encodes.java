@@ -3,8 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils;
+package com.lcw.one.common.util;
 
+import com.lcw.one.common.util.Exceptions;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;

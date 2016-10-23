@@ -7,7 +7,7 @@ package com.lcw.one.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lcw.one.common.config.Global;
-import com.lcw.one.common.utils.CookieUtils;
+import com.lcw.one.common.util.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

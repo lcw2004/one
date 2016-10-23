@@ -5,7 +5,7 @@
  */
 package com.lcw.one.modules.sys.web;
 
-import com.lcw.one.common.utils.DateUtils;
+import com.lcw.one.common.util.DateUtils;
 import com.lcw.one.common.web.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;

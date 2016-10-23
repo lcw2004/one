@@ -5,7 +5,7 @@
  */
 package com.lcw.one.common.security;
 
-import com.lcw.one.common.utils.Exceptions;
+import com.lcw.one.common.util.Exceptions;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

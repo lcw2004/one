@@ -8,7 +8,7 @@ package com.lcw.one.modules.sys.web;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lcw.one.common.config.Global;
-import com.lcw.one.common.utils.StringUtils;
+import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.common.web.BaseController;
 import com.lcw.one.modules.sys.entity.Office;
 import com.lcw.one.modules.sys.entity.Role;

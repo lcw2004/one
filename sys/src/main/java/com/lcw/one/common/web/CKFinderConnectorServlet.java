@@ -6,7 +6,7 @@
 package com.lcw.one.common.web;
 
 import com.ckfinder.connector.ConnectorServlet;
-import com.lcw.one.common.utils.FileUtils;
+import com.lcw.one.common.util.FileUtils;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.utils.UserUtils;
 

@@ -3,8 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils;
+package com.lcw.one.common.util;
 
+import com.lcw.one.common.util.SpringContextHolder;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -16,7 +17,7 @@ import net.sf.ehcache.Element;
  */
 public class CacheUtils {
 	
-	private static CacheManager cacheManager = ((CacheManager)SpringContextHolder.getBean("cacheManager"));
+	private static CacheManager cacheManager = ((CacheManager) SpringContextHolder.getBean("cacheManager"));
 
 	private static final String SYS_CACHE = "sysCache";
 

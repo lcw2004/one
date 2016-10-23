@@ -3,8 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.utils;
+package com.lcw.one.common.util;
 
+import com.lcw.one.common.util.Reflections;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 
