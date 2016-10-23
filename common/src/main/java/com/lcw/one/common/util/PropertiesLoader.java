@@ -5,7 +5,7 @@
  * 
  * $Id: PropertiesLoader.java 1690 2012-02-22 13:42:00Z calvinxiu $
  */
-package com.lcw.one.common.utils;
+package com.lcw.one.common.util;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;

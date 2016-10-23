@@ -5,7 +5,7 @@
  */
 package com.lcw.one.common.config;
 
-import com.lcw.one.common.utils.PropertiesLoader;
+import com.lcw.one.common.util.PropertiesLoader;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
