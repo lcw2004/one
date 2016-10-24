@@ -18,7 +18,6 @@
 			<version>1.0</version>
 		</dependency>
 
-
 		<!-- freemarker engine -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -32,8 +31,6 @@
 			<artifactId>dozer</artifactId>
 			<version>${dozer.version}</version>
 		</dependency>
-
-
 
 		<!-- CKFinder begin -->
 		<dependency>
@@ -58,17 +55,6 @@
 			<version>2.3</version>
 		</dependency>
 		<!-- CKFinder end -->
-
-
-
-
-
-		<dependency>
-			<groupId>org.wltea</groupId>
-			<artifactId>analyzer</artifactId>
-			<version>2012_u6</version>
-		</dependency>
-
 
 		<!-- jackson json -->
 		<dependency>
