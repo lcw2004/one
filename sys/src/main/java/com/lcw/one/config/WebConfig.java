@@ -1,7 +1,7 @@
 package com.lcw.one.config;
 
 import com.lcw.one.common.config.Global;
-import com.lcw.one.modules.sys.interceptor.LogInterceptor;
+import com.lcw.one.sys.interceptor.LogInterceptor;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

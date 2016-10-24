@@ -32,7 +32,7 @@
 		</div><!-- /header -->
 		<div role="main" class="ui-content">
 			<div id="messageBox" class="<%=error==null?"hide":""%>">
-				<label id="loginError" class="error"><%=error==null?"":"com.lcw.one.modules.sys.security.CaptchaException".equals(error)?"验证码错误, 请重试.":"用户或密码错误, 请重试." %></label>
+				<label id="loginError" class="error"><%=error==null?"":"CaptchaException".equals(error)?"验证码错误, 请重试.":"用户或密码错误, 请重试." %></label>
 			</div>
 			<form id="loginForm"  action="${ctx}/login" method="post" data-ajax="false">
 				<div data-role="fieldcontain">

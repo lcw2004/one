@@ -108,7 +108,7 @@
 					<div id="messageBox" class="alert alert-error" style='margin-top: 10px;display: <c:if test="${empty shiroLoginFailure}">none</c:if> '><button data-dismiss="alert" class="close">×</button>
 						<label id="loginError" class="error">
 							<c:if test="${empty shiroLoginFailure}">用户或密码错误, 请重试.</c:if>
-							<c:if test="${shiroLoginFailure eq 'com.lcw.one.modules.sys.security.CaptchaException'}">验证码错误, 请重试.</c:if>
+							<c:if test="${shiroLoginFailure eq 'CaptchaException'}">验证码错误, 请重试.</c:if>
 							<c:if test="${shiroLoginFailure eq 'org.apache.shiro.authc.UnknownAccountException'}">用户不存在或者密码错误.</c:if>
 							<c:if test="${shiroLoginFailure eq 'org.apache.shiro.authc.IncorrectCredentialsException'}">用户不存在或者密码错误.</c:if>
 						</label>

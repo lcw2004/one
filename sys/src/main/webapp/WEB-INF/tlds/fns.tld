@@ -51,14 +51,14 @@
   <function>
     <description>获取当前用户对象</description>
     <name>getUser</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>com.lcw.one.modules.sys.entity.User getUser()</function-signature>
     <example>${fns:getUser()}</example>  
   </function>
   <function>
     <description>根据ID获得用户对象</description>
     <name>getUserById</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>com.lcw.one.modules.sys.entity.User getUserById(java.lang.String)</function-signature>
     <example>${fns:getUserById(id)}</example>  
   </function>
@@ -66,7 +66,7 @@
   <function>
     <description>获取当前用户的菜单对象列表</description>
     <name>getMenuList</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>java.util.List getMenuList()</function-signature>
     <example>${fns:getMenuList()}</example>  
   </function>
@@ -74,7 +74,7 @@
   <function>
     <description>获取当前用户的区域对象列表</description>
     <name>getAreaList</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>java.util.List getAreaList()</function-signature>
     <example>${fns:getAreaList()}</example>  
   </function>
@@ -82,7 +82,7 @@
   <function>
     <description>获取当前用户的部门对象列表</description>
     <name>getOfficeList</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>java.util.List getOfficeList()</function-signature>
     <example>${fns:getOfficeList()}</example>  
   </function>
@@ -90,7 +90,7 @@
   <function>
     <description>获取当前用户缓存</description>
     <name>getCache</name>
-    <function-class>com.lcw.one.modules.sys.utils.UserUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.UserUtils</function-class>
     <function-signature>java.lang.Object getCache(java.lang.String, java.lang.Object)</function-signature>
     <example>${fns:getCache(cacheName, defaultValue)}</example>  
   </function>
@@ -99,7 +99,7 @@
   <function>
     <description>获取字典标签</description>
     <name>getDictLabel</name>
-    <function-class>com.lcw.one.modules.sys.utils.DictUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.DictUtils</function-class>
     <function-signature>java.lang.String getDictLabel(java.lang.String, java.lang.String, java.lang.String)</function-signature>
     <example>${fns:getDictLabel(value, type, defaultValue)}</example>  
   </function>
@@ -107,7 +107,7 @@
   <function>
     <description>获取字典值</description>
     <name>getDictValue</name>
-    <function-class>com.lcw.one.modules.sys.utils.DictUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.DictUtils</function-class>
     <function-signature>java.lang.String getDictValue(java.lang.String, java.lang.String, java.lang.String)</function-signature>
     <example>${fns:getDictValue(label, type, defaultValue)}</example>  
   </function>
@@ -115,7 +115,7 @@
   <function>
     <description>获取字典对象列表</description>
     <name>getDictList</name>
-    <function-class>com.lcw.one.modules.sys.utils.DictUtils</function-class>
+    <function-class>com.lcw.one.sys.utils.DictUtils</function-class>
     <function-signature>java.util.List getDictList(java.lang.String)</function-signature>
     <example>${fns:getDictList(type)}</example>  
   </function>

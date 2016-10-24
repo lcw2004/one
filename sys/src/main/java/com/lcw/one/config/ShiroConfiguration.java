@@ -1,8 +1,8 @@
 package com.lcw.one.config;
 
 import com.lcw.one.common.config.Global;
-import com.lcw.one.modules.sys.security.FormAuthenticationFilter;
-import com.lcw.one.modules.sys.security.SystemAuthorizingRealm;
+import com.lcw.one.sys.security.FormAuthenticationFilter;
+import com.lcw.one.sys.security.SystemAuthorizingRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
