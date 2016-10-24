@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.service;
+package com.lcw.one.modules.sys.service;
 
 import com.google.common.collect.Lists;
 import com.lcw.one.modules.sys.entity.Role;

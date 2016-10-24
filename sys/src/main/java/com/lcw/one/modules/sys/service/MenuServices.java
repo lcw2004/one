@@ -1,6 +1,5 @@
 package com.lcw.one.modules.sys.service;
 
-import com.lcw.one.common.service.BaseService;
 import com.lcw.one.modules.sys.dao.MenuDao;
 import com.lcw.one.modules.sys.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,6 +5,9 @@
  */
 package com.lcw.one.common.persistence;
 
+import com.lcw.one.common.persistence.BaseEntity;
+import com.lcw.one.common.persistence.Page;
+import com.lcw.one.common.persistence.Parameter;
 import com.lcw.one.common.util.Reflections;
 import com.lcw.one.common.util.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -33,7 +36,6 @@ import org.hibernate.search.query.ObjectLookupMethod;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
@@ -287,7 +289,7 @@ public class BaseDao<T> {
 	 * @return
 	 */
 	public int deleteById(Serializable id){
-		return update("update "+entityClass.getSimpleName()+" set delFlag='" + BaseEntity.DEL_FLAG_DELETE + "' where id = :p1", 
+		return update("update "+entityClass.getSimpleName()+" set delFlag='" + BaseEntity.DEL_FLAG_DELETE + "' where id = :p1",
 				new Parameter(id));
 	}
 	
@@ -721,57 +723,4 @@ public class BaseDao<T> {
 		return booleanQuery;
 	}
 
-	/**
-	 * 获取全文查询对象
-	 * @param q 查询关键字
-	 * @param fields 查询字段
-	 * @return 全文查询对象
-	 */
-	public BooleanQuery getFullTextQuery(String q, String... fields){
-		Analyzer analyzer = new IKAnalyzer();
-		BooleanQuery query = new BooleanQuery();
-		try {
-			if (StringUtils.isNotBlank(q)){
-				for (String field : fields){
-					QueryParser parser = new QueryParser(Version.LUCENE_36, field, analyzer);   
-					query.add(parser.parse(q), Occur.SHOULD);
-				}
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return query;
-	}
-	
-	/**
-	 * 设置关键字高亮
-	 * @param query 查询对象
-	 * @param list 设置高亮的内容列表
-	 * @param subLength 截取长度
-	 * @param fields 字段名
-	 */
-	public List<T> keywordsHighlight(BooleanQuery query, List<T> list, int subLength, String... fields){
-		Analyzer analyzer = new IKAnalyzer();
-		Formatter formatter = new SimpleHTMLFormatter("<span class=\"highlight\">", "</span>");   
-		Highlighter highlighter = new Highlighter(formatter, new QueryScorer(query)); 
-		highlighter.setTextFragmenter(new SimpleFragmenter(subLength)); 
-		for(T entity : list){ 
-			try {
-				for (String field : fields){
-					String text = StringUtils.replaceHtml((String)Reflections.invokeGetter(entity, field));
-					String description = highlighter.getBestFragment(analyzer,field, text);
-					if(description!=null){
-						Reflections.invokeSetter(entity, fields[0], description);
-						break;
-					}
-					Reflections.invokeSetter(entity, fields[0], StringUtils.abbr(text, subLength*2));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InvalidTokenOffsetsException e) {
-				e.printStackTrace();
-			} 
-		}
-		return list;
-	}
 }

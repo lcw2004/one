@@ -6,7 +6,6 @@
 package com.lcw.one.modules.sys.service;
 
 import com.lcw.one.common.persistence.Page;
-import com.lcw.one.common.service.BaseService;
 import com.lcw.one.common.util.DateUtils;
 import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.modules.sys.dao.LogDao;

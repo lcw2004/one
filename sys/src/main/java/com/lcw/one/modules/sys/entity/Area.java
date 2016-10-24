@@ -6,8 +6,6 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.DataEntity;
-import com.lcw.one.common.persistence.IdEntity;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
@@ -15,9 +13,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**

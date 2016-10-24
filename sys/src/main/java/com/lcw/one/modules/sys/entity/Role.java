@@ -6,7 +6,6 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.DataEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;

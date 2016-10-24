@@ -3,10 +3,11 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.persistence;
+package com.lcw.one.modules.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lcw.one.common.persistence.IdEntity;
 import com.lcw.one.common.util.DateUtils;
 import com.lcw.one.modules.sys.entity.User;
 import com.lcw.one.modules.sys.utils.UserUtils;

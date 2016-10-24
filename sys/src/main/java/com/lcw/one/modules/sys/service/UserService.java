@@ -5,7 +5,6 @@
  */
 package com.lcw.one.modules.sys.service;
 
-import com.lcw.one.common.service.BaseService;
 import com.lcw.one.modules.sys.dao.UserDao;
 import com.lcw.one.modules.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

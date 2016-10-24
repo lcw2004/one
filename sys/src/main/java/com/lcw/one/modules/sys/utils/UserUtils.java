@@ -6,7 +6,7 @@
 package com.lcw.one.modules.sys.utils;
 
 import com.google.common.collect.Maps;
-import com.lcw.one.common.service.BaseService;
+import com.lcw.one.modules.sys.service.BaseService;
 import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.modules.sys.dao.*;
 import com.lcw.one.modules.sys.entity.*;

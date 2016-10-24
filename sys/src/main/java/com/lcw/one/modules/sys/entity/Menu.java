@@ -7,7 +7,6 @@ package com.lcw.one.modules.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.DataEntity;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Cache;

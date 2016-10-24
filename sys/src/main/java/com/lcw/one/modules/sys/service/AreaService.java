@@ -5,7 +5,6 @@
  */
 package com.lcw.one.modules.sys.service;
 
-import com.lcw.one.common.service.BaseService;
 import com.lcw.one.modules.sys.dao.AreaDao;
 import com.lcw.one.modules.sys.entity.Area;
 import com.lcw.one.modules.sys.utils.UserUtils;
