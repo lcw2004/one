@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @version 2013-05-28
  */
 @MappedSuperclass
-public abstract class IdEntity<T> extends DataEntity<T> implements Serializable {
+public abstract class IdEntity<T> extends BaseEntity<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,6 @@ public abstract class IdEntity<T> extends DataEntity<T> implements Serializable 
 	
 	@PrePersist
 	public void prePersist(){
-		super.prePersist();
 		this.id = IdGen.uuid();
 	}
 

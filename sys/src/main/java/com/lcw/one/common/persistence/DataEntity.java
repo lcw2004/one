@@ -27,7 +27,7 @@ import java.util.Date;
  * @version 2013-05-28
  */
 @MappedSuperclass
-public abstract class DataEntity<T> extends BaseEntity<T> implements Serializable {
+public abstract class DataEntity<T> extends IdEntity<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,6 +50,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> implements Serializabl
 	
 	@PrePersist
 	public void prePersist(){
+		super.prePersist();
 		User user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())){
 			this.updateBy = user;

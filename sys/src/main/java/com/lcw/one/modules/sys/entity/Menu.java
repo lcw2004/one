@@ -7,7 +7,7 @@ package com.lcw.one.modules.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.common.persistence.DataEntity;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Cache;
@@ -31,7 +31,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Menu extends IdEntity<Menu> {
+public class Menu extends DataEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -6,6 +6,7 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
+import com.lcw.one.common.persistence.DataEntity;
 import com.lcw.one.common.persistence.IdEntity;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
@@ -29,7 +30,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Area extends IdEntity<Area> {
+public class Area extends DataEntity<Area> {
 
 	private static final long serialVersionUID = 1L;
 	private String parentId;

@@ -5,7 +5,7 @@
  */
 package com.lcw.one.modules.sys.entity;
 
-import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.common.persistence.DataEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Dict extends IdEntity<Dict> {
+public class Dict extends DataEntity<Dict> {
 
 	private static final long serialVersionUID = 1L;
 	private String label;	// 标签名

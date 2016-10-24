@@ -6,7 +6,7 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.common.persistence.DataEntity;
 import com.lcw.one.modules.sys.utils.DictUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
@@ -29,7 +29,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Office extends IdEntity<Office> {
+public class Office extends DataEntity<Office> {
 
 	private static final long serialVersionUID = 1L;
 	private Office parent;	// 父级编号

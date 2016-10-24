@@ -6,7 +6,7 @@
 package com.lcw.one.modules.sys.entity;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.IdEntity;
+import com.lcw.one.common.persistence.DataEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
@@ -28,7 +28,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Role extends IdEntity<Role> {
+public class Role extends DataEntity<Role> {
 	
 	private static final long serialVersionUID = 1L;
 	private Office office;	// 归属机构
