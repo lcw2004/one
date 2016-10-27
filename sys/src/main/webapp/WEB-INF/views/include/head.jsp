@@ -27,8 +27,8 @@
 <%-- AdminLET End --%>
 
 <%-- vue Start --%>
-<script src="${ctxStatic}/lib/vue/vue.js"></script>
-<script src="${ctxStatic}/lib/vue/vue-resource.min.js"></script>
+<script src="${ctxStatic}/lib/vue2/vue.js"></script>
+<script src="${ctxStatic}/lib/vue2/vue-resource.min.js"></script>
 <%-- vue End --%>
 
 <%-- Icon --%>

@@ -230,14 +230,15 @@
 			<ul class="sidebar-menu">
 				<li class="header">HEADER</li>
 				<li class="treeview" v-for="menuLevel1 of leftMenu.childList">
-					<a href="#"><i :class="menuLevel1.icon"></i> <span>{{ menuLevel1.name }}</span>
+					<a href="#">
+						<i :class="menuLevel1.icon"></i><span>{{ menuLevel1.name }}</span>
 						<span class="pull-right-container">
-						  <i class="fa fa-angle-left pull-right"></i>
+						 	<i class="fa fa-angle-left pull-right"></i>
 						</span>
 					</a>
 					<ul class="treeview-menu">
 						<li v-for="menuLevel2 of menuLevel1.childList">
-							<a target="contentIframe" href="${ctx}{{menuLevel2.href}}"><i :class="menuLevel2.icon"></i> {{ menuLevel2.name }}</a>
+							<a target="contentIframe" :href="'${ctx}' + menuLevel2.href"><i :class="menuLevel2.icon"></i>{{ menuLevel2.name }}</a>
 						</li>
 					</ul>
 				</li>
@@ -341,17 +342,17 @@
 		};
 
 		v = new Vue({
-			el: "body",
+			el: ".wrapper",
 			data: {
 				menu : {}, // 整个菜单树
 				leftMenu : {} // 左侧菜单树
 			},
-			ready: function () {
+			mounted: function () {
 				var resource = this.$resource(null, {}, actions);
 				resource.queryMenu().then(function (response) {
-					var m = response.json();
-					this.menu = response.json();
-					if(m.childList.length > 0) {
+					var m = response.body;
+					this.menu = m;
+					if(m.childList && m.childList.length > 0) {
 						this.leftMenu = this.menu.childList[0];
 					}
 				});
