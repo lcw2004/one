@@ -25,7 +25,7 @@
                 type: String
             }
         },
-        ready: function () {
+        mounted: function () {
             this.registerInitEvent();
         },
         methods: {

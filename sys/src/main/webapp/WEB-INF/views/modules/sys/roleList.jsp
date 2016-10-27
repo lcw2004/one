@@ -19,7 +19,7 @@
 					param: {pageNo: 0, pageSize: 10},
 					page : {}
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 设置页码
@@ -28,7 +28,7 @@
 				methods: {
 					query : function () {
 						resource.list(this.param).then(function (response) {
-							this.page = response.json();
+							this.page = response.body;
 						});
 					},
 					deleteData : function (id) {

@@ -18,13 +18,13 @@
 				data : {
 					obj : {}
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					var id = $("#id").val();
 					if (id) {
 						resource.get({id: id}).then(function (response) {
-							this.obj = response.json();
+							this.obj = response.body;
 						})
 					}
 				},

@@ -22,7 +22,7 @@
 					page : {},
 					dictTypeList : []
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 设置页码
@@ -30,13 +30,13 @@
 
 					// 加载字典列表
 					resource.listType().then(function (response) {
-						this.dictTypeList = response.json();
+						this.dictTypeList = response.body;
 					})
 				},
 				methods: {
 					query : function () {
 						resource.list(this.param).then(function (response) {
-							this.page = response.json();
+							this.page = response.body;
 						});
 					},
 					deleteData : function (id) {

@@ -21,14 +21,14 @@
 
 					toggleStatus: true
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 					this.loadTreeTable();
 				},
 				methods: {
 					loadTreeTable: function () {
 						resource.getMenuTree().then(function (response) {
-							this.topMenu = response.json();
+							this.topMenu = response.body;
 
 							if (this.topMenu) {
 								var tempList = [];

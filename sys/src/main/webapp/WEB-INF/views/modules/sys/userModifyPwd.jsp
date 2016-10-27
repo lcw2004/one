@@ -20,13 +20,13 @@
                         confirmNewPassword: ""
                     }
                 },
-                ready: function () {
+                mounted: function () {
                     resource = this.$resource(null, {}, actions, {emulateJSON: true});
                 },
                 methods: {
                     save : function () {
                         resource.putPassword(null, this.obj).then(function (response) {
-                            var result = response.json();
+                            var result = response.body;
                             if(result.code != "0000") {
                                 Vue.$alert(result.desc);
                             } else {

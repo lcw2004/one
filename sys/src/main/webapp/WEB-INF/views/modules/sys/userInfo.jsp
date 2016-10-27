@@ -17,18 +17,18 @@
 				data : {
 					obj : {}
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 加载数据
 					resource.get({id: id}).then(function (response) {
-						this.obj = response.json();
+						this.obj = response.body;
 					})
 				},
 				methods: {
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
-							var result = response.json();
+							var result = response.body;
 							Vue.$alert(result.desc);
 						})
 					}

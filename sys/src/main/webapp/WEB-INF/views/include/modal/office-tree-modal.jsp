@@ -20,7 +20,7 @@
             };
             var resource = this.$resource(null, {}, actions);
             resource.getMenuTree().then(function (response) {
-                this.menu = response.json();
+                this.menu = response.body;
             });
         },
         data: function () {

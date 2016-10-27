@@ -16,7 +16,7 @@
 			};
 			var resource;
 			new Vue({
-				el:"body",
+				el:"form",
 				data : {
 					id : "${id}",
 					obj : {
@@ -34,19 +34,19 @@
 						title : "选择所属部门"
 					}
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 加载数据
 					if (this.id) {
 						resource.get({id: this.id}).then(function (response) {
-							this.obj = response.json();
+							this.obj = response.body;
 						})
 					}
 
 					// 加载角色
 					resource.getRole().then(function (response) {
-						this.roles = response.json();
+						this.roles = response.body;
 					})
 				},
 				methods: {

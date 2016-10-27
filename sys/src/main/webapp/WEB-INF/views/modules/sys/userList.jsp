@@ -16,12 +16,12 @@
 
 			var resource;
 			new Vue({
-				el : "body",
+				el : ".content",
 				data : {
 					param: {pageNo: 0, pageSize: 10},
 					page : {}
 				},
-				ready: function () {
+				mounted: function () {
 					resource = this.$resource(null, {}, actions);
 
 					// 设置页码
@@ -30,7 +30,7 @@
 				methods: {
 					query : function () {
 						resource.list(this.param).then(function (response) {
-							this.page = response.json();
+							this.page = response.body;
 						});
 					},
 					deleteData : function (id) {
@@ -105,7 +105,7 @@
 							<td><span v-text="obj.mobile"></span></td>
 							<td><span v-text="obj.roleNames"></span></td>
 							<td>
-								<a href="${ctx}/sys/user/form?id={{obj.id}}">修改</a>
+								<a :href="'${ctx}/sys/user/form?id=' + obj.id">修改</a>
 								<a @click="deleteData(obj.id)">删除</a>
 							</td>
 						</tr>
