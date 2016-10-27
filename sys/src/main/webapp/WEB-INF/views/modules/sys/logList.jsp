@@ -16,7 +16,7 @@
 			new Vue({
 				el: ".content",
 				data : {
-					param: {pageNo: 0, pageSize: 10},
+					param: {pageNo: 0, pageSize: 10, requestUri: "", createByName: "", beginDate: "", endDate: ""},
 					page : {}
 				},
 				mounted: function () {
@@ -91,14 +91,14 @@
 						<div class="form-group">
 							<label class="control-label">时间</label>
 							<div class='input-group date'>
-								<input type='text' class="form-control form-date" readonly  v-model="param.beginDate" value='<fmt:formatDate value="${beginDate}" pattern="yyyy-MM-dd"/>'/>
+								<input type='text' class="form-control form-date" v-model="param.beginDate"/>
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar"></span>
 								</span>
 							</div>
 							-
 							<div class='input-group date'>
-								<input type='text' class="form-control form-date" readonly v-model="param.endDate" value='<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>'/>
+								<input type='text' class="form-control form-date" v-model="param.endDate"/>
 								<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar"></span>
 								</span>
