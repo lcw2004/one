@@ -18,7 +18,7 @@
 			new Vue({
 				el: ".content",
 				data : {
-					param: {pageNo: 0, pageSize: 10},
+					param: {pageNo: 0, pageSize: 10, type: "", description: ""},
 					page : {},
 					dictTypeList : []
 				},
@@ -79,8 +79,8 @@
 							<div class="col-md-3">
 								<label class="control-label">类型</label>
 								<select class="form-control inline-block" v-model="param.type">
-									<option value="" selected>全部</option>
-									<option v-for="dictType of dictTypeList">{{ dictType }}</option>
+									<option value="">全部</option>
+									<option v-for="dictType of dictTypeList" :value="dictType">{{ dictType }}</option>
 								</select>
 							</div>
 							<div class="col-md-3">
@@ -88,7 +88,6 @@
 								<input class="form-control inline-block" type="text" v-model="param.description">
 							</div>
 							<div class="col-md-3">
-								<a class="btn btn-primary" @click="query()" >查询</a>
 								<a class="btn btn-primary" href="${ctx}/sys/dict/form">添加</a>
 							</div>
 						</form>

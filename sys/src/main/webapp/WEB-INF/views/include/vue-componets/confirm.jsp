@@ -8,16 +8,15 @@
             config: {
                 type: Object,
                 required: true
-            },
-            callback : {
-                type: Function,
-                require : true
             }
         },
         methods: {
             okCallback : function () {
                 this.config.show = false;
-                this.config.callback();
+
+                if (this.config.callback) {
+                    this.config.callback();
+                }
             }
         }
     });
