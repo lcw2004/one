@@ -16,7 +16,7 @@
 			};
 			var resource;
 			new Vue({
-				el:"form",
+				el: ".content",
 				data : {
 					id : "${id}",
 					obj : {

@@ -14,7 +14,7 @@
 			};
 			var resource;
 			new Vue({
-				el:"body",
+				el: ".content",
 				data : {
 					obj : {}
 				},

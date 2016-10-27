@@ -15,7 +15,7 @@
 			};
 			var resource;
 			new Vue({
-				el:"body",
+				el: ".content",
 				data : {
 					obj: {},
 					menu: {},
@@ -60,7 +60,8 @@
 							this.menu = response.body;
 							this.loadData();
 						});
-					}}
+					}
+				}
 			})
 		});
 	</script>

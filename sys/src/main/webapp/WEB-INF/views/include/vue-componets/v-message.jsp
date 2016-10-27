@@ -2,7 +2,7 @@
 
 <div id="VMessage">
     <alert :config="alertConfig"></alert>
-    <confirm :config="confirmConfig" :callback="callback"></confirm>
+    <confirm :config="confirmConfig"></confirm>
 </div>
 <script>
     var VMessage = {};

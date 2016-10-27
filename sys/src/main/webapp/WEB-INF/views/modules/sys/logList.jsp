@@ -14,7 +14,7 @@
 
 			var resource;
 			new Vue({
-				el : "body",
+				el: ".content",
 				data : {
 					param: {pageNo: 0, pageSize: 10},
 					page : {}

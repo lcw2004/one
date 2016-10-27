@@ -14,7 +14,7 @@
 			};
 			var resource;
 			new Vue({
-				el: "body",
+				el: ".content",
 				data: {
 					topMenu: {},
 					dataList: [],
@@ -112,7 +112,7 @@
 							<td><span v-text="obj.typeCN"></span></td>
 							<td><span v-text="obj.remarks"></span></td>
 							<td>
-								<a href="${ctx}/sys/office/form?id={{obj.id}}">修改</a>
+								<a :href="'${ctx}/sys/office/form?id=' + obj.id">修改</a>
 								<a @click="deleteData(obj.id)">删除</a>
 							</td>
 						</tr>

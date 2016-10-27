@@ -14,7 +14,7 @@
 
 			var resource;
 			new Vue({
-				el : "body",
+				el: ".content",
 				data : {
 					param: {pageNo: 0, pageSize: 10},
 					page : {}
@@ -95,7 +95,7 @@
 								<td><span v-text="obj.office.name"></span></td>
 								<td><span v-text="obj.sort"></span></td>
 								<td>
-									<a href="${ctx}/sys/role/form?id={{obj.id}}">修改</a>
+									<a href="'${ctx}/sys/role/form?id=' + obj.id">修改</a>
 									<a @click="deleteData(obj.id)">删除</a>
 								</td>
 							</tr>

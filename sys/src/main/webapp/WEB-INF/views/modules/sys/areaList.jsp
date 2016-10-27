@@ -14,7 +14,7 @@
 			};
 			var resource;
 			new Vue({
-				el: "body",
+				el: ".content",
 				data: {
 					topMenu: {},
 					dataList: [],
@@ -98,7 +98,7 @@
 						<tbody>
 						<tr v-for="obj of dataList" v-show="obj.isShowInTable" track-by="id">
 							<td>
-								{{{ obj.level | fillSpace }}}
+								{{ obj.level }}
 								<a @click="toggle(obj)" v-if="obj.childList != null && obj.childList.length > 0">
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
@@ -110,7 +110,7 @@
 							<td><span v-text="obj.typeCN"></span></td>
 							<td><span v-text="obj.remarks"></span></td>
 							<td>
-								<a href="${ctx}/sys/area/form?id={{obj.id}}">修改</a>
+								<a :href="'${ctx}/sys/area/form?id=' + obj.id">修改</a>
 								<a @click="deleteData(obj.id)">删除</a>
 							</td>
 						</tr>
