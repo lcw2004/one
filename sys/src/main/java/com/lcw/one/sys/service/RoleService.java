@@ -21,9 +21,10 @@ public class RoleService {
     @Autowired
     private RoleDao roleDao;
 
-    public Page<Role> find(Page<Role> page) {
+    public Page<Role> find(Page<Role> page, String name) {
         DetachedCriteria dc = roleDao.createDetachedCriteria();
         dc.add(Restrictions.eq(Dict.FIELD_DEL_FLAG, Dict.DEL_FLAG_NORMAL));
+        dc.add(Restrictions.like("name", "%" + name + "%"));
         dc.addOrder(Order.desc("createDate"));
         return roleDao.find(page, dc);
     }

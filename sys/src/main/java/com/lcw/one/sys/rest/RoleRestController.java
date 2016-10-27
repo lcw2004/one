@@ -21,8 +21,8 @@ public class RoleRestController {
 
     @RequiresPermissions("sys:role:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public Page list(HttpServletRequest request, HttpServletResponse response) {
-        Page page = roleService.find(new Page<Role>(request, response));
+    public Page list(String name, HttpServletRequest request, HttpServletResponse response) {
+        Page page = roleService.find(new Page<Role>(request, response), name);
         page.setList(BeanUtils.to(page.getList()));
         return page;
     }

@@ -16,7 +16,7 @@
 			new Vue({
 				el: ".content",
 				data : {
-					param: {pageNo: 0, pageSize: 10},
+					param: {pageNo: 0, pageSize: 10, name: ""},
 					page : {}
 				},
 				mounted: function () {
@@ -71,10 +71,9 @@
 						<form class="form-inline">
 							<div class="col-md-3">
 								<label class="control-label">名称</label>
-								<input class="form-control inline-block" type="text" placeholder="姓名" v-model="param.name">
+								<input class="form-control inline-block" type="text" placeholder="角色名称" v-model="param.name">
 							</div>
 							<div class="col-md-3">
-								<a class="btn btn-primary" @click="query()" >查询</a>
 								<a class="btn btn-primary" href="${ctx}/sys/role/form">添加</a>
 							</div>
 						</form>
@@ -102,7 +101,7 @@
 							</tbody>
 						</table>
 
-						<pagination :page="page"  :page-no.sync="param.pageNo"></pagination>
+						<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
 					</div>
 				</div>
 			</div>
