@@ -17,7 +17,7 @@
                 required: true
             }
         },
-        ready : function () {
+        mounted : function () {
             console.log(this.iconList);
         },
         data: function () {
