@@ -101,7 +101,7 @@
 							</tbody>
 						</table>
 
-						<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
+						<pagination :page="page" @page-no="param.pageNo = arguments[0]" @page-size="param.pageSize = arguments[0]"></pagination>
 					</div>
 				</div>
 			</div>

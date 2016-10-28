@@ -30,6 +30,10 @@
 						resource.list(this.param).then(function (response) {
 							this.page = response.body;
 						});
+					},
+					setPage: function (pageNo, pageSize) {
+						this.param.pageNo = pageNo;
+						this.param.pageSize = pageSize;
 					}
 				},
 				watch: {
@@ -135,7 +139,7 @@
 						</tbody>
 					</table>
 
-					<pagination :page="page"  :page-no.sync="param.pageNo" :page-size.sync="param.pageSize"></pagination>
+					<pagination :page="page" @page-no="param.pageNo = arguments[0]" @page-size="param.pageSize = arguments[0]"></pagination>
 				</div>
 			</div>
 		</div>

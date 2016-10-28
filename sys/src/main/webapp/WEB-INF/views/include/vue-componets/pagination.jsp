@@ -9,24 +9,24 @@
             page: {
                 type: Object,
                 required: true
-            },
+            }
+        },
+        data : function(){
+            return {
+                pageNo: 1,
+                pageSize: 10
+            }
+        },
+        watch: {
             pageNo: {
-                type: Number,
-                required: true
+                handler: function () {
+                    this.$emit("page-no", this.pageNo);
+                }
             },
             pageSize: {
-                type: Number,
-                required: true
-            }
-        },
-        ready : function () {
-            if(this.pageSize == undefined || this.pageSize == null || this.pageSize == 0) {
-                this.pageSize = 10;
-            }
-        },
-        methods : {
-            goToPage : function (pageNum) {
-                this.pageNo = pageNum;
+                handler: function () {
+                    this.$emit("page-size", this.pageSize);
+                }
             }
         },
         computed: {
@@ -71,13 +71,13 @@
         <div class="col-sm-6">
             <ul class="pagination">
                 <li>
-                    <a @click="goToPage(lastPageNo)">上一页</a>
+                    <a @click="pageNo = lastPageNo">上一页</a>
                 </li>
-                <li v-for="pageNo of showPageNos" :class="{'active': pageNo ==page.pageNo}">
-                    <a @click="goToPage(pageNo)">{{ pageNo }}</a>
+                <li v-for="num of showPageNos" :class="{'active': num == page.pageNo}">
+                    <a @click="pageNo = num">{{ num }}</a>
                 </li>
                 <li>
-                    <a @click="goToPage(nextPageNo)">下一页</a>
+                    <a @click="pageNo = nextPageNo">下一页</a>
                 </li>
             </ul>
         </div>
@@ -86,9 +86,7 @@
                 <li>
                     共 {{ page.count }} 条，每页
                     <div class="btn-group dropup">
-                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                            {{ pageSize }} <span class="caret"></span>
-                        </button>
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">{{ pageSize }}<span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a @click="pageSize = 10">10</a></li>
                             <li><a @click="pageSize = 25">25</a></li>
