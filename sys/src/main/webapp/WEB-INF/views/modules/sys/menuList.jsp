@@ -99,11 +99,12 @@
 						<tbody>
 						<tr v-for="obj of dataList" v-show="obj.isShowInTable" :key="obj.id">
 							<td>
-								{{ obj.level }}
+								<span :style="{paddingLeft : (obj.level -1) * 20 + 'px'}"></span>
 								<a @click="toggle(obj)" v-if="obj.childList != null && obj.childList.length > 0">
 									<i v-show="!obj.isExpanded" class="fa fa-caret-right"></i>
 									<i v-show="obj.isExpanded" class="fa fa-caret-down"></i>
 								</a>
+								<span v-else style="padding-left : 10px"></span>
 								<i v-if="obj.icon" :class="obj.icon" style="font-size: 16px"></i>
 								<span @click="toggle(obj)" v-text="obj.name"></span>
 							</td>
