@@ -2,6 +2,8 @@
 
 <%--菜单树组件--%>
 <script>
+    var treeBus = new Vue()
+
     Vue.component("tree", {
         template: "#tree",
         props: {
@@ -13,10 +15,6 @@
                 require: true
             },
             /**
-             * 选中的项
-             */
-            value: {},
-            /**
              * 选择的类型：
              * radio:单选框，value的值为选中的元素
              * checkbox: 复选框，value的值为选中的元素的ID数组
@@ -25,8 +23,16 @@
                 type: String
             }
         },
+        data: function () {
+            return {
+                value: {}
+            }
+        },
         mounted: function () {
-            this.registerInitEvent();
+            var self = this;
+            treeBus.$on("select-value", function (data) {
+                self.$emit("input", data);
+            });
         },
         methods: {
             /**
@@ -122,6 +128,6 @@
     });
 </script>
 <template id="tree">
-    <tree-element :element="element" :level="1" :value.sync="value" :select-type="selectType"></tree-element>
+    <tree-element :element="element" :level="1" :select-type="selectType"></tree-element>
 </template>
 <%--菜单树组件--%>

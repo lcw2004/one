@@ -20,10 +20,6 @@
                 require: true
             },
             /**
-             * 选中的项
-             */
-            value: {},
-            /**
              * 选择的类型：
              * radio:单选框，value的值为选中的元素
              * checkbox: 复选框，value的值为选中的元素的ID数组
@@ -38,8 +34,16 @@
                  * 展开的菜单的级数，默认展开三级
                  */
                 isExpanded:  this.level <= 2,
-                selected : true
+                value: {},
+                selectId : ""
             }
+        },
+        mounted: function () {
+            var self = this;
+            treeBus.$on("select-value", function (data) {
+                self.value = data;
+                self.selectId = data.id;
+            });
         },
         methods: {
             /**
@@ -84,13 +88,23 @@
                     'fa fa-folder':this.isFolder && !this.isExpanded
                 };
             }
+        },
+        watch: {
+            "selectId": {
+                handler: function () {
+                    if(this.selectId == this.element.id) {
+                        treeBus.$emit("select-value", this.element);
+                        console.log("call event")
+                    }
+                }
+            }
         }
     });
 </script>
 <template id="tree-element">
     <div>
         <input type="checkbox" v-if='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
-        <input type="radio" v-if='selectType == "radio"' v-model="value" :value="element">
+        <input type="radio" v-if='selectType == "radio"' v-model="selectId" :value="element.id">{{ selectId }}
         <i @click="toggole()" v-show="isFolder" :class="folderClass"></i>
         <span @click="toggole()" v-text="element.name"></span>
 

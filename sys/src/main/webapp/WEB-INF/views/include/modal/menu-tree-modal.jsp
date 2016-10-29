@@ -10,14 +10,9 @@
             config: {
                 type: Object,
                 required: true
-            },
-            // 选中的数据的值
-            value: {
-                type: Object,
-                required: true
             }
         },
-        ready : function () {
+        mounted : function () {
             var actions = {
                 getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}
             };
@@ -29,7 +24,8 @@
         data: function () {
             return {
                 menu : {},
-                selected: {}
+                selected: {},
+                value: {}
             }
         },
         methods: {
@@ -38,6 +34,8 @@
                 this.value.id = this.selected.id;
                 this.value.name = this.selected.name;
                 this.config.show = false;
+
+                this.emit("input", this.value);
             }
         }
     });
@@ -53,7 +51,7 @@
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
                     <div class="menu-tree">
-                        <tree :element="menu" :value.sync="selected" select-type="radio"></tree>
+                        <tree :element="menu" v-model="selected" select-type="radio"></tree>
                     </div>
                 </div>
                 <div class="modal-footer">

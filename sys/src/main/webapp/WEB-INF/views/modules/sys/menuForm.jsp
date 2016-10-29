@@ -20,7 +20,7 @@
 						isShow : 1
 					},
 					menuTreeModalConfig: {
-						show : false,
+						show : true,
 						title : "选择上级菜单"
 					},
 					iconModalConfig: {
@@ -75,7 +75,7 @@
 									<button class="btn btn-info" type="button" @click="menuTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<menu-tree-modal :config.sync="menuTreeModalConfig" :value.sync="obj.parent"></menu-tree-modal>
+							<menu-tree-modal :config.sync="menuTreeModalConfig" v-model="obj.parent"></menu-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">
