@@ -37,7 +37,7 @@
                 /**
                  * 展开的菜单的级数，默认展开三级
                  */
-                isExpanded: this.level <= 2,
+                isExpanded:  this.level <= 2,
                 selected : true
             }
         },
@@ -74,6 +74,15 @@
              */
             isFolder: function () {
                 return this.element.childList != null && this.element.childList.length > 0;
+            },
+            /**
+             * 文件夹按钮的样式
+             */
+            folderClass: function () {
+                return {
+                    'fa fa-folder-open':this.isFolder && this.isExpanded,
+                    'fa fa-folder':this.isFolder && !this.isExpanded
+                };
             }
         }
     });
@@ -82,15 +91,14 @@
     <div>
         <input type="checkbox" v-if='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
         <input type="radio" v-if='selectType == "radio"' v-model="value" :value="element">
-        <i @click="toggole()" v-show="isFolder && isExpanded" class="fa fa-folder-open"></i>
-        <i @click="toggole()" v-show="isFolder && !isExpanded" class="fa fa-folder"></i>
+        <i @click="toggole()" v-show="isFolder" :class="folderClass"></i>
         <span @click="toggole()" v-text="element.name"></span>
-    </div>
 
-    <ul v-for="child of element.childList" v-show="isExpanded">
-        <li>
-            <tree-element :element="child" :level="level + 1" :value.sync="value" :select-type="selectType"></tree-element>
-        </li>
-    </ul>
+        <ul v-for="child of element.childList" v-show="isExpanded">
+            <li>
+                <tree-element :element="child" :level="level + 1" :value="value" :select-type="selectType"></tree-element>
+            </li>
+        </ul>
+    </div>
 </template>
 <%--菜单树组件--%>
