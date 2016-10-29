@@ -29,6 +29,7 @@
             }
         },
         mounted: function () {
+            // 接收到数据之后，将数据发送给Modal层
             var self = this;
             treeBus.$on("select-value", function (data) {
                 self.$emit("input", data);

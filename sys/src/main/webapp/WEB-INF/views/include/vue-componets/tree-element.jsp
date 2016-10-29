@@ -34,15 +34,17 @@
                  * 展开的菜单的级数，默认展开三级
                  */
                 isExpanded:  this.level <= 2,
-                value: {},
-                selectId : ""
+                /**
+                 * 树形结构中，选中的元素的ID，用于控制单项按钮的选中状态，该值有两个来源：1 - 选中单选按钮状态，2 - 接收广播
+                 */
+                selectElementId : ""
             }
         },
         mounted: function () {
+            // 接收广播
             var self = this;
-            treeBus.$on("select-value", function (data) {
-                self.value = data;
-                self.selectId = data.id;
+            treeBus.$on("select-value", function (selectElement) {
+                self.selectElementId = selectElement.id;
             });
         },
         methods: {
@@ -90,11 +92,11 @@
             }
         },
         watch: {
-            "selectId": {
+            "selectElementId": {
                 handler: function () {
-                    if(this.selectId == this.element.id) {
+                    // 如果选中了新值，将新选中的元素广播出去
+                    if(this.selectElementId == this.element.id) {
                         treeBus.$emit("select-value", this.element);
-                        console.log("call event")
                     }
                 }
             }
@@ -104,13 +106,13 @@
 <template id="tree-element">
     <div>
         <input type="checkbox" v-if='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
-        <input type="radio" v-if='selectType == "radio"' v-model="selectId" :value="element.id">{{ selectId }}
+        <input type="radio" v-if='selectType == "radio"' v-model="selectElementId" :value="element.id">
         <i @click="toggole()" v-show="isFolder" :class="folderClass"></i>
         <span @click="toggole()" v-text="element.name"></span>
 
         <ul v-for="child of element.childList" v-show="isExpanded">
             <li>
-                <tree-element :element="child" :level="level + 1" :value="value" :select-type="selectType"></tree-element>
+                <tree-element :element="child" :level="level + 1" :select-type="selectType"></tree-element>
             </li>
         </ul>
     </div>
