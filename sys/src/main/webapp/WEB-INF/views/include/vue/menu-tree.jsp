@@ -29,15 +29,20 @@
         data: function () {
             return {
                 menu : {},
-                selected: {}
+                value: {}
             }
         },
         methods: {
             selectOk : function () {
-                this.value = {};
-                this.value.id = this.selected.id;
-                this.value.name = this.selected.name;
                 this.config.show = false;
+
+                // 只返回ID和名称
+                var returnValue = {
+                    id: this.value.id,
+                    name : this.value.name
+                };
+
+                this.$emit("input", returnValue);
             }
         }
     });
@@ -53,11 +58,11 @@
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
                     <div class="menu-tree">
-                        <tree-element :element="menu" :level="1" :value.sync="selected"></tree-element>
+                        <tree-element :element="menu" :level="1" v-model="value"></tree-element>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <span class="pull-left">选择：{{ selected.name }}</span>
+                    <span class="pull-left">选择：{{ value.name }}</span>
                     <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
                     <button type="button" class="btn btn-primary" @click="selectOk()">确认</button>
                 </div>

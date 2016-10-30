@@ -76,7 +76,7 @@
 									<button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<office-tree-modal :config.sync="officeTreeModalConfig" :value.sync="obj.parent"></office-tree-modal>
+							<office-tree-modal :config.sync="officeTreeModalConfig" v-model="obj.parent"></office-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">

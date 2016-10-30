@@ -20,7 +20,7 @@
 						isShow : 1
 					},
 					menuTreeModalConfig: {
-						show : true,
+						show : false,
 						title : "选择上级菜单"
 					},
 					iconModalConfig: {
