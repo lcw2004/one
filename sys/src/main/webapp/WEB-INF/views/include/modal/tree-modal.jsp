@@ -10,13 +10,13 @@
             config: {
                 type: Object,
                 required: true
-            }
+            },
+            value:[Object, Array]
         },
 
         data: function () {
             return {
-                menu : {},
-                value: {}
+                menu : {}
             }
         },
         methods: {

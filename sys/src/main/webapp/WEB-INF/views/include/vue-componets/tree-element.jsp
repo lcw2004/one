@@ -35,19 +35,8 @@
                 /**
                  * 展开的菜单的级数，默认展开三级
                  */
-                isExpanded:  this.level <= 2,
-                /**
-                 * 树形结构中，选中的元素的ID，用于控制单项按钮的选中状态，该值有两个来源：1 - 选中单选按钮状态，2 - 接收广播
-                 */
-                selectElementId : ""
+                isExpanded:  this.level <= 2
             }
-        },
-        mounted: function () {
-            // 接收广播
-            var self = this;
-            self.treeBus.$on("select-value-radio", function (selectElement) {
-                self.selectElementId = selectElement.id;
-            });
         },
         methods: {
             /**
@@ -75,7 +64,7 @@
                 };
             },
             /**
-             * 复选框的选中状态
+             * CheckBox复选框的选中状态
              */
             isChecked: {
                 get: function () {
@@ -87,6 +76,9 @@
                     this.treeBus.$emit("select-value-ckbox", this.element, newValue);
                 }
             },
+            /**
+             * CheckBox复选框的半选中状态
+             */
             halfChecked: function () {
                 var self = this;
 
@@ -113,15 +105,17 @@
                         opacity: 0.4
                     }
                 }
-            }
-        },
-        watch: {
-            "selectElementId": {
-                handler: function () {
-                    // 如果选中了新值，将新选中的元素广播出去
-                    if(this.selectElementId == this.element.id) {
-                        this.treeBus.$emit("select-value-radio", this.element);
-                    }
+            },
+            /**
+             * Radio单选框选中后的值
+             */
+            selectElementId : {
+                get: function () {
+                    return this.value.id;
+                },
+                set: function () {
+                    // 如果选中了新值，将新选中的元素广播到tree组件中
+                    this.treeBus.$emit("select-value-radio", this.element);
                 }
             }
         }

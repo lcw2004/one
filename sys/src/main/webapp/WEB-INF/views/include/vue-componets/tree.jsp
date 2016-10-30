@@ -1,6 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
 <%--菜单树组件--%>
+<%--
+CheckBox数据流转：
+    tree-emement
+        选中：广播 select-value-ckbox
+    tree
+        接收：广播 select-value-ckbox
+    修改value，再将value下发到子组件
+
+Radio数据流转：
+    tree-emement
+        选中：广播 select-value-radio
+    tree
+        接收：广播 select-value-radio
+    修改value，再将value下发到子组件
+--%>
+
 <script>
     Vue.component("tree", {
         template: "#tree",
