@@ -45,7 +45,7 @@
         mounted: function () {
             // 接收广播
             var self = this;
-            self.treeBus.$on("select-value", function (selectElement) {
+            self.treeBus.$on("select-value-radio", function (selectElement) {
                 self.selectElementId = selectElement.id;
             });
         },
