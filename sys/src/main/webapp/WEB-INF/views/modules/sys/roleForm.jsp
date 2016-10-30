@@ -19,6 +19,7 @@
 				data : {
 					obj: {},
 					menu: {},
+					menuIds :[],
 
 					// 模态窗属性
 					companyTreeModalConfig: {

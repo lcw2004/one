@@ -27,6 +27,7 @@
             selectType: {
                 type: String
             },
+            treeBus: [Object],
             value: [Object, Array]
         },
         data: function () {
@@ -44,7 +45,7 @@
         mounted: function () {
             // 接收广播
             var self = this;
-            treeBus.$on("select-value", function (selectElement) {
+            self.treeBus.$on("select-value", function (selectElement) {
                 self.selectElementId = selectElement.id;
             });
         },
@@ -83,7 +84,7 @@
                 },
                 set: function (newValue) {
                     // 如果选中了新值，将新选中的元素广播出去
-                    treeBus.$emit("select-value-ckbox", this.element, newValue);
+                    this.treeBus.$emit("select-value-ckbox", this.element, newValue);
                 }
             },
             halfChecked: function () {
@@ -119,7 +120,7 @@
                 handler: function () {
                     // 如果选中了新值，将新选中的元素广播出去
                     if(this.selectElementId == this.element.id) {
-                        treeBus.$emit("select-value", this.element);
+                        this.treeBus.$emit("select-value-radio", this.element);
                     }
                 }
             }
@@ -135,7 +136,7 @@
 
         <ul v-for="child of element.childList" v-show="isExpanded">
             <li>
-                <tree-element :element="child" :level="level + 1" :value="value" :select-type="selectType"></tree-element>
+                <tree-element :element="child" :level="level + 1" :value="value" :select-type="selectType" :tree-bus="treeBus"></tree-element>
             </li>
         </ul>
     </div>
