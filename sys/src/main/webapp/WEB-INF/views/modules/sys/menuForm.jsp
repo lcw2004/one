@@ -75,7 +75,7 @@
 									<button class="btn btn-info" type="button" @click="menuTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<menu-tree-modal :config.sync="menuTreeModalConfig" v-model="obj.parent"></menu-tree-modal>
+							<menu-tree-modal :config="menuTreeModalConfig" v-model="obj.parent"></menu-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">

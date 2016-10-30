@@ -26,7 +26,8 @@
              */
             selectType: {
                 type: String
-            }
+            },
+            value: [Object, Array]
         },
         data: function () {
             return {
@@ -53,24 +54,6 @@
              */
             toggole: function () {
                 this.isExpanded = !this.isExpanded
-            },
-            /**
-             * 处理复选框选择事件，修改状态之后递归修改复选框的状态
-             */
-            handlerSelectChange: function () {
-                var setSelectRecursion = function (element, isSelected) {
-                    var childList = element.childList;
-
-                    if (childList) {
-                        for (var i = 0; i < childList.length; i++) {
-                            var child = childList[i];
-                            child.isSelected = isSelected;
-                            setSelectRecursion(child, isSelected);
-                        }
-                    }
-                };
-
-                setSelectRecursion(this.element, this.element.isSelected);
             }
         },
         computed: {
@@ -89,6 +72,46 @@
                     'fa fa-folder-open':this.isFolder && this.isExpanded,
                     'fa fa-folder':this.isFolder && !this.isExpanded
                 };
+            },
+            /**
+             * 复选框的选中状态
+             */
+            isChecked: {
+                get: function () {
+                    // 检查当前元素的ID有没有再选中的值的列表中
+                    return $.inArray(this.element.id, this.value) >= 0;
+                },
+                set: function (newValue) {
+                    // 如果选中了新值，将新选中的元素广播出去
+                    treeBus.$emit("select-value-ckbox", this.element, newValue);
+                }
+            },
+            halfChecked: function () {
+                var self = this;
+
+                // 检查元素是否有子元素没选中
+                var hasNotSelectedChild = false;
+                var checkStatusRecursion = function (element) {
+                    var index = $.inArray(element.id, self.value);
+                    if (index < 0) {
+                        hasNotSelectedChild = true;
+                    }
+
+                    var childList = element.childList;
+                    if (childList) {
+                        for (var i = 0; i < childList.length; i++) {
+                            checkStatusRecursion(childList[i]);
+                        }
+                    }
+                };
+                checkStatusRecursion(self.element);
+
+                // 返回半选中状态
+                if (hasNotSelectedChild) {
+                    return {
+                        opacity: 0.4
+                    }
+                }
             }
         },
         watch: {
@@ -105,14 +128,14 @@
 </script>
 <template id="tree-element">
     <div>
-        <input type="checkbox" v-if='selectType == "checkbox"'v-model="element.isSelected" @change="handlerSelectChange()">
+        <input type="checkbox" v-if='selectType == "checkbox"' v-model="isChecked" :style="halfChecked">
         <input type="radio" v-if='selectType == "radio"' v-model="selectElementId" :value="element.id">
         <i @click="toggole()" v-show="isFolder" :class="folderClass"></i>
         <span @click="toggole()" v-text="element.name"></span>
 
         <ul v-for="child of element.childList" v-show="isExpanded">
             <li>
-                <tree-element :element="child" :level="level + 1" :select-type="selectType"></tree-element>
+                <tree-element :element="child" :level="level + 1" :value="value" :select-type="selectType"></tree-element>
             </li>
         </ul>
     </div>
