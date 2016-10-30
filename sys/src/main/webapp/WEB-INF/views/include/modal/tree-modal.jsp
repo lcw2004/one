@@ -1,31 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-<%--菜单树模态窗--%>
 <script>
-    Vue.component("menu-tree", {
-        template: "#menuTree",
+    // 树形模态窗公共部分
+    var TreeModalMixin = {
+        template: "#treeModal",
         props: {
             // 模态窗属性配置
             config: {
                 type: Object,
                 required: true
-            },
-            // 选中的数据的值
-            value: {
-                type: Object,
-                required: true
             }
         },
-        ready : function () {
-            var actions = {
-                getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}
-            };
-            var resource = this.$resource(null, {}, actions);
-            resource.getMenuTree().then(function (response) {
-                this.menu = response.body;
-            });
-        },
+
         data: function () {
             return {
                 menu : {},
@@ -45,9 +32,9 @@
                 this.$emit("input", returnValue);
             }
         }
-    });
+    }
 </script>
-<template id="menuTree">
+<template id="treeModal">
     <div class="modal" v-show="config.show">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -58,7 +45,7 @@
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
                     <div class="menu-tree">
-                        <tree-element :element="menu" :level="1" v-model="value"></tree-element>
+                        <tree :element="menu" v-model="value" select-type="radio"></tree>
                     </div>
                 </div>
                 <div class="modal-footer">

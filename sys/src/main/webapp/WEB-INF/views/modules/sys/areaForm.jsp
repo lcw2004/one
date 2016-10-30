@@ -76,7 +76,7 @@
 									<button class="btn btn-info" type="button" @click="areaTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<area-tree-modal :config.sync="areaTreeModalConfig" :value.sync="obj.parent"></area-tree-modal>
+							<area-tree-modal :config="areaTreeModalConfig" v-model="obj.parent"></area-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">

@@ -76,7 +76,7 @@
 									<button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<office-tree-modal :config.sync="officeTreeModalConfig" v-model="obj.parent"></office-tree-modal>
+							<office-tree-modal :config="officeTreeModalConfig" v-model="obj.parent"></office-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">
@@ -88,7 +88,7 @@
 									<button class="btn btn-info" type="button" @click="areaTreeModalConfig.show = true">选择</button>
 								</span>
 							</div>
-							<area-tree-modal :config.sync="areaTreeModalConfig" :value.sync="obj.area"></area-tree-modal>
+							<area-tree-modal :config="areaTreeModalConfig" v-model="obj.area"></area-tree-modal>
 						</div>
 					</div>
 					<div class="form-group">
