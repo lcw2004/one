@@ -22,8 +22,9 @@ public class AreaRestController {
     @RequiresPermissions("sys:area:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public Area get(@PathVariable String id) {
-        Area menu = areaService.get(id);
-        return menu;
+        Area area = areaService.get(id);
+        area.setParent(areaService.get(area.getParentId()));
+        return area;
     }
 
     @RequiresPermissions("sys:area:delete")
@@ -35,6 +36,7 @@ public class AreaRestController {
     @RequiresPermissions("sys:area:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@RequestBody Area area) {
+        area.setParentId(area.getParent().getId());
         areaService.save(area);
     }
 

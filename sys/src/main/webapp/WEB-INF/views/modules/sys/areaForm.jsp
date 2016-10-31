@@ -16,17 +16,18 @@
 			new Vue({
 				el:".content",
 				data : {
-					obj : {},
+					obj : {
+						parent:{},
+						name:"",
+						code:"",
+						type:2,
+						remarks:""
+					},
 
 					// 模态窗属性
 					areaTreeModalConfig: {
 						show : false,
 						title : "选择上级区域"
-					},
-					// 模态窗属性
-					iconModalConfig: {
-						show : false,
-						title : "选择图标"
 					}
 				},
 				mounted: function () {
