@@ -17,9 +17,13 @@
 			new Vue({
 				el: ".content",
 				data : {
-					obj: {},
-					menu: {},
-					menuIds :[],
+					obj: {
+						office:{},
+						name : "",
+						dataScope : "",
+						menuIdList : []
+					},
+					topMenu: {},
 
 					// 模态窗属性
 					companyTreeModalConfig: {
@@ -32,6 +36,7 @@
 
 					// 加载数据
 					this.loadTree();
+					this.loadData();
 				},
 				methods: {
 					loadData: function () {
@@ -40,20 +45,17 @@
 							resource.get({id: id}).then(function (response) {
 								this.obj = response.body;
 							})
-						} else {
-							this.$set(this.obj, "menuIdList", []);
 						}
+					},
+					loadTree: function () {
+						resource.getMenuTree().then(function (response) {
+							this.topMenu = response.body;
+						});
 					},
 					save : function () {
 						resource.save(null, JSON.stringify(this.obj)).then(function (response) {
 							Vue.$alert("保存成功！");
 						})
-					},
-					loadTree: function () {
-						resource.getMenuTree().then(function (response) {
-							this.menu = response.body;
-							this.loadData();
-						});
 					}
 				}
 			})
@@ -108,7 +110,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">角色授权</label>
 						<div class="col-sm-4">
-							<tree :element="menu" v-model="obj.menuIdList" select-type="checkbox"></tree>
+							<tree :element="topMenu" v-model="obj.menuIdList" select-type="checkbox"></tree>
 						</div>
 					</div>
 				</div>
