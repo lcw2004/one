@@ -6,10 +6,10 @@
     Vue.component("menu-tree-modal", {
         mixins: [TreeModalMixin],
         mounted: function () {
-            var actions = {getMenuTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}};
+            var actions = {getTree: {method: "get", url: '${ctxRest}/sys/menu/tree'}};
             var resource = this.$resource(null, {}, actions);
-            resource.getMenuTree().then(function (response) {
-                this.menu = response.body;
+            resource.getTree().then(function (response) {
+                this.topElement = response.body;
             });
         }
     });

@@ -13,7 +13,7 @@
         },
         data: function () {
             return {
-                menu: {},
+                topElement: {},
                 value: {}
             }
         },
@@ -43,7 +43,7 @@
                 </div>
                 <div class="modal-body" style="overflow-y: auto">
                     <div class="menu-tree">
-                        <tree :element="menu" v-model="value" select-type="radio"></tree>
+                        <tree :element="topElement" v-model="value" select-type="radio"></tree>
                     </div>
                 </div>
                 <div class="modal-footer">
