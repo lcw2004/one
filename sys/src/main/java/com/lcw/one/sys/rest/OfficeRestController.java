@@ -22,8 +22,8 @@ public class OfficeRestController {
     @RequiresPermissions("sys:office:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public Office get(@PathVariable String id) {
-        Office menu = officeService.get(id);
-        return menu;
+        Office office = officeService.get(id);
+        return office;
     }
 
     @RequiresPermissions("sys:office:delete")
@@ -34,8 +34,9 @@ public class OfficeRestController {
 
     @RequiresPermissions("sys:office:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-    public void save(@RequestBody Office area) {
-        officeService.save(area);
+    public void save(@RequestBody Office office) {
+    	office.setParentId(office.getParent().getId());
+        officeService.save(office);
     }
 
 }

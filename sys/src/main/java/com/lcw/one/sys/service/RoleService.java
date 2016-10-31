@@ -1,6 +1,7 @@
 package com.lcw.one.sys.service;
 
 import com.lcw.one.common.persistence.Page;
+import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.sys.dao.RoleDao;
 import com.lcw.one.sys.entity.Dict;
 import com.lcw.one.sys.entity.Role;
@@ -24,7 +25,9 @@ public class RoleService {
     public Page<Role> find(Page<Role> page, String name) {
         DetachedCriteria dc = roleDao.createDetachedCriteria();
         dc.add(Restrictions.eq(Dict.FIELD_DEL_FLAG, Dict.DEL_FLAG_NORMAL));
-        dc.add(Restrictions.like("name", "%" + name + "%"));
+        if(StringUtils.isNotEmpty(name)) {
+        	dc.add(Restrictions.like("name", "%" + name + "%"));
+        }
         dc.addOrder(Order.desc("createDate"));
         return roleDao.find(page, dc);
     }

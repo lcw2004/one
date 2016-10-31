@@ -16,7 +16,21 @@
 			new Vue({
 				el: ".content",
 				data : {
-					obj : {},
+					obj : {
+						parent: {},
+						area: {},
+						name: "",
+						code: "",
+						type: 1,
+						grade: 1,
+						address: "",
+						zipCode: "",
+						master: "",
+						phone: "",
+						fax: "",
+						email: "",
+						remarks: ""
+					},
 
 					// 模态窗属性
 					officeTreeModalConfig: {

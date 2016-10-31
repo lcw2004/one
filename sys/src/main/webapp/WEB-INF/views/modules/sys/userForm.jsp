@@ -20,6 +20,15 @@
 				data : {
 					id : "${id}",
 					obj : {
+						company: {},
+						office: {},
+						no: "",
+						name: "",
+						loginName: "",
+						email: "",
+						phone: "",
+						mobile: "",
+						remarks: "",
 						roleIdList: []
 					},
 					roles : {},
@@ -36,20 +45,22 @@
 				},
 				mounted: function () {
 					resource = this.$resource(null, {}, actions);
-
-					// 加载数据
-					if (this.id) {
-						resource.get({id: this.id}).then(function (response) {
-							this.obj = response.body;
-						})
-					}
-
-					// 加载角色
-					resource.getRole().then(function (response) {
-						this.roles = response.body;
-					})
+					this.loadData();
+					this.loadRole();
 				},
 				methods: {
+					loadData:function () {
+						if (this.id) {
+							resource.get({id: this.id}).then(function (response) {
+								this.obj = response.body;
+							})
+						}
+					},
+					loadRole: function () {
+						resource.getRole().then(function (response) {
+							this.roles = response.body;
+						})
+					},
 					save : function () {
 						if (this.id) {
 							resource.update(null, JSON.stringify(this.obj)).then(function (response) {
@@ -146,7 +157,7 @@
 						<div class="col-sm-8">
 							<div class="checkbox">
 								<label v-for="role of roles.list">
-									<input type="checkbox" :value="role.id" v-model="obj.roleIdList"> {{ role.name }} &nbsp;
+									<input type="checkbox" :value="role.id" v-model="obj.roleIdList"> {{ role.name }}
 								</label>
 							</div>
 						</div>

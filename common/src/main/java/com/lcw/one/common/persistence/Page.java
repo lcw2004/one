@@ -56,14 +56,17 @@ public class Page<T> {
     public Page(HttpServletRequest request, HttpServletResponse response) {
         // 设置页码参数（传递repage参数，来记住页码）
         String no = request.getParameter("pageNo");
-        if (StringUtils.isNumeric(no)) {
-            CookieUtils.setCookie(response, "pageNo", no);
+        if (StringUtils.isEmpty(no)) {
+            this.setPageNo(1);
+        } else if (StringUtils.isNumeric(no)) {
             this.setPageNo(Integer.parseInt(no));
         }
 
         // 设置页面大小参数（传递repage参数，来记住页码大小）
         String size = request.getParameter("pageSize");
-        if (StringUtils.isNumeric(size)) {
+        if (StringUtils.isEmpty(size)) {
+            this.setPageSize(10);
+        }if (StringUtils.isNumeric(size)) {
             CookieUtils.setCookie(response, "pageSize", size);
             this.setPageSize(Integer.parseInt(size));
         }
