@@ -17,7 +17,15 @@
 				el: ".content",
 				data : {
 					obj : {
-						isShow : 1
+						isShow : 1,
+						parent:{},
+						name: "",
+						href: "",
+						target: "",
+						sort: 0,
+						icon: "",
+						permission: "",
+						remarks: ""
 					},
 					menuTreeModalConfig: {
 						show : false,
