@@ -10,11 +10,6 @@
             config: {
                 type: Object,
                 required: true
-            },
-            // 选中的数据的值
-            value: {
-                type: String,
-                required: true
             }
         },
         data: function () {

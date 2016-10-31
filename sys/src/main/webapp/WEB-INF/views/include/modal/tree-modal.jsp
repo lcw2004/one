@@ -6,17 +6,15 @@
     var TreeModalMixin = {
         template: "#treeModal",
         props: {
-            // 模态窗属性配置
             config: {
                 type: Object,
                 required: true
-            },
-            value:[Object, Array]
+            }
         },
-
         data: function () {
             return {
-                menu : {}
+                menu: {},
+                value: {}
             }
         },
         methods: {
