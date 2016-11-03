@@ -24,6 +24,11 @@
 					resource.queryMenu().then(function (response) {
 						this.menu = response.body;
 					});
+				},
+				components: {
+					"main-aside": MainAside,
+					"main-head": MainHead,
+					"main-foot": MainFoot
 				}
 			});
 
@@ -34,136 +39,65 @@
 
 <body class="hold-transition skin-blue sidebar-mini" style="overflow-y: hidden">
 	<div class="wrapper">
-
 		<main-head :sys-menu="menu.childList"></main-head>
 		<main-aside></main-aside>
-
 		<div class="content-wrapper">
 			<iframe id="contentIframe" name="contentIframe" style="width: 100%; height: 100%"></iframe>
 		</div>
-
 		<main-foot></main-foot>
-
 		<div class="control-sidebar-bg"></div>
 	</div>
 </body>
 </html>
 
 <script>
-	var MainHead = {
-		template : "#main-head",
-		props: {
-			sysMenu: [Array]
-		},
-		data: function () {
-			return {
-				activeMenu: {}
-			}
-		},
-		watch: {
-			"activeMenu": {
-				handler: function () {
-					menuBus.$emit("toggle-menu", this.activeMenu);
-				}
-			},
-			"sysMenu": {
-				handler: function () {
-					if(this.sysMenu.length > 0) {
-						this.activeMenu = this.sysMenu[0];
-					}
-				}
-			}
-		}
-	};
-	Vue.component("main-head", MainHead);
-</script>
-<template id="main-head">
-	<header class="main-header">
-		<!-- Logo -->
-		<a href="#" class="logo">
-			<span class="logo-mini"><b>${fns:getConfig('productShortName')}</b></span>
-			<span class="logo-lg"><b>${fns:getConfig('productName')}</b></span>
-		</a>
-
-		<!-- Header Navbar -->
-		<nav class="navbar navbar-static-top" role="navigation">
-			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-				<span class="sr-only">Toggle navigation</span>
-			</a>
-
-			<%--系统级别菜单--%>
-			<div class="">
-				<ul id="menu" class="nav navbar-nav navbar-left">
-					<li v-for="system of sysMenu" :class="{'active': activeMenu.id == system.id}" @click="activeMenu = system">
-						<a v-text="system.name"></a>
-					</li>
-				</ul>
-			</div>
-
-			<!-- Navbar Right Menu -->
-			<div class="navbar-custom-menu">
-				<ul class="nav navbar-nav">
-					<main-head-message></main-head-message>
-					<main-head-notifications></main-head-notifications>
-					<main-head-tasks></main-head-tasks>
-					<main-head-user-account></main-head-user-account>
-					<li>
-						<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	</header>
-</template>
-
-<script>
 	var MainHeadMessages = {
 		template : "#main-head-message"
 	};
-	Vue.component("main-head-message", MainHeadMessages);
 </script>
 <template id="main-head-message">
-	<li class="dropdown messages-menu">
-		<!-- Menu toggle button -->
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-			<i class="fa fa-envelope-o"></i>
-			<span class="label label-success">4</span>
-		</a>
-		<ul class="dropdown-menu">
-			<li class="header">You have 4 messages</li>
-			<li>
-				<!-- inner menu: contains the messages -->
-				<ul class="menu">
-					<li><!-- start message -->
-						<a href="#">
-							<div class="pull-left">
-								<!-- User Image -->
+	<slot>
+		<li class="dropdown messages-menu">
+			<!-- Menu toggle button -->
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="fa fa-envelope-o"></i>
+				<span class="label label-success">4</span>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="header">You have 4 messages</li>
+				<li>
+					<!-- inner menu: contains the messages -->
+					<ul class="menu">
+						<li><!-- start message -->
+							<a href="#">
+								<div class="pull-left">
+									<!-- User Image -->
 
-								<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-							</div>
-							<!-- Message title and timestamp -->
-							<h4>
-								Support Team
-								<small><i class="fa fa-clock-o"></i> 5 mins</small>
-							</h4>
-							<!-- The message -->
-							<p>Why not buy a new awesome theme?</p>
-						</a>
-					</li>
-					<!-- end message -->
-				</ul>
-				<!-- /.menu -->
-			</li>
-			<li class="footer"><a href="#">See All Messages</a></li>
-		</ul>
-	</li>
+									<img src="${ctxStatic}/lib/AdminLTE-2.3.5/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+								</div>
+								<!-- Message title and timestamp -->
+								<h4>
+									Support Team
+									<small><i class="fa fa-clock-o"></i> 5 mins</small>
+								</h4>
+								<!-- The message -->
+								<p>Why not buy a new awesome theme?</p>
+							</a>
+						</li>
+						<!-- end message -->
+					</ul>
+					<!-- /.menu -->
+				</li>
+				<li class="footer"><a href="#">See All Messages</a></li>
+			</ul>
+		</li>
+	</slot>
 </template>
 
 <script>
 	var MainHeadNotifications = {
 		template : "#main-head-notifications"
 	};
-	Vue.component("main-head-notifications", MainHeadNotifications);
 </script>
 <template id="main-head-notifications">
 	<li class="dropdown notifications-menu">
@@ -194,7 +128,6 @@
 	var MainHeadTesks = {
 		template : "#main-head-tasks"
 	};
-	Vue.component("main-head-tasks", MainHeadTesks);
 </script>
 <template id="main-head-tasks">
 	<li class="dropdown tasks-menu">
@@ -238,7 +171,6 @@
 	var MainHeadUserAccount = {
 		template : "#main-head-user-account"
 	};
-	Vue.component("main-head-user-account", MainHeadUserAccount);
 </script>
 <template id="main-head-user-account">
 	<li class="dropdown user user-menu">
@@ -289,26 +221,81 @@
 </template>
 
 <script>
-	var MainAside = {
-		template : "#main-aside"
-	}
-	Vue.component("main-aside", MainAside);
+	var MainHead = {
+		template : "#main-head",
+		props: {
+			sysMenu: [Array]
+		},
+		data: function () {
+			return {
+				activeMenu: {}
+			}
+		},
+		watch: {
+			"activeMenu": {
+				handler: function () {
+					menuBus.$emit("toggle-menu", this.activeMenu);
+				}
+			},
+			"sysMenu": {
+				handler: function () {
+					if(this.sysMenu.length > 0) {
+						this.activeMenu = this.sysMenu[0];
+					}
+				}
+			}
+		},
+		components: {
+			"main-head-message": MainHeadMessages,
+			"main-head-notifications": MainHeadNotifications,
+			"main-head-tasks": MainHeadTesks,
+			"main-head-user-account": MainHeadUserAccount,
+		}
+	};
 </script>
-<template id="main-aside">
-	<aside class="main-sidebar">
-		<section class="sidebar">
-			<main-aside-user-panel></main-aside-user-panel>
-			<main-aside-search></main-aside-search>
-			<main-aside-menu></main-aside-menu>
-		</section>
-	</aside>
+<template id="main-head">
+	<header class="main-header">
+		<!-- Logo -->
+		<a href="#" class="logo">
+			<span class="logo-mini"><b>${fns:getConfig('productShortName')}</b></span>
+			<span class="logo-lg"><b>${fns:getConfig('productName')}</b></span>
+		</a>
+
+		<!-- Header Navbar -->
+		<nav class="navbar navbar-static-top" role="navigation">
+			<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+				<span class="sr-only">Toggle navigation</span>
+			</a>
+
+			<%--系统级别菜单--%>
+			<div class="">
+				<ul id="menu" class="nav navbar-nav navbar-left">
+					<li v-for="system of sysMenu" :class="{'active': activeMenu.id == system.id}" @click="activeMenu = system">
+						<a v-text="system.name"></a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Navbar Right Menu -->
+			<div class="navbar-custom-menu">
+				<ul class="nav navbar-nav">
+					<main-head-message></main-head-message>
+					<main-head-notifications></main-head-notifications>
+					<main-head-tasks></main-head-tasks>
+					<main-head-user-account></main-head-user-account>
+					<li>
+						<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
 </template>
 
 <script>
 	var MainAsideUserPanel = {
 		template : "#main-aside-user-panel"
 	};
-	Vue.component("main-aside-user-panel", MainAsideUserPanel);
 </script>
 <template id="main-aside-user-panel">
 	<div class="user-panel">
@@ -327,7 +314,6 @@
 	var MainAsideSearch = {
 		template : "#main-aside-search"
 	};
-	Vue.component("main-aside-search", MainAsideSearch);
 </script>
 <template id="main-aside-search">
 	<form action="#" method="get" class="sidebar-form">
@@ -378,10 +364,29 @@
 </template>
 
 <script>
+	var MainAside = {
+		template : "#main-aside",
+		components: {
+			"main-aside-user-panel": MainAsideUserPanel,
+			"main-aside-search": MainAsideSearch,
+			"main-aside-menu": MainAsideMenu
+		}
+	}
+</script>
+<template id="main-aside">
+	<aside class="main-sidebar">
+		<section class="sidebar">
+			<main-aside-user-panel></main-aside-user-panel>
+			<main-aside-search></main-aside-search>
+			<main-aside-menu></main-aside-menu>
+		</section>
+	</aside>
+</template>
+
+<script>
 	var MainFoot = {
 		template : "#main-foot"
 	}
-	Vue.component("main-foot", MainFoot);
 </script>
 <template id="main-foot">
 	<aside class="control-sidebar control-sidebar-dark">
