@@ -28,11 +28,10 @@
 				components: {
 					"main-aside": MainAside,
 					"main-head": MainHead,
-					"main-foot": MainFoot
+					"main-foot": MainFoot,
+					"main-body": MainBody
 				}
 			});
-
-			$("#contentIframe").height($(".content-wrapper").height());
 		});
 	</script>
 </head>
@@ -41,9 +40,7 @@
 	<div class="wrapper">
 		<main-head :sys-menu="menu.childList"></main-head>
 		<main-aside></main-aside>
-		<div class="content-wrapper">
-			<iframe id="contentIframe" name="contentIframe" style="width: 100%; height: 100%"></iframe>
-		</div>
+		<main-body></main-body>
 		<main-foot></main-foot>
 		<div class="control-sidebar-bg"></div>
 	</div>
@@ -56,7 +53,6 @@
 	};
 </script>
 <template id="main-head-message">
-	<slot>
 		<li class="dropdown messages-menu">
 			<!-- Menu toggle button -->
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -91,7 +87,6 @@
 				<li class="footer"><a href="#">See All Messages</a></li>
 			</ul>
 		</li>
-	</slot>
 </template>
 
 <script>
@@ -460,4 +455,27 @@
 			<!-- /.tab-pane -->
 		</div>
 	</aside>
+</template>
+
+<script>
+	var MainBody = {
+		template: "#main-body",
+		mounted: function () {
+			$.AdminLTE.layout.fix();
+			this.frameStyle.height = $(".content-wrapper").height() + 'px';
+		},
+		data: function () {
+			return {
+				frameStyle: {
+					width: "100%",
+					height: "100%"
+				}
+			}
+		}
+	}
+</script>
+<template id="main-body">
+	<div class="content-wrapper">
+		<iframe id="contentIframe" name="contentIframe" :style="frameStyle"></iframe>
+	</div>
 </template>
