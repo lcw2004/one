@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+    <tlib-version>2.2.3</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>power</short-name>
+    <uri>/seud-tags</uri>
+    <description>通用标签</description>
+    <tag>
+        <name>pif</name>
+        <tag-class>com.seud.operation.console.tag.PowerIfTag</tag-class>
+        <attribute>
+            <name>permissionUrl</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>permissionName</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>pyes</name>
+        <tag-class>com.seud.operation.console.tag.PowerYesTag</tag-class>
+    </tag>
+    <tag>
+        <name>pno</name>
+        <tag-class>com.seud.operation.console.tag.PowerNoTag</tag-class>
+    </tag>
+</taglib>

@@ -1,5 +1,6 @@
 package com.lcw.one.sys.rest;
 
+import com.lcw.one.sys.dao.CityMapper;
 import com.lcw.one.sys.entity.Area;
 import com.lcw.one.sys.service.AreaService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,9 +14,15 @@ public class AreaRestController {
     @Autowired
     private AreaService areaService;
 
+    @Autowired
+    private CityMapper cityMapper;
+
     @RequiresPermissions("sys:area:view")
     @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
     public Area listAsTree() {
+
+       Area area =  cityMapper.findByState("1");
+
         return areaService.organizeMenuListAsMenuTree(areaService.get("1"), areaService.findAll());
     }
 
