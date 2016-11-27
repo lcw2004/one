@@ -16,7 +16,7 @@ public class OfficeRestController {
     @RequiresPermissions("sys:office:view")
     @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
     public Office listAsTree() {
-        return officeService.organizeMenuListAsMenuTree(officeService.get("1"), officeService.findAll());
+        return officeService.organizeListAsTree(officeService.get("1"), officeService.findAll());
     }
 
     @RequiresPermissions("sys:office:view")

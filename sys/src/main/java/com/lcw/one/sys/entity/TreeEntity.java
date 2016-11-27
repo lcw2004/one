@@ -19,7 +19,7 @@ import java.util.List;
  * @author ThinkGem
  * @version 2014-05-16
  */
-public abstract class TreeEntity<T extends DataEntity> extends DataEntity<T> {
+public abstract class TreeEntity<T extends TreeEntity> extends DataEntity<T> {
 
     private static final long serialVersionUID = 1L;
 

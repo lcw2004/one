@@ -1,7 +1,5 @@
 package com.lcw.one.sys.service;
 
-import com.lcw.one.sys.entity.Area;
-import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.entity.TreeEntity;
 
 import javax.persistence.Transient;
@@ -18,18 +16,19 @@ public class TreeEntityUtil<T extends TreeEntity> {
 
     /**
      * 将菜单列表组织为菜单树
-     * @param topMenu
+     *
+     * @param topElement
      * @param list
      * @return
      */
-    public  T organizeMenuListAsMenuTree(T topMenu, List<T> list) {
+    public T organizeListAsTree(T topElement, List<T> list) {
         // 按父ID将菜单归类
-        Map<String, List<T>> childMenuListMap = organizeListAsMapByParentId(list);
+        Map<String, List<T>> childListByParentId = organizeListAsMapByParentId(list);
 
         // 递归组织菜单结构
-        recursionChildMenuList(childMenuListMap, topMenu);
+        recursionChildList(childListByParentId, topElement);
 
-        return topMenu;
+        return topElement;
     }
 
     /**
@@ -38,44 +37,47 @@ public class TreeEntityUtil<T extends TreeEntity> {
      * @param list
      * @return
      */
-    private  Map<String, List<T>> organizeListAsMapByParentId(List<T> list) {
-        Map<String, List<T>> childMenuListMap = new HashMap<>();
-        for (T menu : list) {
-            if (menu.getParent() != null) {
-                String parentId = menu.getParentId();
-                List<T> menuList;
-                if (childMenuListMap.containsKey(parentId)) {
-                    menuList = childMenuListMap.get(parentId);
+    private Map<String, List<T>> organizeListAsMapByParentId(List<T> list) {
+        Map<String, List<T>> childListMap = new HashMap<>();
+        for (T treeEntity : list) {
+            if (treeEntity.getParent() != null) {
+                String parentId = treeEntity.getParentId();
+                List<T> childList;
+                if (childListMap.containsKey(parentId)) {
+                    childList = childListMap.get(parentId);
                 } else {
-                    menuList = new ArrayList<>();
+                    childList = new ArrayList<>();
                 }
 
-                menuList.add(menu);
-                childMenuListMap.put(parentId, menuList);
+                childList.add(treeEntity);
+                childListMap.put(parentId, childList);
             }
 
-            menu.setChildList(null);
-            menu.setParent(null);
+            // 清空childList属性和parent属性，减少重复数据
+            treeEntity.setChildList(null);
+            treeEntity.setParent(null);
         }
-        return childMenuListMap;
+        return childListMap;
     }
 
     /**
      * 递归从Map中将Menu List设置到对应的Menu的childList属性中
      *
-     * @param childMenuListMap
-     * @param parentMenu
+     * @param childListMap
+     * @param parent
      */
-    private  void recursionChildMenuList(Map<String, List<T>> childMenuListMap, T parentMenu) {
-        if(childMenuListMap != null && childMenuListMap.containsKey(parentMenu.getId())) {
-            parentMenu.setChildList(childMenuListMap.get(parentMenu.getId()));
+    private void recursionChildList(Map<String, List<T>> childListMap, T parent) {
+        if (childListMap != null && childListMap.containsKey(parent.getId())) {
+            parent.setChildList(childListMap.get(parent.getId()));
         }
 
-        if(parentMenu.getChildList() != null &&parentMenu.getChildList().size() > 0) {
-            for (int i = 0; i < parentMenu.getChildList().size(); i++) {
-                T childMenu = (T)parentMenu.getChildList().get(i);
-                recursionChildMenuList(childMenuListMap, childMenu);
-            }
+        if (parent.getChildList() == null || parent.getChildList().isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < parent.getChildList().size(); i++) {
+            T child = (T) parent.getChildList().get(i);
+            recursionChildList(childListMap, child);
         }
     }
 

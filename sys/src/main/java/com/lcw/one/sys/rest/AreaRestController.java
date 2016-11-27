@@ -16,7 +16,7 @@ public class AreaRestController {
     @RequiresPermissions("sys:area:view")
     @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
     public Area listAsTree() {
-        return areaService.organizeMenuListAsMenuTree(areaService.get("1"), areaService.queryAll());
+        return areaService.organizeListAsTree(areaService.get("1"), areaService.queryAll());
     }
 
     @RequiresPermissions("sys:area:view")

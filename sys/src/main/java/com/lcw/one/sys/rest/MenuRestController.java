@@ -29,7 +29,7 @@ public class MenuRestController {
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/tree", method = RequestMethod.GET, produces = "application/json")
     public Menu listAsTree() {
-        return menuServices.organizeMenuListAsMenuTree(menuServices.get("1"), list());
+        return menuServices.organizeListAsTree(menuServices.get("1"), list());
     }
 
     /**

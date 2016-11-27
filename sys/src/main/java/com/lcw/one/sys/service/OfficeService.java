@@ -5,24 +5,16 @@
  */
 package com.lcw.one.sys.service;
 
-import com.lcw.one.sys.dao.DictDao;
 import com.lcw.one.sys.dao.OfficeDao;
-import com.lcw.one.sys.entity.Dict;
-import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.entity.Office;
 import com.lcw.one.sys.utils.UserUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 机构Service
@@ -64,8 +56,8 @@ public class OfficeService extends CrudService<OfficeDao, Office> {
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
 
-	public Office organizeMenuListAsMenuTree(Office menu, List<Office> menuList) {
-		return new TreeEntityUtil<Office>().organizeMenuListAsMenuTree(menu, menuList);
+	public Office organizeListAsTree(Office top, List<Office> list) {
+		return new TreeEntityUtil<Office>().organizeListAsTree(top, list);
 	}
 
 
