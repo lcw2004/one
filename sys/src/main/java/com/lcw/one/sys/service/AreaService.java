@@ -117,42 +117,4 @@ public class AreaService extends CrudService<AreaDao, Area>  {
 		}
 	}
 
-	/**
-     * Service基类
-     * @author ThinkGem
-     * @version 2014-05-16
-     */
-    @Transactional(readOnly = true)
-    public abstract static class CrudService<D extends BaseDao<T>, T extends BaseEntity<T>> extends BaseService {
-        protected Logger logger = LoggerFactory.getLogger(getClass());
-
-        /**
-         * 持久层对象
-         */
-        @Autowired
-        protected D dao;
-
-        @Transactional(readOnly = false)
-        public void save(T entity) {
-            dao.save(entity);
-        }
-
-        @Transactional(readOnly = false)
-        public void delete(String id) {
-            dao.deleteById(id);
-        }
-
-        public T get(String id) {
-            return dao.get(id);
-        }
-
-        public List<T> queryAll() {
-            DetachedCriteria dc = dao.createDetachedCriteria();
-            dc.add(dataScopeFilter(UserUtils.getUser(), dc.getAlias(), ""));
-            dc.add(Restrictions.eq(DataEntity.FIELD_DEL_FLAG, DataEntity.DEL_FLAG_NORMAL));
-            List<T> list = dao.find(dc);
-            return list;
-        }
-
-    }
 }

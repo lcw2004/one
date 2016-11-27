@@ -85,7 +85,7 @@
 						<label class="col-sm-2 control-label">上级机构</label>
 						<div class="col-sm-4">
 							<div class="input-group">
-								<input type="text" class="form-control" v-model="obj.parent.name"/>
+								<input type="text" class="form-control" v-model="obj.parent == null ? '' : obj.parent.name"/>
 								<span class="input-group-btn">
 									<button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
 								</span>
