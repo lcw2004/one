@@ -5,10 +5,16 @@
  */
 package com.lcw.one.sys.service;
 
+import com.lcw.one.common.persistence.BaseDao;
+import com.lcw.one.common.persistence.BaseEntity;
 import com.lcw.one.sys.dao.AreaDao;
 import com.lcw.one.sys.entity.Area;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,41 +31,29 @@ import java.util.Map;
  */
 @Service
 @Transactional(readOnly = true)
-public class AreaService extends BaseService {
-
-	@Autowired
-	private AreaDao areaDao;
-	
-	public Area get(String id) {
-		return areaDao.get(id);
-	}
-	
-	public List<Area> findAll(){
-		return areaDao.findAllList();
-	}
+public class AreaService extends CrudService<AreaDao, Area>  {
 
 	@Transactional(readOnly = false)
 	public void save(Area area) {
 		area.setParent(this.get(area.getParent().getId()));
 		String oldParentIds = area.getParentIds(); // 获取修改前的parentIds，用于更新子节点的parentIds
 		area.setParentIds(area.getParent().getParentIds()+area.getParent().getId()+",");
-		areaDao.clear();
-		areaDao.save(area);
+		dao.clear();
+		dao.save(area);
 		// 更新子节点 parentIds
-		List<Area> list = areaDao.findByParentIdsLike("%,"+area.getId()+",%");
+		List<Area> list = dao.findByParentIdsLike("%,"+area.getId()+",%");
 		for (Area e : list){
 			e.setParentIds(e.getParentIds().replace(oldParentIds, area.getParentIds()));
 		}
-		areaDao.save(list);
+		dao.save(list);
 		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(String id) {
-		areaDao.deleteById(id, "%,"+id+",%");
+		super.delete(id);
 		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
 	}
-
 
 	/**
 	 * 将菜单列表组织为菜单树
@@ -123,4 +117,42 @@ public class AreaService extends BaseService {
 		}
 	}
 
+	/**
+     * Service基类
+     * @author ThinkGem
+     * @version 2014-05-16
+     */
+    @Transactional(readOnly = true)
+    public abstract static class CrudService<D extends BaseDao<T>, T extends BaseEntity<T>> extends BaseService {
+        protected Logger logger = LoggerFactory.getLogger(getClass());
+
+        /**
+         * 持久层对象
+         */
+        @Autowired
+        protected D dao;
+
+        @Transactional(readOnly = false)
+        public void save(T entity) {
+            dao.save(entity);
+        }
+
+        @Transactional(readOnly = false)
+        public void delete(String id) {
+            dao.deleteById(id);
+        }
+
+        public T get(String id) {
+            return dao.get(id);
+        }
+
+        public List<T> queryAll() {
+            DetachedCriteria dc = dao.createDetachedCriteria();
+            dc.add(dataScopeFilter(UserUtils.getUser(), dc.getAlias(), ""));
+            dc.add(Restrictions.eq(DataEntity.FIELD_DEL_FLAG, DataEntity.DEL_FLAG_NORMAL));
+            List<T> list = dao.find(dc);
+            return list;
+        }
+
+    }
 }

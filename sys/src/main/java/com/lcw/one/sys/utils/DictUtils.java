@@ -53,7 +53,7 @@ public class DictUtils {
 		Map<String, List<Dict>> dictMap = (Map<String, List<Dict>>)CacheUtils.get(CACHE_DICT_MAP);
 		if (dictMap == null){
 			dictMap = Maps.newHashMap();
-			for (Dict dict : dictService.findAllList()){
+			for (Dict dict : dictService.queryAll()){
 				List<Dict> dictList = dictMap.get(dict.getType());
 				if (dictList != null){
 					dictList.add(dict);

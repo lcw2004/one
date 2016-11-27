@@ -28,17 +28,10 @@ import java.util.Map;
  */
 @Service
 @Transactional(readOnly = true)
-public class LogService extends BaseService {
+public class LogService extends CrudService<LogDao, Log> {
 
-	@Autowired
-	private LogDao logDao;
-	
-	public Log get(String id) {
-		return logDao.get(id);
-	}
-	
 	public Page<Log> find(Page<Log> page, Map<String, Object> paramMap) {
-		DetachedCriteria dc = logDao.createDetachedCriteria();
+		DetachedCriteria dc = dao.createDetachedCriteria();
 
 		String createByName = ObjectUtils.toString(paramMap.get("createByName"));
 		if (StringUtils.isNotEmpty(createByName)) {
@@ -70,11 +63,7 @@ public class LogService extends BaseService {
 		}
 		dc.add(Restrictions.between("createDate", beginDate, endDate));
 		dc.addOrder(Order.desc("createDate"));
-		return logDao.find(page, dc);
+		return dao.find(page, dc);
 	}
 
-	@Transactional(readOnly = false)
-	public void save(Log log) {
-		logDao.save(log);
-	}
 }

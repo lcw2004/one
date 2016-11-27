@@ -1,6 +1,8 @@
 package com.lcw.one.sys.service;
 
+import com.lcw.one.sys.dao.LogDao;
 import com.lcw.one.sys.dao.MenuDao;
+import com.lcw.one.sys.entity.Log;
 import com.lcw.one.sys.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,21 +15,10 @@ import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
-public class MenuServices extends BaseService {
-
-    @Autowired
-    private MenuDao menuDao;
-
-    public Menu get(String id) {
-        return menuDao.get(id);
-    }
+public class MenuServices extends CrudService<MenuDao, Menu> {
 
     public List<Menu> findByUserId(String userId){
-        return menuDao.findByUserId(userId);
-    }
-
-    public List<Menu> findAllList(){
-        return menuDao.findAllList();
+        return dao.findByUserId(userId);
     }
 
     /**

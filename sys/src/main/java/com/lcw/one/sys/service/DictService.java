@@ -7,7 +7,9 @@ package com.lcw.one.sys.service;
 
 import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.util.CacheUtils;
+import com.lcw.one.sys.dao.AreaDao;
 import com.lcw.one.sys.dao.DictDao;
+import com.lcw.one.sys.entity.Area;
 import com.lcw.one.sys.entity.Dict;
 import com.lcw.one.sys.utils.DictUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,28 +29,11 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class DictService extends BaseService {
+public class DictService extends CrudService<DictDao, Dict> {
 
-	@Autowired
-	private DictDao dictDao;
-	
-//	@Autowired
-//	private MyBatisDictDao myBatisDictDao;
-	
-	public Dict get(String id) {
-		// MyBatis 查询
-//		return myBatisDictDao.get(id);
-		// Hibernate 查询
-		return dictDao.get(id);
-	}
-	
 	public Page<Dict> find(Page<Dict> page, Dict dict) {
-		// MyBatis 查询
-//		dict.setPage(page);
-//		page.setList(myBatisDictDao.find(dict));
-//		return page;
 		// Hibernate 查询
-		DetachedCriteria dc = dictDao.createDetachedCriteria();
+		DetachedCriteria dc = dao.createDetachedCriteria();
 		if (StringUtils.isNotEmpty(dict.getType())){
 			dc.add(Restrictions.eq("type", dict.getType()));
 		}
@@ -57,27 +42,23 @@ public class DictService extends BaseService {
 		}
 		dc.add(Restrictions.eq(Dict.FIELD_DEL_FLAG, Dict.DEL_FLAG_NORMAL));
 		dc.addOrder(Order.asc("type")).addOrder(Order.asc("sort")).addOrder(Order.desc("id"));
-		return dictDao.find(page, dc);
+		return dao.find(page, dc);
 	}
 	
 	public List<String> findTypeList(){
-		return dictDao.findTypeList();
+		return dao.findTypeList();
 	}
 	
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
-		dictDao.save(dict);
+		super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(String id) {
-		dictDao.deleteById(id);
+		super.delete(id);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 
-	public List<Dict> findAllList() {
-		return dictDao.findAllList();
-	}
-	
 }
