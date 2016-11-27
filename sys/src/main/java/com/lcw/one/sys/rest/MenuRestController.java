@@ -45,7 +45,7 @@ public class MenuRestController {
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public Menu get(@PathVariable String id) {
-        Menu menu = systemService.getMenu(id);
+        Menu menu = menuServices.get(id);
         // TODO 忽略不必要的属性
         return menu;
     }

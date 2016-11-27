@@ -19,8 +19,7 @@ import java.util.List;
  * @author ThinkGem
  * @version 2014-05-16
  */
-@MappedSuperclass
-public class TreeEntity<T extends DataEntity> extends DataEntity<T> {
+public abstract class TreeEntity<T extends DataEntity> extends DataEntity<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,18 +28,21 @@ public class TreeEntity<T extends DataEntity> extends DataEntity<T> {
     protected String parentId; // 所有父级编号
     protected List<T> childList;
 
-  
+    public abstract T getParent();
 
-    public String getParentIds() {
-        return parentIds;
-    }
+    public abstract void setParent(T parent);
 
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds;
-    }
+    public abstract String getParentIds();
+
+    public abstract void setParentIds(String parentIds);
 
     @Transient
     public String getParentId() {
+        if (getParent() != null) {
+            parentId = getParent().getId();
+        } else {
+            parentId = "0";
+        }
         return parentId;
     }
 

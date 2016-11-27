@@ -54,6 +54,26 @@ public class Office extends TreeEntity<Office> {
 		this.id = id;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parent_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@NotNull
+	public Office getParent() {
+		return parent;
+	}
+
+	public void setParent(Office parent) {
+		this.parent = parent;
+	}
+
+	public String getParentIds() {
+		return parentIds;
+	}
+
+	public void setParentIds(String parentIds) {
+		this.parentIds = parentIds;
+	}
+
 	@ManyToOne
 	@JoinColumn(name="area_id")
 	@NotFound(action = NotFoundAction.IGNORE)

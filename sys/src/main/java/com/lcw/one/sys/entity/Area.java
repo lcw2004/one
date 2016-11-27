@@ -46,6 +46,26 @@ public class Area extends TreeEntity<Area> {
 		this.id = id;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parent_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@NotNull
+	public Area getParent() {
+		return parent;
+	}
+
+	public void setParent(Area parent) {
+		this.parent = parent;
+	}
+
+	public String getParentIds() {
+		return parentIds;
+	}
+
+	public void setParentIds(String parentIds) {
+		this.parentIds = parentIds;
+	}
+
 	@Length(min=1, max=100)
 	public String getName() {
 		return name;

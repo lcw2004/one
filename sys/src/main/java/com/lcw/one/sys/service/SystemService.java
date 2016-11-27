@@ -209,19 +209,13 @@ public class SystemService extends BaseService  {
 		return user;
 	}
 
-	//-- Menu Service --//
-	
-	public Menu getMenu(String id) {
-		return menuDao.get(id);
-	}
-
 	public List<Menu> findAllMenu(){
 		return UserUtils.getMenuList();
 	}
 	
 	@Transactional(readOnly = false)
 	public void saveMenu(Menu menu) {
-		menu.setParent(this.getMenu(menu.getParent().getId()));
+		menu.setParent(menuDao.get(menu.getParent().getId()));
 		String oldParentIds = menu.getParentIds(); // 获取修改前的parentIds，用于更新子节点的parentIds
 		menu.setParentIds(menu.getParent().getParentIds()+menu.getParent().getId()+",");
 		menuDao.clear();

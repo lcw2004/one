@@ -66,7 +66,15 @@ public class Menu extends TreeEntity<Menu> {
 	public void setParent(Menu parent) {
 		this.parent = parent;
 	}
-	
+
+	public String getParentIds() {
+		return parentIds;
+	}
+
+	public void setParentIds(String parentIds) {
+		this.parentIds = parentIds;
+	}
+
 	@Length(min=1, max=100)
 	public String getName() {
 		return name;
