@@ -30,22 +30,19 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Menu extends DataEntity<Menu> {
+public class Menu extends TreeEntity<Menu> {
 
 	private static final long serialVersionUID = 1L;
 
-	private Menu parent;	// 父级菜单
-	private String parentIds; // 所有父级编号
 	private String name; 	// 名称
 	private String href; 	// 链接
 	private String target; 	// 目标（ mainFrame、_blank、_self、_parent、_top）
 	private String icon; 	// 图标
-	private Integer sort; 	// 排序
+	private Integer sort;
 	private String isShow; 	// 是否在菜单中显示（1：显示；0：不显示）
 	private String isShowCN; 	// 是否在菜单中显示（1：显示；0：不显示）
 	private String isActiviti; 	// 是否同步到工作流（1：同步；0：不同步）
 	private String permission; // 权限标识
-	private List<Menu> childList = Lists.newArrayList();// 拥有子菜单列表
 	@JsonIgnore private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 
 	public Menu(){
@@ -59,7 +56,7 @@ public class Menu extends DataEntity<Menu> {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="parent_id")
+	@JoinColumn(name = "parent_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@NotNull
 	public Menu getParent() {
@@ -68,15 +65,6 @@ public class Menu extends DataEntity<Menu> {
 
 	public void setParent(Menu parent) {
 		this.parent = parent;
-	}
-
-	@Length(min=1, max=255)
-	public String getParentIds() {
-		return parentIds;
-	}
-
-	public void setParentIds(String parentIds) {
-		this.parentIds = parentIds;
 	}
 	
 	@Length(min=1, max=100)
@@ -115,15 +103,6 @@ public class Menu extends DataEntity<Menu> {
 		this.icon = icon;
 	}
 	
-	@NotNull
-	public Integer getSort() {
-		return sort;
-	}
-	
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
-	
 	@Length(min=1, max=1)
 	public String getIsShow() {
 		return isShow;
@@ -151,15 +130,6 @@ public class Menu extends DataEntity<Menu> {
 		this.permission = permission;
 	}
 
-	@Transient
-	public List<Menu> getChildList() {
-		return childList;
-	}
-
-	public void setChildList(List<Menu> childList) {
-		this.childList = childList;
-	}
-	
 	@ManyToMany(mappedBy = "menuList", fetch= FetchType.LAZY)
 	@Where(clause="del_flag='"+DEL_FLAG_NORMAL+"'")
 	@OrderBy("id") @Fetch(FetchMode.SUBSELECT)
@@ -172,25 +142,13 @@ public class Menu extends DataEntity<Menu> {
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
 	}
-	
-	@Transient
-	public static void sortList(List<Menu> list, List<Menu> sourcelist, String parentId){
-		for (int i=0; i<sourcelist.size(); i++){
-			Menu e = sourcelist.get(i);
-			if (e.getParent()!=null && e.getParent().getId()!=null
-					&& e.getParent().getId().equals(parentId)){
-				list.add(e);
-				// 判断是否还有子节点, 有则继续获取子节点
-				for (int j=0; j<sourcelist.size(); j++){
-					Menu child = sourcelist.get(j);
-					if (child.getParent()!=null && child.getParent().getId()!=null
-							&& child.getParent().getId().equals(e.getId())){
-						sortList(list, sourcelist, e.getId());
-						break;
-					}
-				}
-			}
-		}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 	@Transient

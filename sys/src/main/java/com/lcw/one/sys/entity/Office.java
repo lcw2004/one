@@ -27,12 +27,9 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Office extends DataEntity<Office> {
+public class Office extends TreeEntity<Office> {
 
 	private static final long serialVersionUID = 1L;
-	private Office parent;	// 父级编号
-	private String parentId; // 父级编号
-	private String parentIds; // 所有父级编号
 	private Area area;		// 归属区域
 	private String code; 	// 机构编码
 	private String name; 	// 机构名称
@@ -47,7 +44,6 @@ public class Office extends DataEntity<Office> {
 	private String email; 	// 邮箱
 	
 	private List<User> userList = Lists.newArrayList();   // 拥有用户列表
-	private List<Office> childList = Lists.newArrayList();// 拥有子机构列表
 
 	public Office(){
 		super();
@@ -56,32 +52,6 @@ public class Office extends DataEntity<Office> {
 	public Office(String id){
 		this();
 		this.id = id;
-	}
-
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	@Transient
-	public Office getParent() {
-		return parent;
-	}
-
-	public void setParent(Office parent) {
-		this.parent = parent;
-	}
-
-	@Length(min=1, max=255)
-	public String getParentIds() {
-		return parentIds;
-	}
-
-	public void setParentIds(String parentIds) {
-		this.parentIds = parentIds;
 	}
 
 	@ManyToOne
@@ -196,15 +166,6 @@ public class Office extends DataEntity<Office> {
 	}
 
 	@Transient
-	public List<Office> getChildList() {
-		return childList;
-	}
-
-	public void setChildList(List<Office> childList) {
-		this.childList = childList;
-	}
-
-	@Transient
 	public boolean isRoot(){
 		return isRoot(this.id);
 	}
@@ -222,4 +183,5 @@ public class Office extends DataEntity<Office> {
 	public void setTypeCN(String typeCN) {
 		this.typeCN = typeCN;
 	}
+
 }

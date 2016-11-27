@@ -9,6 +9,7 @@ import com.lcw.one.common.persistence.BaseDao;
 import com.lcw.one.common.persistence.BaseEntity;
 import com.lcw.one.sys.dao.AreaDao;
 import com.lcw.one.sys.entity.Area;
+import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
@@ -55,66 +56,9 @@ public class AreaService extends CrudService<AreaDao, Area>  {
 		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
 	}
 
-	/**
-	 * 将菜单列表组织为菜单树
-	 * @param topMenu
-	 * @param list
-	 * @return
-	 */
-	public Area organizeMenuListAsMenuTree(Area topMenu, List<Area> list) {
-		// 按父ID将菜单归类
-		Map<String, List<Area>> childMenuListMap = organizeListAsMapByParentId(list);
-
-		// 递归组织菜单结构
-		recursionChildMenuList(childMenuListMap, topMenu);
-
-		return topMenu;
+	public Area organizeMenuListAsMenuTree(Area menu, List<Area> menuList) {
+		return new TreeEntityUtil<Area>().organizeMenuListAsMenuTree(menu, menuList);
 	}
 
-	/**
-	 * 将菜单列表重新组织为Map，以父ID为键，Menu List为值
-	 *
-	 * @param list
-	 * @return
-	 */
-	private Map<String, List<Area>> organizeListAsMapByParentId(List<Area> list) {
-		Map<String, List<Area>> childMenuListMap = new HashMap<>();
-		for (Area menu : list) {
-			if (StringUtils.isNotEmpty(menu.getParentId())) {
-				String parentId = menu.getParentId();
-				List<Area> menuList;
-				if (childMenuListMap.containsKey(parentId)) {
-					menuList = childMenuListMap.get(parentId);
-				} else {
-					menuList = new ArrayList<>();
-				}
-
-				menuList.add(menu);
-				childMenuListMap.put(parentId, menuList);
-			}
-
-			menu.setChildList(null);
-			menu.setParent(null);
-		}
-		return childMenuListMap;
-	}
-
-	/**
-	 * 递归从Map中将Menu List设置到对应的Menu的childList属性中
-	 *
-	 * @param childMenuListMap
-	 * @param parentMenu
-	 */
-	private void recursionChildMenuList(Map<String, List<Area>> childMenuListMap, Area parentMenu) {
-		if(childMenuListMap != null && childMenuListMap.containsKey(parentMenu.getId())) {
-			parentMenu.setChildList(childMenuListMap.get(parentMenu.getId()));
-		}
-
-		if(parentMenu.getChildList() != null &&parentMenu.getChildList().size() > 0) {
-			for (Area childMenu : parentMenu.getChildList()) {
-				recursionChildMenuList(childMenuListMap, childMenu);
-			}
-		}
-	}
 
 }

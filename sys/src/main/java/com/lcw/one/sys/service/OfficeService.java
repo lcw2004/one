@@ -8,6 +8,7 @@ package com.lcw.one.sys.service;
 import com.lcw.one.sys.dao.DictDao;
 import com.lcw.one.sys.dao.OfficeDao;
 import com.lcw.one.sys.entity.Dict;
+import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.entity.Office;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,66 +64,9 @@ public class OfficeService extends CrudService<OfficeDao, Office> {
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
 
-	/**
-	 * 将菜单列表组织为菜单树
-	 * @param topMenu
-	 * @param list
-	 * @return
-	 */
-	public Office organizeMenuListAsMenuTree(Office topMenu, List<Office> list) {
-		// 按父ID将菜单归类
-		Map<String, List<Office>> childMenuListMap = organizeListAsMapByParentId(list);
-
-		// 递归组织菜单结构
-		recursionChildMenuList(childMenuListMap, topMenu);
-
-		return topMenu;
+	public Office organizeMenuListAsMenuTree(Office menu, List<Office> menuList) {
+		return new TreeEntityUtil<Office>().organizeMenuListAsMenuTree(menu, menuList);
 	}
 
-	/**
-	 * 将菜单列表重新组织为Map，以父ID为键，Menu List为值
-	 *
-	 * @param list
-	 * @return
-	 */
-	private Map<String, List<Office>> organizeListAsMapByParentId(List<Office> list) {
-		Map<String, List<Office>> childMenuListMap = new HashMap<>();
-		for (Office menu : list) {
-			if (StringUtils.isNotEmpty(menu.getParentId())) {
-				String parentId = menu.getParentId();
-				List<Office> menuList;
-				if (childMenuListMap.containsKey(parentId)) {
-					menuList = childMenuListMap.get(parentId);
-				} else {
-					menuList = new ArrayList<>();
-				}
 
-				menuList.add(menu);
-				childMenuListMap.put(parentId, menuList);
-			}
-
-			menu.setChildList(null);
-			menu.setParent(null);
-		}
-		return childMenuListMap;
-	}
-
-	/**
-	 * 递归从Map中将Menu List设置到对应的Menu的childList属性中
-	 *
-	 * @param childMenuListMap
-	 * @param parentMenu
-	 */
-	private void recursionChildMenuList(Map<String, List<Office>> childMenuListMap, Office parentMenu) {
-		if(childMenuListMap != null && childMenuListMap.containsKey(parentMenu.getId())) {
-			parentMenu.setChildList(childMenuListMap.get(parentMenu.getId()));
-		}
-
-		if(parentMenu.getChildList() != null &&parentMenu.getChildList().size() > 0) {
-			for (Office childMenu : parentMenu.getChildList()) {
-				recursionChildMenuList(childMenuListMap, childMenu);
-			}
-		}
-	}
-	
 }
