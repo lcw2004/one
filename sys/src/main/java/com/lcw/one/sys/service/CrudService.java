@@ -6,6 +6,7 @@ package com.lcw.one.sys.service;
 import java.util.List;
 
 import com.lcw.one.common.persistence.BaseDao;
+import com.lcw.one.common.persistence.BaseEntity;
 import com.lcw.one.common.persistence.Page;
 import com.lcw.one.sys.entity.DataEntity;
 import com.lcw.one.sys.entity.Office;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 2014-05-16
  */
 @Transactional(readOnly = true)
-public abstract class CrudService<D extends BaseDao<T>, T extends DataEntity<T>> extends BaseService {
+public abstract class CrudService<D extends BaseDao<T>, T extends BaseEntity<T>> extends BaseService {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**

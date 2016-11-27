@@ -18,23 +18,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(readOnly = true)
-public class UserService extends BaseService {
-
-	@Autowired
-	private UserDao userDao;
-	
-	public User get(String id) {
-		return userDao.get(id);
-	}
-
-	@Transactional(readOnly = false)
-	public void save(User dict) {
-		userDao.save(dict);
-	}
-	
-	@Transactional(readOnly = false)
-	public void delete(String id) {
-		userDao.deleteById(id);
-	}
-
+public class UserService extends CrudService<UserDao, User> {
 }

@@ -116,7 +116,7 @@ public class UserUtils extends BaseService {
 		if (menuList == null){
 			User user = getUser();
 			if (user.isAdmin()){
-				menuList = menuServices.findAllList();
+				menuList = menuServices.queryAll();
 			}else{
 				menuList = menuServices.findByUserId(user.getId());
 			}

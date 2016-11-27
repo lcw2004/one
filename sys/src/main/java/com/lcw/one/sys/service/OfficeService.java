@@ -5,7 +5,9 @@
  */
 package com.lcw.one.sys.service;
 
+import com.lcw.one.sys.dao.DictDao;
 import com.lcw.one.sys.dao.OfficeDao;
+import com.lcw.one.sys.entity.Dict;
 import com.lcw.one.sys.entity.Office;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,21 +30,14 @@ import java.util.Map;
  */
 @Service
 @Transactional(readOnly = true)
-public class OfficeService extends BaseService {
+public class OfficeService extends CrudService<OfficeDao, Office> {
 
-	@Autowired
-	private OfficeDao officeDao;
-	
-	public Office get(String id) {
-		return officeDao.get(id);
-	}
-	
 	public List<Office> findAll(){
-		DetachedCriteria dc = officeDao.createDetachedCriteria();
+		DetachedCriteria dc = dao.createDetachedCriteria();
 		dc.add(dataScopeFilter(UserUtils.getUser(), dc.getAlias(), ""));
 		dc.add(Restrictions.eq(Office.FIELD_DEL_FLAG, Office.DEL_FLAG_NORMAL));
 		dc.addOrder(Order.asc("code"));
-		List<Office> officeList = officeDao.find(dc);
+		List<Office> officeList = dao.find(dc);
 		return officeList;
 	}
 	
@@ -51,20 +46,20 @@ public class OfficeService extends BaseService {
 		office.setParent(this.get(office.getParent().getId()));
 		String oldParentIds = office.getParentIds(); // 获取修改前的parentIds，用于更新子节点的parentIds
 		office.setParentIds(office.getParent().getParentIds()+office.getParent().getId()+",");
-		officeDao.clear();
-		officeDao.save(office);
+		dao.clear();
+		dao.save(office);
 		// 更新子节点 parentIds
-		List<Office> list = officeDao.findByParentIdsLike("%,"+office.getId()+",%");
+		List<Office> list = dao.findByParentIdsLike("%,"+office.getId()+",%");
 		for (Office e : list){
 			e.setParentIds(e.getParentIds().replace(oldParentIds, office.getParentIds()));
 		}
-		officeDao.save(list);
+		dao.save(list);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(String id) {
-		officeDao.deleteById(id, "%,"+id+",%");
+		dao.deleteById(id, "%,"+id+",%");
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
 

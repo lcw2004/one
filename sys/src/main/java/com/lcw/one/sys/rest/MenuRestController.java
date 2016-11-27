@@ -23,7 +23,7 @@ public class MenuRestController {
     @RequiresPermissions("sys:menu:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public List<Menu> list() {
-        return menuServices.findAllList();
+        return menuServices.queryAll();
     }
 
     @RequiresPermissions("sys:menu:view")
