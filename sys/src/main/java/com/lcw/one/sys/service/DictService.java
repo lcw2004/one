@@ -32,21 +32,11 @@ public class DictService extends BaseService {
 	@Autowired
 	private DictDao dictDao;
 	
-//	@Autowired
-//	private MyBatisDictDao myBatisDictDao;
-	
 	public Dict get(String id) {
-		// MyBatis 查询
-//		return myBatisDictDao.get(id);
-		// Hibernate 查询
 		return dictDao.get(id);
 	}
 	
 	public Page<Dict> find(Page<Dict> page, Dict dict) {
-		// MyBatis 查询
-//		dict.setPage(page);
-//		page.setList(myBatisDictDao.find(dict));
-//		return page;
 		// Hibernate 查询
 		DetachedCriteria dc = dictDao.createDetachedCriteria();
 		if (StringUtils.isNotEmpty(dict.getType())){

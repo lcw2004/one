@@ -25,41 +25,29 @@ import java.util.Map;
  */
 @Service
 @Transactional(readOnly = true)
-public class AreaService extends BaseService {
-
-	@Autowired
-	private AreaDao areaDao;
-	
-	public Area get(String id) {
-		return areaDao.get(id);
-	}
-	
-	public List<Area> findAll(){
-		return areaDao.findAllList();
-	}
+public class AreaService extends CrudService<AreaDao, Area>  {
 
 	@Transactional(readOnly = false)
 	public void save(Area area) {
 		area.setParent(this.get(area.getParent().getId()));
 		String oldParentIds = area.getParentIds(); // 获取修改前的parentIds，用于更新子节点的parentIds
 		area.setParentIds(area.getParent().getParentIds()+area.getParent().getId()+",");
-		areaDao.clear();
-		areaDao.save(area);
+		dao.clear();
+		dao.save(area);
 		// 更新子节点 parentIds
-		List<Area> list = areaDao.findByParentIdsLike("%,"+area.getId()+",%");
+		List<Area> list = dao.findByParentIdsLike("%,"+area.getId()+",%");
 		for (Area e : list){
 			e.setParentIds(e.getParentIds().replace(oldParentIds, area.getParentIds()));
 		}
-		areaDao.save(list);
+		dao.save(list);
 		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(String id) {
-		areaDao.deleteById(id, "%,"+id+",%");
+		super.delete(id);
 		UserUtils.removeCache(UserUtils.CACHE_AREA_LIST);
 	}
-
 
 	/**
 	 * 将菜单列表组织为菜单树
