@@ -2,6 +2,8 @@
 
 本项目衍生自 [jeesite](https://github.com/thinkgem/jeesite "https://github.com/thinkgem/jeesite")，使用的是hibernate版本，除了基础平台的功能，其余的功能都删除了。
 
+**这段时间工作上有些忙，暂时没继续开发，年后会接着按计划进行开发**
+
 ## 演示地址
 -   [http://www.lumuxi.me/one](http://www.lumuxi.me/one/ "http://www.lumuxi.me/one/")
 -   登录名：admin，密码：admin
@@ -47,7 +49,7 @@
 
 	-   [X] 字典管理
 	-   [X] 菜单管理
-	-   [X] 菜单栏显示菜单的LOGO	
+	-   [X] 菜单栏显示菜单的LOGO
 	-   [X] 角色管理
 	-   [X] 用户管理
 	-   [X] 机构管理
