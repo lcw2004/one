@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "${restPath}/sys/dict")
@@ -24,6 +25,12 @@ public class DictRestController {
     public Page list(Dict dict, HttpServletRequest request, HttpServletResponse response) {
         Page<Dict> page = dictService.find(new Page<Dict>(request, response), dict);
         return page;
+    }
+
+    @RequiresPermissions("sys:dict:view")
+    @RequestMapping(value = "/group", method = RequestMethod.GET, produces = "application/json")
+    public Map<String, List<Dict>> groupList() {
+        return DictUtils.getDictMap();
     }
 
     @RequiresPermissions("sys:dict:edit")

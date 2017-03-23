@@ -15,7 +15,7 @@
 		$(document).ready(function () {
 			var actions = {queryMenu: {method: 'get', url: '${ctxRest}/sys/menu/user'}};
 			new Vue({
-				el: ".wrapper",
+                el: ".wrapper",
 				data: {
 					menu : {}
 				},

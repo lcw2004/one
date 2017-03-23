@@ -20,6 +20,22 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Collections3 {
 
+	public static boolean isNotEmpty(List list) {
+		return list != null && !list.isEmpty();
+	}
+
+	public static boolean isEmpty(List list) {
+		return !isNotEmpty(list);
+	}
+
+	public static boolean isNotEmpty(Map map) {
+		return map != null && !map.isEmpty();
+	}
+
+	public static boolean isEmpty(Map map) {
+		return !isNotEmpty(map);
+	}
+
 	/**
 	 * 提取集合中的对象的两个属性(通过Getter函数), 组合成Map.
 	 * 
