@@ -574,14 +574,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         return filePath.substring(index + dirPaths.length());
     }
 
-    public static String getAbsolutePath(String urlPath) {
-        if (StringUtils.isBlank(urlPath)) {
-            return "";
-        } else {
-            return SpringContextHolder.getRootRealPath() + urlPath.substring(urlPath.indexOf("/", 1), urlPath.length());
-        }
-    }
-
     /**
      * 将内容写入文件
      * @param content
