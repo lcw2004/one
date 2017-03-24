@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.utils.fieldtype;
@@ -15,13 +15,13 @@ import com.lcw.one.sys.entity.Area;
  */
 public class AreaType {
 
-	/**
-	 * 获取对象值（导出）
-	 */
-	public static String setValue(Object val) {
-		if (val != null && ((Area)val).getName() != null){
-			return ((Area)val).getName();
-		}
-		return "";
-	}
+    /**
+     * 获取对象值（导出）
+     */
+    public static String setValue(Object val) {
+        if (val != null && ((Area) val).getName() != null) {
+            return ((Area) val).getName();
+        }
+        return "";
+    }
 }

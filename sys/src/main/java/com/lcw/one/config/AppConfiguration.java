@@ -92,7 +92,15 @@ public class AppConfiguration {
         registration.setFilter(new RequestInfoFilter());
         registration.addUrlPatterns("/*");
         registration.setName("RequestInfoFilter");
+        registration.setOrder(10);
         return registration;
     }
 
+//    @Bean(name = "cacheManager")
+//    public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
+//        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
+//        ClassPathResource classPathResource = new ClassPathResource("cache/ehcache-local.xml");
+//        ehCacheManagerFactoryBean.setConfigLocation(classPathResource);
+//        return ehCacheManagerFactoryBean;
+//    }
 }

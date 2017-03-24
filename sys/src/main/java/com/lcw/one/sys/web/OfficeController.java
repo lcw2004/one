@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.web;
@@ -26,29 +26,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = "${adminPath}/sys/office")
 public class OfficeController extends BaseController {
 
-	@Autowired
-	private OfficeService officeService;
-	
-	@ModelAttribute("office")
-	public Office get(@RequestParam(required = false) String id) {
-		if (StringUtils.isNotBlank(id)) {
-			return officeService.get(id);
-		} else {
-			return new Office();
-		}
-	}
+    @Autowired
+    private OfficeService officeService;
 
-	@RequiresPermissions("sys:office:view")
-	@RequestMapping({"list", ""})
-	public String list(Office office, Model model) {
-		return "modules/sys/officeList";
-	}
+    @ModelAttribute("office")
+    public Office get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
+            return officeService.get(id);
+        } else {
+            return new Office();
+        }
+    }
 
-	@RequiresPermissions("sys:office:view")
-	@RequestMapping("form")
-	public String form(String id, Model model) {
-		model.addAttribute("id", id);
-		return "modules/sys/officeForm";
-	}
-	
+    @RequiresPermissions("sys:office:view")
+    @RequestMapping({"list", ""})
+    public String list(Office office, Model model) {
+        return "modules/sys/officeList";
+    }
+
+    @RequiresPermissions("sys:office:view")
+    @RequestMapping("form")
+    public String form(String id, Model model) {
+        model.addAttribute("id", id);
+        return "modules/sys/officeForm";
+    }
+
 }

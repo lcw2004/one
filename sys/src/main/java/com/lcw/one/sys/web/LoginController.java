@@ -31,6 +31,7 @@ import java.util.Map;
 
 /**
  * 登录Controller
+ *
  * @author ThinkGem
  * @version 2013-5-31
  */
@@ -126,9 +127,10 @@ public class LoginController extends BaseController {
 
     /**
      * TODO REST 是否是验证码登录
+     *
      * @param useruame 用户名
-     * @param isFail 计数加1
-     * @param clean 计数清零
+     * @param isFail   计数加1
+     * @param clean    计数清零
      * @return
      */
     @SuppressWarnings("unchecked")

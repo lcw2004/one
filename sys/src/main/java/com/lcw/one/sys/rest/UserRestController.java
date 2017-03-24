@@ -101,6 +101,7 @@ public class UserRestController {
 
     /**
      * 查看当前登录用户的信息
+     *
      * @return
      */
     @RequiresUser
@@ -111,6 +112,7 @@ public class UserRestController {
 
     /**
      * 修改当前登录用户的信息
+     *
      * @return
      */
     @RequiresUser
@@ -132,6 +134,7 @@ public class UserRestController {
 
     /**
      * 修改当前登录用户的密码
+     *
      * @param oldPassword
      * @param newPassword
      * @param confirmNewPassword

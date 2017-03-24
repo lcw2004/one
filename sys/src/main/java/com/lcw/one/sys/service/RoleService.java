@@ -21,8 +21,8 @@ public class RoleService extends CrudService<RoleDao, Role> {
     public Page<Role> find(Page<Role> page, String name) {
         DetachedCriteria dc = dao.createDetachedCriteria();
         dc.add(Restrictions.eq(Dict.FIELD_DEL_FLAG, Dict.DEL_FLAG_NORMAL));
-        if(StringUtils.isNotEmpty(name)) {
-        	dc.add(Restrictions.like("name", "%" + name + "%"));
+        if (StringUtils.isNotEmpty(name)) {
+            dc.add(Restrictions.like("name", "%" + name + "%"));
         }
         dc.addOrder(Order.desc("createDate"));
         return dao.find(page, dc);

@@ -6,7 +6,6 @@
 package com.lcw.one.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lcw.one.common.config.Global;
 import com.lcw.one.common.util.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,9 +18,10 @@ import java.util.Map;
 
 /**
  * 分页类
+ *
+ * @param <T>
  * @author ThinkGem
  * @version 2013-7-2
- * @param <T>
  */
 public class Page<T> {
 
@@ -50,7 +50,8 @@ public class Page<T> {
 
     /**
      * 构造方法
-     * @param request 传递 repage 参数，来记住页码
+     *
+     * @param request  传递 repage 参数，来记住页码
      * @param response 用于设置 Cookie，记住页码
      */
     public Page(HttpServletRequest request, HttpServletResponse response) {
@@ -66,7 +67,8 @@ public class Page<T> {
         String size = request.getParameter("pageSize");
         if (StringUtils.isEmpty(size)) {
             this.setPageSize(10);
-        }if (StringUtils.isNumeric(size)) {
+        }
+        if (StringUtils.isNumeric(size)) {
             CookieUtils.setCookie(response, "pageSize", size);
             this.setPageSize(Integer.parseInt(size));
         }
@@ -80,7 +82,8 @@ public class Page<T> {
 
     /**
      * 构造方法
-     * @param pageNo 当前页码
+     *
+     * @param pageNo   当前页码
      * @param pageSize 分页大小
      */
     public Page(int pageNo, int pageSize) {
@@ -89,9 +92,10 @@ public class Page<T> {
 
     /**
      * 构造方法
-     * @param pageNo 当前页码
+     *
+     * @param pageNo   当前页码
      * @param pageSize 分页大小
-     * @param count 数据条数
+     * @param count    数据条数
      */
     public Page(int pageNo, int pageSize, long count) {
         this(pageNo, pageSize, count, new ArrayList<T>());
@@ -99,10 +103,11 @@ public class Page<T> {
 
     /**
      * 构造方法
-     * @param pageNo 当前页码
+     *
+     * @param pageNo   当前页码
      * @param pageSize 分页大小
-     * @param count 数据条数
-     * @param list 本页数据对象列表
+     * @param count    数据条数
+     * @param list     本页数据对象列表
      */
     public Page(int pageNo, int pageSize, long count, List<T> list) {
         this.setCount(count);
@@ -113,6 +118,7 @@ public class Page<T> {
 
     /**
      * 获取设置总数
+     *
      * @return
      */
     public long getCount() {
@@ -121,6 +127,7 @@ public class Page<T> {
 
     /**
      * 设置数据总数
+     *
      * @param count
      */
     public void setCount(long count) {
@@ -132,6 +139,7 @@ public class Page<T> {
 
     /**
      * 获取当前页码
+     *
      * @return
      */
     public int getPageNo() {
@@ -140,6 +148,7 @@ public class Page<T> {
 
     /**
      * 设置当前页码
+     *
      * @param pageNo
      */
     public void setPageNo(int pageNo) {
@@ -148,6 +157,7 @@ public class Page<T> {
 
     /**
      * 获取页面大小
+     *
      * @return
      */
     public int getPageSize() {
@@ -156,6 +166,7 @@ public class Page<T> {
 
     /**
      * 设置页面大小（最大500）
+     *
      * @param pageSize
      */
     public void setPageSize(int pageSize) {
@@ -164,6 +175,7 @@ public class Page<T> {
 
     /**
      * 获取本页数据对象列表
+     *
      * @return List<T>
      */
     public List<T> getList() {
@@ -172,6 +184,7 @@ public class Page<T> {
 
     /**
      * 设置本页数据对象列表
+     *
      * @param list
      */
     public Page<T> setList(List<T> list) {
@@ -181,6 +194,7 @@ public class Page<T> {
 
     /**
      * 获取查询排序字符串
+     *
      * @return
      */
     @JsonIgnore
@@ -197,6 +211,7 @@ public class Page<T> {
 
     /**
      * 分页是否有效
+     *
      * @return this.pageSize==-1
      */
     @JsonIgnore
@@ -206,6 +221,7 @@ public class Page<T> {
 
     /**
      * 是否进行总数统计
+     *
      * @return this.count==-1
      */
     @JsonIgnore

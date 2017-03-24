@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.common.persistence;
@@ -20,26 +20,26 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class IdEntity<T> extends BaseEntity<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected String id;		// 编号
-	
-	public IdEntity() {
-		super();
-	}
-	
-	@PrePersist
-	public void prePersist(){
-		this.id = IdGen.uuid();
-	}
+    protected String id;        // 编号
 
-	@Id
-	public String getId() {
-		return id;
-	}
+    public IdEntity() {
+        super();
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
+    @PrePersist
+    public void prePersist() {
+        this.id = IdGen.uuid();
+    }
+
+    @Id
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

@@ -35,7 +35,7 @@ public class OfficeRestController {
     @RequiresPermissions("sys:office:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@RequestBody Office office) {
-    	office.setParentId(office.getParent().getId());
+        office.setParentId(office.getParent().getId());
         officeService.save(office);
     }
 

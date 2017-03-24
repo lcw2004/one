@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MenuServices extends CrudService<MenuDao, Menu> {
 
-    public List<Menu> findByUserId(String userId){
+    public List<Menu> findByUserId(String userId) {
         return dao.findByUserId(userId);
     }
 

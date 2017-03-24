@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.dao;
@@ -19,9 +19,9 @@ import java.util.List;
  */
 @Repository
 public class OfficeDao extends BaseDao<Office> {
-	
-	public List<Office> findByParentIdsLike(String parentIds){
-		return find("from Office where parentIds like :p1", new Parameter(parentIds));
-	}
+
+    public List<Office> findByParentIdsLike(String parentIds) {
+        return find("from Office where parentIds like :p1", new Parameter(parentIds));
+    }
 
 }

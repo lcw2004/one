@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.entity;
@@ -29,95 +29,95 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Area extends TreeEntity<Area> {
 
-	private static final long serialVersionUID = 1L;
-	private String code; 	// 区域编码
-	private String name; 	// 区域名称
-	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
-	private String typeCN; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
+    private static final long serialVersionUID = 1L;
+    private String code;    // 区域编码
+    private String name;    // 区域名称
+    private String type;    // 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
+    private String typeCN;    // 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
 
-	private List<Office> officeList = Lists.newArrayList(); // 部门列表
+    private List<Office> officeList = Lists.newArrayList(); // 部门列表
 
-	public Area(){
-		super();
-	}
-	
-	public Area(String id){
-		this();
-		this.id = id;
-	}
+    public Area() {
+        super();
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@NotNull
-	public Area getParent() {
-		return parent;
-	}
+    public Area(String id) {
+        this();
+        this.id = id;
+    }
 
-	public void setParent(Area parent) {
-		this.parent = parent;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @NotNull
+    public Area getParent() {
+        return parent;
+    }
 
-	public String getParentIds() {
-		return parentIds;
-	}
+    public void setParent(Area parent) {
+        this.parent = parent;
+    }
 
-	public void setParentIds(String parentIds) {
-		this.parentIds = parentIds;
-	}
+    public String getParentIds() {
+        return parentIds;
+    }
 
-	@Length(min=1, max=100)
-	public String getName() {
-		return name;
-	}
+    public void setParentIds(String parentIds) {
+        this.parentIds = parentIds;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Length(min = 1, max = 100)
+    public String getName() {
+        return name;
+    }
 
-	@Length(min=1, max=1)
-	public String getType() {
-		return type;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    @Length(min = 1, max = 1)
+    public String getType() {
+        return type;
+    }
 
-	@Length(min=0, max=100)
-	public String getCode() {
-		return code;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Length(min = 0, max = 100)
+    public String getCode() {
+        return code;
+    }
 
-	@Transient
-	public List<Office> getOfficeList() {
-		return officeList;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setOfficeList(List<Office> officeList) {
-		this.officeList = officeList;
-	}
+    @Transient
+    public List<Office> getOfficeList() {
+        return officeList;
+    }
 
-	@Transient
-	public boolean isAdmin(){
-		return isAdmin(this.id);
-	}
-	
-	@Transient
-	public static boolean isAdmin(String id){
-		return id != null && id.equals("1");
-	}
+    public void setOfficeList(List<Office> officeList) {
+        this.officeList = officeList;
+    }
 
-	@Transient
-	public String getTypeCN() {
-		return DictUtils.getDictLabel(type, "sys_area_type", null);
-	}
+    @Transient
+    public boolean isAdmin() {
+        return isAdmin(this.id);
+    }
 
-	public void setTypeCN(String typeCN) {
-		this.typeCN = typeCN;
-	}
+    @Transient
+    public static boolean isAdmin(String id) {
+        return id != null && id.equals("1");
+    }
+
+    @Transient
+    public String getTypeCN() {
+        return DictUtils.getDictLabel(type, "sys_area_type", null);
+    }
+
+    public void setTypeCN(String typeCN) {
+        this.typeCN = typeCN;
+    }
 }

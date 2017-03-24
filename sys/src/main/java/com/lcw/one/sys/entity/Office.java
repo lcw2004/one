@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.entity;
@@ -29,179 +29,179 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Office extends TreeEntity<Office> {
 
-	private static final long serialVersionUID = 1L;
-	private Area area;		// 归属区域
-	private String code; 	// 机构编码
-	private String name; 	// 机构名称
-	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
-	private String typeCN; 	// 机构类型（1：公司；2：部门；3：小组）
-	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
-	private String address; // 联系地址
-	private String zipCode; // 邮政编码
-	private String master; 	// 负责人
-	private String phone; 	// 电话
-	private String fax; 	// 传真
-	private String email; 	// 邮箱
-	
-	private List<User> userList = Lists.newArrayList();   // 拥有用户列表
+    private static final long serialVersionUID = 1L;
+    private Area area;        // 归属区域
+    private String code;    // 机构编码
+    private String name;    // 机构名称
+    private String type;    // 机构类型（1：公司；2：部门；3：小组）
+    private String typeCN;    // 机构类型（1：公司；2：部门；3：小组）
+    private String grade;    // 机构等级（1：一级；2：二级；3：三级；4：四级）
+    private String address; // 联系地址
+    private String zipCode; // 邮政编码
+    private String master;    // 负责人
+    private String phone;    // 电话
+    private String fax;    // 传真
+    private String email;    // 邮箱
 
-	public Office(){
-		super();
-	}
-	
-	public Office(String id){
-		this();
-		this.id = id;
-	}
+    private List<User> userList = Lists.newArrayList();   // 拥有用户列表
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@NotNull
-	public Office getParent() {
-		return parent;
-	}
+    public Office() {
+        super();
+    }
 
-	public void setParent(Office parent) {
-		this.parent = parent;
-	}
+    public Office(String id) {
+        this();
+        this.id = id;
+    }
 
-	public String getParentIds() {
-		return parentIds;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @NotNull
+    public Office getParent() {
+        return parent;
+    }
 
-	public void setParentIds(String parentIds) {
-		this.parentIds = parentIds;
-	}
+    public void setParent(Office parent) {
+        this.parent = parent;
+    }
 
-	@ManyToOne
-	@JoinColumn(name="area_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@NotNull
-	public Area getArea() {
-		return area;
-	}
+    public String getParentIds() {
+        return parentIds;
+    }
 
-	public void setArea(Area area) {
-		this.area = area;
-	}
+    public void setParentIds(String parentIds) {
+        this.parentIds = parentIds;
+    }
 
-	@Length(min=1, max=100)
-	public String getName() {
-		return name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "area_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @NotNull
+    public Area getArea() {
+        return area;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Length(min=1, max=1)
-	public String getType() {
-		return type;
-	}
+    public void setArea(Area area) {
+        this.area = area;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    @Length(min = 1, max = 100)
+    public String getName() {
+        return name;
+    }
 
-	@Length(min=1, max=1)
-	public String getGrade() {
-		return grade;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
+    @Length(min = 1, max = 1)
+    public String getType() {
+        return type;
+    }
 
-	@Length(min=0, max=255)
-	public String getAddress() {
-		return address;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    @Length(min = 1, max = 1)
+    public String getGrade() {
+        return grade;
+    }
 
-	@Length(min=0, max=100)
-	public String getZipCode() {
-		return zipCode;
-	}
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
+    @Length(min = 0, max = 255)
+    public String getAddress() {
+        return address;
+    }
 
-	@Length(min=0, max=100)
-	public String getMaster() {
-		return master;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setMaster(String master) {
-		this.master = master;
-	}
+    @Length(min = 0, max = 100)
+    public String getZipCode() {
+        return zipCode;
+    }
 
-	@Length(min=0, max=200)
-	public String getPhone() {
-		return phone;
-	}
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    @Length(min = 0, max = 100)
+    public String getMaster() {
+        return master;
+    }
 
-	@Length(min=0, max=200)
-	public String getFax() {
-		return fax;
-	}
+    public void setMaster(String master) {
+        this.master = master;
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    @Length(min = 0, max = 200)
+    public String getPhone() {
+        return phone;
+    }
 
-	@Length(min=0, max=200)
-	public String getEmail() {
-		return email;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Length(min = 0, max = 200)
+    public String getFax() {
+        return fax;
+    }
 
-	@Length(min=0, max=100)
-	public String getCode() {
-		return code;
-	}
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
-	@Transient
-	public List<User> getUserList() {
-		return userList;
-	}
+    @Length(min = 0, max = 200)
+    public String getEmail() {
+        return email;
+    }
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Transient
-	public boolean isRoot(){
-		return isRoot(this.id);
-	}
-	
-	@Transient
-	public static boolean isRoot(String id){
-		return id != null && id.equals("1");
-	}
+    @Length(min = 0, max = 100)
+    public String getCode() {
+        return code;
+    }
 
-	@Transient
-	public String getTypeCN() {
-		return DictUtils.getDictLabel(type, "sys_office_type", "无");
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setTypeCN(String typeCN) {
-		this.typeCN = typeCN;
-	}
+    @Transient
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    @Transient
+    public boolean isRoot() {
+        return isRoot(this.id);
+    }
+
+    @Transient
+    public static boolean isRoot(String id) {
+        return id != null && id.equals("1");
+    }
+
+    @Transient
+    public String getTypeCN() {
+        return DictUtils.getDictLabel(type, "sys_office_type", "无");
+    }
+
+    public void setTypeCN(String typeCN) {
+        this.typeCN = typeCN;
+    }
 
 }

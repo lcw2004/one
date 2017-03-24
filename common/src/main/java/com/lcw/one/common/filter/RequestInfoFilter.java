@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebFilter(filterName = "RequestInfoFilter")
 public class RequestInfoFilter implements Filter {
@@ -27,8 +29,8 @@ public class RequestInfoFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         try {
-        	String uri = request.getServletPath() + (request.getPathInfo() == null ? "" : request.getPathInfo());
-        	logger.info(request.getMethod() + " : " + uri);
+            String uri = request.getServletPath() + (request.getPathInfo() == null ? "" : request.getPathInfo());
+            logger.info(request.getMethod() + " : " + uri);
             logHeaders(request);
 
             chain.doFilter(request, response);
@@ -47,7 +49,7 @@ public class RequestInfoFilter implements Filter {
         Enumeration<String> headers = request.getHeaderNames();
         while (headers.hasMoreElements()) {
             String headName = headers.nextElement();
-            if(StringUtils.isNotEmpty(headName)) {
+            if (StringUtils.isNotEmpty(headName)) {
                 headerMap.put(headName, request.getHeader(headName));
             }
         }

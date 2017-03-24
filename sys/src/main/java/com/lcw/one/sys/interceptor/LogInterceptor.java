@@ -26,6 +26,7 @@ import java.util.UUID;
 
 /**
  * 日志拦截器，记录所有REST Api的访问情况
+ *
  * @author Licw
  */
 @Transactional
@@ -86,6 +87,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
     /**
      * 将参数拼为一个字符串
+     *
      * @param request
      * @return
      */

@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.common.util;
@@ -23,34 +23,34 @@ import java.util.UUID;
 @Lazy(false)
 public class IdGen implements SessionIdGenerator {
 
-	private static SecureRandom random = new SecureRandom();
-	
-	/**
-	 * 封装JDK自带的UUID, 通过Random数字生成, 中间无-分割.
-	 */
-	public static String uuid() {
-		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
-	
-	/**
-	 * 使用SecureRandom随机生成Long. 
-	 */
-	public static long randomLong() {
-		return Math.abs(random.nextLong());
-	}
+    private static SecureRandom random = new SecureRandom();
 
-	/**
-	 * 基于Base62编码的SecureRandom随机生成bytes.
-	 */
-	public static String randomBase62(int length) {
-		byte[] randomBytes = new byte[length];
-		random.nextBytes(randomBytes);
-		return Encodes.encodeBase62(randomBytes);
-	}
-	
-	@Override
-	public Serializable generateId(Session session) {
-		return IdGen.uuid();
-	}
-	
+    /**
+     * 封装JDK自带的UUID, 通过Random数字生成, 中间无-分割.
+     */
+    public static String uuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 使用SecureRandom随机生成Long.
+     */
+    public static long randomLong() {
+        return Math.abs(random.nextLong());
+    }
+
+    /**
+     * 基于Base62编码的SecureRandom随机生成bytes.
+     */
+    public static String randomBase62(int length) {
+        byte[] randomBytes = new byte[length];
+        random.nextBytes(randomBytes);
+        return Encodes.encodeBase62(randomBytes);
+    }
+
+    @Override
+    public Serializable generateId(Session session) {
+        return IdGen.uuid();
+    }
+
 }

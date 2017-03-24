@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.web;
@@ -22,20 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "${adminPath}/sys/area")
 public class AreaController extends BaseController {
 
-	@Autowired
-	private AreaService areaService;
+    @Autowired
+    private AreaService areaService;
 
-	@RequiresPermissions("sys:area:view")
-	@RequestMapping(value = {"list", ""})
-	public String list() {
-		return "modules/sys/areaList";
-	}
+    @RequiresPermissions("sys:area:view")
+    @RequestMapping(value = {"list", ""})
+    public String list() {
+        return "modules/sys/areaList";
+    }
 
-	@RequiresPermissions("sys:area:view")
-	@RequestMapping(value = "form")
-	public String form(String id, Model model) {
-		model.addAttribute("id", id);
-		return "modules/sys/areaForm";
-	}
+    @RequiresPermissions("sys:area:view")
+    @RequestMapping(value = "form")
+    public String form(String id, Model model) {
+        model.addAttribute("id", id);
+        return "modules/sys/areaForm";
+    }
 
 }

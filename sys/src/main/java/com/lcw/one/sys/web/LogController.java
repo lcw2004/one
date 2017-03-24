@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.web;
@@ -23,14 +23,14 @@ import java.util.Date;
 @RequestMapping(value = "${adminPath}/sys/log")
 public class LogController extends BaseController {
 
-	@RequiresPermissions("sys:log:view")
-	@RequestMapping(value = {"list", ""})
-	public String list(Model model) {
-		Date beginDate  = DateUtils.setDays(new Date(), 1);
-		Date endDate = DateUtils.addDays(DateUtils.addMonths(beginDate, 1), -1);
-		model.addAttribute("beginDate", beginDate);
-		model.addAttribute("endDate", endDate);
-		return "modules/sys/logList";
-	}
+    @RequiresPermissions("sys:log:view")
+    @RequestMapping(value = {"list", ""})
+    public String list(Model model) {
+        Date beginDate = DateUtils.setDays(new Date(), 1);
+        Date endDate = DateUtils.addDays(DateUtils.addMonths(beginDate, 1), -1);
+        model.addAttribute("beginDate", beginDate);
+        model.addAttribute("endDate", endDate);
+        return "modules/sys/logList";
+    }
 
 }

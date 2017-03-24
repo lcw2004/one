@@ -72,7 +72,7 @@ public class EnCharValidateCode implements ValidateCodeInterface {
         char[] charArray = randomStr.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             g.setColor(new Color(50 + random.nextInt(100), 50 + random.nextInt(100), 50 + random.nextInt(100)));
-            g.setFont(new Font(fontTypes[random.nextInt(fontTypes.length)],Font.BOLD,26));
+            g.setFont(new Font(fontTypes[random.nextInt(fontTypes.length)], Font.BOLD, 26));
             g.drawString(String.valueOf(charArray[i]), 15 * i + 5, 19 + random.nextInt(8));
         }
     }

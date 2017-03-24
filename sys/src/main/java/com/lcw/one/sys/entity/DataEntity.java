@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.entity;
@@ -29,145 +29,145 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class DataEntity<T> extends IdEntity<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected String remarks;	// 备注
-	protected User createBy;	// 创建者
-	protected Date createDate;// 创建日期
-	protected User updateBy;	// 更新者
-	protected Date updateDate;// 更新日期
-	protected String delFlag; // 删除标记（0：正常；1：删除；2：审核）
+    protected String remarks;    // 备注
+    protected User createBy;    // 创建者
+    protected Date createDate;// 创建日期
+    protected User updateBy;    // 更新者
+    protected Date updateDate;// 更新日期
+    protected String delFlag; // 删除标记（0：正常；1：删除；2：审核）
 
-	protected Date createDateStart;
-	protected Date createDateEnd;
-	protected Date updateDateStart;
-	protected Date updateDateEnd;
-	
-	public DataEntity() {
-		super();
-		this.delFlag = DEL_FLAG_NORMAL;
-	}
-	
-	@PrePersist
-	public void prePersist(){
-		super.prePersist();
-		User user = UserUtils.getUser();
-		if (StringUtils.isNotBlank(user.getId())){
-			this.updateBy = user;
-			this.createBy = user;
-		}
-		this.updateDate = new Date();
-		this.createDate = this.updateDate;
-	}
-	
-	@PreUpdate
-	public void preUpdate(){
-		User user = UserUtils.getUser();
-		if (StringUtils.isNotBlank(user.getId())){
-			this.updateBy = user;
-		}
-		this.updateDate = new Date();
-	}
-	
-	@Length(min=0, max=255)
-	public String getRemarks() {
-		return remarks;
-	}
+    protected Date createDateStart;
+    protected Date createDateEnd;
+    protected Date updateDateStart;
+    protected Date updateDateEnd;
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-	
-	@JsonIgnore
-	@ManyToOne(fetch= FetchType.LAZY)
-	@NotFound(action = NotFoundAction.IGNORE)
-	public User getCreateBy() {
-		return createBy;
-	}
+    public DataEntity() {
+        super();
+        this.delFlag = DEL_FLAG_NORMAL;
+    }
 
-	public void setCreateBy(User createBy) {
-		this.createBy = createBy;
-	}
+    @PrePersist
+    public void prePersist() {
+        super.prePersist();
+        User user = UserUtils.getUser();
+        if (StringUtils.isNotBlank(user.getId())) {
+            this.updateBy = user;
+            this.createBy = user;
+        }
+        this.updateDate = new Date();
+        this.createDate = this.updateDate;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
-	public Date getCreateDate() {
-		return createDate;
-	}
+    @PreUpdate
+    public void preUpdate() {
+        User user = UserUtils.getUser();
+        if (StringUtils.isNotBlank(user.getId())) {
+            this.updateBy = user;
+        }
+        this.updateDate = new Date();
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    @Length(min = 0, max = 255)
+    public String getRemarks() {
+        return remarks;
+    }
 
-	@JsonIgnore
-	@ManyToOne(fetch= FetchType.LAZY)
-	@NotFound(action = NotFoundAction.IGNORE)
-	public User getUpdateBy() {
-		return updateBy;
-	}
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
-	public void setUpdateBy(User updateBy) {
-		this.updateBy = updateBy;
-	}
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    public User getCreateBy() {
+        return createBy;
+    }
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "GMT+8")
-	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES)
-	@DateBridge(resolution = Resolution.DAY)
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public void setCreateBy(User createBy) {
+        this.createBy = createBy;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-	@Length(min=1, max=1)
-	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES)
-	public String getDelFlag() {
-		return delFlag;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
-	public void setDelFlag(String delFlag) {
-		this.delFlag = delFlag;
-	}
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    public User getUpdateBy() {
+        return updateBy;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Transient
-	public Date getCreateDateStart() {
-		return DateUtils.getDateStart(createDateStart);
-	}
+    public void setUpdateBy(User updateBy) {
+        this.updateBy = updateBy;
+    }
 
-	public void setCreateDateStart(Date createDateStart) {
-		this.createDateStart = createDateStart;
-	}
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Field(index = Index.YES, analyze = Analyze.NO, store = Store.YES)
+    @DateBridge(resolution = Resolution.DAY)
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Transient
-	public Date getCreateDateEnd() {
-		return DateUtils.getDateEnd(createDateEnd);
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
-	public void setCreateDateEnd(Date createDateEnd) {
-		this.createDateEnd = createDateEnd;
-	}
+    @Length(min = 1, max = 1)
+    @Field(index = Index.YES, analyze = Analyze.NO, store = Store.YES)
+    public String getDelFlag() {
+        return delFlag;
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Transient
-	public Date getUpdateDateStart() {
-		return DateUtils.getDateStart(updateDateStart);
-	}
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
 
-	public void setUpdateDateStart(Date updateDateStart) {
-		this.updateDateStart = updateDateStart;
-	}
+    @Temporal(TemporalType.DATE)
+    @Transient
+    public Date getCreateDateStart() {
+        return DateUtils.getDateStart(createDateStart);
+    }
 
-	@Temporal(TemporalType.DATE)
-	@Transient
-	public Date getUpdateDateEnd() {
-		return DateUtils.getDateEnd(updateDateEnd);
-	}
+    public void setCreateDateStart(Date createDateStart) {
+        this.createDateStart = createDateStart;
+    }
 
-	public void setUpdateDateEnd(Date updateDateEnd) {
-		this.updateDateEnd = updateDateEnd;
-	}
+    @Temporal(TemporalType.DATE)
+    @Transient
+    public Date getCreateDateEnd() {
+        return DateUtils.getDateEnd(createDateEnd);
+    }
+
+    public void setCreateDateEnd(Date createDateEnd) {
+        this.createDateEnd = createDateEnd;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Transient
+    public Date getUpdateDateStart() {
+        return DateUtils.getDateStart(updateDateStart);
+    }
+
+    public void setUpdateDateStart(Date updateDateStart) {
+        this.updateDateStart = updateDateStart;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Transient
+    public Date getUpdateDateEnd() {
+        return DateUtils.getDateEnd(updateDateEnd);
+    }
+
+    public void setUpdateDateEnd(Date updateDateEnd) {
+        this.updateDateEnd = updateDateEnd;
+    }
 }

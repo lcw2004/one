@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.lcw.one.sys.utils.fieldtype;
@@ -15,25 +15,25 @@ import com.lcw.one.sys.utils.UserUtils;
  */
 public class OfficeType {
 
-	/**
-	 * 获取对象值（导入）
-	 */
-	public static Object getValue(String val) {
-		for (Office e : UserUtils.getOfficeList()){
-			if (val.equals(e.getName())){
-				return e;
-			}
-		}
-		return null;
-	}
+    /**
+     * 获取对象值（导入）
+     */
+    public static Object getValue(String val) {
+        for (Office e : UserUtils.getOfficeList()) {
+            if (val.equals(e.getName())) {
+                return e;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 设置对象值（导出）
-	 */
-	public static String setValue(Object val) {
-		if (val != null && ((Office)val).getName() != null){
-			return ((Office)val).getName();
-		}
-		return "";
-	}
+    /**
+     * 设置对象值（导出）
+     */
+    public static String setValue(Object val) {
+        if (val != null && ((Office) val).getName() != null) {
+            return ((Office) val).getName();
+        }
+        return "";
+    }
 }
