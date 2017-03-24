@@ -7,6 +7,7 @@ package com.lcw.one.common.web;
 
 import com.google.common.net.HttpHeaders;
 import com.lcw.one.common.util.Encodes;
+import com.lcw.one.common.util.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import javax.servlet.ServletRequest;
@@ -187,4 +188,21 @@ public class Servlets {
         String encode = userName + ":" + password;
         return "Basic " + Encodes.encodeBase64(encode.getBytes());
     }
+
+
+    /**
+     * 获得用户远程地址
+     */
+    public static String getRemoteAddr(HttpServletRequest request) {
+        String remoteAddr = request.getHeader("X-Real-IP");
+        if (StringUtils.isNotBlank(remoteAddr)) {
+            remoteAddr = request.getHeader("X-Forwarded-For");
+        } else if (StringUtils.isNotBlank(remoteAddr)) {
+            remoteAddr = request.getHeader("Proxy-Client-IP");
+        } else if (StringUtils.isNotBlank(remoteAddr)) {
+            remoteAddr = request.getHeader("WL-Proxy-Client-IP");
+        }
+        return remoteAddr != null ? remoteAddr : request.getRemoteAddr();
+    }
+
 }
