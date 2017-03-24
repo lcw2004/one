@@ -6,8 +6,6 @@
 package com.lcw.one.sys.interceptor;
 
 import com.lcw.one.common.config.Global;
-import com.lcw.one.sys.service.BaseService;
-import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.sys.entity.Log;
 import com.lcw.one.sys.entity.User;
@@ -15,7 +13,8 @@ import com.lcw.one.sys.service.LogService;
 import com.lcw.one.sys.utils.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,13 +28,15 @@ import java.util.UUID;
  *
  * @author Licw
  */
-@Transactional
-public class LogInterceptor extends BaseService implements HandlerInterceptor {
+@Component
+public class LogInterceptor implements HandlerInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogInterceptor.class.getName());
-    private static LogService logService = SpringContextHolder.getBean(LogService.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogInterceptor.class);
     private long startTime;
     private long endTime;
+
+    @Autowired
+    private LogService logService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -48,7 +49,6 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         endTime = System.currentTimeMillis();
 
@@ -82,7 +82,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
         // TODO 需要记录每个URL的访问耗时情况，统计起来以便优化
         logger.info("记录日志 {type: {}, loginName: {}, uri: {}}, ", log.getType(), user.getLoginName(), log.getRequestUri());
-        logger.info("访问耗时:" + (endTime - startTime) + "\tURL:" + request.getRequestURI());
+        logger.info("访问耗时:{}, URL: {}", endTime - startTime, request.getRequestURI());
     }
 
     /**
@@ -91,7 +91,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
      * @param request
      * @return
      */
-    private String buildQueryString(HttpServletRequest request) {
+    private static String buildQueryString(HttpServletRequest request) {
         StringBuilder params = new StringBuilder();
         int index = 0;
         for (Object param : request.getParameterMap().keySet()) {
