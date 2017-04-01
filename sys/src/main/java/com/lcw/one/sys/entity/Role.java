@@ -6,6 +6,7 @@
 package com.lcw.one.sys.entity;
 
 import com.google.common.collect.Lists;
+import com.lcw.one.sys.utils.DictUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
@@ -33,6 +34,7 @@ public class Role extends DataEntity<Role> {
     private Office office;    // 归属机构
     private String name;    // 角色名称
     private String dataScope; // 数据范围
+    private String dataScopeCn; // 数据范围
 
     private List<User> userList = Lists.newArrayList(); // 拥有用户列表
     private List<Menu> menuList = Lists.newArrayList(); // 拥有菜单列表
@@ -275,4 +277,6 @@ public class Role extends DataEntity<Role> {
 //		}
 //		return StringUtils.join(menuNameList, ",");
 //	}
+
+
 }

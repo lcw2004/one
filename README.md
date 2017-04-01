@@ -10,8 +10,12 @@
 -   服务器在国外，访问起来会有些慢
 
 # 技术栈
--   Spring Boot 1.4.1
+-   Spring Boot
 -   Vue2
+    -   vue-router
+    -   vuex
+    -   vux-resource
+    -   vee-validate
 -   Hibernate 4
 -   Shiro
 
@@ -21,7 +25,7 @@
 -   前端使用了Vue渲染网页，数据与展示分离。
     -   目前的前端组件（翻页组件、Tree组件、Tree Table组件）都是自定义的，易于修改。
     -   前端代码较少且更为清晰
--	前端UI改为 [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")，目前正在改动中，前端大部分样式错乱。
+-	前端UI改为 [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")。
 
 # 部署
 -   数据库：目前数据库还是用的Jeesite的，还未有任何改动
@@ -43,7 +47,12 @@
 	-	[X] 将 jeesite 依赖的组件升级到高版本
 	-	[ ] 将 jeesite 最新版的功能迁移过来
 	-   [ ] 将 Hibernate 换成其他的
-	-   [ ] 进一步前后端分离，改为Single Page Application
+	-   [ ] (进行中) 进一步前后端分离，改为Single Page Application
+    -   [ ] maven换成gradle
+	-   [ ] 搭建工作流服务
+    -   [ ] 封装参数验证以及异常处理
+    -   [ ] 代码生成
+    -   [ ] 搭建单点登录服务，管理多个系统
 
 2.  模块功能
 

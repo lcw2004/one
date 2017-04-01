@@ -40,7 +40,6 @@ public class UserUtils extends BaseService {
     private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
     private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
     private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
-
     private static SystemService systemService = SpringContextHolder.getBean(SystemService.class);
     private static MenuServices menuServices = SpringContextHolder.getBean(MenuServices.class);
 

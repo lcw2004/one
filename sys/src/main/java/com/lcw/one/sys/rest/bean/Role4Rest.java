@@ -2,7 +2,9 @@ package com.lcw.one.sys.rest.bean;
 
 import com.lcw.one.sys.entity.Office;
 import com.lcw.one.sys.entity.Role;
+import com.lcw.one.sys.utils.DictUtils;
 
+import javax.persistence.Transient;
 import java.util.List;
 
 public class Role4Rest {
@@ -10,6 +12,7 @@ public class Role4Rest {
     private String id;
     private String name;
     private String dataScope;
+    private String dataScopeCn;
     private Office office;
     private List<String> menuIdList;
 
@@ -61,5 +64,13 @@ public class Role4Rest {
 
     public void setMenuIdList(List<String> menuIdList) {
         this.menuIdList = menuIdList;
+    }
+
+    public String getDataScopeCn() {
+        return DictUtils.getDictLabel(dataScope, "sys_data_scope", "");
+    }
+
+    public void setDataScopeCn(String dataScopeCn) {
+        this.dataScopeCn = dataScopeCn;
     }
 }

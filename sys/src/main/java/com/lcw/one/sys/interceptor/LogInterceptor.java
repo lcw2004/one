@@ -7,6 +7,7 @@ package com.lcw.one.sys.interceptor;
 
 import com.lcw.one.common.config.Global;
 import com.lcw.one.common.util.StringUtils;
+import com.lcw.one.common.web.Servlets;
 import com.lcw.one.sys.entity.Log;
 import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.service.LogService;
@@ -72,7 +73,7 @@ public class LogInterceptor implements HandlerInterceptor {
         log.setType(ex == null ? Log.TYPE_ACCESS : Log.TYPE_EXCEPTION);
         log.setCreateBy(user);
         log.setCreateDate(new Date());
-        log.setRemoteAddr(StringUtils.getRemoteAddr(request));
+        log.setRemoteAddr(Servlets.getRemoteAddr(request));
         log.setUserAgent(request.getHeader("user-agent"));
         log.setRequestUri(request.getRequestURI());
         log.setMethod(request.getMethod());
