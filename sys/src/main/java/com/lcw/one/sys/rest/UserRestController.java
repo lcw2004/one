@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -63,7 +64,7 @@ public class UserRestController {
 
     @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json")
-    public void update(@RequestBody User user) {
+    public void update(@Valid @RequestBody User user) {
         // 保存用户基础信息
         User userInDb = userService.get(user.getId());
         user.setPassword(userInDb.getPassword());
@@ -83,7 +84,7 @@ public class UserRestController {
 
     @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-    public void save(@RequestBody User user) {
+    public void save(@Valid @RequestBody User user) {
         user.setPassword(SystemService.entryptPassword("123456"));
 
         // 保存用户角色信息
