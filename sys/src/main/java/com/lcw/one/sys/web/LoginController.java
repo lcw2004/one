@@ -14,6 +14,7 @@ import com.lcw.one.common.util.validatecode.EnCharValidateCode;
 import com.lcw.one.common.util.validatecode.ValidateCodeInterface;
 import com.lcw.one.common.web.BaseController;
 import com.lcw.one.sys.entity.User;
+import com.lcw.one.sys.rest.LoginRestController;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -89,7 +90,7 @@ public class LoginController extends BaseController {
             return "redirect:" + Global.getAdminPath();
         }
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
-        model.addAttribute("isValidateCodeLogin", isValidateCodeLogin(username, true, false));
+        model.addAttribute("isValidateCodeLogin", LoginRestController.isValidateCodeLogin(username, true, false));
         return "modules/sys/sysLogin";
     }
 
@@ -106,7 +107,7 @@ public class LoginController extends BaseController {
             return "redirect:" + Global.getAdminPath() + "/login";
         }
         // 登录成功后，验证码计算器清零
-        isValidateCodeLogin(user.getLoginName(), false, true);
+        LoginRestController.isValidateCodeLogin(user.getLoginName(), false, true);
         // 登录成功后，获取上次登录的当前站点ID
         UserUtils.putCache("siteId", CookieUtils.getCookie(request, "siteId"));
         return "modules/sys/sysIndex";
@@ -123,35 +124,6 @@ public class LoginController extends BaseController {
             theme = CookieUtils.getCookie(request, "theme");
         }
         return "redirect:" + request.getParameter("url");
-    }
-
-    /**
-     * TODO REST 是否是验证码登录
-     *
-     * @param useruame 用户名
-     * @param isFail   计数加1
-     * @param clean    计数清零
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean) {
-        Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
-        if (loginFailMap == null) {
-            loginFailMap = Maps.newHashMap();
-            CacheUtils.put("loginFailMap", loginFailMap);
-        }
-        Integer loginFailNum = loginFailMap.get(useruame);
-        if (loginFailNum == null) {
-            loginFailNum = 0;
-        }
-        if (isFail) {
-            loginFailNum++;
-            loginFailMap.put(useruame, loginFailNum);
-        }
-        if (clean) {
-            loginFailMap.remove(useruame);
-        }
-        return loginFailNum >= 3;
     }
 
 }
