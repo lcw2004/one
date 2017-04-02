@@ -15,8 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @RestController
@@ -31,7 +34,10 @@ public class LoginRestController {
     private static final Logger logger = LoggerFactory.getLogger(LogRestController.class);
 
     @PostMapping(value = "/login")
-    public ResponseMessage loginRest(String username, String password, String validateCode) {
+    public ResponseMessage loginRest(@Valid @NotNull(message = "请输入用户名") String username,
+                                     @Valid @NotNull(message = "请输入密码") String password,
+                                     @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
+                                     String validateCode) {
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray());

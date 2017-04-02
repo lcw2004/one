@@ -7,20 +7,13 @@ package com.lcw.one.sys.security;
 
 /**
  * 用户和密码（包含验证码）令牌类
+ *
  * @author ThinkGem
  * @version 2013-5-19
  */
 public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswordToken {
 
     private String captcha;
-
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
-    }
 
     public UsernamePasswordToken() {
         super();
@@ -40,4 +33,11 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
         this.captcha = captcha;
     }
 
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
 }
