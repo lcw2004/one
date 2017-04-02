@@ -5,6 +5,7 @@ import com.lcw.one.sys.security.FormAuthenticationFilter;
 import com.lcw.one.sys.security.SystemAuthorizingRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -64,6 +65,7 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setFilters(filterMap);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put(Global.getRestApiPath() + "/login", "anon");
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/userfiles/**", "anon");
@@ -76,7 +78,7 @@ public class ShiroConfiguration {
     }
 
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager securityManager() {
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(systemAuthorizingRealm());
         defaultWebSecurityManager.setCacheManager(shiroCacheManager());
