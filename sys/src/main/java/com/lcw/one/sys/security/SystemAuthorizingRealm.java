@@ -9,9 +9,9 @@ import com.lcw.one.common.util.Encodes;
 import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.entity.User;
+import com.lcw.one.sys.rest.LoginRestController;
 import com.lcw.one.sys.service.SystemService;
 import com.lcw.one.sys.utils.UserUtils;
-import com.lcw.one.sys.web.LoginController;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -27,6 +27,8 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,8 @@ import java.util.Map;
 @DependsOn({"userDao", "roleDao", "menuDao"})
 public class SystemAuthorizingRealm extends AuthorizingRealm {
 
+    private static final Logger logger = LoggerFactory.getLogger(SystemAuthorizingRealm.class);
+
     private SystemService systemService;
 
     /**
@@ -54,8 +58,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 
-        if (LoginController.isValidateCodeLogin(token.getUsername(), false, false)) {
-            // 判断验证码
+        // 如果登录失败超过3次需要验证码
+        if (LoginRestController.isNeedValidCode(token.getUsername())) {
             Session session = SecurityUtils.getSubject().getSession();
             String code = (String) session.getAttribute("ValidateCode");
             if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)) {
@@ -64,14 +68,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         }
 
         User user = getSystemService().getUserByLoginName(token.getUsername());
-        if (user != null) {
-            byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
-            return new SimpleAuthenticationInfo(new Principal(user),
-                    user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
-        } else {
+        if (user == null) {
             return null;
         }
+
+        byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
+        return new SimpleAuthenticationInfo(new Principal(user), user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
     }
+
 
     /**
      * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用
