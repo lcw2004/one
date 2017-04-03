@@ -51,7 +51,7 @@ public class LoginRestController {
             subject.login(usernamePasswordToken);
         } catch (CaptchaException e) {
             logger.info("验证码验证失败");
-            return Result.error("0002", "验证码验证失败");
+            return Result.error("0002", "您输入的验证码不正确");
         } catch (UnknownAccountException e) {
             increaseLoginErrorCount(username);
             logger.info("用户[{}]身份验证失败", username);

@@ -79,7 +79,8 @@ public class SimpleCharVerifyCodeGenImpl implements IVerifyCodeGen {
 
     private static final void fillBackground(Graphics graphics, int width, int height) {
         // 填充背景
-        graphics.setColor(randomColor(220, 250));
+//        graphics.setColor(randomColor(220, 250));
+        graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, width, height);
 
         // 加入干扰线条
