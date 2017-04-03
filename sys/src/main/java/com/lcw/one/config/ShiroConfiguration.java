@@ -66,7 +66,7 @@ public class ShiroConfiguration {
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put(Global.getRestApiPath() + "/login", "anon");
-        filterChainDefinitionMap.put(Global.getRestApiPath() + "/validCode", "anon");
+        filterChainDefinitionMap.put(Global.getRestApiPath() + "/verifyCode", "anon");
         filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/userfiles/**", "anon");

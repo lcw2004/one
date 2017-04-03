@@ -44,10 +44,10 @@ public class LoginRestController {
     public ResponseMessage loginRest(@Valid @NotNull(message = "请输入用户名") String username,
                                      @Valid @NotNull(message = "请输入密码") String password,
                                      @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
-                                     String erifyCode) {
+                                     String verifyCode) {
         Subject subject = SecurityUtils.getSubject();
         try {
-            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray());
+            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray(), verifyCode);
             subject.login(usernamePasswordToken);
         } catch (CaptchaException e) {
             logger.info("验证码验证失败");
