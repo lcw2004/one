@@ -58,19 +58,11 @@ public class UserUtils extends BaseService {
                 SystemAuthorizingRealm.Principal principal = (SystemAuthorizingRealm.Principal) subject.getPrincipal();
                 if (principal != null) {
                     user = systemService.getUser(principal.getId());
-//					user = userDao.get(principal.getId());
-//					Hibernate.initialize(user.getRoleList());
                     putCache(CACHE_USER, user);
                 }
             } catch (UnavailableSecurityManagerException e) {
-
             } catch (InvalidSessionException e) {
-
             }
-        }
-        if (user == null) {
-            user = new User();
-            logout();
         }
         return user;
     }

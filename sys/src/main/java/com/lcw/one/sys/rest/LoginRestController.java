@@ -82,17 +82,29 @@ public class LoginRestController {
     }
 
     /**
+     * 退出登录
+     * @return
+     */
+    @GetMapping("/logout")
+    @ResponseBody
+    public ResponseMessage logout() {
+        UserUtils.logout();
+        return Result.success();
+    }
+
+    /**
      * 登录成功之后获取当前登录用户信息的接口
      * @return
      */
-    @GetMapping("/user")
+    @GetMapping("/userInfo")
     @ResponseBody
-    public ResponseMessage<User> getUser() {
+    public ResponseMessage<User> userInfo(HttpServletResponse  response) {
         User user = UserUtils.getUser();
         if(user != null) {
             return Result.success(user);
         } else {
-            return Result.success();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return Result.error();
         }
     }
 

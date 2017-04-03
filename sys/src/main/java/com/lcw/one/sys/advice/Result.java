@@ -11,12 +11,16 @@ public class Result {
         return new ResponseMessage(ResponseCodeEnum.SUCCESS.getCode(), "", t);
     }
 
+    public static ResponseMessage error() {
+        return error("");
+    }
+
     public static ResponseMessage error(String message) {
-        return new ResponseMessage(ResponseCodeEnum.ERROR.getCode(), message);
+        return error(ResponseCodeEnum.ERROR.getCode(), message);
     }
 
     public static ResponseMessage error(String code, String message) {
-        return new ResponseMessage(code, message);
+      return error(code, message, null);
     }
 
     public static <T> ResponseMessage<T> error(String code, String message, T t) {
