@@ -32,13 +32,21 @@ import java.util.Map;
 @RequestMapping(value = "${restPath}/")
 public class LoginRestController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LogRestController.class);
+
     /**
      * 10分钟内最大错误次数
      */
     private static final int MAX_LOGIN_ERROR_COUNT = 3;
 
-    private static final Logger logger = LoggerFactory.getLogger(LogRestController.class);
-
+    /**
+     * 登录接口
+     * @param username
+     * @param password
+     * @param isRememberMe
+     * @param verifyCode
+     * @return
+     */
     @PostMapping(value = "/login")
     @ResponseBody
     public ResponseMessage loginRest(@Valid @NotNull(message = "请输入用户名") String username,
@@ -73,6 +81,10 @@ public class LoginRestController {
         return Result.success();
     }
 
+    /**
+     * 登录成功之后获取当前登录用户信息的接口
+     * @return
+     */
     @GetMapping("/user")
     @ResponseBody
     public ResponseMessage<User> getUser() {
@@ -84,6 +96,11 @@ public class LoginRestController {
         }
     }
 
+    /**
+     * 生成验证码的接口
+     * @param request
+     * @param response
+     */
     @GetMapping("/verifyCode")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
         IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();
@@ -110,6 +127,7 @@ public class LoginRestController {
      * @return
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean) {
         Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
         if (loginFailMap == null) {
@@ -171,6 +189,5 @@ public class LoginRestController {
         loginFailNum++;
         loginFailMap.put(userName, loginFailNum);
     }
-
 
 }
