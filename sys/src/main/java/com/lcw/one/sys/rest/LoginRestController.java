@@ -2,10 +2,15 @@ package com.lcw.one.sys.rest;
 
 import com.google.common.collect.Maps;
 import com.lcw.one.common.util.CacheUtils;
+import com.lcw.one.common.util.validatecode.IVerifyCodeGen;
+import com.lcw.one.common.util.validatecode.SimpleCharVerifyCodeGenImpl;
+import com.lcw.one.common.util.validatecode.VerifyCode;
 import com.lcw.one.sys.advice.ResponseMessage;
 import com.lcw.one.sys.advice.Result;
+import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.security.CaptchaException;
 import com.lcw.one.sys.security.UsernamePasswordToken;
+import com.lcw.one.sys.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -13,16 +18,17 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping(value = "${restPath}/")
 public class LoginRestController {
 
@@ -34,10 +40,11 @@ public class LoginRestController {
     private static final Logger logger = LoggerFactory.getLogger(LogRestController.class);
 
     @PostMapping(value = "/login")
+    @ResponseBody
     public ResponseMessage loginRest(@Valid @NotNull(message = "请输入用户名") String username,
                                      @Valid @NotNull(message = "请输入密码") String password,
                                      @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
-                                     String validateCode) {
+                                     String erifyCode) {
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray());
@@ -48,7 +55,8 @@ public class LoginRestController {
         } catch (UnknownAccountException e) {
             increaseLoginErrorCount(username);
             logger.info("用户[{}]身份验证失败", username);
-            return Result.error("0001", "您输入的帐号或密码有误");
+            boolean isNeedValidCode = isNeedValidCode(username);
+            return Result.error("0001", "您输入的帐号或密码有误", isNeedValidCode);
         } catch (IncorrectCredentialsException e) {
             increaseLoginErrorCount(username);
             logger.info("用户[{}]密码验证失败", username);
@@ -63,6 +71,34 @@ public class LoginRestController {
         }
 
         return Result.success();
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    public ResponseMessage<User> getUser() {
+        User user = UserUtils.getUser();
+        if(user != null) {
+            return Result.success(user);
+        } else {
+            return Result.success();
+        }
+    }
+
+    @GetMapping("/verifyCode")
+    public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
+        IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();
+        try {
+            VerifyCode verifyCode = iVerifyCodeGen.generate(80, 28);
+            request.getSession().setAttribute("VerifyCode", verifyCode.getCode());
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(verifyCode.getImgBytes());
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

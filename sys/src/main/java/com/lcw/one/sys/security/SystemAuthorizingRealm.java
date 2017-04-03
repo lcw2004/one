@@ -61,8 +61,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         // 如果登录失败超过3次需要验证码
         if (LoginRestController.isNeedValidCode(token.getUsername())) {
             Session session = SecurityUtils.getSubject().getSession();
-            String code = (String) session.getAttribute("ValidateCode");
-            if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(code)) {
+            String verifyCode = (String) session.getAttribute("VerifyCode");
+            if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(verifyCode)) {
                 throw new CaptchaException("验证码错误.");
             }
         }

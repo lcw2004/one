@@ -1,14 +1,21 @@
 package com.lcw.one.common.util.validatecode;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
 
-public class EnCharValidateCode implements ValidateCodeInterface {
+public class SimpleCharVerifyCodeGenImpl implements IVerifyCodeGen {
+
+    private static final Logger logger = LoggerFactory.getLogger(SimpleCharVerifyCodeGenImpl.class);
 
     private static final char[] codeSeq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J',
             'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
@@ -28,6 +35,25 @@ public class EnCharValidateCode implements ValidateCodeInterface {
         ImageIO.write(image, "JPEG", os);
 
         return randomStr;
+    }
+
+    @Override
+    public VerifyCode generate(int width, int height) throws IOException {
+        ByteArrayOutputStream baos = null;
+        VerifyCode verifyCode = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            String code = generate(width, height, baos);
+            verifyCode = new VerifyCode();
+            verifyCode.setCode(code);
+            verifyCode.setImgBytes(baos.toByteArray());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            verifyCode = null;
+        } finally {
+            IOUtils.closeQuietly(baos);
+        }
+        return verifyCode;
     }
 
     public static final String randomString(int length) {

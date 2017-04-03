@@ -5,13 +5,11 @@
  */
 package com.lcw.one.sys.web;
 
-import com.google.common.collect.Maps;
 import com.lcw.one.common.config.Global;
-import com.lcw.one.common.util.CacheUtils;
 import com.lcw.one.common.util.CookieUtils;
 import com.lcw.one.common.util.StringUtils;
-import com.lcw.one.common.util.validatecode.EnCharValidateCode;
-import com.lcw.one.common.util.validatecode.ValidateCodeInterface;
+import com.lcw.one.common.util.validatecode.SimpleCharVerifyCodeGenImpl;
+import com.lcw.one.common.util.validatecode.IVerifyCodeGen;
 import com.lcw.one.common.web.BaseController;
 import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.rest.LoginRestController;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Map;
 
 /**
  * 登录Controller
@@ -44,7 +41,7 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "/validateCode", method = RequestMethod.GET)
     public void validateCode(HttpServletRequest request, HttpServletResponse response) {
-        ValidateCodeInterface validateCode = new EnCharValidateCode();
+        IVerifyCodeGen validateCode = new SimpleCharVerifyCodeGenImpl();
         try {
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");

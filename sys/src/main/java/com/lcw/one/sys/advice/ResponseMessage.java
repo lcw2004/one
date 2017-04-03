@@ -40,4 +40,8 @@ public class ResponseMessage<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+    public boolean isOk() {
+        return this.code.equals(ResponseCodeEnum.SUCCESS.getCode());
+    }
 }
