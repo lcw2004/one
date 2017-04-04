@@ -1,19 +1,20 @@
 package com.lcw.one.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.lcw.one.common.filter.RequestInfoFilter;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.sql.DataSource;
-import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 @Configuration
@@ -31,29 +32,28 @@ public class AppConfiguration {
     @Value("${spring.datasource.driver-class-name}")
     private String datasourceDriverClass;
 
+    @Autowired
+    private Environment env;
+
     @Bean(name = "dataSource")
     public DataSource dataSource() {
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        cpds.setAcquireIncrement(3);
-        cpds.setInitialPoolSize(10);
-        cpds.setMinPoolSize(3);
-        cpds.setMaxPoolSize(20);
-        cpds.setMaxIdleTime(600);
-        cpds.setIdleConnectionTestPeriod(500);
-        cpds.setMaxStatements(0);
-        cpds.setMaxIdleTimeExcessConnections(5);
-        cpds.setMaxStatementsPerConnection(100);
-        cpds.setStatementCacheNumDeferredCloseThreads(1);
-
-        try {
-            cpds.setDriverClass(datasourceDriverClass);
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        cpds.setJdbcUrl(datasourceUrl);
-        cpds.setUser(datasourceUsername);
-        cpds.setPassword(datasourcePassword);
-        return cpds;
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(datasourceDriverClass);
+        dataSource.setUrl(datasourceUrl);
+        dataSource.setUsername(datasourceUsername);
+        dataSource.setPassword(datasourcePassword);
+        dataSource.setInitialSize(Integer.parseInt(env.getProperty("spring.datasource.druid.initialSize")));
+        dataSource.setMaxActive(Integer.parseInt(env.getProperty("spring.datasource.druid.maxActive")));
+        dataSource.setMinIdle(Integer.parseInt(env.getProperty("spring.datasource.druid.minIdle")));
+        dataSource.setMaxWait(Integer.parseInt(env.getProperty("spring.datasource.druid.maxWait")));
+        dataSource.setTimeBetweenEvictionRunsMillis(Integer.parseInt(env.getProperty("spring.datasource.druid.timeBetweenEvictionRunsMillis")));
+        dataSource.setMinEvictableIdleTimeMillis(Integer.parseInt(env.getProperty("spring.datasource.druid.minEvictableIdleTimeMillis")));
+        dataSource.setValidationQuery(env.getProperty("spring.datasource.druid.validationQuery"));
+        dataSource.setTestOnBorrow(false);
+        dataSource.setTestWhileIdle(true);
+        dataSource.setPoolPreparedStatements(false);
+        dataSource.setTestOnReturn(false);
+        return dataSource;
     }
 
     @Bean(name = "transactionManager")

@@ -27,7 +27,7 @@
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 		<mysql.driver.version>5.1.13</mysql.driver.version>
 		<oracle.driver.version>10.2.0.1.0</oracle.driver.version>
-		<druid.version>1.0.1</druid.version>
+		<druid.version>1.0.29</druid.version>
 
 		<ehcache.version>2.6.6</ehcache.version>
 		<poi.version>3.9</poi.version>
@@ -161,14 +161,9 @@
 			<version>${hibernate-search.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>mchange-commons-java</artifactId>
-			<version>0.2.11</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
