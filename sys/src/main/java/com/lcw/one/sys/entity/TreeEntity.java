@@ -3,14 +3,7 @@
  */
 package com.lcw.one.sys.entity;
 
-import com.lcw.one.common.util.Reflections;
-import com.lcw.one.common.util.StringUtils;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.validator.constraints.Length;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 import java.util.List;
 
 /**

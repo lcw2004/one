@@ -22,14 +22,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 
+		<!--Dao层相关-->
 		<hibernate.version>4.2.0.Final</hibernate.version>
 		<hibernate-search.version>4.2.0.Final</hibernate-search.version>
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
-		<mysql.driver.version>5.1.13</mysql.driver.version>
-		<oracle.driver.version>10.2.0.1.0</oracle.driver.version>
+		<ehcache.version>2.6.6</ehcache.version>
+
+		<!--已经升级-->
+		<mysql.driver.version>5.1.41</mysql.driver.version>
+		<oracle.driver.version>10.2.0.4.0</oracle.driver.version>
 		<druid.version>1.0.29</druid.version>
 
-		<ehcache.version>2.6.6</ehcache.version>
 
 
 
@@ -42,6 +45,7 @@
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<guava.version>21.0</guava.version>
 		<poi.version>3.15</poi.version>
+		<jackson.version>2.8.7</jackson.version>
 		<!-- ======================== -->
 
 
@@ -53,7 +57,7 @@
 		<shiro.version>1.2.2</shiro.version>
 		<freemarker.version>2.3.19</freemarker.version>
 		<dozer.version>5.4.0</dozer.version>
-		<jackson.version>2.8.1</jackson.version>
+
 		<xstream.version>1.4.3</xstream.version>
 	</properties>
 
@@ -208,4 +212,60 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+	<repositories>
+		<repository>
+			<id>nexus-aliyun</id>
+			<name>Aliyun Nexus Repository</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>maven repo</id>
+			<url>http://mvnrepository.com/artifact/</url>
+		</repository>
+
+		<repository>
+			<id>central-repos</id>
+			<name>Central Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>central-repos2</id>
+			<name>Central Repository 2</name>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>springsource-repos</id>
+			<name>SpringSource Repository</name>
+			<url>http://repo.springsource.org/libs-milestone-local</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
