@@ -55,7 +55,7 @@
 
 
 		<shiro.version>1.4.0-RC2</shiro.version>
-		<freemarker.version>2.3.19</freemarker.version>
+		<freemarker.version>2.3.26-incubating</freemarker.version>
 		<dozer.version>5.4.0</dozer.version>
 
 		<xstream.version>1.4.3</xstream.version>
