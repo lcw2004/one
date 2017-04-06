@@ -54,7 +54,7 @@
 
 
 
-		<shiro.version>1.2.2</shiro.version>
+		<shiro.version>1.4.0-RC2</shiro.version>
 		<freemarker.version>2.3.19</freemarker.version>
 		<dozer.version>5.4.0</dozer.version>
 

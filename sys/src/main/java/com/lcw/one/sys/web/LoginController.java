@@ -69,7 +69,7 @@ public class LoginController extends BaseController {
     public String login() {
         User user = UserUtils.getUser();
         // 如果已经登录，则跳转到管理首页
-        if (user.getId() != null) {
+        if (user != null && user.getId() != null) {
             return "redirect:" + Global.getAdminPath();
         }
         return "modules/sys/sysLogin";
