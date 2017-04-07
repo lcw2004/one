@@ -28,16 +28,10 @@
 		<hibernate-validator.version>5.0.1.Final</hibernate-validator.version>
 		<ehcache.version>2.6.6</ehcache.version>
 
-		<!--已经升级-->
+		<!-- 已经升级 -->
 		<mysql.driver.version>5.1.41</mysql.driver.version>
 		<oracle.driver.version>10.2.0.4.0</oracle.driver.version>
 		<druid.version>1.0.29</druid.version>
-
-
-
-
-		<!-- ======================== -->
-		<!-- 已经升级 -->
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
 		<commons-codec.version>1.10</commons-codec.version>
@@ -46,18 +40,12 @@
 		<guava.version>21.0</guava.version>
 		<poi.version>3.15</poi.version>
 		<jackson.version>2.8.7</jackson.version>
-		<!-- ======================== -->
-
-
-
-
-
-
 
 		<shiro.version>1.4.0-RC2</shiro.version>
 		<freemarker.version>2.3.26-incubating</freemarker.version>
-		<dozer.version>5.4.0</dozer.version>
+		<!-- ======================== -->
 
+		<dozer.version>5.4.0</dozer.version>
 		<xstream.version>1.4.3</xstream.version>
 	</properties>
 
