@@ -1,4 +1,4 @@
-package com.lcw;
+package com.lcw.one.ui;
 
 import com.lcw.one.common.util.SpringContextHolder;
 import org.slf4j.Logger;

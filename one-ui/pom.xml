@@ -5,14 +5,50 @@
     <parent>
         <artifactId>one</artifactId>
         <groupId>com.lcw</groupId>
-        <version>1.0</version>
+        <version>${project.version}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
 
     <artifactId>one-ui</artifactId>
     <description>
         One的UI工程，汇总其他所有子模块的代码，汇总为一个大工程。也可以将其他工程单独打包部署为Spring Boot工程
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-system</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-fileserver</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-user</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-workflow</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

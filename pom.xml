@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.lcw</groupId>
 	<artifactId>one</artifactId>
-	<version>1.0</version>
+	<version>${project.version}</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -25,6 +25,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
+		<project.version>1.1</project.version>
 
 		<!--Dao层相关-->
 		<hibernate.version>4.2.0.Final</hibernate.version>

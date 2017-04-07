@@ -5,17 +5,17 @@
 	<parent>
 		<groupId>com.lcw</groupId>
 		<artifactId>one</artifactId>
-		<version>1.0</version>
+		<version>${project.version}</version>
 	</parent>
 	<artifactId>one-system</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>one-system</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.lcw</groupId>
 			<artifactId>one-common</artifactId>
-			<version>1.0</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!-- freemarker engine -->
@@ -78,12 +78,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>
