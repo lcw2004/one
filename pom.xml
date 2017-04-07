@@ -14,8 +14,12 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>sys</module>
-		<module>common</module>
+		<module>one-common</module>
+		<module>one-ui</module>
+		<module>one-system</module>
+		<module>one-user</module>
+		<module>one-workflow</module>
+		<module>one-fileserver</module>
 	</modules>
 
 	<properties>

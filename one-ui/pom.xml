@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>one</artifactId>
+        <groupId>com.lcw</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>one-ui</artifactId>
+    <description>
+        One的UI工程，汇总其他所有子模块的代码，汇总为一个大工程。也可以将其他工程单独打包部署为Spring Boot工程
+    </description>
+
+
+</project>
