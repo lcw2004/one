@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.lcw</groupId>
 	<artifactId>one</artifactId>
-	<version>${project.version}</version>
+    <version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -72,9 +72,23 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
 
 
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.6.1</version>
+        </dependency>
 
 
 

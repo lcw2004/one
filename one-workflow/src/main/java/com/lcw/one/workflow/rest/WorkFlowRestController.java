@@ -6,6 +6,7 @@ import com.lcw.one.util.bean.ResponseMessage;
 import com.lcw.one.util.bean.Result;
 import com.lcw.one.workflow.bean.WorkFlowBean;
 import com.lcw.one.workflow.service.IWorkflowService;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +27,7 @@ public class WorkFlowRestController {
     @Autowired
     private IWorkflowService iWorkflowService;
 
-    /**
-     * 启动流程
-     */
+    @ApiOperation(value = "启动工作流")
     @PostMapping(value = "/startWorkflow", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage startWorkflow(@RequestBody WorkFlowBean workFlowBean) {
         logger.info("startWorkflow[{}]" + JSON.toJSONString(workFlowBean));
@@ -36,9 +35,7 @@ public class WorkFlowRestController {
         return Result.success(workFlowBean);
     }
 
-    /**
-     * 执行流程
-     */
+    @ApiOperation(value = "执行工作流")
     @PostMapping(value = "/execWorkflow", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage execWorkflow(@RequestBody WorkFlowBean workFlowBean) {
         logger.info("startWorkflow[{}]" + JSON.toJSONString(workFlowBean));
@@ -46,9 +43,7 @@ public class WorkFlowRestController {
         return Result.success(workFlowBean);
     }
 
-    /**
-     * 查询任务列表
-     */
+    @ApiOperation(value = "查询任务列表")
     @GetMapping(value = "/queryTaskList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage<Page<Map>> queryTaskList(Integer pageSize, Integer pageNo,
                                                     String processInstanceId, String businessKey,
@@ -58,12 +53,14 @@ public class WorkFlowRestController {
         return Result.success(page);
     }
 
+    @ApiOperation(value = "获取任务详情")
     @GetMapping(value = "/getTaskInfo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage<Map> getTaskInfo(String taskId) {
         return Result.success(iWorkflowService.getTask(taskId));
     }
 
-    @RequestMapping(value = "/processImage")
+    @ApiOperation(value = "流程图图片")
+    @GetMapping(value = "/processImage")
     public void processImage(HttpServletResponse response, @RequestParam(value = "processDefinitionId") String processDefinitionId) {
         InputStream is = null;
         byte[] bytes;
@@ -83,7 +80,8 @@ public class WorkFlowRestController {
         }
     }
 
-    @RequestMapping(value = "/progressImage")
+    @ApiOperation(value = "流程进度图片")
+    @GetMapping(value = "/progressImage")
     public void progressImage(HttpServletResponse response, @RequestParam(value = "processInstanceId") String processInstanceId) {
         InputStream is = null;
         byte[] bytes;

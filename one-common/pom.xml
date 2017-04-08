@@ -6,7 +6,7 @@
     <parent>
         <artifactId>one</artifactId>
         <groupId>com.lcw</groupId>
-        <version>${project.version}</version>
+        <version>1.0.1</version>
     </parent>
     <artifactId>one-common</artifactId>
     <packaging>jar</packaging>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.lcw</groupId>
             <artifactId>one-util</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!--Utils Start-->
