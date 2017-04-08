@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 public class DataSourceUtils {
 
-    public DataSource createDruidDataSource(Environment env) {
+    public static DataSource createDruidDataSource(Environment env) {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
         dataSource.setUrl(env.getProperty("spring.datasource.url"));
