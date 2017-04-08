@@ -43,7 +43,7 @@ public class UserUtils extends BaseService {
     private static SystemService systemService = SpringContextHolder.getBean(SystemService.class);
     private static MenuServices menuServices = SpringContextHolder.getBean(MenuServices.class);
 
-    public static final String CACHE_USER = "workflow";
+    public static final String CACHE_USER = "user";
     public static final String CACHE_ROLE_LIST = "roleList";
     public static final String CACHE_MENU_LIST = "menuList";
     public static final String CACHE_MENU = "menu";
@@ -130,11 +130,11 @@ public class UserUtils extends BaseService {
         @SuppressWarnings("unchecked")
         List<Area> areaList = (List<Area>) getCache(CACHE_AREA_LIST);
         if (areaList == null) {
-//			User workflow = getUser();
-//			if (workflow.isAdmin()){
+//			User user = getUser();
+//			if (user.isAdmin()){
             areaList = areaDao.findAllList();
 //			}else{
-//				areaList = areaDao.findAllChild(workflow.getArea().getId(), "%,"+workflow.getArea().getId()+",%");
+//				areaList = areaDao.findAllChild(user.getArea().getId(), "%,"+user.getArea().getId()+",%");
 //			}
             putCache(CACHE_AREA_LIST, areaList);
         }
@@ -146,10 +146,10 @@ public class UserUtils extends BaseService {
         List<Office> officeList = (List<Office>) getCache(CACHE_OFFICE_LIST);
         if (officeList == null) {
             User user = getUser();
-//			if (workflow.isAdmin()){
+//			if (user.isAdmin()){
 //				officeList = officeDao.findAllList();
 //			}else{
-//				officeList = officeDao.findAllChild(workflow.getOffice().getId(), "%,"+workflow.getOffice().getId()+",%");
+//				officeList = officeDao.findAllChild(user.getOffice().getId(), "%,"+user.getOffice().getId()+",%");
 //			}
             DetachedCriteria dc = officeDao.createDetachedCriteria();
             dc.add(dataScopeFilter(user, dc.getAlias(), ""));

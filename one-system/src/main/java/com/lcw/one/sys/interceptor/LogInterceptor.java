@@ -74,7 +74,7 @@ public class LogInterceptor implements HandlerInterceptor {
         log.setCreateBy(user);
         log.setCreateDate(new Date());
         log.setRemoteAddr(Servlets.getRemoteAddr(request));
-        log.setUserAgent(request.getHeader("workflow-agent"));
+        log.setUserAgent(request.getHeader("user-agent"));
         log.setRequestUri(request.getRequestURI());
         log.setMethod(request.getMethod());
         log.setParams(buildQueryString(request));

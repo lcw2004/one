@@ -1,4 +1,4 @@
-package config;
+package com.lcw.one.ui.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.lcw.one.common.filter.RequestInfoFilter;

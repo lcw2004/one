@@ -52,7 +52,7 @@ public class UserController extends BaseController {
         }
     }
 
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping({"list", ""})
     public String list() {
         return "modules/sys/userList";
@@ -63,7 +63,7 @@ public class UserController extends BaseController {
         return "modules/esign/common/select_user";
     }
 
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping("form")
     public String form(String id, Model model) {
         model.addAttribute("id", id);
@@ -71,7 +71,7 @@ public class UserController extends BaseController {
     }
 
     // 	TODO REST
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "export", method = RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
         try {
@@ -82,16 +82,16 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             addMessage(redirectAttributes, "导出用户失败！失败信息：" + e.getMessage());
         }
-        return "redirect:" + Global.getAdminPath() + "/sys/workflow/?repage";
+        return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
 
     // 	TODO REST
-    @RequiresPermissions("sys:workflow:edit")
+    @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "import", method = RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
         if (Global.isDemoMode()) {
             addMessage(redirectAttributes, "演示模式，不允许操作！");
-            return "redirect:" + Global.getAdminPath() + "/sys/workflow/?repage";
+            return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
         }
 
         try {
@@ -129,11 +129,11 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             addMessage(redirectAttributes, "导入用户失败！失败信息：" + e.getMessage());
         }
-        return "redirect:" + Global.getAdminPath() + "/sys/workflow/?repage";
+        return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
 
     // 	TODO REST
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping("import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
         try {
@@ -145,12 +145,12 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
         }
-        return "redirect:" + Global.getAdminPath() + "/sys/workflow/?repage";
+        return "redirect:" + Global.getAdminPath() + "/sys/user/?repage";
     }
 
     // 	TODO REST
     @ResponseBody
-    @RequiresPermissions("sys:workflow:edit")
+    @RequiresPermissions("sys:user:edit")
     @RequestMapping("checkLoginName")
     public String checkLoginName(String oldLoginName, String loginName) {
         if (loginName != null && loginName.equals(oldLoginName)) {

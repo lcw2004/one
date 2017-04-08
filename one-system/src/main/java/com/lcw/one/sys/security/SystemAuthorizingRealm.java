@@ -10,6 +10,7 @@ import com.lcw.one.common.util.SpringContextHolder;
 import com.lcw.one.sys.entity.Menu;
 import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.rest.LoginRestController;
+import com.lcw.one.sys.security.exception.CaptchaException;
 import com.lcw.one.sys.service.SystemService;
 import com.lcw.one.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -85,7 +86,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         Principal principal = (Principal) getAvailablePrincipal(principals);
         User user = getSystemService().getUserByLoginName(principal.getLoginName());
         if (user != null) {
-            UserUtils.putCache("workflow", user);
+            UserUtils.putCache("user", user);
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
             List<Menu> list = UserUtils.getMenuList();
             for (Menu menu : list) {

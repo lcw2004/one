@@ -1,4 +1,4 @@
-package config;
+package com.lcw.one.ui.config;
 
 import com.lcw.one.common.config.Global;
 import com.lcw.one.sys.security.FormAuthenticationFilter;
@@ -74,7 +74,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/userfiles/**", "anon");
         filterChainDefinitionMap.put(Global.getAdminPath() + "/login", "authc");
         filterChainDefinitionMap.put(Global.getAdminPath() + "/logout", "logout");
-        filterChainDefinitionMap.put(Global.getAdminPath() + "/**", "workflow");
+        filterChainDefinitionMap.put(Global.getAdminPath() + "/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;

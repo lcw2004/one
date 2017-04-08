@@ -1,6 +1,6 @@
 package com.lcw.one;
 
-import com.lcw.one.sys.advice.ResponseMessage;
+import com.lcw.one.common.advice.ResponseMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;

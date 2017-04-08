@@ -31,7 +31,7 @@ public class MenuDao extends BaseDao<Menu> {
 
     public List<Menu> findByUserId(String userId) {
         return find("select distinct m from Menu m, Role r, User u where m in elements (r.menuList) and r in elements (u.roleList)" +
-                " and m.delFlag=:p1 and r.delFlag=:p1 and u.delFlag=:p1 and u.id=:p2" + // or (m.workflow.id=:p2  and m.delFlag=:p1)" +
+                " and m.delFlag=:p1 and r.delFlag=:p1 and u.delFlag=:p1 and u.id=:p2" + // or (m.user.id=:p2  and m.delFlag=:p1)" +
                 " order by m.sort", new Parameter(Menu.DEL_FLAG_NORMAL, userId));
     }
 

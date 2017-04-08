@@ -29,7 +29,7 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public Page<User> list(String name, HttpServletRequest request, HttpServletResponse response) {
         User user = new User();
@@ -42,7 +42,7 @@ public class UserRestController {
         return page;
     }
 
-    @RequiresPermissions("sys:workflow:view")
+    @RequiresPermissions("sys:user:view")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public User get(@PathVariable String id) {
         User user = systemService.getUser(id);
@@ -56,13 +56,13 @@ public class UserRestController {
         return user;
     }
 
-    @RequiresPermissions("sys:workflow:delete")
+    @RequiresPermissions("sys:user:delete")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     public void delete(@PathVariable String id) {
         systemService.deleteUser(id);
     }
 
-    @RequiresPermissions("sys:workflow:edit")
+    @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json")
     public void update(@Valid @RequestBody User user) {
         // 保存用户基础信息
@@ -82,7 +82,7 @@ public class UserRestController {
         userService.save(user);
     }
 
-    @RequiresPermissions("sys:workflow:edit")
+    @RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public void save(@Valid @RequestBody User user) {
         user.setPassword(SystemService.entryptPassword("123456"));

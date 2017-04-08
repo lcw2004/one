@@ -1,4 +1,4 @@
-package config;
+package com.lcw.one.ui.config;
 
 import com.lcw.one.common.config.Global;
 import com.lcw.one.sys.interceptor.LogInterceptor;
