@@ -3,16 +3,17 @@ package com.lcw.one.workflow.bean;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @version 2017-04-08.
- * @auth Licw
- */
 public class WorkFlowBean {
 
     private String userId;
     private String flowId;
+    private String taskId;
     private String businessKey;
-    private Map<String, Object> paramMap = new HashMap<>();
+    private String taskDefinitionKey;
+    private String processDefinitionId;
+    private String processInstanceId;
+    private Map<String, Object> variables = new HashMap<>();
+    private Map<String, Object> localVariables = new HashMap<>();
     private Map<String, Object> resultMap = new HashMap<>();
 
     public String getUserId() {
@@ -31,6 +32,14 @@ public class WorkFlowBean {
         this.flowId = flowId;
     }
 
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
     public String getBusinessKey() {
         return businessKey;
     }
@@ -39,12 +48,44 @@ public class WorkFlowBean {
         this.businessKey = businessKey;
     }
 
-    public Map<String, Object> getParamMap() {
-        return paramMap;
+    public String getTaskDefinitionKey() {
+        return taskDefinitionKey;
     }
 
-    public void setParamMap(Map<String, Object> paramMap) {
-        this.paramMap = paramMap;
+    public void setTaskDefinitionKey(String taskDefinitionKey) {
+        this.taskDefinitionKey = taskDefinitionKey;
+    }
+
+    public String getProcessDefinitionId() {
+        return processDefinitionId;
+    }
+
+    public void setProcessDefinitionId(String processDefinitionId) {
+        this.processDefinitionId = processDefinitionId;
+    }
+
+    public String getProcessInstanceId() {
+        return processInstanceId;
+    }
+
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
+    }
+
+    public Map<String, Object> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(Map<String, Object> variables) {
+        this.variables = variables;
+    }
+
+    public Map<String, Object> getLocalVariables() {
+        return localVariables;
+    }
+
+    public void setLocalVariables(Map<String, Object> localVariables) {
+        this.localVariables = localVariables;
     }
 
     public Map<String, Object> getResultMap() {
