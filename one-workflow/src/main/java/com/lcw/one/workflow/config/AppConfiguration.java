@@ -23,18 +23,8 @@ public class AppConfiguration {
 
     @Bean
     InitializingBean usersAndGroupsInitializer(final IdentityService identityService) {
-
         return new InitializingBean() {
             public void afterPropertiesSet() throws Exception {
-
-//                Group group = identityService.newGroup("user1");
-//                group.setName("users");
-//                group.setType("security-role");
-//                identityService.saveGroup(group);
-//
-//                User admin = identityService.newUser("admin1");
-//                admin.setPassword("admin1");
-//                identityService.saveUser(admin);
 
             }
         };

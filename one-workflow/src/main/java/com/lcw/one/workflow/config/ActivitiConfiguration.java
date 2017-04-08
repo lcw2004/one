@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivitiProcessEngineConfigurationConfigurer implements ProcessEngineConfigurationConfigurer {
+public class ActivitiConfiguration implements ProcessEngineConfigurationConfigurer {
 
     @Autowired
     private Environment env;
