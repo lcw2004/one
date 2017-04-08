@@ -31,15 +31,15 @@ public class WorkFlowRestController {
     @PostMapping(value = "/startWorkflow", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage startWorkflow(@RequestBody WorkFlowBean workFlowBean) {
         logger.info("startWorkflow[{}]" + JSON.toJSONString(workFlowBean));
-        iWorkflowService.startWorkflow(workFlowBean);
-        return Result.success();
+        workFlowBean = iWorkflowService.startWorkflow(workFlowBean);
+        return Result.success(workFlowBean);
     }
 
     /**
      * 查询任务列表
      */
     @GetMapping(value = "/queryTaskList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseMessage<Page<Map>> queryTaskList(String pageSize, String pageNo,
+    public ResponseMessage<Page<Map>> queryTaskList(Integer pageSize, Integer pageNo,
                                                     String processInstanceId, String businessKey,
                                                     String role, String userId,
                                                     String taskDefinitionKey, String processDefinitionId) {

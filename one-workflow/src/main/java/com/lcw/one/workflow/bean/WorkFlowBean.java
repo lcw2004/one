@@ -1,5 +1,6 @@
 package com.lcw.one.workflow.bean;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,7 +12,8 @@ public class WorkFlowBean {
     private String userId;
     private String flowId;
     private String businessKey;
-    private Map<String, String> paramMap;
+    private Map<String, Object> paramMap = new HashMap<>();
+    private Map<String, Object> resultMap = new HashMap<>();
 
     public String getUserId() {
         return userId;
@@ -37,11 +39,19 @@ public class WorkFlowBean {
         this.businessKey = businessKey;
     }
 
-    public Map<String, String> getParamMap() {
+    public Map<String, Object> getParamMap() {
         return paramMap;
     }
 
-    public void setParamMap(Map<String, String> paramMap) {
+    public void setParamMap(Map<String, Object> paramMap) {
         this.paramMap = paramMap;
+    }
+
+    public Map<String, Object> getResultMap() {
+        return resultMap;
+    }
+
+    public void setResultMap(Map<String, Object> resultMap) {
+        this.resultMap = resultMap;
     }
 }
