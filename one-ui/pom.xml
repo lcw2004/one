@@ -18,11 +18,6 @@
     <dependencies>
         <dependency>
             <groupId>com.lcw</groupId>
-            <artifactId>one-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lcw</groupId>
             <artifactId>one-system</artifactId>
             <version>${project.version}</version>
         </dependency>
