@@ -10,7 +10,7 @@ public interface IWorkflowService {
     void startWorkflow(WorkFlowBean workFlowBean);
 
 
-    Page<Map> queryTaskList(String pageSize, String pageNo,
+    Page<Map> queryTaskList(Integer pageSize, Integer pageNo,
                             String processInstanceId, String businessKey,
                             String role, String userId,
                             String taskDefinitionKey, String processDefinitionId);

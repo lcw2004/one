@@ -39,7 +39,7 @@ public class WorkFlowRestController {
      * 查询任务列表
      */
     @GetMapping(value = "/queryTaskList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseMessage<Page<Map>> queryTaskList(String pageSize, String pageNo,
+    public ResponseMessage<Page<Map>> queryTaskList(Integer pageSize, Integer pageNo,
                                                     String processInstanceId, String businessKey,
                                                     String role, String userId,
                                                     String taskDefinitionKey, String processDefinitionId) {
