@@ -6,7 +6,7 @@
     <parent>
         <artifactId>one</artifactId>
         <groupId>com.lcw</groupId>
-        <version>1.1-dev</version>
+        <version>${project.version}</version>
     </parent>
     <artifactId>one-common</artifactId>
     <packaging>jar</packaging>
