@@ -2,36 +2,46 @@
 
 本项目衍生自 [jeesite](https://github.com/thinkgem/jeesite "https://github.com/thinkgem/jeesite")，使用的是hibernate版本，除了基础平台的功能，其余的功能都删除了。
 
-**这段时间工作上有些忙，暂时没继续开发，年后会接着按计划进行开发**
 
 ## 演示地址
 -   [http://www.lumuxi.me/one](http://www.lumuxi.me/one/ "http://www.lumuxi.me/one/")
 -   登录名：admin，密码：admin
 -   服务器在国外，访问起来会有些慢
 
+
 # 技术栈
--   Spring Boot
--   Vue2
-    -   vue-router
-    -   vuex
-    -   vux-resource
-    -   vee-validate
--   Hibernate 4
--   Shiro
+-   后端
+    -   Spring Boot 1.5.2
+    -   Hibernate 4
+    -   Shiro
+-   前端
+    -   webpack
+    -   Vue2
+        -   vue-router
+        -   vuex
+        -   vux-resource
+        -   vee-validate
+        
 
 # 在Jeesite上的改动
--	支持Spring Boot
+-	改为 Spring Boot 工程
 -	前后端分离，后端提供Rest API（同一套API可以供App以及Wap调用）
 -   前端使用了Vue渲染网页，数据与展示分离。
     -   目前的前端组件（翻页组件、Tree组件、Tree Table组件）都是自定义的，易于修改。
     -   前端代码较少且更为清晰
 -	前端UI改为 [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")。
 
-# 部署
--   数据库：目前数据库还是用的Jeesite的，还未有任何改动
--   签出之后在项目根目录运行以下命令即可运行程序：
 
-        mvn spring-boot:run
+# 运行程序
+-   数据库：目前数据库还是用的Jeesite的，还未有任何改动
+-   命令行方式运行：在项目根目录运行以下命令即可运行程序：
+
+        mvn clean package
+        cd one-ui
+        java -jar one-ui/target/one-ui-1.0.1.war
+        
+-   开发工具运行：在开发工具中运行OneUIApplication.java
+
 
 # 待完成功能
 1.  整体功能
@@ -85,7 +95,4 @@
     -   获取登录用户信息失败
     -   长时间不操作，自动退出登录
     -   异常处理：vue-resource拦截下来并跳转到登录界面重新登录
-    
-    
-    
     
