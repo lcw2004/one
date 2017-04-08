@@ -31,11 +31,6 @@
             <artifactId>one-user</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.lcw</groupId>
-            <artifactId>one-workflow</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>

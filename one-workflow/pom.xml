@@ -12,5 +12,27 @@
     <artifactId>one-workflow</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <activiti.version>5.22.0</activiti.version>
+        <mysql.version>5.1.30</mysql.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
