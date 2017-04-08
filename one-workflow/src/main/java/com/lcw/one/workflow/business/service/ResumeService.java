@@ -1,4 +1,4 @@
-package com.lcw.one.workflow.service;
+package com.lcw.one.workflow.business.service;
 
 import org.springframework.stereotype.Component;
 

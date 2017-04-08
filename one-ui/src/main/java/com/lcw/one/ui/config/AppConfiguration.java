@@ -1,7 +1,7 @@
 package com.lcw.one.ui.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.lcw.one.common.filter.RequestInfoFilter;
+import com.lcw.one.util.filter.RequestInfoFilter;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,11 +97,4 @@ public class AppConfiguration {
         return registration;
     }
 
-//    @Bean(name = "cacheManager")
-//    public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
-//        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-//        ClassPathResource classPathResource = new ClassPathResource("cache/ehcache-local.xml");
-//        ehCacheManagerFactoryBean.setConfigLocation(classPathResource);
-//        return ehCacheManagerFactoryBean;
-//    }
 }

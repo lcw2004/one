@@ -5,18 +5,15 @@
  */
 package com.lcw.one.sys.service;
 
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.util.CacheUtils;
-import com.lcw.one.sys.dao.AreaDao;
 import com.lcw.one.sys.dao.DictDao;
-import com.lcw.one.sys.entity.Area;
 import com.lcw.one.sys.entity.Dict;
 import com.lcw.one.sys.utils.DictUtils;
+import com.lcw.one.util.bean.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

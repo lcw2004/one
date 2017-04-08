@@ -1,6 +1,6 @@
 package com.lcw.one.workflow.config;
 
-import com.lcw.one.workflow.listener.VariableCreateListener;
+import com.lcw.one.workflow.config.listener.VariableCreateListener;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.spring.boot.ProcessEngineConfigurationConfigurer;

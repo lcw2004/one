@@ -1,13 +1,13 @@
 package com.lcw.one.sys.rest;
 
 import com.google.common.collect.Lists;
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.web.ResponseMessage;
 import com.lcw.one.sys.entity.Role;
 import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.service.SystemService;
 import com.lcw.one.sys.service.UserService;
 import com.lcw.one.sys.utils.UserUtils;
+import com.lcw.one.util.bean.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresUser;

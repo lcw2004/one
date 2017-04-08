@@ -1,7 +1,7 @@
-package com.lcw.one.workflow.controll;
+package com.lcw.one.workflow.business.controll;
 
-import com.lcw.one.workflow.bean.Applicant;
-import com.lcw.one.workflow.dao.ApplicantRepository;
+import com.lcw.one.workflow.business.bean.Applicant;
+import com.lcw.one.workflow.business.dao.ApplicantRepository;
 import org.activiti.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

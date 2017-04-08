@@ -1,18 +1,15 @@
 package com.lcw.one.sys.service;
 
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.util.StringUtils;
 import com.lcw.one.sys.dao.RoleDao;
 import com.lcw.one.sys.entity.Dict;
 import com.lcw.one.sys.entity.Role;
-import com.lcw.one.sys.utils.UserUtils;
+import com.lcw.one.util.bean.Page;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

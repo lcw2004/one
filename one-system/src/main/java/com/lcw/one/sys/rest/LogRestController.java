@@ -1,8 +1,8 @@
 package com.lcw.one.sys.rest;
 
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.sys.entity.Log;
 import com.lcw.one.sys.service.LogService;
+import com.lcw.one.util.bean.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,10 +1,10 @@
 package com.lcw.one.sys.rest;
 
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.sys.entity.Role;
 import com.lcw.one.sys.rest.bean.BeanUtils;
 import com.lcw.one.sys.rest.bean.Role4Rest;
 import com.lcw.one.sys.service.RoleService;
+import com.lcw.one.util.bean.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

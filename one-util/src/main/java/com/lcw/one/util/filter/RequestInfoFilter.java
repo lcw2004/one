@@ -1,6 +1,5 @@
-package com.lcw.one.common.filter;
+package com.lcw.one.util.filter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -47,7 +46,7 @@ public class RequestInfoFilter implements Filter {
         Enumeration<String> headers = request.getHeaderNames();
         while (headers.hasMoreElements()) {
             String headName = headers.nextElement();
-            if (StringUtils.isNotEmpty(headName)) {
+            if (headName != null && !"".equals(headName)) {
                 headerMap.put(headName, request.getHeader(headName));
             }
         }

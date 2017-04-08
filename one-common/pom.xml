@@ -12,6 +12,12 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.lcw</groupId>
+            <artifactId>one-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!--Utils Start-->
         <dependency>
             <groupId>org.apache.commons</groupId>

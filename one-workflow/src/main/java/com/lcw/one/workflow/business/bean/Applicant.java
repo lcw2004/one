@@ -1,4 +1,4 @@
-package com.lcw.one.workflow.bean;
+package com.lcw.one.workflow.business.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

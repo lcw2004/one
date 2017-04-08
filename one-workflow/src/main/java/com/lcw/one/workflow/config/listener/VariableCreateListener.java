@@ -1,4 +1,4 @@
-package com.lcw.one.workflow.listener;
+package com.lcw.one.workflow.config.listener;
 
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;

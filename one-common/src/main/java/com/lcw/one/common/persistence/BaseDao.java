@@ -7,6 +7,7 @@ package com.lcw.one.common.persistence;
 
 import com.lcw.one.common.util.Reflections;
 import com.lcw.one.common.util.StringUtils;
+import com.lcw.one.util.bean.Page;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.QueryWrapperFilter;

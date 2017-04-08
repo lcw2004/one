@@ -3,10 +3,9 @@
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.lcw.one.common.persistence;
+package com.lcw.one.util.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lcw.one.common.util.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +68,6 @@ public class Page<T> {
             this.setPageSize(10);
         }
         if (StringUtils.isNumeric(size)) {
-            CookieUtils.setCookie(response, "pageSize", size);
             this.setPageSize(Integer.parseInt(size));
         }
 

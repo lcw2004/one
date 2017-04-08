@@ -5,7 +5,6 @@
  */
 package com.lcw.one.sys.service;
 
-import com.lcw.one.common.persistence.Page;
 import com.lcw.one.common.util.Digests;
 import com.lcw.one.common.util.Encodes;
 import com.lcw.one.common.util.StringUtils;
@@ -17,6 +16,7 @@ import com.lcw.one.sys.entity.Role;
 import com.lcw.one.sys.entity.User;
 import com.lcw.one.sys.security.SystemAuthorizingRealm;
 import com.lcw.one.sys.utils.UserUtils;
+import com.lcw.one.util.bean.Page;
 import org.apache.shiro.SecurityUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
