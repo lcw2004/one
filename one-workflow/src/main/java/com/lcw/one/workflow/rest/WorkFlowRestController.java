@@ -6,6 +6,7 @@ import com.lcw.one.util.bean.ResponseMessage;
 import com.lcw.one.util.bean.Result;
 import com.lcw.one.workflow.bean.WorkFlowBean;
 import com.lcw.one.workflow.service.IWorkflowService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+@Api(value = "工作流服务", description = "工作流服务接口")
 @RestController
 public class WorkFlowRestController {
 

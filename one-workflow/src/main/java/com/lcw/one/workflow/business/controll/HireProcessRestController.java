@@ -21,8 +21,7 @@ public class HireProcessRestController {
     private ApplicantRepository applicantRepository;
 
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/start-hire-process", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/start-hire-process", produces = MediaType.APPLICATION_JSON_VALUE)
     public void startHireProcess(@RequestBody Map<String, String> data) {
 
         Applicant applicant = new Applicant(data.get("name"), data.get("email"), data.get("phoneNumber"));
@@ -32,9 +31,8 @@ public class HireProcessRestController {
         runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
     }
 
-
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/start")
+    @GetMapping(value = "/start")
     public void start(String name, String email, String phone) {
         Applicant applicant = new Applicant(name, email, phone);
         applicantRepository.save(applicant);
@@ -43,7 +41,7 @@ public class HireProcessRestController {
         runtimeService.startProcessInstanceByKey("hireProcessWithJpa", vars);
     }
 
-    @RequestMapping(value = {"", "/", "/home"})
+    @GetMapping(value = {"", "/", "/home"})
     public String home() {
         return "home";
     }
