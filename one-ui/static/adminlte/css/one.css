@@ -1,0 +1,61 @@
+/*row间距*/
+.row-margin-bottom {
+  margin-bottom: 10px;
+}
+
+/*树前面的空格*/
+.tree-indent {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+}
+.tree-expander {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+/*去掉黑点和空格*/
+ul, li {
+  list-style: none;
+  padding:0; margin:0;
+}
+
+/*模态框滚动*/
+.modal-scrollable {
+  overflow-y: auto;
+  height: 400px;
+}
+
+.registry-title {
+  margin-top: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/*Icon*/
+.icon-default {
+  color: #c1c2c5
+}
+.icon-danger {
+  color: #dd4b39
+}
+
+.query {
+}
+.query input {
+  height: 30px;
+  font-size: 12px;
+}
+.query .col-md-4 {
+  margin-bottom: 10px
+}
+
+
+.margin20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,52 @@
+server:
+  port: 8080
+spring:
+  mvc:
+    static-path-pattern: /**
+  http.multipart:
+      max-request-size: 3MB
+      max-file-size: 3mb
+logging.level:
+  org.springframework: error
+  org.apache.shiro: error
+  org.hibernate.SQL: debug
+
+adminPath: /a
+restPath: /api
+file.path: D:\Files
+
+#=============================#
+#===== Database Settings =====#
+#=============================#
+spring.datasource:
+  url: jdbc:mysql://127.0.0.1:3306/bidding?useUnicode=true&characterEncoding=utf-8
+  username: root
+  password: one
+  driver-class-name: com.mysql.jdbc.Driver
+  druid.initialSize: 3
+  druid.maxActive: 3
+  druid.minIdle: 2
+  druid.maxWait: 60000
+  druid.timeBetweenEvictionRunsMillis: 60000
+  druid.minEvictableIdleTimeMillis: 300000
+  druid.validationQuery: SELECT 'x' FROM DUAL
+
+#=============================#
+#=====   Email Settings  =====#
+#=============================#
+mail:
+  protocol: smtp
+  host: smtp.qq.com
+  port: 465
+  smtp:
+    socketFactory.port: 465
+    auth: true
+    starttls.enable: true
+    debug: true
+    starttls.required: true
+    socketFactory.fallback: false
+  from:
+    mail: 292232611@qq.com
+    name: 长沙瑞财科技
+  username: 292232611@qq.com
+  password: ezkbxarmubuqbigc

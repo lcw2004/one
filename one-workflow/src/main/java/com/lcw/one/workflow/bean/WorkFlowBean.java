@@ -1,19 +1,32 @@
 package com.lcw.one.workflow.bean;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class WorkFlowBean {
 
     private String userId;
+
     private String flowId;
+
     private String taskId;
+
     private String businessKey;
+
     private String taskDefinitionKey;
+
+    private String taskDefinitionName;
+
     private String processDefinitionId;
+
     private String processInstanceId;
+
     private Map<String, Object> variables = new HashMap<>();
+
     private Map<String, Object> localVariables = new HashMap<>();
+
     private Map<String, Object> resultMap = new HashMap<>();
 
     public String getUserId() {
@@ -64,6 +77,14 @@ public class WorkFlowBean {
         this.processDefinitionId = processDefinitionId;
     }
 
+    public String getTaskDefinitionName() {
+        return taskDefinitionName;
+    }
+
+    public void setTaskDefinitionName(String taskDefinitionName) {
+        this.taskDefinitionName = taskDefinitionName;
+    }
+
     public String getProcessInstanceId() {
         return processInstanceId;
     }
@@ -94,5 +115,20 @@ public class WorkFlowBean {
 
     public void setResultMap(Map<String, Object> resultMap) {
         this.resultMap = resultMap;
+    }
+
+    public void putVariables(String key, Object value) {
+        if (variables == null) {
+            variables = new HashMap<>();
+        }
+        variables.put(key, value);
+    }
+
+    public void putVariables(Map<String, Object> variables) {
+        Set<String> keySet = variables.keySet();
+        for (Iterator<String> it = keySet.iterator(); it.hasNext(); ) {
+            String key = it.next();
+            putVariables(key, variables.get(key));
+        }
     }
 }

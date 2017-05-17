@@ -1,6 +1,5 @@
 package com.lcw.one.util.utils;
 
-
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.core.env.Environment;
 
@@ -27,4 +26,5 @@ public class DataSourceUtils {
         dataSource.setTestOnReturn(false);
         return dataSource;
     }
+
 }

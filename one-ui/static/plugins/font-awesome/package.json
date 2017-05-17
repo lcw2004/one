@@ -1,0 +1,117 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "font-awesome@^4.7.0",
+        "scope": null,
+        "escapedName": "font-awesome",
+        "name": "font-awesome",
+        "rawSpec": "^4.7.0",
+        "spec": ">=4.7.0 <5.0.0",
+        "type": "range"
+      },
+      "E:\\WorkSpace\\VueWorkSpace\\vue-adminlte2"
+    ]
+  ],
+  "_cnpm_publish_time": 1477344820511,
+  "_from": "font-awesome@^4.7.0",
+  "_hasShrinkwrap": false,
+  "_id": "font-awesome@4.7.0",
+  "_location": "/font-awesome",
+  "_nodeVersion": "5.5.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/font-awesome-4.7.0.tgz_1477344817307_0.6990068354643881"
+  },
+  "_npmUser": {
+    "name": "juliankrispel",
+    "email": "julian@goodafternoon.co"
+  },
+  "_npmVersion": "3.3.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "font-awesome@^4.7.0",
+    "scope": null,
+    "escapedName": "font-awesome",
+    "name": "font-awesome",
+    "rawSpec": "^4.7.0",
+    "spec": ">=4.7.0 <5.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/font-awesome/download/font-awesome-4.7.0.tgz",
+  "_shasum": "8fa8cf0411a1a31afd07b06d2902bb9fc815a133",
+  "_shrinkwrap": null,
+  "_spec": "font-awesome@^4.7.0",
+  "_where": "E:\\WorkSpace\\VueWorkSpace\\vue-adminlte2",
+  "author": {
+    "name": "Dave Gandy",
+    "email": "dave@fontawesome.io",
+    "url": "http://twitter.com/davegandy"
+  },
+  "bugs": {
+    "url": "http://github.com/FortAwesome/Font-Awesome/issues"
+  },
+  "contributors": [
+    {
+      "name": "Brian Talbot",
+      "url": "http://twitter.com/talbs"
+    },
+    {
+      "name": "Travis Chase",
+      "url": "http://twitter.com/supercodepoet"
+    },
+    {
+      "name": "Rob Madole",
+      "url": "http://twitter.com/robmadole"
+    },
+    {
+      "name": "Geremia Taglialatela",
+      "url": "http://twitter.com/gtagliala"
+    }
+  ],
+  "dependencies": {},
+  "description": "The iconic font and CSS framework",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "8fa8cf0411a1a31afd07b06d2902bb9fc815a133",
+    "size": 671527,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/font-awesome/download/font-awesome-4.7.0.tgz"
+  },
+  "engines": {
+    "node": ">=0.10.3"
+  },
+  "gitHead": "a8386aae19e200ddb0f6845b5feeee5eb7013687",
+  "homepage": "http://fontawesome.io/",
+  "keywords": [
+    "font",
+    "awesome",
+    "fontawesome",
+    "icon",
+    "font",
+    "bootstrap"
+  ],
+  "license": "(OFL-1.1 AND MIT)",
+  "maintainers": [
+    {
+      "name": "juliankrispel",
+      "email": "julian@goodafternoon.co"
+    }
+  ],
+  "name": "font-awesome",
+  "optionalDependencies": {},
+  "publish_time": 1477344820511,
+  "readme": "# [Font Awesome v4.7.0](http://fontawesome.io)\n### The iconic font and CSS framework\n\nFont Awesome is a full suite of 675 pictographic icons for easy scalable vector graphics on websites,\ncreated and maintained by [Dave Gandy](https://twitter.com/davegandy).\nStay up to date with the latest release and announcements on Twitter:\n[@fontawesome](http://twitter.com/fontawesome).\n\nGet started at http://fontawesome.io!\n\n## License\n- The Font Awesome font is licensed under the SIL OFL 1.1:\n  - http://scripts.sil.org/OFL\n- Font Awesome CSS, LESS, and Sass files are licensed under the MIT License:\n  - https://opensource.org/licenses/mit-license.html\n- The Font Awesome documentation is licensed under the CC BY 3.0 License:\n  - http://creativecommons.org/licenses/by/3.0/\n- Attribution is no longer required as of Font Awesome 3.0, but much appreciated:\n  - `Font Awesome by Dave Gandy - http://fontawesome.io`\n- Full details: http://fontawesome.io/license/\n\n## Changelog\n- [v4.7.0 GitHub pull request](https://github.com/FortAwesome/Font-Awesome/pull/10012)\n- [v4.6.3 GitHub pull request](https://github.com/FortAwesome/Font-Awesome/pull/9189)\n- [v4.6.3 GitHub pull request](https://github.com/FortAwesome/Font-Awesome/pull/9189)\n- [v4.6.2 GitHub pull request](https://github.com/FortAwesome/Font-Awesome/pull/9117)\n- [v4.6.1 GitHub pull request](https://github.com/FortAwesome/Font-Awesome/pull/8962)\n- [v4.6.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?q=milestone%3A4.6.0+is%3Aclosed)\n- [v4.5.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?q=milestone%3A4.5.0+is%3Aclosed)\n- [v4.4.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?q=milestone%3A4.4.0+is%3Aclosed)\n- [v4.3.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?q=milestone%3A4.3.0+is%3Aclosed)\n- [v4.2.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=12&page=1&state=closed)\n- [v4.1.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=6&page=1&state=closed)\n- [v4.0.3 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=9&page=1&state=closed)\n- [v4.0.2 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=8&page=1&state=closed)\n- [v4.0.1 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=7&page=1&state=closed)\n- [v4.0.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=2&page=1&state=closed)\n- [v3.2.1 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=5&page=1&state=closed)\n- [v3.2.0 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=3&page=1&state=closed)\n- [v3.1.1 GitHub milestones](https://github.com/FortAwesome/Font-Awesome/issues?milestone=4&page=1&state=closed)\n- v3.1.0 - Added 54 icons, icon stacking styles, flipping and rotating icons, removed Sass support\n- v3.0.2 - much improved rendering and alignment in IE7\n- v3.0.1 - much improved rendering in webkit, various bug fixes\n- v3.0.0 - all icons redesigned from scratch, optimized for Bootstrap's 14px default\n\n## Contributing\n\nPlease read through our [contributing guidelines](https://github.com/FortAwesome/Font-Awesome/blob/master/CONTRIBUTING.md).\nIncluded are directions for opening issues, coding standards, and notes on development.\n\n## Versioning\n\nFont Awesome will be maintained under the Semantic Versioning guidelines as much as possible. Releases will be numbered\nwith the following format:\n\n`<major>.<minor>.<patch>`\n\nAnd constructed with the following guidelines:\n\n* Breaking backward compatibility bumps the major (and resets the minor and patch)\n* New additions, including new icons, without breaking backward compatibility bumps the minor (and resets the patch)\n* Bug fixes, changes to brand logos, and misc changes bumps the patch\n\nFor more information on SemVer, please visit http://semver.org.\n\n## Author\n- Email: dave@fontawesome.io\n- Twitter: http://twitter.com/davegandy\n- GitHub: https://github.com/davegandy\n\n## Component\nTo include as a [component](https://github.com/componentjs/component), just run\n\n    $ component install FortAwesome/Font-Awesome\n\nOr add\n\n    \"FortAwesome/Font-Awesome\": \"*\"\n\nto the `dependencies` in your `component.json`.\n\n## Hacking on Font Awesome\n\n**Before you can build the project**, you must first have the following installed:\n\n- [Ruby](https://www.ruby-lang.org/en/)\n- Ruby Development Headers\n  - **Ubuntu:** `sudo apt-get install ruby-dev` *(Only if you're __NOT__ using `rbenv` or `rvm`)*\n  - **Windows:** [DevKit](http://rubyinstaller.org/)\n- [Bundler](http://bundler.io/) (Run `gem install bundler` to install).\n- [Node Package Manager (AKA NPM)](https://docs.npmjs.com/getting-started/installing-node)\n- [Less](http://lesscss.org/) (Run `npm install -g less` to install).\n- [Less Plugin: Clean CSS](https://github.com/less/less-plugin-clean-css) (Run `npm install -g less-plugin-clean-css` to install).\n\nFrom the root of the repository, install the tools used to develop.\n\n    $ bundle install\n    $ npm install\n\nBuild the project and documentation:\n\n    $ bundle exec jekyll build\n\nOr serve it on a local server on http://localhost:7998/Font-Awesome/:\n\n    $ bundle exec jekyll -w serve\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FortAwesome/Font-Awesome.git"
+  },
+  "scripts": {},
+  "style": "css/font-awesome.css",
+  "version": "4.7.0"
+}

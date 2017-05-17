@@ -1,0 +1,250 @@
+package com.lcw.one.util.utils;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+
+import java.io.*;
+
+
+public class FileUtil extends FileUtils {
+
+    private static final int BUFF_SIZE = 1024;
+    private static Logger log = Logger.getLogger(FileUtil.class);
+
+    public static void copyFile(String src, String target) {
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(src));
+            out = new BufferedOutputStream(new FileOutputStream(target));
+            byte[] buffer = new byte[BUFF_SIZE];
+            int len;
+            while ((len = in.read(buffer, 0, BUFF_SIZE)) > 0) {
+                out.write(buffer, 0, len);
+                out.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    public static byte[] readFile(File file) {
+        byte[] bytes = null;
+        try {
+            bytes = IOUtils.readFully(new FileInputStream(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    /**
+     * 从文件中读取字节数组
+     *
+     * @param fileName 文件名称
+     * @return
+     */
+    public static byte[] readFile(String fileName) {
+        return readFile(new File(fileName));
+    }
+
+    /**
+     * 将字节数组写到文件中
+     *
+     * @param bytes      字节数组
+     * @param outputFile 文件名称
+     * @return
+     */
+    public static void writeFile(byte[] bytes, String outputFile) {
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(outputFile);
+            os.write(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(os);
+        }
+    }
+
+    public static File mkdir(String folderPath) {
+        File file = new File(folderPath);
+        if (!file.exists() || !file.isDirectory()) {
+            boolean success = false;
+            do {
+                success = file.mkdirs();
+            } while (success);
+
+        }
+        return file;
+    }
+
+    public static void delFolder(String folderPath) throws Exception {
+        delAllFile(folderPath);
+        File myFilePath = new File(folderPath);
+        myFilePath.delete();
+    }
+
+    public static boolean delAllFile(String path) throws Exception {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return flag;
+        }
+        if (!file.isDirectory()) {
+            return flag;
+        }
+
+        String[] tempList = file.list();
+        File temp = null;
+        for (int i = 0; i < tempList.length; i++) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + tempList[i]);
+            } else {
+                temp = new File(path + File.separator + tempList[i]);
+            }
+
+            if (temp.isFile()) {
+                temp.delete();
+            }
+
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + tempList[i]);
+                delFolder(path + "/" + tempList[i]);
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+
+    /**
+     * 删除文件，可以删除单个文件或文件夹
+     *
+     * @param fileName 被删除的文件名
+     * @return 如果删除成功，则返回true，否是返回false
+     */
+    public static boolean delFile(String fileName) {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            log.info(fileName + " 文件不存在!");
+            return true;
+        } else {
+            if (file.isFile()) {
+                return deleteFile(fileName);
+            } else {
+                return deleteDirectory(fileName);
+            }
+        }
+    }
+
+    /**
+     * 删除单个文件
+     *
+     * @param fileName 被删除的文件名
+     * @return 如果删除成功，则返回true，否则返回false
+     */
+    public static boolean deleteFile(String fileName) {
+        File file = new File(fileName);
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                log.info("删除单个文件 " + fileName + " 成功!");
+                return true;
+            } else {
+                log.info("删除单个文件 " + fileName + " 失败!");
+                return false;
+            }
+        } else {
+            log.info(fileName + " 文件不存在!");
+            return true;
+        }
+    }
+
+    /**
+     * 删除目录及目录下的文件
+     *
+     * @param dirName 被删除的目录所在的文件路径
+     * @return 如果目录删除成功，则返回true，否则返回false
+     */
+    public static boolean deleteDirectory(String dirName) {
+        String dirNames = dirName;
+        if (!dirNames.endsWith(File.separator)) {
+            dirNames = dirNames + File.separator;
+        }
+        File dirFile = new File(dirNames);
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            log.info(dirNames + " 目录不存在!");
+            return true;
+        }
+        boolean flag = true;
+        // 列出全部文件及子目录
+        File[] files = dirFile.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            // 删除子文件
+            if (files[i].isFile()) {
+                flag = deleteFile(files[i].getAbsolutePath());
+                // 如果删除文件失败，则退出循环
+                if (!flag) {
+                    break;
+                }
+            }
+            // 删除子目录
+            else if (files[i].isDirectory()) {
+                flag = deleteDirectory(files[i]
+                        .getAbsolutePath());
+                // 如果删除子目录失败，则退出循环
+                if (!flag) {
+                    break;
+                }
+            }
+        }
+
+        if (!flag) {
+            log.info("删除目录失败!");
+            return false;
+        }
+        // 删除当前目录
+        if (dirFile.delete()) {
+            log.info("删除目录 " + dirName + " 成功!");
+            return true;
+        } else {
+            log.info("删除目录 " + dirName + " 失败!");
+            return false;
+        }
+
+    }
+
+    public static boolean exists(String path) {
+        return new File(path).exists();
+    }
+
+    public static void checkAndMkdirs(File file) {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+    }
+
+    /**
+     * 获取文件后缀
+     * @param fileName
+     * @return
+     */
+    public static String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+    }
+
+    /**
+     * 获取文件名称，不包含后缀
+     * @param fileName
+     * @return
+     */
+    public static String getFileName(String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
+
+
+
+}
