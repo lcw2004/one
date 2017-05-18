@@ -98,10 +98,28 @@
     
 ## 前端接口开发
 
+注：需要安装nodejs
+
 -   启动：
 
-    1.  进入one-ui文件夹
-    2.  
+    1.  命令行进入one-ui文件夹
+    2.  运行npm install
+    3.  运行npm run dev启动前端工程
+    
+更多细节参考one-ui的readme 
+
+# 打包
+前后端分开打包
+
+## 前端打包
+
+1.  命令行进入one-ui文件夹
+2.  运行npm run build前端工程
+3.  编译出来的文件在one-ui/dist文件夹下面
+
+## 后端打包
+
+1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/
 
 # 运行程序
 -   数据库：目前数据库还是用的Jeesite的，还未有任何改动
