@@ -111,10 +111,8 @@
 </template>
 
 <script>
-import BiddingCalendar from '../bidding/BiddingCalendar'
 export default {
   components: {
-    BiddingCalendar
   }
 }
 </script>

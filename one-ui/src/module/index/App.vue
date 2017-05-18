@@ -46,20 +46,8 @@ export default {
         let result = response.body
         if (result.ok) {
           this.$store.dispatch('initUserInfo', result.data)
+          this.initOk = true
         }
-      })
-    },
-    isNeedPerfectSupplierInfo () {
-      // TODO 需要将这个判断放到全局，未完善信息的不允许访问到其他功能
-      this.$http.get('/api/isNeedPerfectSupplierInfo').then(function (response) {
-        let result = response.body
-        if (result.ok) {
-          let isNeed = result.data
-          if (isNeed) {
-            this.$router.push('/prefect-info')
-          }
-        }
-        this.initOk = true
       })
     }
   },

@@ -1,11 +1,9 @@
 import VueRouter from 'vue-router'
 import home from './home'
-import PrefectOfficeInfo from '../views/personal/supplier/PrefectOfficeInfo'
 
 const router = {
   routes: [
-    home,
-    { path: '/prefect-info', component: PrefectOfficeInfo }
+    home
   ]
 }
 

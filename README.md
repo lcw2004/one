@@ -10,7 +10,7 @@
 
 ## 在Jeesite上的改动
 -	改为Spring Boot工程
--	前后端完全分离，后端只提供Rest API
+-	前后端完全分离，后端只提供Rest API，
 -   前端使用了Vue渲染网页，数据与展示分离。
     -   目前的前端组件（翻页组件、Tree组件、Tree Table组件）都是自定义的，易于修改。
     -   前端代码较少且更为清晰
@@ -96,6 +96,10 @@
     4.  在one-code-gen中的CodeGen类中，传入第2步中生成的bean所在的包名以及第3步中的模块名
     5.  在生成的代码上二次开发
     
+-   测试：
+    
+    访问http://localhost:8080/swagger-ui.html对接口进行测试
+    
 ## 前端接口开发
 
 注：需要安装nodejs
@@ -119,7 +123,11 @@
 
 ## 后端打包
 
-1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/
+1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/src/main/resources/static文件夹下面
+2.  **将所有的html文件中的/static改为./static**，一定要替换，否则找不到静态资源文件
+3.  进入one文件夹
+4.  执行命令编译：`mvn clean pakcage`
+5.  执行命令启动程序：`java -jar one-main/target/0.0.1-SNAPSHOT`
 
 # 运行程序
 -   数据库：目前数据库还是用的Jeesite的，还未有任何改动
