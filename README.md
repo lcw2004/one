@@ -4,7 +4,7 @@
 另：v2.0版本基本上重新开发了，数据库也有较大改动
 
 ## 演示地址
--   [http://www.lumuxi.me](http://www.lumuxi.me "http://www.lumuxi.me")
+-   [http://one.lumuxi.me](http://one.lumuxi.me "http://one.lumuxi.me")
 -   登录名：admin，密码：admin
 -   服务器在国外，访问起来会有些慢，另初次加载会慢一些。
 
@@ -15,6 +15,7 @@
     -   目前的前端组件（翻页组件、Tree组件、Tree Table组件）都是自定义的，易于修改。
     -   前端代码较少且更为清晰
 -   依赖的组件升级为最新版，且会定期升级
+
 
 # 技术栈
 ## 后端
@@ -31,7 +32,8 @@
 -   vue-resource
 -   webpack
 -   [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")
-        
+
+
 # 开发
 ## 工程结构说明
 
@@ -107,27 +109,28 @@
 -   启动：
 
     1.  命令行进入one-ui文件夹
-    2.  运行npm install
-    3.  运行npm run dev启动前端工程
+    2.  运行`npm install`
+    3.  运行`npm run dev`启动前端工程
     
 更多细节参考one-ui的readme 
 
+
 # 打包
-前后端分开打包
 
 ## 前端打包
 
 1.  命令行进入one-ui文件夹
-2.  运行npm run build前端工程
+2.  运行`npm run build`编译前端工程
 3.  编译出来的文件在one-ui/dist文件夹下面
 
 ## 后端打包
 
-1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/src/main/resources/static文件夹下面
+1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/src/main/resources/static文件夹下面（打包完成就删掉拷贝过去的内容，没必要提交）
 2.  **将所有的html文件中的/static改为./static**，一定要替换，否则找不到静态资源文件
 3.  进入one文件夹
-4.  执行命令编译：`mvn clean pakcage`
-5.  执行命令启动程序：`java -jar one-main/target/0.0.1-SNAPSHOT`
+4.  执行命令编译：`mvn clean pakcage -Dmaven.test.skip=true`
+5.  执行命令启动程序：`java -jar one-main\target\one-main-0.0.1-SNAPSHOT.jar`
+6.  访问`http://localhost:8080/login.html`登录系统
 
 # 运行程序
 -   数据库：目前数据库还是用的Jeesite的，还未有任何改动
