@@ -114,6 +114,9 @@
     
 更多细节参考one-ui的readme 
 
+## 数据库
+
+目前还没有整理数据库初始化脚本，暂时只有一个navicat导出的mysql数据，在document下面
 
 # 打包
 
