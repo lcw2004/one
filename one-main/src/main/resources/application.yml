@@ -46,7 +46,7 @@ mail:
     starttls.required: true
     socketFactory.fallback: false
   from:
-    mail: 292232611@qq.com
-    name: 长沙瑞财科技
-  username: 292232611@qq.com
-  password: ezkbxarmubuqbigc
+    mail: test@qq.com
+    name: 测试
+  username: test@qq.com
+  password: test
