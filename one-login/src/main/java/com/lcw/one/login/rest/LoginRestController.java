@@ -9,12 +9,8 @@ import com.lcw.one.login.security.validatecode.VerifyCode;
 import com.lcw.one.login.util.CacheUtils;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.sys.entity.SysMenuEO;
-import com.lcw.one.user.constant.UserInfoTypeEnum;
-import com.lcw.one.user.constant.UserSupplierStatusEnum;
 import com.lcw.one.user.entity.UserInfoEO;
-import com.lcw.one.user.entity.UserSupplierEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.RequestUtils;
@@ -53,9 +49,6 @@ public class LoginRestController {
 
     @Autowired
     private UserInfoEOService userService;
-
-    @Autowired
-    private UserSupplierEOService userSupplierEOService;
 
     /**
      * 验证码
@@ -148,38 +141,6 @@ public class LoginRestController {
             return Result.error();
         }
     }
-
-    @ApiOperation(value = "获取当前登录供应商信息")
-    @GetMapping("/supplierInfo")
-    @ResponseBody
-    public ResponseMessage<UserSupplierEO> supplierInfo() {
-        UserInfoEO user = UserUtils.getUser();
-        if (user != null) {
-            UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
-            return Result.success(userSupplierEO);
-        } else {
-            return Result.error();
-        }
-    }
-
-    @ApiOperation(value = "判断是否需要完善供应商信息")
-    @GetMapping("/isNeedPerfectSupplierInfo")
-    @ResponseBody
-    public ResponseMessage<Boolean> isNeedPerfectSupplierInfo() {
-        UserInfoEO user = UserUtils.getUser();
-        if (user == null) {
-            return Result.error();
-        }
-
-        // 非供应商用户不需要完善登录信息
-        if (user.getType() != UserInfoTypeEnum.SUPPLIER.getValue()) {
-            return Result.success(false);
-        }
-
-        UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
-        return Result.success(userSupplierEO.getStatus() == UserSupplierStatusEnum.NOT_COMMIT.getValue());
-    }
-
 
     @ApiOperation(value = "获取登录用户菜单权限")
     @GetMapping("/userMenu")
