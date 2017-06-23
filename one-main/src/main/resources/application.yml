@@ -4,15 +4,24 @@ spring:
   mvc:
     static-path-pattern: /**
   http.multipart:
-      max-request-size: 3MB
-      max-file-size: 3mb
+      max-request-size: 30MB
+      max-file-size: 30MB
 logging.level:
   org.springframework: error
   org.apache.shiro: error
   org.hibernate.SQL: debug
+  com.lcw.one: debug
 
-adminPath: /a
+# Rest API前缀地址
 restPath: /api
+
+# App信息
+application:
+  name: One Admin
+  shortName: One
+  version: 1.1
+
+# 文件服务文件存储地址
 file.path: D:\Files
 
 #=============================#
@@ -46,7 +55,22 @@ mail:
     starttls.required: true
     socketFactory.fallback: false
   from:
-    mail: test@qq.com
-    name: 测试
-  username: test@qq.com
-  password: test
+    mail: 292232611@qq.com
+    name: 长沙瑞财科技
+  username: 292232611@qq.com
+  password: ezkbxarmubuqbigc
+
+#=============================#
+#=====   Redis Settings  =====#
+#=============================#
+spring.redis:
+  database: 0
+  host: 127.0.0.1
+  port: 6379
+  password:
+  pool:
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 0
+  timeout: 0

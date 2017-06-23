@@ -1,24 +1,31 @@
 package com.lcw.one.main.config;
 
 import com.lcw.one.util.constant.GlobalConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lcw.one.util.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
-import javax.annotation.PostConstruct;
 
 /**
  * 初始化静态配置
  */
 @Configuration
-public class GlobalConfigInitializer {
+public class GlobalConfigInitializer implements EnvironmentAware  {
 
-    @Autowired
-    private Environment env;
+    private static final Logger logger = LoggerFactory.getLogger(GlobalConfigInitializer.class);
 
-    @PostConstruct
-    public void init() {
-        GlobalConfig.setAdminPath(env.getProperty("adminPath"));
-        GlobalConfig.setRestApiPath(env.getProperty("restPath"));
+    @Override
+    public void setEnvironment(Environment env) {
+        logger.debug("Init global config");
+        if (StringUtils.isEmpty(GlobalConfig.getRestApiPath())) {
+            GlobalConfig.setRestApiPath(env.getProperty("restPath"));
+        }
+        GlobalConfig.setCookieExpireTime(60 * 30L);
+        GlobalConfig.setRegistryCodeExpireTime(60 * 5L);
+        GlobalConfig.setMaxLoginErrorCount(3);
     }
+
+
 }

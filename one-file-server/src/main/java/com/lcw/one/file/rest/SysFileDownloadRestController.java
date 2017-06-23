@@ -56,11 +56,11 @@ public class SysFileDownloadRestController {
         InputStream is = null;
         OutputStream os = null;
         try {
-            if(StringUtils.isEmpty(fileName)) {
-                fileName = sysFileEO.getFileName() + "." + sysFileEO.getFileType();
+            if (StringUtils.isEmpty(fileName)) {
+                fileName = sysFileEO.getFileName();
             }
 
-            response.setHeader("Content-Disposition", "attachment; filename=" + Encodes.urlEncode(fileName));
+            response.setHeader("Content-Disposition", "attachment; filename=" + Encodes.urlEncode(fileName + "." + sysFileEO.getFileType()));
             response.setContentType(sysFileEO.getContentType());
             is = iFileStore.loadFile(sysFileEO.getSavePath());
             os = response.getOutputStream();

@@ -12,9 +12,11 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.servlet.Filter;
@@ -22,7 +24,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
-public class ShiroConfiguration {
+public class ShiroConfiguration implements EnvironmentAware {
+
+    @Override
+    public void setEnvironment(Environment env) {
+        // 用Autowire的方式注入不了restPath
+        GlobalConfig.setRestApiPath(env.getProperty("restPath"));
+    }
 
     @Bean(name = "ehCacheManagerFactoryBean")
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
@@ -53,31 +61,27 @@ public class ShiroConfiguration {
         return new LifecycleBeanPostProcessor();
     }
 
-
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
-        shiroFilterFactoryBean.setLoginUrl(GlobalConfig.getAdminPath() + "/login");
-        shiroFilterFactoryBean.setSuccessUrl(GlobalConfig.getAdminPath());
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        shiroFilterFactoryBean.setSuccessUrl("/index.html");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/login.html");
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         filterMap.put("authc", new FormAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/login", "anon");
-        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/logout", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/verifyCode", "anon");
-        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/userInfo", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/user/supplierRegistry/*", "anon");
-        filterChainDefinitionMap.put("/api/**", "anon");
+        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/**", "user");
+        filterChainDefinitionMap.put("/index.html", "user");
+        filterChainDefinitionMap.put("/", "user");
         filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/userfiles/**", "anon");
-        filterChainDefinitionMap.put(GlobalConfig.getAdminPath() + "/login", "authc");
-        filterChainDefinitionMap.put(GlobalConfig.getAdminPath() + "/logout", "logout");
-        filterChainDefinitionMap.put(GlobalConfig.getAdminPath() + "/**", "user");
+        filterChainDefinitionMap.put("/**", "user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
         return shiroFilterFactoryBean;
     }
 

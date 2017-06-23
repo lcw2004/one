@@ -73,7 +73,7 @@ public class UserInfoEO {
         this.gender = gender;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Basic
     @Column(name = "birthday")
     public Date getBirthday() {
@@ -125,7 +125,7 @@ public class UserInfoEO {
         this.createIp = createIp;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Basic
     @Column(name = "create_time")
     public Date getCreateTime() {
@@ -146,7 +146,7 @@ public class UserInfoEO {
         this.lastLoginIp = lastLoginIp;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Basic
     @Column(name = "last_login_time")
     public Date getLastLoginTime() {

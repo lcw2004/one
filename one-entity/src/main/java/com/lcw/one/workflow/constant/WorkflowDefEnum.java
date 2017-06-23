@@ -3,7 +3,8 @@ package com.lcw.one.workflow.constant;
 public enum WorkflowDefEnum {
 
     SupplierRegistryApply("SupplierRegistryApply", "供应商注册审核"),
-    SupplierPurchaseTypeApply("SupplierPurchaseTypeApply", "供应商投标类别审核");
+    SupplierPurchaseTypeApply("SupplierPurchaseTypeApply", "供应商投标类别审核"),
+    BiddingProjectPublishAudit("BiddingProjectPublishAudit", "招标项目发布审核");
 
     private String flowName;
     private String flowId;

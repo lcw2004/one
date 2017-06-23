@@ -25,6 +25,11 @@ public class MultipartExceptionAdvice {
     @ResponseBody
     public ResponseMessage handlerOneBaseException(MultipartException exception) {
         logger.warn(exception.getMessage(), exception);
+
+        if(exception.getMessage().contains("temporary upload location")) {
+            return Result.error("系统错误，请重启服务。");
+        }
+
         return Result.error("文件大小超过限制(" + maxFileSize.toUpperCase() + ")");
     }
 

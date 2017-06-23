@@ -4,7 +4,8 @@ public enum ResponseMessageCodeEnum {
 
     SUCCESS("0"),
     ERROR("-1"),
-    VALID_ERROR("1000");
+    VALID_ERROR("1000"),
+    RE_LOGIN("999");
 
     private String code;
 

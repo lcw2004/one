@@ -12,6 +12,7 @@ import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.util.constant.GlobalConfig;
 import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.ObjectUtils;
+import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.SpringContextHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,10 +32,13 @@ public class UserUtils {
     public static final String CACHE_MENU_TREE = "menuTree";
     public static final String CACHE_AREA_LIST = "areaList";
     public static final String CACHE_OFFICE_LIST = "officeList";
+    public static final  String LOGIN_FAIL_COUNT = "LOGIN_FAIL_COUNT";
+    private static final Long LOGIN_FAIL_COUNT_LIMIT_TIME = 60 * 10L;
 
     private static UserInfoEOService userService = SpringContextHolder.getBean(UserInfoEOService.class);
     private static SysMenuEOService sysMenuService = SpringContextHolder.getBean(SysMenuEOService.class);
     private static SysRoleEOService sysRoleEOService = SpringContextHolder.getBean(SysRoleEOService.class);
+    private static RedisUtil redisUtil = SpringContextHolder.getBean(RedisUtil.class);
 
     /**
      * 退出
@@ -153,6 +157,10 @@ public class UserUtils {
         List<SysMenuEO> menuList = (List<SysMenuEO>) CacheUtils.getCache(CACHE_MENU_LIST);
         if (menuList == null) {
             UserInfoEO user = getUser();
+            if (user == null) {
+                return null;
+            }
+
             if (isAdmin(user)) {
                 menuList = sysMenuService.findAll();
             } else {
@@ -170,8 +178,11 @@ public class UserUtils {
     public static SysMenuEO getMenuTree() {
         SysMenuEO menu = (SysMenuEO) CacheUtils.getCache(CACHE_MENU_TREE);
         if (menu == null) {
-            menu = sysMenuService.organizeListAsTree(sysMenuService.get("1"), getMenuList());
-            CacheUtils.putCache(CACHE_MENU_TREE, menu);
+            List<SysMenuEO> sysMenuEOList = getMenuList();
+            if (sysMenuEOList != null) {
+                menu = sysMenuService.organizeListAsTree(sysMenuService.get("1"), sysMenuEOList);
+                CacheUtils.putCache(CACHE_MENU_TREE, menu);
+            }
         }
         return menu;
     }
@@ -218,6 +229,38 @@ public class UserUtils {
         CacheUtils.removeCache(CURRENT_USER);
         CacheUtils.removeCache(CACHE_MENU_LIST);
         CacheUtils.removeCache(CACHE_MENU_TREE);
+    }
+
+    /**
+     * 判断是否需要验证验证码
+     *
+     * @param userName
+     * @return
+     */
+    public static boolean isNeedValidCode(String userName) {
+        Integer loginFailNum = redisUtil.get(LOGIN_FAIL_COUNT + "_" + userName);
+        if (loginFailNum == null) {
+            loginFailNum = 0;
+        }
+
+        return loginFailNum >= GlobalConfig.getMaxLoginErrorCount();
+    }
+
+
+    /**
+     * 登录失败次数增加一次
+     *
+     * @param userName
+     * @return
+     */
+    public static void increaseLoginErrorCount(String userName) {
+        Integer loginFailNum = redisUtil.get(LOGIN_FAIL_COUNT + "_" + userName);
+        if (loginFailNum == null) {
+            loginFailNum = 0;
+        }
+
+        loginFailNum++;
+        redisUtil.set(LOGIN_FAIL_COUNT + "_" + userName, loginFailNum, LOGIN_FAIL_COUNT_LIMIT_TIME);
     }
 
 

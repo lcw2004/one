@@ -1,18 +1,20 @@
 package com.lcw.one.login.rest;
 
-import com.google.common.collect.Maps;
 import com.lcw.one.login.security.UsernamePasswordToken;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.security.validatecode.IVerifyCodeGen;
 import com.lcw.one.login.security.validatecode.SimpleCharVerifyCodeGenImpl;
 import com.lcw.one.login.security.validatecode.VerifyCode;
-import com.lcw.one.login.util.CacheUtils;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.sys.entity.SysMenuEO;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.util.exception.LoginInvalidException;
+import com.lcw.one.util.http.CookieUtils;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
+import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.RequestUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.Map;
 
 @Validated
 @Controller
@@ -41,14 +42,13 @@ import java.util.Map;
 public class LoginRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginRestController.class);
-
-    /**
-     * 10分钟内最大错误次数
-     */
-    private static final int MAX_LOGIN_ERROR_COUNT = 3;
+    public static final String LOGIN_VALID_CODE = "LOGIN_VALID_CODE";
 
     @Autowired
     private UserInfoEOService userService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 验证码
@@ -61,6 +61,10 @@ public class LoginRestController {
         IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();
         try {
             VerifyCode verifyCode = iVerifyCodeGen.generate(80, 28);
+
+            String cookieValue = CookieUtils.getCookieValueIfNullThenSetCookie(request, response);
+            redisUtil.set(cookieValue + "_" + LOGIN_VALID_CODE, verifyCode.getCode(), GlobalConfig.getRegistryCodeExpireTime());
+
             request.getSession().setAttribute("VerifyCode", verifyCode.getCode());
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
@@ -73,34 +77,36 @@ public class LoginRestController {
         }
     }
 
-
     @ApiOperation(value = "登录")
     @GetMapping(value = "/login")
     @ResponseBody
-    public ResponseMessage loginRest(HttpServletRequest request,
-            @RequestParam @NotNull(message = "请输入用户名") String username,
-            @RequestParam @NotNull(message = "请输入密码") String password,
-            @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
-            String verifyCode) {
+    public ResponseMessage loginRest(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam @NotNull(message = "请输入用户名") String username,
+                                     @RequestParam @NotNull(message = "请输入密码") String password,
+                                     @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
+                                     String verifyCode) {
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray(), verifyCode);
             subject.login(usernamePasswordToken);
             UserUtils.flushUserLoginTimeAndIp();
 
-            request.getSession().setAttribute(RequestUtils.LOGIN_USER, UserUtils.getUser());
-            request.getSession().setAttribute(RequestUtils.LOGIN_USER_ID, UserUtils.getUserId());
-            request.getSession().setAttribute(RequestUtils.LOGIN_ROLE_ID, UserUtils.getRoleIds());
+
+            String cookieValue = CookieUtils.setCookie(request, response);
+            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER, UserUtils.getUser());
+            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER_ID, UserUtils.getUserId());
+            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER_NAME, UserUtils.getUser().getName());
+            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_ROLE_ID, UserUtils.getRoleIds());
         } catch (CaptchaException e) {
             logger.info("验证码验证失败");
             return Result.error("0002", "您输入的验证码不正确");
         } catch (UnknownAccountException e) {
-            increaseLoginErrorCount(username);
+            UserUtils.increaseLoginErrorCount(username);
             logger.info("用户[{}]身份验证失败", username);
-            boolean isNeedValidCode = isNeedValidCode(username);
+            boolean isNeedValidCode = UserUtils.isNeedValidCode(username);
             return Result.error("0001", "您输入的帐号或密码有误", isNeedValidCode);
         } catch (IncorrectCredentialsException e) {
-            increaseLoginErrorCount(username);
+            UserUtils.increaseLoginErrorCount(username);
             logger.info("用户[{}]密码验证失败", username);
             return Result.error("0001", "您输入的帐号或密码有误");
         } catch (AuthenticationException e) {
@@ -118,7 +124,9 @@ public class LoginRestController {
     @ApiOperation(value = "退出登录")
     @GetMapping("/logout")
     @ResponseBody
-    public ResponseMessage logout() {
+    public ResponseMessage logout(HttpServletRequest request, HttpServletResponse response) {
+        RequestUtils.clearAll(request);
+        CookieUtils.removeCookie(request, response);
         UserUtils.logout();
         return Result.success();
     }
@@ -132,14 +140,12 @@ public class LoginRestController {
     @ApiOperation(value = "获取登录用户信息")
     @GetMapping("/userInfo")
     @ResponseBody
-    public ResponseMessage<UserInfoEO> userInfo(HttpServletResponse response) {
+    public ResponseMessage<UserInfoEO> userInfo() {
         UserInfoEO user = UserUtils.getUser();
-        if (user != null) {
-            return Result.success(user);
-        } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return Result.error();
+        if (user == null) {
+            throw new LoginInvalidException();
         }
+        return Result.success(user);
     }
 
     @ApiOperation(value = "获取登录用户菜单权限")
@@ -164,49 +170,6 @@ public class LoginRestController {
                                           @NotNull(message = "请输入新密码") @RequestParam String newPassword) {
         userService.updatePassword(UserUtils.getUserId(), oldPassword, newPassword);
         return Result.success();
-    }
-
-
-    /**
-     * 判断是否需要验证验证码
-     *
-     * @param userName
-     * @return
-     */
-    public static boolean isNeedValidCode(String userName) {
-        Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
-        if (loginFailMap == null) {
-            loginFailMap = Maps.newHashMap();
-            CacheUtils.put("loginFailMap", loginFailMap);
-        }
-
-        Integer loginFailNum = loginFailMap.get(userName);
-        if (loginFailNum == null) {
-            loginFailNum = 0;
-        }
-
-        return loginFailNum >= MAX_LOGIN_ERROR_COUNT;
-    }
-
-    /**
-     * 登录失败次数增加一次
-     *
-     * @param userName
-     * @return
-     */
-    public static void increaseLoginErrorCount(String userName) {
-        Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
-        if (loginFailMap == null) {
-            loginFailMap = Maps.newHashMap();
-            CacheUtils.put("loginFailMap", loginFailMap);
-        }
-        Integer loginFailNum = loginFailMap.get(userName);
-        if (loginFailNum == null) {
-            loginFailNum = 0;
-        }
-
-        loginFailNum++;
-        loginFailMap.put(userName, loginFailNum);
     }
 
 }

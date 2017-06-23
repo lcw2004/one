@@ -26,12 +26,12 @@ public class SysMenuEODao extends BaseRepositoryImpl<SysMenuEO, String> {
         sql.append(" and ur.roleId = rm.roleId ");
         sql.append(" and m.delFlag = ").append(DeleteFlagEnum.NORMAL.getValue());
         sql.append(" and ur.userId = ?1");
-
+        sql.append(" order by sort ");
         return list(sql.toString(), userId);
     }
 
     public List<SysMenuEO> listSysMenuEOByRoleId(String roleId) {
-        return list("select distinct m from SysMenuEO m, SysRoleMenuEO rm where m.id = rm.menuId and rm.roleId = ?1", roleId);
+        return list("select distinct m from SysMenuEO m, SysRoleMenuEO rm where m.id = rm.menuId and rm.roleId = ?1 order by sort", roleId);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class SysMenuEODao extends BaseRepositoryImpl<SysMenuEO, String> {
         StringBuilder sql = new StringBuilder();
         sql.append(" select distinct m from SysMenuEO m ");
         sql.append(" where m.delFlag = ").append(DeleteFlagEnum.NORMAL.getValue());
+        sql.append(" order by sort ");
         return list(sql.toString());
     }
 

@@ -36,4 +36,9 @@ public @interface ExcelField {
      * 在Excel中的列序号，从0开始
      */
     int column();
+
+    /**
+     * 是否可以为空
+     */
+    boolean nullable() default true;
 }

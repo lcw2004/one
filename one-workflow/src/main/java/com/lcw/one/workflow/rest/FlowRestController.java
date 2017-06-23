@@ -27,18 +27,29 @@ public class FlowRestController {
     @Autowired
     private WorkFlowRestController workFlowRestController;
 
+    /**
+     * 启动工作流
+     *
+     * @param flowId        流程定义ID
+     * @param businessId    业务ID
+     * @param businessName  业务对象名称
+     * @param applyUserId   申请人ID
+     * @param applyUserName 申请人名称
+     * @param variables     其他参数
+     * @return
+     */
     @PostMapping("/startWorkflow")
-    public ResponseMessage startWorkflow(String flowId, String businessId, String applyUserId, String applyUserName, @RequestBody Map<String, Object> variables) {
-        flowService.startWorkflow(flowId, businessId, applyUserId, applyUserName, variables);
+    public ResponseMessage startWorkflow(String flowId, String businessId, String businessName, String applyUserId, String applyUserName, @RequestBody Map<String, Object> variables) {
+        flowService.startWorkflow(flowId, businessId, businessName, applyUserId, applyUserName, variables);
         return Result.success();
     }
 
     @GetMapping("/audit")
     public ResponseMessage audit(String taskId, String auditUserId, Boolean auditResult, String remark) {
-        if(StringUtils.isEmpty(taskId)) {
+        if (StringUtils.isEmpty(taskId)) {
             throw new OneBaseException("任务ID不能为空");
         }
-        if(StringUtils.isEmpty(auditUserId)) {
+        if (StringUtils.isEmpty(auditUserId)) {
             throw new OneBaseException("审核人ID不能为空");
         }
         if (!auditResult && StringUtils.isEmpty(remark)) {

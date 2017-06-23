@@ -34,11 +34,12 @@ public class SysDictEODao extends BaseRepositoryImpl<SysDictEO, String> {
             sql.append(" and description like :description ");
             params.put("description", "%description%");
         }
+        sql.append(" order by type, sort, value ");
         return page(pageInfo, sql.toString(), params);
     }
 
     public List<String> listDictType() {
-        String sql = "select distinct(type) from SysDictEO";
+        String sql = "select distinct(type) from SysDictEO order by type ";
         return list(sql);
     }
 
@@ -47,6 +48,7 @@ public class SysDictEODao extends BaseRepositoryImpl<SysDictEO, String> {
         StringBuilder sql = new StringBuilder();
         sql.append(" from SysDictEO d ");
         sql.append(" where d.delFlag = ").append(DeleteFlagEnum.NORMAL.getValue());
+        sql.append(" order by type, sort, value ");
         return list(sql.toString());
     }
 }

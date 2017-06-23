@@ -1,5 +1,6 @@
 package com.lcw.one.main.advice;
 
+import com.lcw.one.util.exception.LoginInvalidException;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.ResponseMessageCodeEnum;
@@ -16,6 +17,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class OneBaseExceptionAdvice {
 
     private static final Logger logger = LoggerFactory.getLogger(OneBaseExceptionAdvice.class);
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(LoginInvalidException.class)
+    @ResponseBody
+    public ResponseMessage handlerOneBaseException(LoginInvalidException exception) {
+        logger.warn(exception.getMessage(), exception);
+        return Result.error(ResponseMessageCodeEnum.RE_LOGIN.getCode(), "登录失效");
+    }
+
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(OneBaseException.class)

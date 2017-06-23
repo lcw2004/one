@@ -3,7 +3,7 @@ package com.lcw.one.user.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @version 2017-04-16.
@@ -37,7 +37,7 @@ public class UserBaseInfoEO {
         this.gender = gender;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Basic
     @Column(name = "birthday")
     public Date getBirthday() {

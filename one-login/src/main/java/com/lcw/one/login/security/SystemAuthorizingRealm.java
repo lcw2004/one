@@ -5,7 +5,9 @@ import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.util.http.CookieUtils;
 import com.lcw.one.util.utils.Encodes;
+import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.SpringContextHolder;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,15 +18,16 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,18 +41,27 @@ import java.util.Map;
 public class SystemAuthorizingRealm extends AuthorizingRealm {
 
     private static final Logger logger = LoggerFactory.getLogger(SystemAuthorizingRealm.class);
-    
-    public static final String HASH_ALGORITHM = "SHA-1";
-    public static final int HASH_INTERATIONS = 1024;
+
+    private static final String HASH_ALGORITHM = "SHA-1";
+    private static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
-    
+
     private UserInfoEOService userService;
-    
-    public UserInfoEOService getUserService() {
+
+    private RedisUtil redisUtil;
+
+    private UserInfoEOService getUserService() {
     	if(userService == null) {
     		userService = SpringContextHolder.getBean(UserInfoEOService.class);
     	}
     	return userService;
+    }
+
+    private RedisUtil getRedisUtil() {
+        if(redisUtil == null) {
+            redisUtil = SpringContextHolder.getBean(RedisUtil.class);
+        }
+        return redisUtil;
     }
 
     /**
@@ -60,12 +72,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 
         // 如果登录失败超过3次需要验证码
-        if (LoginRestController.isNeedValidCode(token.getUsername())) {
-            Session session = SecurityUtils.getSubject().getSession();
-            String verifyCode = (String) session.getAttribute("VerifyCode");
-            if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(verifyCode)) {
+        if (UserUtils.isNeedValidCode(token.getUsername())) {
+            HttpServletRequest request = WebUtils.getHttpRequest(SecurityUtils.getSubject());
+            String cookieValue = CookieUtils.getCookieValue(request);
+            String validCode = getRedisUtil().get(cookieValue + "_" + LoginRestController.LOGIN_VALID_CODE);
+            if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(validCode)) {
                 throw new CaptchaException("验证码错误.");
             }
+            getRedisUtil().remove(cookieValue + "_" + LoginRestController.LOGIN_VALID_CODE);
         }
 
         UserInfoEO user = getUserService().getUserByLoginName(token.getUsername());

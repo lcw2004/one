@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.lcw.one</groupId>
-        <artifactId>one-extend</artifactId>
+        <artifactId>one</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>one-code-gen</artifactId>

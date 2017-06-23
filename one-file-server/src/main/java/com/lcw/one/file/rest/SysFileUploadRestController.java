@@ -3,6 +3,7 @@ package com.lcw.one.file.rest;
 import com.lcw.one.file.service.SysFileEOService;
 import com.lcw.one.file.store.IFileStore;
 import com.lcw.one.sys.entity.SysFileEO;
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.FileUtil;
@@ -12,6 +13,7 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +37,7 @@ public class SysFileUploadRestController {
     @Autowired
     private IFileStore iFileStore;
 
-    @PostMapping("/upload")
+    @PostMapping(path = "/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<SysFileEO> upload(String userId, @RequestParam("file") MultipartFile file) {
         SysFileEO sysFileEO;
         InputStream is = null;

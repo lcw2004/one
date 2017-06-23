@@ -18,7 +18,7 @@ public class TaskInfoBean {
     private String taskName;
     private String taskId;
     private String assigneeId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date taskCreateTime;
     private String taskOwner;
     private boolean isSuspended;

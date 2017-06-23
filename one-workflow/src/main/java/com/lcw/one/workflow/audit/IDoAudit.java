@@ -6,14 +6,17 @@ public interface IDoAudit {
 
     /**
      * 审核通过之后的业务逻辑
+     *
      * @param flowAuditItemEO
      */
     void doAgree(FlowAuditItemEO flowAuditItemEO);
 
     /**
      * 审核驳回之后的业务逻辑
+     *
      * @param flowAuditItemEO
+     * @param rejectReason    驳回原因
      */
-    void doReject(FlowAuditItemEO flowAuditItemEO);
+    void doReject(FlowAuditItemEO flowAuditItemEO, String rejectReason);
 
 }

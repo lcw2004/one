@@ -1,5 +1,6 @@
 package com.lcw.one.file;
 
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -46,7 +49,7 @@ public class OneFileServerApplication {
     private static final Logger logger = LoggerFactory.getLogger(OneFileServerApplication.class);
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = SpringApplication.run(OneFileServerApplication .class, args);
+        ApplicationContext applicationContext = SpringApplication.run(OneFileServerApplication.class, args);
         SpringContextHolder.setApplicationContext(applicationContext);
         logger.info("Registry ApplicationContext");
     }
@@ -62,6 +65,26 @@ public class OneFileServerApplication {
     @Bean
     public Docket docket() {
         return SwaggerUtils.initDocket();
+    }
+
+    @Value("${spring.http.multipart.max-file-size}")
+    private String maxFileSize;
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(MultipartException.class)
+    @ResponseBody
+    public ResponseMessage handlerMultipartException(MultipartException exception) {
+        logger.warn(exception.getMessage(), exception);
+        throw new OneBaseException("文件大小超过限制111111111");
+//        return Result.error("文件大小超过限制(" + maxFileSize.toUpperCase() + ")");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(OneBaseException.class)
+    @ResponseBody
+    public ResponseMessage handlerOneBaseException(OneBaseException exception) {
+        logger.warn(exception.getMessage(), exception);
+        return Result.error(exception.getErrorCode(), exception.getMessage());
     }
 
 }

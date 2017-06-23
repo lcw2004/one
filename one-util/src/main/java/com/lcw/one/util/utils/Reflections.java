@@ -78,12 +78,27 @@ public class Reflections {
 
     public static Class getFiledType(Class clazz, String filedName) {
         Class filedClass = null;
-        try {
-            filedClass = clazz.getDeclaredField(filedName).getType();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+        Field field = getFiled(clazz, filedName);
+        if (field != null) {
+            filedClass = field.getType();
         }
         return filedClass;
+    }
+
+
+    public static Field getFiled(Class clazz, String filedName) {
+        Field field = null;
+        try {
+            field = clazz.getDeclaredField(filedName);
+            return field;
+        } catch (NoSuchFieldException e) {
+            // 简单的递归一下
+            Class superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                return getFiled(superclass, filedName);
+            }
+        }
+        return null;
     }
 
     /**

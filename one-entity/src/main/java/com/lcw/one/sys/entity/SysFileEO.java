@@ -63,7 +63,7 @@ public class SysFileEO {
         this.savePath = savePath;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Basic
     @Column(name = "create_time")
     public Date getCreateTime() {

@@ -48,7 +48,7 @@ public class FlowService {
      * @param applyUserId 申请人ID
      */
     @Transactional(rollbackOn = Exception.class)
-    public void startWorkflow(String flowId, String businessId, String applyUserId, String applyUserName, Map<String, Object> variables) {
+    public void startWorkflow(String flowId, String businessId, String businessName, String applyUserId, String applyUserName, Map<String, Object> variables) {
         String auditItemId = UUID.randomUUID();
         String flowInstanceId = null;
         try {
@@ -58,6 +58,7 @@ public class FlowService {
             workFlowBean.setFlowId(flowId);
             workFlowBean.setBusinessKey(businessId);
             workFlowBean.putVariables("businessId", businessId);
+            workFlowBean.putVariables("businessName", businessName);
             workFlowBean.putVariables("auditItemId", auditItemId);
             workFlowBean.putVariables("applyUserId", applyUserId);
             workFlowBean.putVariables("applyUserName", applyUserName);
@@ -128,9 +129,8 @@ public class FlowService {
         // 任何一个人驳回都结束工单
         if (!auditResult) {
             // 驳回
-            iDoAudit.doReject(flowAuditItemEO);
+            iDoAudit.doReject(flowAuditItemEO, remark);
             flowAuditItemEOService.updateStateWhenReject(auditItemId, remark);
-            return;
         } else {
             // 通过
             if (isFinalAudit) {
