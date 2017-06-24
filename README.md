@@ -15,6 +15,7 @@
     -   目前的前端组件（翻页组件、Tree组件、Tree Table组件）都是自定义的，易于修改。
     -   前端代码较少且更为清晰
 -   所有的依赖都已经升级为最新版，且会定期升级
+-   用redis存储登录用户信息
 
 
 # 技术栈
@@ -43,6 +44,7 @@
 2.  可以在one-main中引入其他业务模块的代码，将其打包为一个Spring Boot应用单独运行（目前是这种方式）
 3.  也可以在各个业务工程中添加Spring Boot Main Class，每个业务工程单独作为Spring Boot应用运行（需要改动各个业务工程间调用的代码）。
 4.  开发的时候one-main工程由于打包了所有代码，每次改动代码热更新要的时间稍长。新开发的业务工程单独作为一个Spring Boot工程启动，这样热更新很快。开发完毕再将新的业务工程引入到one-main工程中。
+5.  需要配置redis，用于存储登录用户的信息
 
 -   one-main：
 
@@ -109,7 +111,7 @@
     
     访问http://localhost:8080/swagger-ui.html对接口进行测试
     
-## 前端接口开发
+## 前端界面开发
 
 注：需要安装nodejs
 
@@ -136,14 +138,14 @@
 ## 后端打包
 
 1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/src/main/resources/static文件夹下面（打包完成就删掉拷贝过去的内容，没必要提交）
-2.  **将所有的html文件中的/static改为./static**，一定要替换，否则找不到静态资源文件
-3.  进入one文件夹
-4.  执行命令编译：`mvn clean pakcage -Dmaven.test.skip=true`
-5.  执行命令启动程序：`java -jar one-main\target\one-main-0.0.1-SNAPSHOT.jar`
-6.  访问`http://localhost:8080/login.html`登录系统
+2.  进入one文件夹
+3.  执行命令编译：`mvn clean pakcage -Dmaven.test.skip=true`
+4.  执行命令启动程序：`java -jar one-main\target\one-main-0.0.1-SNAPSHOT.jar`
+5.  访问`http://localhost:8080/login.html`登录系统
 
 # 运行程序
 -   数据库：暂时未提供数据库初始化代码（后期加上），只能提供一个navicat导出的SQL文件，document/one - mysql(navicat).sql
+-   redis：需要配置redis
 -   命令行方式运行：在项目根目录运行以下命令即可运行程序：
 
         mvn clean package
