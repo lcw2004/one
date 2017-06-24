@@ -43,27 +43,24 @@
 </template>
 
 <script>
-export default {
-  name: 'RightPanel',
-  components: {
-  },
-  data: function () {
-    return {
-    }
-  },
-  methods: {
+  export default {
+    name: 'RightPanel',
+    components: {},
+    data: () => {
+      return {}
+    },
+    methods: {}
   }
-}
 </script>
 
 <style>
-.panel-contains {
-  top: 50px;
-  right: 0px;
-  width: 300px;
-  z-index: 9999;
-  height: 100%;
-  position: fixed;
-  background-color: #ffffff;
-}
+  .panel-contains {
+    top: 50px;
+    right: 0;
+    width: 300px;
+    z-index: 9999;
+    height: 100%;
+    position: fixed;
+    background-color: #ffffff;
+  }
 </style>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'TimeItemBody'
-}
+  export default {
+    name: 'TimeItemBody'
+  }
 </script>

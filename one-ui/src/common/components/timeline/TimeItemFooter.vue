@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'TimeItemFooter'
-}
+  export default {
+    name: 'TimeItemFooter'
+  }
 </script>

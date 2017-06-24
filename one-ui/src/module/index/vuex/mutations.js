@@ -7,7 +7,7 @@ export default {
     const image = 'https://sfault-avatar.b0.upaiyun.com/147/223/147223148-573297d0913c5_huge256'
 
     state.list.push(
-      Object.assign({ name: '二哲', image: image }, plan)
+      Object.assign({name: '二哲', image: image}, plan)
     )
   },
   // 删除某计划

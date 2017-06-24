@@ -44,7 +44,7 @@
 
 <script>
   export default {
-    data: function () {
+    data: () => {
       return {
         isOpen: false
       }
@@ -54,7 +54,7 @@
         this.isOpen = !this.isOpen
       },
       logout: function () {
-        this.$http.get('/api/logout').then(function (response) {
+        this.$http.get('/api/logout').then((response) => {
           this.$store.dispatch('removeUserInfo')
           window.location.href = 'login.html'
         })

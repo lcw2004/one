@@ -9,7 +9,7 @@
 
 ## 2. 定义树顶级节点
 
-    data: function () {
+    data: () => {
       return {
         topElement: {}
       }
@@ -43,7 +43,7 @@
 
 ## 示例
 
-    <Tree :element="topElement" v-model="value" select-type="radio"></Tree>    
+    <Tree :element="topElement" v-model="value" select-type="radio"></Tree>
 
 # TreeModal组件的使用
 
@@ -61,10 +61,10 @@
           getTree: {method: 'get', url: '/api/sys/area/tree'}
         }
         let resource = this.$resource(null, {}, actions)
-        resource.getTree().then(function (response) {
+        resource.getTree().then((response) => {
           this.topElement = response.body
         })
       }
     }
 
-## 3. 使用v-model接收数据    
+## 3. 使用v-model接收数据

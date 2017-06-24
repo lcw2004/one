@@ -27,7 +27,8 @@
                   <div class="form-group" v-render.r="'确认密码'">
                     <label class="col-md-2 control-label">确认密码</label>
                     <div class="col-md-4">
-                      <input type="password" class="form-control" placeholder="再次输入新的登录密码" v-validate="'required|confirmed:新密码'" name="确认密码" v-model="newPasswordConfirm">
+                      <input type="password" class="form-control" placeholder="再次输入新的登录密码" v-validate="'required|confirmed:新密码'" name="确认密码"
+                             v-model="newPasswordConfirm">
                       <span v-show="errors.has('newPasswordConfirm')" class="help is-danger">{{ errors.first('newPasswordConfirm') }}</span>
                     </div>
                   </div>
@@ -51,26 +52,26 @@
 </template>
 
 <script>
-export default {
-  components: {},
-  data: function () {
-    return {
-      oldPassword: '',
-      newPassword: '',
-      newPasswordConfirm: ''
-    }
-  },
-  methods: {
-    updatePassword () {
-      this.$validator.validateAll().then(() => {
-        this.$http.put('/api/updatePassword', null, {params: this.$data}).then(function (response) {
-          let result = response.body
-          if (result.ok) {
-            this.$notify.info('修改成功')
-          }
+  export default {
+    components: {},
+    data: () => {
+      return {
+        oldPassword: '',
+        newPassword: '',
+        newPasswordConfirm: ''
+      }
+    },
+    methods: {
+      updatePassword () {
+        this.$validator.validateAll().then(() => {
+          this.$http.put('/api/updatePassword', null, {params: this.$data}).then((response) => {
+            let result = response.body
+            if (result.ok) {
+              this.$notify.info('修改成功')
+            }
+          })
         })
-      })
+      }
     }
   }
-}
 </script>

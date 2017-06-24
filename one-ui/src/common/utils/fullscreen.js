@@ -1,8 +1,8 @@
 // 文档 https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API#AutoCompatibilityTable
 
 /**
-* 全屏显示
-*/
+ * 全屏显示
+ */
 function fullScreen (element) {
   if (element.requestFullscreen) {
     element.requestFullscreen()
@@ -13,14 +13,14 @@ function fullScreen (element) {
   } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullScreen()
   } else if (window.ActiveXObject) {
-    var WsShell = new window.ActiveXObject('WScript.Shell')
+    let WsShell = new window.ActiveXObject('WScript.Shell')
     WsShell.SendKeys('{F11}')
   }
 }
 
 /**
-*退出全屏显示
-*/
+ *退出全屏显示
+ */
 function exitFullScreen () {
   console.log(document.msExitFullscreen)
   if (document.exitFullscreen) {
@@ -32,14 +32,14 @@ function exitFullScreen () {
   } else if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen()
   } else if (window.ActiveXObject) {
-    var wscript = new window.ActiveXObject('WScript.Shell')
+    let wscript = new window.ActiveXObject('WScript.Shell')
     wscript.SendKeys('{F11}')
   }
 }
 
 /**
-* 绑定全屏切换事件
-*/
+ * 绑定全屏切换事件
+ */
 function bindFullScreenEvent (handler) {
   if ('onfullscreenchange' in document) {
     document.addEventListener('fullscreenchange', handler)
@@ -56,22 +56,22 @@ function bindFullScreenEvent (handler) {
 }
 
 /**
-* 获取当前全屏元素
-*/
+ * 获取当前全屏元素
+ */
 function getFullScreenElement () {
   return document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement
 }
 
 /**
-* 判断当前是否在全屏状态
-*/
+ * 判断当前是否在全屏状态
+ */
 function isInFullScreen () {
   return getFullScreenElement() != null
 }
 
 /**
-* 切换全屏状态
-*/
+ * 切换全屏状态
+ */
 function toggleFullScreen (element) {
   if (isInFullScreen()) {
     exitFullScreen()
@@ -80,4 +80,4 @@ function toggleFullScreen (element) {
   }
 }
 
-export {isInFullScreen, toggleFullScreen, bindFullScreenEvent}
+export { isInFullScreen, toggleFullScreen, bindFullScreenEvent }

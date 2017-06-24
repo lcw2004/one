@@ -8,7 +8,7 @@ let start = function () {
   // class: ['progress-bar-red', 'progress-bar-striped']
   let propsData = {
     size: ['progress-xxxs', 'active'],
-    class: ['progress-bar-primary']
+    barClass: ['progress-bar-primary']
   }
   let ProgressBarComponent = Vue.extend(ProgressBar)
 

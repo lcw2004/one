@@ -37,4 +37,4 @@ let danger = function (message) {
   })
 }
 
-export default { success, info, warn, danger }
+export default {success, info, warn, danger}

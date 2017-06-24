@@ -89,19 +89,19 @@
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {}
-  },
-  computed: {
-    user: function () {
-      return this.$store.state.system.userInfo
-    }
-  },
-  methods: {
-    editStart () {
-      this.$emit('edit-start')
+  export default {
+    data: () => {
+      return {}
+    },
+    computed: {
+      user: function () {
+        return this.$store.state.system.userInfo
+      }
+    },
+    methods: {
+      editStart () {
+        this.$emit('edit-start')
+      }
     }
   }
-}
 </script>

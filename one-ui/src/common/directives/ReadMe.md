@@ -7,7 +7,7 @@
   - 错误的时候在追加错误图标
   - 验证通过的时候显示正确图标
   - 正确的时候将字体颜色改为绿色（颜色不协调，代码注释了）
-- 用于控制control-label前面是否显示红色星星表示必填项  
+- 用于控制control-label前面是否显示红色星星表示必填项
 
 ## 用法
 注意事项：
@@ -19,10 +19,10 @@
 
 示例如下：
 
-    <div class="form-group" v-render.r="projectNumber">
+    <div class="form-group" >
       <label class="control-label col-md-4">编号</label>
       <div class="col-md-7">
-        <input type="text" class="form-control" v-validate="'required|email'" name="projectNumber" v-model="projectNumber">
+        <input type="text" class="form-control" v-validate="'required|email'" v-render.r name="projectNumber" v-model="projectNumber">
       </div>
     </div>
 

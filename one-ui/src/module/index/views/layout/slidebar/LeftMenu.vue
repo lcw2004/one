@@ -10,7 +10,7 @@
       </a>
       <ul class="treeview-menu">
         <!-- active -->
-        <li class="active" @click="activedThirdMenu = this"v-for="menuLevel2 of menuLevel1.childList">
+        <li class="active" @click="activedThirdMenu = this" v-for="menuLevel2 of menuLevel1.childList">
           <a>
             <i :class="menuLevel2.icon"></i>
             <router-link :to='menuLevel2.href'>{{ menuLevel2.name }}</router-link>
@@ -22,16 +22,16 @@
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {
-      activedThirdMenu: {}
-    }
-  },
-  computed: {
-    activedMenu: function () {
-      return this.$store.state.system.activedMenu
+  export default {
+    data: () => {
+      return {
+        activedThirdMenu: {}
+      }
+    },
+    computed: {
+      activedMenu: function () {
+        return this.$store.state.system.activedMenu
+      }
     }
   }
-}
 </script>

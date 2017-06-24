@@ -44,7 +44,7 @@
 
 <script>
   export default {
-    data: function () {
+    data: () => {
       return {
         isOpen: false
       }

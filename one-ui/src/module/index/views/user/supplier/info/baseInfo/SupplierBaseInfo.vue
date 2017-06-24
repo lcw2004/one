@@ -4,7 +4,7 @@
       <div class="col-md-6">
         <FormGroupStatic label="公司名称">
           {{ obj.name }}
-          <UserStatusLabel :status="obj.status" :desc="obj.statusCn" />
+          <UserStatusLabel :status="obj.status" :desc="obj.statusCn"/>
         </FormGroupStatic>
       </div>
       <div class="col-md-6">
@@ -23,7 +23,9 @@
         <FormGroupStatic label="法人身份证">{{ obj.legalPersonName }}</FormGroupStatic>
       </div>
       <div class="col-md-6">
-        <FormGroupStatic label="开户银行"><DictLabel type="obj_bank" :value="obj.legalPersonName"></DictLabel></FormGroupStatic>
+        <FormGroupStatic label="开户银行">
+          <DictLabel type="obj_bank" :value="obj.legalPersonName"></DictLabel>
+        </FormGroupStatic>
       </div>
       <div class="col-md-6">
         <FormGroupStatic label="银行账户">{{ obj.bankAccount }}</FormGroupStatic>
@@ -50,10 +52,14 @@
         <FormGroupStatic label="单位类型">{{ obj.officeType }}</FormGroupStatic>
       </div>
       <div class="col-md-6">
-        <FormGroupStatic label="单位性质"><DictLabel type="obj_office_nature" :value="obj.officeNature"></DictLabel></FormGroupStatic>
+        <FormGroupStatic label="单位性质">
+          <DictLabel type="obj_office_nature" :value="obj.officeNature"></DictLabel>
+        </FormGroupStatic>
       </div>
       <div class="col-md-6">
-        <FormGroupStatic label="所属行业"><DictLabel type="obj_business_type" :value="obj.businessType"></DictLabel></FormGroupStatic>
+        <FormGroupStatic label="所属行业">
+          <DictLabel type="obj_business_type" :value="obj.businessType"></DictLabel>
+        </FormGroupStatic>
       </div>
       <div class="col-md-6">
         <FormGroupStatic label="注册类型">{{ obj.registerType }}</FormGroupStatic>
@@ -62,7 +68,9 @@
         <FormGroupStatic label="注册资金">{{ obj.registerCapital }}</FormGroupStatic>
       </div>
       <div class="col-md-6">
-        <FormGroupStatic label="从业人数"><DictLabel type="obj_emploee_count" :value="obj.emploeeCount"></DictLabel></FormGroupStatic>
+        <FormGroupStatic label="从业人数">
+          <DictLabel type="obj_emploee_count" :value="obj.emploeeCount"></DictLabel>
+        </FormGroupStatic>
       </div>
       <div class="col-md-6">
         <FormGroupStatic label="企业规模">{{ obj.enterpriseScale }}</FormGroupStatic>
@@ -78,17 +86,17 @@
 </template>
 
 <script>
-import UserStatusLabel from '../../../common/UserStatusLabel'
+  import UserStatusLabel from '../../../common/UserStatusLabel'
 
-export default {
-  components: {
-    UserStatusLabel
-  },
-  props: {
-    obj: {
-      type: Object,
-      required: true
+  export default {
+    components: {
+      UserStatusLabel
+    },
+    props: {
+      obj: {
+        type: Object,
+        required: true
+      }
     }
   }
-}
 </script>

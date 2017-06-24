@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import DictMixin from './DictMixin'
-export default {
-  mixins: [DictMixin],
-  name: 'DictRadio'
-}
+  import DictMixin from './DictMixin'
+  export default {
+    mixins: [DictMixin],
+    name: 'DictRadio'
+  }
 </script>

@@ -1,8 +1,8 @@
 <template>
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-bordered table-hover">
-      <tbody>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover">
+        <tbody>
         <tr>
           <th style="width: 10px">#</th>
           <th>资质类型</th>
@@ -19,28 +19,28 @@
           <td>{{ q.issueDate }}</td>
           <td>{{ q.invalidDate }}</td>
           <td>
-            <a>查看</a>
+            <ImageView v-if="q.fileId" :src="'/api/sys/file/' + q.fileId + '/download'"></ImageView>
           </td>
-          <td>{{ q.remark }}</td>
+          <td><LongText :text="q.remark"></LongText></td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-export default {
-  props: {
-    obj: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function () {
-    return {
-      qualifications: []
+  export default {
+    props: {
+      obj: {
+        type: Object,
+        required: true
+      }
+    },
+    data: () => {
+      return {
+        qualifications: []
+      }
     }
   }
-}
 </script>

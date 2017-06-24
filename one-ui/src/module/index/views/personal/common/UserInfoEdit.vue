@@ -13,8 +13,7 @@
                 <label class="col-md-4 control-label">姓名</label>
                 <div class="col-md-8">
                   <div class="input-group">
-                    <input type="text" class="form-control" v-model="user.name" v-validate="'required'" name="姓名" maxlength="50" >
-                    <p class="help-block"></p>
+                    <input type="text" class="form-control" v-model="user.name" v-validate="'required'" name="姓名" maxlength="50">
                   </div>
                 </div>
               </div>
@@ -81,7 +80,7 @@
                 <label class="col-md-4 control-label">用户地址</label>
                 <div class="col-md-8">
                   <div class="input-group">
-                    <input type="text" class="form-control" v-model="user.userContactInfo.address" maxlength="100" >
+                    <input type="text" class="form-control" v-model="user.userContactInfo.address" maxlength="100">
                   </div>
                 </div>
               </div>
@@ -103,39 +102,39 @@
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {
-      actions: {
-        updateUserInfo: { method: 'put', url: '/api/updateUserInfo' }
+  export default {
+    data: () => {
+      return {
+        actions: {
+          updateUserInfo: {method: 'put', url: '/api/updateUserInfo'}
+        }
+      }
+    },
+    computed: {
+      user: function () {
+        return this.$store.state.system.userInfo
+      }
+    },
+    mounted: function () {
+      this.resource = this.$resource(null, {}, this.actions)
+    },
+    methods: {
+      save: function () {
+        this.$validator.validateAll().then(() => {
+          this.resource.updateUserInfo(null, JSON.stringify(this.user)).then((response) => {
+            let result = response.body
+            if (result.ok) {
+              this.$store.dispatch('initUserInfo', result.data)
+              this.$notify.success('修改成功')
+              this.editEnd()
+            }
+          })
+        }).catch(() => {
+        })
+      },
+      editEnd () {
+        this.$emit('edit-end')
       }
     }
-  },
-  computed: {
-    user: function () {
-      return this.$store.state.system.userInfo
-    }
-  },
-  mounted: function () {
-    this.resource = this.$resource(null, {}, this.actions)
-  },
-  methods: {
-    save: function () {
-      this.$validator.validateAll().then(() => {
-        this.resource.updateUserInfo(null, JSON.stringify(this.user)).then(function (response) {
-          var result = response.body
-          if (result.ok) {
-            this.$store.dispatch('initUserInfo', result.data)
-            this.$notify.success('修改成功')
-            this.editEnd()
-          }
-        })
-      }).catch(() => {
-      })
-    },
-    editEnd () {
-      this.$emit('edit-end')
-    }
   }
-}
 </script>

@@ -1,5 +1,5 @@
 {
-  "name": "vue-adminlte2",
+  "name": "vue-admin",
   "version": "1.0.0",
   "description": "vue admin",
   "author": "李昌文 <lcw2004@163.com>",
@@ -13,10 +13,6 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "vue": "^2.2.6",
-    "vue-router": "^2.3.1",
-    "vuex": "^2.3.1",
-    "vue-resource": "^1.3.1",
     "admin-lte": "^2.3.11",
     "bootstrap-daterangepicker": "^2.1.25",
     "bootstrap-switch": "^3.3.4",
@@ -27,9 +23,14 @@
     "fullcalendar": "^3.2.0",
     "glob": "^7.1.1",
     "ionicons": "^3.0.0",
+    "moment": "^2.18.1",
     "vee-validate": "^2.0.0-beta.25",
+    "vue": "^2.2.6",
     "vue-animate": "0.0.4",
-    "vue2-animate": "^1.0.4"
+    "vue-resource": "^1.3.1",
+    "vue-router": "^2.3.1",
+    "vue2-animate": "^1.0.4",
+    "vuex": "^2.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

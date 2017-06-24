@@ -1,5 +1,6 @@
 <template>
   <PopoverContainer :title="user.name">
+    <span slot="outer">{{ user.name }}</span>
     <form class="form-horizontal">
       <div class="row">
         <div class="col-md-6">
@@ -23,17 +24,15 @@
 </template>
 
 <script>
-export default {
-  props: {
-    user: {
-      type: Object
-    }
-  },
-  data: function () {
-    return {
-    }
-  },
-  methods: {
+  export default {
+    props: {
+      user: {
+        type: Object
+      }
+    },
+    data: () => {
+      return {}
+    },
+    methods: {}
   }
-}
 </script>

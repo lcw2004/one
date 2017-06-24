@@ -5,14 +5,14 @@ import user from './user'
 import personal from './personal'
 
 /*
-* 包含菜单结构的页面
-*/
+ * 包含菜单结构的页面
+ */
 export default {
   path: '/home',
   alias: '/',
   component: Home,
   children: [
-    { path: '/', component: Desktop },
+    {path: '/', component: Desktop},
     ...system,
     ...user,
     ...personal

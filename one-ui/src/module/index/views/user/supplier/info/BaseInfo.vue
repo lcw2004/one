@@ -6,62 +6,61 @@
  -->
 
 <template>
-<section class="content">
-  <div class="row">
-    <div class="col-md-12">
-      <section>
-        <h4 class="page-header">基本信息</h4>
-        <SupplierBaseInfo :obj="obj" />
-      </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <section>
+          <h4 class="page-header">基本信息</h4>
+          <SupplierBaseInfo :obj="obj"/>
+        </section>
 
-      <section>
-        <h4 class="page-header">联系人</h4>
-        <PrincipalUserInfo :obj="obj" />
-      </section>
+        <section>
+          <h4 class="page-header">联系人</h4>
+          <PrincipalUserInfo :obj="obj"/>
+        </section>
 
-      <section>
-        <h4 class="page-header">资质文件</h4>
-        <QualificationInfo :obj="obj" />
-      </section>
+        <section>
+          <h4 class="page-header">资质文件</h4>
+          <QualificationInfo :obj="obj"/>
+        </section>
 
-      <section>
-        <h4 class="page-header">可参与投标类别</h4>
-        <PurchaseTypeInfo :obj="obj" v-if="type != '3'" />
-        <PurchaseTypeInfoAudit :obj="obj" v-if="type == '3'" />
-      </section>
+        <section>
+          <h4 class="page-header">可参与投标类别</h4>
+          <PurchaseTypeInfo :obj="obj" v-if="type != '3'"/>
+          <PurchaseTypeInfoAudit :obj="obj" v-if="type == '3'" @reload="$emit('reload')"/>
+        </section>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </template>
 
 <script>
-import SupplierBaseInfo from './baseInfo/SupplierBaseInfo'
-import PrincipalUserInfo from './baseInfo/PrincipalUserInfo'
-import PurchaseTypeInfo from './baseInfo/PurchaseTypeInfo'
-import PurchaseTypeInfoAudit from './baseInfo/PurchaseTypeInfoAudit'
-import QualificationInfo from './baseInfo/QualificationInfo'
+  import SupplierBaseInfo from './baseInfo/SupplierBaseInfo'
+  import PrincipalUserInfo from './baseInfo/PrincipalUserInfo'
+  import PurchaseTypeInfo from './baseInfo/PurchaseTypeInfo'
+  import PurchaseTypeInfoAudit from './baseInfo/PurchaseTypeInfoAudit'
+  import QualificationInfo from './baseInfo/QualificationInfo'
 
-export default {
-  components: {
-    SupplierBaseInfo,
-    PrincipalUserInfo,
-    PurchaseTypeInfo,
-    PurchaseTypeInfoAudit,
-    QualificationInfo
-  },
-  props: {
-    obj: {
-      type: Object,
-      required: true
+  export default {
+    components: {
+      SupplierBaseInfo,
+      PrincipalUserInfo,
+      PurchaseTypeInfo,
+      PurchaseTypeInfoAudit,
+      QualificationInfo
     },
-    type: {
-      type: String,
-      required: true
-    }
-  },
-  data: function () {
-    return {
+    props: {
+      obj: {
+        type: Object,
+        required: true
+      },
+      type: {
+        type: String,
+        required: true
+      }
+    },
+    data: () => {
+      return {}
     }
   }
-}
 </script>

@@ -11,67 +11,67 @@
 </template>
 
 <script>
-import moment from 'moment'
+  import moment from 'moment'
 
-export default {
-  name: 'TimeRangePicker',
-  props: ['from', 'to'],
-  data: function () {
-    return {
-      time: '',
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近一个月',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-          }
-        }, {
-          text: '最近三个月',
-          onClick (picker) {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-          }
-        }]
-      }
-    }
-  },
-  computed: {
-    timeRange: {
-      get: function () {
-        let timeRange = []
-        if (this.from && this.to) {
-          timeRange.push(moment(this.from).toDate())
-          timeRange.push(moment(this.to).toDate())
-        } else {
-          timeRange = ''
+  export default {
+    name: 'TimeRangePicker',
+    props: ['from', 'to'],
+    data: () => {
+      return {
+        time: '',
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近一个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          }, {
+            text: '最近三个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }]
         }
-        return timeRange
-      },
-      set: function (newValue) {
-        if (newValue && newValue.length === 2 && newValue[0] && newValue[1]) {
-          let from = moment(newValue[0]).format('YYYY-MM-DD')
-          let to = moment(newValue[1]).format('YYYY-MM-DD')
-          this.$emit('from', from)
-          this.$emit('to', to)
-        } else {
-          this.$emit('from', '')
-          this.$emit('to', '')
+      }
+    },
+    computed: {
+      timeRange: {
+        get: function () {
+          let timeRange = []
+          if (this.from && this.to) {
+            timeRange.push(moment(this.from).toDate())
+            timeRange.push(moment(this.to).toDate())
+          } else {
+            timeRange = ''
+          }
+          return timeRange
+        },
+        set: function (newValue) {
+          if (newValue && newValue.length === 2 && newValue[0] && newValue[1]) {
+            let from = moment(newValue[0]).format('YYYY-MM-DD')
+            let to = moment(newValue[1]).format('YYYY-MM-DD')
+            this.$emit('from', from)
+            this.$emit('to', to)
+          } else {
+            this.$emit('from', '')
+            this.$emit('to', '')
+          }
         }
       }
     }
   }
-}
 </script>

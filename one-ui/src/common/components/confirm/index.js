@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Confirm from './Confirm'
 
 /**
-* 简单弹出一个文本字弹框
-*/
+ * 简单弹出一个文本字弹框
+ */
 let confirmSimple = function (message, onOk, onCancel, okBtnText, cancelBtnText) {
   let propsData = {
     title: '操作确认',
@@ -24,8 +24,8 @@ let confirmSimple = function (message, onOk, onCancel, okBtnText, cancelBtnText)
 }
 
 /**
-* 根据配置弹出弹框
-*/
+ * 根据配置弹出弹框
+ */
 let confirmWithConfig = function (config, onOk, onCancel) {
   let propsData = Object.assign(config, {
     onOk: onOk,

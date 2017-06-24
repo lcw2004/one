@@ -5,16 +5,15 @@
 </template>
 
 <script>
-export default {
-  props: {
-    obj: {
-      type: Object,
-      required: true
-    }
-  },
-  data: function () {
-    return {
+  export default {
+    props: {
+      obj: {
+        type: Object,
+        required: true
+      }
+    },
+    data: () => {
+      return {}
     }
   }
-}
 </script>

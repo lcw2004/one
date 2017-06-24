@@ -10,39 +10,39 @@
           <div class="box-body">
             <table class="table table-bordered table-hover">
               <thead>
-                <tr>
-                  <th style="width: 10px">#</th>
-                  <th>供应商名称</th>
-                  <th>注册时间</th>
-                  <th>联系人</th>
-                  <th>手机号码</th>
-                  <th>状态</th>
-                  <th>操作</th>
-                </tr>
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>供应商名称</th>
+                <th>注册时间</th>
+                <th>联系人</th>
+                <th>手机号码</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
               </thead>
               <tbody>
-                <tr v-for="(obj, index) of page.list">
-                  <td>{{ index + 1}}</td>
-                  <td>
-                    <router-link :to='"/user/supplier/" + obj.supplierId + "/view"'>{{ obj.name }}</router-link>
-                  </td>
-                  <td><span v-text="obj.createTime"></span></td>
-                  <td>
-                    {{ obj.principalUser.name }}<UserInfoSimpleView :user="obj.principalUser"/>
-                  </td>
-                  <td><span v-text="obj.principalUser.userContactInfo.phone"></span></td>
-                  <td>
-                    <span v-if="obj.status == -1">{{ obj.statusCn }}</span>
-                    <span v-if="obj.status == 1" class="label label-primary">{{ obj.statusCn }}</span>
-                    <span v-if="obj.status == 2" class="label label-success">{{ obj.statusCn }}</span>
-                    <span v-if="obj.status == 3" class="label label-warning">{{ obj.statusCn }}</span>
-                    <span v-if="obj.status == 4" class="label label-default">{{ obj.statusCn }}</span>
-                    <span v-if="obj.status == 5">{{ obj.statusCn }}</span>
-                  </td>
-                  <td>
-                    <router-link :to='"/user/supplier/purchase-audit/" + obj.supplierId'>审核</router-link>
-                  </td>
-                </tr>
+              <tr v-for="(obj, index) of page.list">
+                <td>{{ index + 1}}</td>
+                <td>
+                  <router-link :to='"/user/supplier/" + obj.supplierId + "/view"'>{{ obj.name }}</router-link>
+                </td>
+                <td>{{ obj.createTime }}</td>
+                <td>
+                  <UserInfoSimpleView :user="obj.principalUser"/>
+                </td>
+                <td>{{ obj.principalUser.userContactInfo.phone }}</td>
+                <td>
+                  <span v-if="obj.status == -1">{{ obj.statusCn }}</span>
+                  <span v-if="obj.status == 1" class="label label-primary">{{ obj.statusCn }}</span>
+                  <span v-if="obj.status == 2" class="label label-success">{{ obj.statusCn }}</span>
+                  <span v-if="obj.status == 3" class="label label-warning">{{ obj.statusCn }}</span>
+                  <span v-if="obj.status == 4" class="label label-default">{{ obj.statusCn }}</span>
+                  <span v-if="obj.status == 5">{{ obj.statusCn }}</span>
+                </td>
+                <td>
+                  <router-link :to='"/user/supplier/purchase-audit/" + obj.supplierId'>审核</router-link>
+                </td>
+              </tr>
               </tbody>
             </table>
             <Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
@@ -54,31 +54,30 @@
 </template>
 
 <script>
-import PageMixin from '../../../../../common/mixins/PageMixin.js'
-import UserInfoSimpleView from '../common/UserInfoSimpleView'
+  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import UserInfoSimpleView from '../common/UserInfoSimpleView'
 
-export default {
-  mixins: [PageMixin],
-  components: {
-    UserInfoSimpleView
-  },
-  data: function () {
-    return {
-      actions: {
-        list: { method: 'get', url: '/api/user/supplier/audit' }
-      },
-      param: {
-      },
-      dictTypeList: []
-    }
-  },
-  watch: {
-    'param': {
-      handler: function () {
-        this.query()
-      },
-      deep: true
+  export default {
+    mixins: [PageMixin],
+    components: {
+      UserInfoSimpleView
+    },
+    data: () => {
+      return {
+        actions: {
+          list: {method: 'get', url: '/api/user/supplier/audit'}
+        },
+        param: {},
+        dictTypeList: []
+      }
+    },
+    watch: {
+      'param': {
+        handler: function () {
+          this.query()
+        },
+        deep: true
+      }
     }
   }
-}
 </script>

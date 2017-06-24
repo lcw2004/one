@@ -1,39 +1,39 @@
 <template>
-<header class="main-header">
-  <!-- Logo -->
-  <a href="index2.html" class="logo">
-    <span class="logo-mini">{{ setting.productShortName }}</span>
-    <span class="logo-lg">{{ setting.productName }}</span>
-  </a>
-
-  <nav class="navbar navbar-static-top">
-    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-      <span class="sr-only">Toggle navigation</span>
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <span class="logo-mini">{{ setting.appShortName }}</span>
+      <span class="logo-lg">{{ setting.appName }}</span>
     </a>
 
-    <ul class="nav navbar-nav navbar-left">
-      <li :class="{active : activedMenu.id == secondMenu.id}"
-        v-for="secondMenu of topMenu.childList"
-        @click="activeMenu(secondMenu)">
-        <a>{{ secondMenu.name }}</a>
-      </li>
-    </ul>
+    <nav class="navbar navbar-static-top">
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
 
-    <div class="navbar-custom-menu">
-      <ul class="nav navbar-nav">
-        <MessagesMenu/>
-        <NotificationsMenu/>
-        <TasksMenu/>
-        <UserInfoMenu/>
-
-        <!-- ControlSidebar 暂时隐藏 -->
-        <!-- <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li> -->
+      <ul class="nav navbar-nav navbar-left">
+        <li :class="{active : activedMenu.id == secondMenu.id}"
+            v-for="secondMenu of topMenu.childList"
+            @click="activeMenu(secondMenu)">
+          <a>{{ secondMenu.name }}</a>
+        </li>
       </ul>
-    </div>
-  </nav>
-</header>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <MessagesMenu/>
+          <NotificationsMenu/>
+          <TasksMenu/>
+          <UserInfoMenu/>
+
+          <!-- ControlSidebar 暂时隐藏 -->
+          <!-- <li>
+              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li> -->
+        </ul>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <script>

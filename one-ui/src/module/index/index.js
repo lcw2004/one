@@ -2,12 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import install from '../../common/install'
-install()
-
 // 引入根组件、路由、状态
 import App from './App'
 import store from './vuex'
 import router from './router'
+install()
 
 /* eslint-disable no-new */
 new Vue({
@@ -15,5 +14,5 @@ new Vue({
   template: '<App/>',
   router: router,
   store,
-  components: { App }
+  components: {App}
 })

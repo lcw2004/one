@@ -85,11 +85,11 @@ function removeFromTopElement (topElement, element) {
 }
 
 const TreeTableMiXin = {
-  data: function () {
+  data: () => {
     return {
       /**
-      * 展开状态
-      */
+       * 展开状态
+       */
       toggleStatus: true
     }
   },
@@ -104,8 +104,8 @@ const TreeTableMiXin = {
   },
   methods: {
     /**
-    * 展开/收缩 菜单
-    */
+     * 展开/收缩 菜单
+     */
     toggle: function (menu) {
       let isExpanded = menu.isExpanded
       if (isExpanded) {
@@ -116,15 +116,15 @@ const TreeTableMiXin = {
       menu.isExpanded = !isExpanded
     },
     /**
-    * 全部展开/收缩 菜单
-    */
+     * 全部展开/收缩 菜单
+     */
     toggleAll: function () {
       toggleAllMenu(this.topElement, !this.toggleStatus)
       this.toggleStatus = !this.toggleStatus
     },
     /**
-    * 移除元素以及该元素的子元素
-    */
+     * 移除元素以及该元素的子元素
+     */
     removeElement (element) {
       removeFromTopElement(this.topElement, element)
     }

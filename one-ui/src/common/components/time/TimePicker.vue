@@ -1,28 +1,41 @@
 <template>
-  <div id="reportrange" class="input-group">
-    <input type="text" class="form-control" :id="id">
-    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-  </div>
+  <el-date-picker
+    v-model="time"
+    type="datetime"
+    placeholder="选择日期时间"
+    :picker-options="pickerOptions">
+  </el-date-picker>
 </template>
 
 <script>
-let $ = require('jquery')
-import datetimepicker from 'eonasdan-bootstrap-datetimepicker'
-$.fn.datetimepicker = datetimepicker
+  import moment from 'moment'
+  import TimeMixin from './TimeMixin'
 
-export default {
-  name: 'TimePicker',
-  data: function () {
-    return {
-      id: new Date().getTime()
+  export default {
+    mixins: [TimeMixin],
+    name: 'TimePicker',
+    props: {
+      value: {}
+    },
+    computed: {
+      time: {
+        get: function () {
+          let time = null
+          if (this.value) {
+            time = moment(this.value, 'YYYY-MM-DD HH:mm:ss').toDate()
+          }
+          return time
+        },
+        set: function (newDate) {
+          let newValue = ''
+          if (newDate) {
+            newValue = moment(newDate).format('YYYY-MM-DD HH:mm:ss')
+          }
+          if (newDate !== undefined) {
+            this.$emit('input', newValue)
+          }
+        }
+      }
     }
-  },
-  mounted: function () {
-    $(this.$el).datetimepicker({
-      locale: 'zh-CN',
-      format: 'YYYY-MM-DD HH:mm:00',
-      viewMode: 'days'
-    })
   }
-}
 </script>

@@ -85,3 +85,15 @@
 2.	[https://github.com/jiananle/vue-multi-page](https://github.com/jiananle/vue-multi-page)
 3.	[https://github.com/bluefox1688/vue-cli-multi-page](https://github.com/bluefox1688/vue-cli-multi-page)
 4.	[https://github.com/jarvan4dev/vue-multi-page](https://github.com/jarvan4dev/vue-multi-page)
+
+
+# 组件命名
+1.  列表类：XXXXList，路由：/xxxx/list
+2.  编辑类：XXXXEdit，路由：/xxxx/:id/edit，/xxxx/add
+    1.  如果需要编辑的信息很多，需要分组件，再单独建立一个edit文件夹，用来存放edit对应的组件
+3.  查看类：XXXXView，路由：/xxxx/:id/view
+    1.  如果需要查看的信息很多，需要分组件，再单独建立一个view文件夹，用来存放view对应的组件
+4.  Modal：统一以Modal结尾。
+    选择类的以Select开头，添加类的以Add开头，修改类的以Edit开头
+    比如：SelectUserModal.vue，AddUserModal.vue，
+    1.  如果modal可能是个公用的，放到该业务模块的common文件夹下面。如果不是公用的，放在使用的地方即可。
