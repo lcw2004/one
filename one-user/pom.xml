@@ -24,11 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-base-info</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lcw.one</groupId>
             <artifactId>one-sys</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -37,11 +32,6 @@
             <artifactId>one-notify</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.lcw.one</groupId>-->
-            <!--<artifactId>one-workflow</artifactId>-->
-            <!--<version>0.0.1-SNAPSHOT</version>-->
-        <!--</dependency>-->
     </dependencies>
 
 </project>
