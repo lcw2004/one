@@ -24,6 +24,7 @@
     "glob": "^7.1.1",
     "ionicons": "^3.0.0",
     "moment": "^2.18.1",
+    "photoswipe": "^4.1.2",
     "vee-validate": "^2.0.0-beta.25",
     "vue": "^2.2.6",
     "vue-animate": "0.0.4",
