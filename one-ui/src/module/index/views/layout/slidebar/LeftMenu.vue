@@ -9,12 +9,8 @@
         </span>
       </a>
       <ul class="treeview-menu">
-        <!-- active -->
-        <li class="active" @click="activedThirdMenu = this" v-for="menuLevel2 of menuLevel1.childList">
-          <a>
-            <i :class="menuLevel2.icon"></i>
-            <router-link :to='menuLevel2.href'>{{ menuLevel2.name }}</router-link>
-          </a>
+        <li :class="{'active': activedThirdMenu.id == menuLevel2.id}" @click="activedThirdMenu = menuLevel2" v-for="menuLevel2 of menuLevel1.childList">
+          <router-link :to='menuLevel2.href'><i :class="menuLevel2.icon"></i> {{ menuLevel2.name }}</router-link>
         </li>
       </ul>
     </li>
