@@ -6,7 +6,7 @@ import subprocess
 import shutil
 import time
 
-BASE_PATH = "/root/Files/WorkSpace/one-extend"
+BASE_PATH = "/root/Files/WorkSpace/one"
 # BASE_PATH = "E:\WorkSpace\OneWorkSpace\one-extend"
 GIT_USER_NAME = "test"
 GIT_PASSWORD = "test"
@@ -17,11 +17,8 @@ ONE_CMS_FRONT = BASE_PATH + "/one-cms-front"
 ONE_MAIN_STATIC_PATH = ONE_MAIN + "/src/main/resources/static"
 ONE_UI_DIST_PATH = ONE_UI + "/dist"
 
-CMD_START_ONE_MAIN = "nohup java -jar {}/one-main/target/one-main-0.0.1-SNAPSHOT.jar --file.path=/root/Files/temp --logging.path=/var/log/one &".format(
+CMD_START_ONE_MAIN = "nohup java -jar {}/one-main/target/one-main-0.0.1-SNAPSHOT.jar --server.port=8090 --file.path=/root/Files/temp --logging.path=/var/log/one &".format(
     BASE_PATH)
-CMD_START_ONE_CMS_FRONT = "nohup java -jar {}/one-cms-front/target/one-cms-front-0.0.1-SNAPSHOT.war --server.port=9999 --bid.url=http://admin.limuxi.me --interface.url=http://admin.limuxi.me --logging.path=/var/log/one-cms-front &".format(
-    BASE_PATH)
-
 
 def exe_cmd(cmd):
     start_time = time.time()
@@ -71,8 +68,7 @@ def kill_progress_by(arg):
 
 
 def kill_progress():
-    kill_progress_by("one-main/target/one-main-0.0.1-SNAPSHOT.jar")
-    kill_progress_by("one-cms-front/target/one-cms-front-0.0.1-SNAPSHOT.war")
+    kill_progress_by("one/one-main/target/one-main-0.0.1-SNAPSHOT.jar")
 
 
 def git_pull_origin():
@@ -109,8 +105,6 @@ def build_one_main():
 def start_up():
     os.chdir(ONE_MAIN)
     exe_cmd(CMD_START_ONE_MAIN)
-    os.chdir(ONE_CMS_FRONT)
-    exe_cmd(CMD_START_ONE_CMS_FRONT)
 
 
 if __name__ == '__main__':
