@@ -26,9 +26,6 @@
         <module>one-code-gen</module>
         <module>one-workflow</module>
         <module>one-file-server</module>
-        <module>one-redis</module>
-        <module>one-cms</module>
-        <module>one-cms-front</module>
     </modules>
 
     <properties>

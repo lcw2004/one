@@ -1,0 +1,711 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+######################################################
+####### vue 基础模板
+######################################################
+# Vue模板文件
+'.vue':
+  'Vue Base Template':
+    'prefix': 'vue base template'
+    'body': """
+    <template>
+      <div>
+        $1
+      </div>
+    </template>
+
+    <script>
+    export default {
+      components: {
+      },
+      data: () => {
+        return {
+        }
+      },
+      methods: {
+      }
+    }
+    </script>
+    """
+
+# Vue模态窗
+  'Vue Base Modal':
+    'prefix': 'vue base modal'
+    'body': """
+    <template>
+      <OneTransition>
+        <div class="modal" v-show="config.show" style="display: block">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title" v-text="config.title"></h4>
+            </div>
+            <div class="modal-body modal-scrollable">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
+              <button type="button" class="btn btn-primary" @click="ok()">确认</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </OneTransition>
+    </template>
+
+    <script>
+    import ModalMixin from 'mixins/ModalMixin.js'
+    export default {
+      mixins: [ModalMixin],
+      props: {
+        config: {
+          type: Object,
+          required: true
+        }
+      },
+      data: () => {
+        return {
+        }
+      },
+      methods: {
+        ok () {
+          this.config.show = false
+          this.$notify.success('ok')
+        }
+      }
+    }
+    </script>
+    """
+  'Vue base modal config':
+    'prefix': 'vue base modal config (js)'
+    'body': """
+    config: {
+      show: false,
+      title: '$1'
+    }
+    """
+  'Vue Query Condition':
+    'prefix': 'vue query condition'
+    'body': """
+      <!--Query Start-->
+      <form class="form-horizontal">
+        <div class="row row-margin-bottom">
+          <div class="col-md-4">
+            <FormGroup label="查询条件">
+              $1
+            </FormGroup>
+          </div>
+          <div class="col-md-4">
+            $2
+          </div>
+          <div class="col-md-4">
+            <div class="pull-right">
+              $3
+            </div>
+          </div>
+        </div>
+      </form>
+      <!--Query End-->
+    """
+
+
+######################################################
+####### vue router
+######################################################
+  'Vue router link (btn)':
+    'prefix': 'Vue router link (btn)'
+    'body': """
+    <router-link to='$2' tag='button' class="btn btn-info">$1</router-link>
+    """
+  'Vue router link (a)':
+    'prefix': 'Vue router link (a)'
+    'body': """
+    <router-link to='$2'>$1</router-link>
+    """
+  'Vue router view':
+    'prefix': 'Vue router view'
+    'body': """
+    <router-view></router-view>
+    """
+
+######################################################
+####### vue 验证
+######################################################
+  'Vue validator':
+    'prefix': 'vuejs validateAll'
+    'body': """
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          $1
+        }
+      })
+    """
+  'v-validate':
+    'prefix': 'vue validate on html'
+    'body': """
+      v-validate="'required$2'" name="$1"
+    """
+  'vv-validate':
+    'prefix': 'vue validate on component'
+    'body': """
+      v-validate="'required'" data-vv-value-path="innerValue" data-vv-name="$1"
+    """
+
+######################################################
+####### 自定义API
+######################################################
+#
+  'Notify success':
+    'prefix': 'vuejs notify success'
+    'body': """this.$notify.success('$1')"""
+  'Notify info':
+    'prefix': 'vuejs notify info'
+    'body': """this.$notify.info('$1')"""
+  'Notify warn':
+    'prefix': 'vuejs notify warn'
+    'body': """this.$notify.warn('$1')"""
+  'Notify danger':
+    'prefix': 'vuejs notify danger'
+    'body': """this.$notify.danger('$1')"""
+  'confirm':
+    'prefix': 'vuejs confirm'
+    'body': """
+      this.$confirm('$1', () => {
+        $2
+      })
+    """
+  'overlay start':
+    'prefix': 'overlay start'
+    'body': """
+      this.$overlay.start($1)
+    """
+  'overlay done':
+    'prefix': 'overlay done'
+    'body': """
+      this.$overlay.done()
+    """
+
+######################################################
+####### 自定义组件
+######################################################
+  'Dict Select':
+    'prefix': 'vue dict select'
+    'body': """
+    <DictSelect v-model="$2" type="$1"></DictSelect>
+    """
+  'Dict Radio':
+    'prefix': 'vue dict radio'
+    'body': """
+    <DictRadio v-model="$2" type="$1"></DictRadio>
+    """
+  'Dict Label':
+    'prefix': 'vue dict label'
+    'body': """
+    <DictLabel type="$1" :value="$2"></DictLabel>
+    """
+  'Long Text':
+    'prefix': 'vue long text'
+    'body': """
+    <LongText :text="$1"></LongText>
+    """
+  'Pagination':
+    'prefix': 'vue pagination'
+    'body': """
+    <Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
+    """
+  'FileDownloader':
+    'prefix': 'vue file downloader'
+    'body': """
+    <FileDownloader :fileId="obj.fileId$1" :fileName="$2">下载</FileDownloader>
+    """
+  'FileUpload':
+    'prefix': 'vue file uploader'
+    'body': """
+    <FileUpload type="bmp,jpg,jpeg,png" :callback="uploadSuccess" :errorCallback="uploadError"></FileUpload>
+    """
+  'FileUpload JS ':
+    'prefix': 'vue file uploader (js)'
+    'body': """
+      uploadSuccess (fileObj) {
+        this.$2.fileId = fileObj.fileId
+        this.errors.remove('$1')
+        this.$validator.validateAll({'$1': this.$2.fileId})
+      },
+      uploadError (error) {
+        this.errors.remove('$1')
+        this.errors.add('$1', error, 'maxFileSize')
+      }
+    """
+  'FormGroup':
+    'prefix': 'vue form group'
+    'body': """
+      <FormGroup label="$1">
+        $2
+      </FormGroup>
+    """
+  'FormGroupStatic':
+    'prefix': 'vue form group static'
+    'body': """
+      <FormGroupStatic label="$1">$2</FormGroupStatic>
+    """
+  'FormControlStatic':
+    'prefix': 'vue form control static'
+    'body': """
+      <FormControlStatic>$1</FormControlStatic>
+    """
+  'Vue Resource Init':
+    'prefix': 'vue resource init'
+    'body': """
+      this.resource = this.$resource(null, {}, this.actions)
+    """
+  'Vue Resource Action':
+    'prefix': 'vue resource action'
+    'body': """
+      actions: {
+        list: {method: 'get', url: '/api/$1'}
+      }
+    """
+  'Vue Resource Call':
+    'prefix': 'vue resource call'
+    'body': """
+      this.resource.list$1(param).then(function (response) {
+        let result = response.body
+        if (result.ok) {
+          $2result.data
+        }
+      })
+    """
+  'Vue Route Id init':
+    'prefix': 'vue route id init'
+    'body': """
+      this.$1 = this.$route.params.id
+    """
+  'Vue One Button':
+    'prefix': 'vue one button'
+    'body': """
+      <OneButton @click="ok()" :loading="loading">确认</OneButton>
+    """
+
+
+######################################################
+####### 自定义组件
+######################################################
+  'TimeLine all':
+    'prefix': 'vue time line all'
+    'body': """
+      <TimeItem icon="fa fa-download" iconColor="bg-blue">
+        <TimeItemHeader slot="header">$1</TimeItemHeader>
+        <TimeItemBody slot="body">
+          $2
+        </TimeItemBody>
+      </TimeItem>
+    """
+
+  'TimeLine':
+    'prefix': 'vue time line'
+    'body': """
+    <TimeLine>
+      $1
+    </TimeLine>
+    """
+  'TimeLabel':
+    'prefix': 'vue time label'
+    'body': """
+    <TimeLabel time="2017-03-05 16:00:00" remark="$2" background="bg-gray">$1</TimeLabel>
+    """
+  'TimeItem':
+    'prefix': 'vue tile item'
+    'body': """
+    <TimeItem icon="fa fa-download" time="$2">
+      $3
+    </TimeItem>
+    """
+  'TimeItemHeader':
+    'prefix': 'vue time item header'
+    'body': """
+    <TimeItemHeader slot="header">
+      $1
+    </TimeItemHeader>
+    """
+  'TimeItemBody':
+    'prefix': 'vue time item body'
+    'body': """
+    <TimeItemBody slot="body">
+      $1
+    </TimeItemBody>
+    """
+  'TimeItemFooter':
+    'prefix': 'vue time itme footer'
+    'body': """
+    <TimeItemFooter slot="footer">
+      $1
+    </TimeItemFooter>
+    """
+  'TimePicker':
+    'prefix': 'vue time picker'
+    'body': """
+    <TimePicker v-model="$1"></TimePicker>
+    """
+  'DatePicker':
+    'prefix': 'vue date picker'
+    'body': """
+    <DatePicker v-model="$1"></DatePicker>
+    """
+
+######################################################
+####### Bootstrap 容器类
+######################################################
+# bootstrap section
+  'Bootstrap section':
+    'prefix': 'bootstrap section'
+    'body': """
+      <section class="content">
+        $1
+      </section>
+    """
+# bootstrap box
+  'Bootstrap box':
+    'prefix': 'bootstrap box'
+    'body': """
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">$1</h3>
+        </div>
+        <div class="box-body">
+          $2
+        </div>
+        <div class="box-footer">
+          $3
+        </div>
+      </div>
+    """
+# bootstrap box
+  'Bootstrap box solid':
+    'prefix': 'bootstrap box solid'
+    'body': """
+      <div class="box box-solid">
+        <div class="box-header">
+          <h3 class="box-title">$1</h3>
+        </div>
+        <div class="box-body">
+          $2
+        </div>
+        <div class="box-footer">
+          $3
+        </div>
+      </div>
+    """
+# Bootstrap nav
+  'Bootstrap nav':
+    'prefix': 'bootstrap nav'
+    'body': """
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li :class="{active : step == 1}" @click="step = 1"><a>$1</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active">
+          $2
+        </div>
+      </div>
+      <div class="box-footer">
+        <div class="col-md-4 col-sm-0"></div>
+        <div class="col-md-2 col-sm-2"><button class="btn btn-block btn-default" @click="$router.go(-1)">返回</button></div>
+      </div>
+    </div>
+    """
+# bootstrap head
+  'Bootstrap head':
+    'prefix': 'bootstrap head'
+    'body': """
+        <h4 class="page-header">$1</h4>
+    """
+# bootstrap row
+  'Bootstrap row':
+    'prefix': 'bootstrap row'
+    'body': """
+        <div class="row">
+          <div class="col-md-12$2">
+            $1
+          </div>
+        </div>
+    """
+# bootstrap row
+  'Bootstrap row with margin':
+    'prefix': 'bootstrap row with margin'
+    'body': """
+        <div class="row row-margin-bottom">
+          <div class="col-md-12$2">
+            $1
+          </div>
+        </div>
+    """
+# bootstrap col
+  'Bootstrap col':
+    'prefix': 'bootstrap col'
+    'body': """
+        <div class="col-md-12$2">
+          $1
+        </div>
+    """
+# bootstrap remark
+  'Bootstrap remark':
+    'prefix': 'bootstrap remark'
+    'body': """
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
+              <h3 class="box-title">备注</h3>
+            </div>
+            <div class="box-body">
+              <ol>
+                <li>$1
+                  <ol>
+                    <li>$2</li>
+                  </ol>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    """
+# bootstrap pull right
+  'Bootstrap pull right':
+    'prefix': 'bootstrap pull right'
+    'body': """
+      <div class="pull-right">
+        $1
+      </div>
+    """
+# bootstrap pull left
+  'Bootstrap pull left':
+    'prefix': 'bootstrap pull left'
+    'body': """
+      <div class="pull-left">
+        $1
+      </div>
+    """
+# bootstrap callout default
+  'Bootstrap callout default':
+    'prefix': 'bootstrap callout default'
+    'body': """
+    <div class="callout callout-default">
+      <p>
+        $1
+      </p>
+    </div>
+    """
+# bootstrap line
+  'Bootstrap line':
+    'prefix': 'bootstrap line'
+    'body': """
+    <hr class="divider">
+    """
+
+
+######################################################
+####### bootstram 表单元素类
+######################################################
+# bootstrap form
+
+  'Bootstrap form':
+    'prefix': 'bootstrap form'
+    'body': """
+      <form class="form-horizontal">
+        $1
+      </form>
+    """
+  'Bootstrap form input':
+    'prefix': 'bootstrap form input'
+    'body': """
+      <input type="text" class="form-control" v-model="$2" maxlength="100">
+    """
+  'Bootstrap form input with btn':
+    'prefix': 'bootstrap form input with button'
+    'body': """
+      <div class="input-group">
+        <input type="text" class="form-control" $2>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-primary btn-flat">选择</button>
+        </span>
+      </div>
+      """
+  'Bootstrap form radio':
+    'prefix': 'bootstrap form radio'
+    'body': """
+      <div>
+        <div class="radio-inline">
+          <label><input type="radio" value="1">$1</label>
+        </div>
+        <div class="radio-inline">
+          <label><input type="radio" value="2">$2</label>
+        </div>
+      </div>
+    """
+  'Bootstrap form checkbox':
+    'prefix': 'bootstrap form checkbox'
+    'body': """
+      <div>
+        <div class="checkbox-inline">
+          <label>
+            <input type="checkbox">$1
+          </label>
+        </div>
+        <div class="checkbox-inline">
+          <label>
+            <input type="checkbox">$2
+          </label>
+        </div>
+      </div>
+      </div>
+    """
+  'Bootstrap form select':
+    'prefix': 'bootstrap form select'
+    'body': """
+      <select class="form-control">
+        <option>$1</option>
+        <option>$2</option>
+      </select>
+    """
+  'Bootstrap form textarea':
+    'prefix': 'bootstrap form textarea'
+    'body': """
+      <textarea class="form-control" rows="3" v-model="$1" maxlength="200"></textarea>
+    """
+  'Bootstrap button default':
+    'prefix': 'bootstrap button default'
+    'body': """
+      <button type="button" class="btn btn-default">
+        $1
+      </button>
+    """
+  'Bootstrap button info':
+    'prefix': 'bootstrap button info'
+    'body': """
+      <button type="button" class="btn btn-info">
+        $1
+      </button>
+    """
+  'Bootstrap button primary':
+    'prefix': 'bootstrap button primary'
+    'body': """
+      <button type="button" class="btn btn-primary">
+        $1
+      </button>
+    """
+  'Bootstrap button warning':
+    'prefix': 'bootstrap button warning'
+    'body': """
+      <button type="button" class="btn btn-warning">
+        $1
+      </button>
+    """
+  'Bootstrap button danger':
+    'prefix': 'bootstrap button danger'
+    'body': """
+      <button type="button" class="btn btn-danger">
+        $1
+      </button>
+    """
+  'Bootstrap button goback':
+    'prefix': 'bootstrap button goback'
+    'body': """
+      <button type="button" class="btn btn-default"  @click="$router.go(-1)">
+        返回
+      </button>
+    """
+  'Bootstrap button gobacka':
+    'prefix': 'bootstrap button goback (a link)'
+    'body': """
+      <a class="btn btn-default" @click="$router.go(-1)">返回</a>
+    """
+  'Bootstrap label success':
+    'prefix': 'bootstrap label success'
+    'body': """
+      <span class="label label-success">$1</span>
+    """
+  'Bootstrap label warning':
+    'prefix': 'bootstrap label warning'
+    'body': """
+      <span class="label label-warning">$1</span>
+    """
+  'Bootstrap label primary':
+    'prefix': 'bootstrap label primary'
+    'body': """
+      <span class="label label-primary">$1</span>
+    """
+  'Bootstrap label danger':
+    'prefix': 'bootstrap label danger'
+    'body': """
+      <span class="label label-danger">$1</span>
+    """
+
+######################################################
+####### 表格类
+######################################################
+  'Bootstrap table':
+    'prefix': 'bootstrap table'
+    'body': """
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th style="width: 10px">#</th>
+            <th>$1</th>
+            <th>$2</th>
+            <th>$3</th>
+            <th>$4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>$5</td>
+            <td>$6</td>
+            <td>$7</td>
+            <td>$8</td>
+          </tr>
+        </tbody>
+      </table>
+    """
+  '注释':
+    'prefix': 'vuejs note'
+    'body': """
+      /**
+      * $1
+      */
+    """
+
+'.js':
+  '注释':
+    'prefix': 'js note'
+    'body': """
+      /**
+      * $1
+      */
+    """

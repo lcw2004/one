@@ -1,6 +1,6 @@
 package com.lcw.one.login.rest;
 
-import com.lcw.one.baseInfo.constant.VerifyCodeTypeEnum;
+import com.lcw.one.sys.constant.VerifyCodeTypeEnum;
 import com.lcw.one.login.security.UsernamePasswordToken;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.security.validatecode.IVerifyCodeGen;

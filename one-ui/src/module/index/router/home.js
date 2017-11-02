@@ -4,7 +4,6 @@ import system from './system'
 import user from './user'
 import personal from './personal'
 import cms from './cms'
-import statistic from './statistic'
 
 /*
  * 包含菜单结构的页面
@@ -18,8 +17,7 @@ export default {
     ...system,
     ...user,
     ...personal,
-    ...cms,
-    ...statistic
+    ...cms
   ],
   beforeEnter: (to, from, next) => {
     console.log('-->Home Router Config')

@@ -1,7 +1,5 @@
 <template>
   <section class="content">
-    <DesktopOfManager v-if="userInfo.type == 1"></DesktopOfManager>
-    <DesktopOfSupplier v-if="userInfo.type == 3"></DesktopOfSupplier>
   </section>
 </template>
 

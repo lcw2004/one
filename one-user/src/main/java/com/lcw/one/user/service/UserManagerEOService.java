@@ -90,6 +90,8 @@ public class UserManagerEOService extends CrudService<UserManagerEODao, UserMana
         }
         super.update(entity);
 
+        userContactInfoEOService.save(entity.getUserInfo().getUserContactInfo());
+
         // 更新角色信息
         sysUserRoleEOService.deleteRoleWhereNotIn(entity.getUserId(), entity.getRoleIdList());
         sysUserRoleEOService.saveSysUserRole(entity.getUserId(), entity.getRoleIdList());
