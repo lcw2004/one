@@ -7,13 +7,11 @@ import shutil
 import time
 
 BASE_PATH = "/root/Files/WorkSpace/one"
-# BASE_PATH = "E:\WorkSpace\OneWorkSpace\one-extend"
 GIT_USER_NAME = "test"
 GIT_PASSWORD = "test"
 
 ONE_UI = BASE_PATH + "/one-ui"
 ONE_MAIN = BASE_PATH + "/one-main"
-ONE_CMS_FRONT = BASE_PATH + "/one-cms-front"
 ONE_MAIN_STATIC_PATH = ONE_MAIN + "/src/main/resources/static"
 ONE_UI_DIST_PATH = ONE_UI + "/dist"
 
