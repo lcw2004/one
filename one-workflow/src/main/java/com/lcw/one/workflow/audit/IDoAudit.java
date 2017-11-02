@@ -1,6 +1,6 @@
 package com.lcw.one.workflow.audit;
 
-import com.lcw.one.workflow.entity.FlowAuditItemEO;
+import com.lcw.one.workflow.entity.FlowAuditItemBean;
 
 public interface IDoAudit {
 
@@ -9,14 +9,13 @@ public interface IDoAudit {
      *
      * @param flowAuditItemEO
      */
-    void doAgree(FlowAuditItemEO flowAuditItemEO);
+    void doAgree(FlowAuditItemBean flowAuditItemEO);
 
     /**
      * 审核驳回之后的业务逻辑
      *
      * @param flowAuditItemEO
-     * @param rejectReason    驳回原因
      */
-    void doReject(FlowAuditItemEO flowAuditItemEO, String rejectReason);
+    void doReject(FlowAuditItemBean flowAuditItemEO);
 
 }

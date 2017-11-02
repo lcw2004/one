@@ -1,7 +1,7 @@
 package com.lcw.one.sys.dao;
 
-import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.sys.entity.SysDictEO;
+import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ public class SysDictEODao extends BaseRepositoryImpl<SysDictEO, String> {
         }
         if(StringUtils.isNotEmpty(description)) {
             sql.append(" and description like :description ");
-            params.put("description", "%description%");
+            params.put("description", "%" + description + "%");
         }
         sql.append(" order by type, sort, value ");
         return page(pageInfo, sql.toString(), params);

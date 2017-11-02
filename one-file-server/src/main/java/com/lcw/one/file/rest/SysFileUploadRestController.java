@@ -1,14 +1,10 @@
 package com.lcw.one.file.rest;
 
 import com.lcw.one.file.service.SysFileEOService;
-import com.lcw.one.file.store.IFileStore;
 import com.lcw.one.sys.entity.SysFileEO;
-import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
-import com.lcw.one.util.utils.FileUtil;
 import com.lcw.one.util.utils.IOUtils;
-import com.lcw.one.util.utils.UUID;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/${restPath}/sys/file")
@@ -34,28 +29,12 @@ public class SysFileUploadRestController {
     @Autowired
     private SysFileEOService sysFileEOService;
 
-    @Autowired
-    private IFileStore iFileStore;
-
     @PostMapping(path = "/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<SysFileEO> upload(String userId, @RequestParam("file") MultipartFile file) {
         SysFileEO sysFileEO;
         InputStream is = null;
         try {
-            String fileExtension = FileUtil.getFileExtension(file.getOriginalFilename());
-
-            is = file.getInputStream();
-            String path = iFileStore.storeFile(is, fileExtension);
-
-            sysFileEO = new SysFileEO();
-            sysFileEO.setFileId(UUID.randomUUID());
-            sysFileEO.setFileName(FileUtil.getFileName(file.getOriginalFilename()));
-            sysFileEO.setFileType(fileExtension);
-            sysFileEO.setContentType(file.getContentType());
-            sysFileEO.setSavePath(path);
-            sysFileEO.setCreateTime(new Date());
-            sysFileEO.setUserId(userId);
-            sysFileEOService.save(sysFileEO);
+            sysFileEO = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return Result.error("文件存储失败，请重试");
@@ -64,6 +43,10 @@ public class SysFileUploadRestController {
         }
 
         return Result.success(sysFileEO);
+    }
+
+    public SysFileEO saveSysFile(String userId, InputStream is, String fileName, String contentType) {
+        return sysFileEOService.saveSysFile(userId, is, fileName, contentType);
     }
 
 }

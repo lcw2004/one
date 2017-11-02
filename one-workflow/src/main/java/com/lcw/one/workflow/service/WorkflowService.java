@@ -1,291 +1,173 @@
 package com.lcw.one.workflow.service;
 
+import com.lcw.one.user.constant.AuditStatusEnum;
 import com.lcw.one.util.exception.OneBaseException;
-import com.lcw.one.util.http.PageInfo;
-import com.lcw.one.util.utils.GsonUtil;
+import com.lcw.one.util.utils.CollectionUtils;
+import com.lcw.one.util.utils.UUID;
+import com.lcw.one.workflow.audit.IDoAudit;
+import com.lcw.one.workflow.audit.IDoAuditFactory;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.WorkFlowBean;
-import com.lcw.one.workflow.entity.FlowTaskInfoEO;
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.engine.*;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.impl.ProcessEngineImpl;
-import org.activiti.engine.impl.RepositoryServiceImpl;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
-import org.activiti.image.ProcessDiagramGenerator;
+import com.lcw.one.workflow.bean.constant.FlowEffectiveEnum;
+import com.lcw.one.workflow.bean.constant.FlowFinishEnum;
+import com.lcw.one.workflow.entity.FlowAuditItemBean;
+import com.lcw.one.workflow.entity.FlowAuditItemEO;
+import com.lcw.one.workflow.entity.FlowAuditLogEO;
+import com.lcw.one.workflow.service.flow.ActivitiService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
-import java.util.*;
+import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.Map;
 
 @Service
-public class WorkflowService {
+public class WorkFlowService {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkflowService.class);
-
-    @Autowired
-    private TaskService taskService;
+    private static final Logger logger = LoggerFactory.getLogger(WorkFlowService.class);
 
     @Autowired
-    private RepositoryService repositoryService;
+    private FlowAuditItemEOService flowAuditItemEOService;
 
     @Autowired
-    private RuntimeService runtimeService;
+    private FlowAuditLogEOService flowAuditLogEOService;
 
     @Autowired
-    private IdentityService identityService;
+    private ActivitiService activitiService;
 
-    @Autowired
-    private HistoryService historyService;
-
-    @Autowired
-    private FlowTaskInfoEOService processTaskInfoEOService;
-
-    public WorkFlowBean startWorkflow(WorkFlowBean workFlowBean) {
-        String businessKey = workFlowBean.getFlowId() + ":" + workFlowBean.getBusinessKey();
-        Map<String, Object> variables = workFlowBean.getVariables();
-        variables.put("processBusinessKey", businessKey);
-        variables.put("applyUserId", workFlowBean.getUserId());
-
-        // 获取绑定的表单信息以及角色信息
-        List<FlowTaskInfoEO> taskInfoEOList = processTaskInfoEOService.listFlowTaskInfoEOByProcessKeyAndValid(workFlowBean.getFlowId());
-        variables.put("bindInfoList_", GsonUtil.toJson(taskInfoEOList));
-
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(workFlowBean.getFlowId()).latestVersion().singleResult();
-        variables.put("processName_", processDefinition.getName());
-
-        ProcessInstance processInstance = null;
+    /**
+     * 启动工作流
+     *
+     * @param flowId      流程ID（同时作为业务ID，工作流名称作为业务名称）
+     * @param businessId  业务ID
+     * @param applyUserId 申请人ID
+     */
+    @Transactional(rollbackOn = Exception.class)
+    public void startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String applyUserId, String applyUserName, String operateName, String ip, Map<String, Object> variables) {
+        String auditItemId = UUID.randomUUID();
+        String flowInstanceId = null;
         try {
-            identityService.setAuthenticatedUserId(workFlowBean.getUserId());
-            processInstance = runtimeService.startProcessInstanceByKey(workFlowBean.getFlowId(), businessKey, variables);
+            // 启动工作流，并获取流程实例ID
+            WorkFlowBean workFlowBean = new WorkFlowBean();
+            workFlowBean.setUserId(applyUserId);
+            workFlowBean.setFlowId(flowId);
+            workFlowBean.setBusinessKey(businessId);
+            workFlowBean.putVariables("businessId", businessId);
+            workFlowBean.putVariables("businessName", businessName);
+            workFlowBean.putVariables("auditItemId", auditItemId);
+            workFlowBean.putVariables("applyUserId", applyUserId);
+            workFlowBean.putVariables("applyUserName", applyUserName);
+            if (CollectionUtils.isNotEmpty(variables)) {
+                workFlowBean.putVariables(variables);
+            }
+            WorkFlowBean workFlowBeanReturn = activitiService.startWorkflow(workFlowBean);
+            flowInstanceId = workFlowBeanReturn.getProcessInstanceId();
+
+            // 保存审核事项
+            FlowAuditItemEO flowAuditItemEO = new FlowAuditItemEO();
+            flowAuditItemEO.setAuditItemId(auditItemId);
+            flowAuditItemEO.setBusinessType(flowId);
+            flowAuditItemEO.setBusinessId(businessId);
+            flowAuditItemEO.setSecondBusinessId(secondBusinessId);
+            flowAuditItemEO.setTaskName(workFlowBeanReturn.getTaskDefinitionName());
+            flowAuditItemEO.setApplyUserId(applyUserId);
+            flowAuditItemEO.setStartTime(new Date());
+            flowAuditItemEO.setAuditStatus(AuditStatusEnum.AUDIT.getValue());
+            flowAuditItemEO.setFlowDefinitionId(flowId);
+            flowAuditItemEO.setFlowInstanceId(flowInstanceId);
+            flowAuditItemEO.setIsEffective(FlowEffectiveEnum.NOT_EFFECTIVE.getValue());
+            flowAuditItemEO.setIsFinished(FlowFinishEnum.NOT_FINISH.getValue());
+            flowAuditItemEOService.save(flowAuditItemEO);
+
+            // 记录工作流日志
+            FlowAuditLogEO flowAuditLogEO = new FlowAuditLogEO();
+            flowAuditLogEO.setAuditLogId(UUID.randomUUID());
+            flowAuditLogEO.setAuditItemId(auditItemId);
+            flowAuditLogEO.setAuditTime(new Date());
+            flowAuditLogEO.setUserId(applyUserId);
+            flowAuditLogEO.setResult(null);
+            flowAuditLogEO.setRemark("");
+            flowAuditLogEO.setOperateName(operateName);
+            flowAuditLogEO.setIp(ip);
+            flowAuditLogEOService.save(flowAuditLogEO);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new OneBaseException(e.getMessage());
-        } finally {
-            identityService.setAuthenticatedUserId(null);
-        }
-
-        workFlowBean.setProcessInstanceId(processInstance.getProcessInstanceId());
-        workFlowBean.setBusinessKey(processInstance.getBusinessKey());
-        workFlowBean.setTaskDefinitionName(processDefinition.getName());
-        return workFlowBean;
-    }
-
-    public PageInfo<TaskInfoBean> queryTaskList(Integer pageSize, Integer pageNo, String roleIds, String userId, String processInstanceId, String businessKey, String taskDefinitionKey, String processDefinitionKey) {
-        PageInfo<TaskInfoBean> page = new PageInfo<>();
-
-        List<TaskInfoBean> list = new ArrayList<>();
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        try {
-            // 角色ID
-            if (StringUtils.isNotEmpty(roleIds)) {
-                taskQuery = taskQuery.taskCandidateGroupIn(Arrays.asList(roleIds.split(",")));
+            if (StringUtils.isNotEmpty(flowInstanceId)) {
+                activitiService.deleteWorkflowInstance(flowInstanceId, "flowId[" + flowId + "]执行异常");
             }
-            // 用户ID
-            if (StringUtils.isNotEmpty(userId)) {
-                taskQuery = taskQuery.taskAssignee(userId);
-            }
-            // 流程实例ID
-            if (StringUtils.isNotEmpty(processInstanceId)) {
-                taskQuery = taskQuery.processInstanceId(processInstanceId);
-            }
-            // 业务参数ID
-            if (StringUtils.isNotEmpty(businessKey)) {
-                taskQuery = taskQuery.processInstanceBusinessKey(businessKey);
-            }
-            // 流程节点ID
-            if (StringUtils.isNotEmpty(taskDefinitionKey)) {
-                taskQuery = taskQuery.taskDefinitionKey(taskDefinitionKey);
-            }
-            // 流程ID
-            if (StringUtils.isNotEmpty(processDefinitionKey)) {
-                taskQuery = taskQuery.processDefinitionKey(processDefinitionKey);
-            }
-
-            List<Task> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((pageNo - 1) * pageSize, pageSize);
-            page.setPageSize(pageSize);
-            page.setCount(taskQuery.count());
-            for (Task task : taskList) {
-                list.add(findTaskInfo(task));
-            }
-            page.setList(list);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new OneBaseException("查询失败:" + e.getMessage());
-        }
-        return page;
-    }
-
-
-    public PageInfo<TaskInfoBean> queryTaskListNative(Integer pageSize, Integer pageNo, String roleIds, String userId, String processInstanceId, String businessKey, String taskDefinitionKey, String processDefinitionKey) {
-        PageInfo<TaskInfoBean> page = new PageInfo<>();
-
-        List<TaskInfoBean> list = new ArrayList<>();
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        try {
-            // 角色ID
-            if (StringUtils.isNotEmpty(roleIds)) {
-                taskQuery = taskQuery.taskCandidateGroupIn(Arrays.asList(roleIds.split(",")));
-            }
-            // 用户ID
-            if (StringUtils.isNotEmpty(userId)) {
-                taskQuery = taskQuery.taskAssignee(userId);
-            }
-
-
-            // 流程实例ID
-            if (StringUtils.isNotEmpty(processInstanceId)) {
-                taskQuery = taskQuery.processInstanceId(processInstanceId);
-            }
-            // 业务参数ID
-            if (StringUtils.isNotEmpty(businessKey)) {
-                taskQuery = taskQuery.processInstanceBusinessKey(businessKey);
-            }
-            // 流程节点ID
-            if (StringUtils.isNotEmpty(taskDefinitionKey)) {
-                taskQuery = taskQuery.taskDefinitionKey(taskDefinitionKey);
-            }
-            // 流程ID
-            if (StringUtils.isNotEmpty(processDefinitionKey)) {
-                taskQuery = taskQuery.processDefinitionKey(processDefinitionKey);
-            }
-
-            List<Task> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((pageNo - 1) * pageSize, pageSize);
-            page.setPageSize(pageSize);
-            page.setCount(taskQuery.count());
-            for (Task task : taskList) {
-                list.add(findTaskInfo(task));
-            }
-            page.setList(list);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new OneBaseException("查询失败:" + e.getMessage());
-        }
-        return page;
-    }
-
-
-    public WorkFlowBean execWorkflow(WorkFlowBean workFlowBean) {
-        try {
-            String taskId = workFlowBean.getTaskId();
-            String userId = workFlowBean.getUserId();
-            if (StringUtils.isBlank(taskId) || StringUtils.isBlank(userId)) {
-                throw new OneBaseException("任务执行失败:taskId||userId为空");
-            }
-
-            Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            if (task == null) {
-                throw new OneBaseException("找不到ID" + taskId + "为的任务");
-            }
-
-            //先判断是否子流程
-            Map<String, Object> instanceVar = runtimeService.getVariables(task.getProcessInstanceId());
-            String parentBusinessKey = (String) instanceVar.get("parentBusinessKey");
-            workFlowBean.getVariables().put("execUserId", userId);
-            //当流程变量中存在父业务KEY时，断定是子流程
-            boolean isSubProcess = !StringUtils.isBlank(parentBusinessKey);
-            logger.debug(isSubProcess ? "当前为子流程,所属主流程业务编码为：" + parentBusinessKey : "当前为主流程");
-
-            //如果是子流程必须将参数同时放入主流程
-            Map<String, Object> variables = workFlowBean.getVariables();
-            if (isSubProcess && variables != null && !variables.isEmpty()) {
-                logger.debug("variables不为空，设置到主流程");
-                ProcessInstance parentProcessInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(parentBusinessKey).singleResult();
-                runtimeService.setVariables(parentProcessInstance.getId(), variables);
-            }
-            taskService.setAssignee(taskId, userId);
-
-            taskService.setVariablesLocal(taskId, workFlowBean.getLocalVariables());
-            taskService.complete(taskId, variables);
-        } catch (Exception e) {
-            logger.error("执行环节任务异常", e);
-            throw new OneBaseException(e.getMessage());
-        }
-
-        return workFlowBean;
-    }
-
-    public void deleteWorkflowInstance(String processInstanceId, String deleteReason) {
-        try {
-            long count = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).count();
-            if (count > 0) {
-                runtimeService.deleteProcessInstance(processInstanceId, deleteReason);
-            }
-        } catch (Exception e) {
-            logger.debug(e.getMessage(), e);
-            throw new OneBaseException("删除失败");
+            throw e;
         }
     }
 
-    public TaskInfoBean getTask(String taskId) {
-        TaskInfoBean taskInfoBean = null;
-        try {
-            TaskQuery taskQuery = taskService.createTaskQuery();
-            Task task = taskQuery.taskId(taskId).singleResult();
-            if (task == null) {
-                throw new OneBaseException("找不到ID" + taskId + "为的任务");
+    /**
+     * 审核工单
+     *
+     * @param taskId      任务ID
+     * @param auditUserId 审批人ID
+     * @param auditResult 审批结果
+     * @param remark      审批不通过的理由
+     */
+    @Transactional(rollbackOn = Exception.class)
+    public void audit(String taskId, String auditUserId, Boolean auditResult, String remark, String ip) {
+        TaskInfoBean taskInfoBean = activitiService.getTask(taskId);
+        if (taskInfoBean == null) {
+            throw new OneBaseException("找不到任务ID为[" + taskId + "]的任务");
+        }
+
+        String auditItemId = (String) taskInfoBean.getVariables().get("auditItemId");
+        FlowAuditItemEO flowAuditItemEO = flowAuditItemEOService.get(auditItemId);
+        String taskName = taskInfoBean.getTaskName();
+        String flowId = flowAuditItemEO.getFlowDefinitionId();
+        String taskDefinitionKey = taskInfoBean.getTaskDefinitionKey();
+        Boolean isFinalAudit = "finalAudit".equals(taskDefinitionKey);
+
+        // 记录审核日志
+        FlowAuditLogEO flowAuditLogEO = new FlowAuditLogEO();
+        flowAuditLogEO.setAuditLogId(UUID.randomUUID());
+        flowAuditLogEO.setAuditItemId(auditItemId);
+        flowAuditLogEO.setAuditTime(new Date());
+        flowAuditLogEO.setUserId(auditUserId);
+        flowAuditLogEO.setResult(auditResult ? 1 : 0);
+        flowAuditLogEO.setRemark(remark);
+        flowAuditLogEO.setOperateName(auditResult ? "审核通过" : "审核驳回");
+        flowAuditLogEOService.save(flowAuditLogEO);
+
+        FlowAuditItemBean flowAuditItemBean = new FlowAuditItemBean();
+        flowAuditItemBean.setAuditItemId(auditItemId);
+        flowAuditItemBean.setBusinessId(flowAuditItemEO.getBusinessId());
+        flowAuditItemBean.setIp(ip);
+        flowAuditItemBean.setUserId(auditUserId);
+        flowAuditItemBean.setAuditRemark(remark);
+        flowAuditItemBean.setAuditResult(auditResult);
+        flowAuditItemBean.setVariables(taskInfoBean.getVariables());
+
+        // 调用审核处理接口
+        IDoAudit iDoAudit = IDoAuditFactory.buildIDoAudit(flowId);
+        if (!auditResult) {
+            // 驳回
+            // 任何一个人驳回都结束工单
+            logger.info("Do reject on item: " + flowAuditItemEO.getAuditItemId());
+            iDoAudit.doReject(flowAuditItemBean);
+            flowAuditItemEOService.updateStateWhenReject(auditItemId, remark);
+        } else {
+            // 通过
+            if (isFinalAudit) {
+                // 最后一个通过
+                logger.info("Do agree on item: " + flowAuditItemEO.getAuditItemId());
+                iDoAudit.doAgree(flowAuditItemBean);
+                flowAuditItemEOService.updateStateWhenPass(auditItemId);
             }
-
-            taskInfoBean = findTaskInfo(task);
-        } catch (Exception e) {
-            logger.debug(e.getMessage(), e);
-            throw new OneBaseException("查询失败" + e.getMessage());
         }
-        return taskInfoBean;
-    }
 
-    public InputStream viewProcessImage(String processDefinitionId) {
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
-        InputStream inputStream = repositoryService.getResourceAsStream(processDefinition.getDeploymentId(), processDefinition.getDiagramResourceName());
-        return inputStream;
-    }
-
-    public InputStream viewProgressImage(String processInstanceId) {
-        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-        ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService).getDeployedProcessDefinition(processInstance.getProcessDefinitionId());
-        ProcessEngineConfiguration processEngineConfig = ((ProcessEngineImpl) ProcessEngines.getDefaultProcessEngine()).getProcessEngineConfiguration();
-        ProcessDiagramGenerator diagramGenerator = processEngineConfig.getProcessDiagramGenerator();
-        logger.info("ActivityFontName:songti ? " + processEngineConfig.getActivityFontName().equals("宋体"));
-
-        if (processDefinition != null && processDefinition.isGraphicalNotationDefined()) {
-            BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
-            InputStream definitionImageStream = diagramGenerator.generateDiagram(bpmnModel, "png",
-                    runtimeService.getActiveActivityIds(processInstance.getId()), Collections.<String>emptyList(),
-                    processEngineConfig.getActivityFontName(), processEngineConfig.getLabelFontName(), processEngineConfig.getAnnotationFontName(),
-                    processEngineConfig.getClassLoader(), 1.0);
-            return definitionImageStream;
-        }
-        return null;
-    }
-
-    private TaskInfoBean findTaskInfo(Task task) {
-        TaskInfoBean taskInfoBean = new TaskInfoBean();
-        taskInfoBean.setTaskDefinitionKey(task.getTaskDefinitionKey());
-        taskInfoBean.setFormKey(task.getFormKey());
-        taskInfoBean.setProcessDefinitionId(task.getProcessDefinitionId());
-        taskInfoBean.setProcessInstanceId(task.getProcessInstanceId());
-        taskInfoBean.setTaskName(task.getName());
-        taskInfoBean.setTaskId(task.getId());
-        taskInfoBean.setAssigneeId(task.getAssignee());
-        taskInfoBean.setTaskCreateTime(task.getCreateTime());
-        taskInfoBean.setTaskOwner(task.getOwner());
-        taskInfoBean.setIsSuspended(task.isSuspended());
-
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
-        taskInfoBean.setItemsName(processDefinition.getName());
-
-        Map<String, Object> instVars = runtimeService.getVariables(task.getProcessInstanceId());
-        Map<String, Object> vars = runtimeService.getVariables(task.getProcessInstanceId());
-        vars.putAll(instVars);
-        taskInfoBean.setVariables(vars);
-        return taskInfoBean;
+        // 执行工作流
+        WorkFlowBean workFlowBean = new WorkFlowBean();
+        workFlowBean.setUserId(auditUserId);
+        workFlowBean.setBusinessKey(flowAuditItemEO.getBusinessId());
+        workFlowBean.setFlowId(flowAuditItemEO.getFlowDefinitionId());
+        workFlowBean.setTaskId(taskId);
+        workFlowBean.putVariables("auditResult", auditResult);
+        activitiService.execWorkflow(workFlowBean);
     }
 }

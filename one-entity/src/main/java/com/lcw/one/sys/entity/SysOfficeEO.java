@@ -1,5 +1,6 @@
 package com.lcw.one.sys.entity;
 
+import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.util.persistence.entity.TreeEntity;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class SysOfficeEO extends TreeEntity<SysOfficeEO> {
     private String remarks;
 
     private SysAreaEO area;
+    private UserInfoEO masterUserInfo;
 
     @Basic
     @Column(name = "area_id")
@@ -135,12 +137,23 @@ public class SysOfficeEO extends TreeEntity<SysOfficeEO> {
         this.remarks = remarks;
     }
 
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "area_id", insertable = false, updatable = false)
     public SysAreaEO getArea() {
         return area;
     }
 
     public void setArea(SysAreaEO area) {
         this.area = area;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "master_id", insertable = false, updatable = false)
+    public UserInfoEO getMasterUserInfo() {
+        return masterUserInfo;
+    }
+
+    public void setMasterUserInfo(UserInfoEO masterUserInfo) {
+        this.masterUserInfo = masterUserInfo;
     }
 }

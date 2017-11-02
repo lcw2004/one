@@ -3,15 +3,26 @@ package com.lcw.one.util.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 public class GsonUtil {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static Gson getGson() {
-        return new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT).create();
+        // Get the date adapter
+        TypeAdapter<Date> dateTypeAdapter = gson.getAdapter(Date.class);
+        // Ensure the DateTypeAdapter is null safe
+        TypeAdapter<Date> safeDateTypeAdapter = dateTypeAdapter.nullSafe();
+        // Build the definitive safe Gson instance
+        return new GsonBuilder()
+                .setDateFormat(DATE_FORMAT)
+                .registerTypeAdapter(Date.class, safeDateTypeAdapter)
+                .create();
     }
 
     public static String toJson(Object obj) {

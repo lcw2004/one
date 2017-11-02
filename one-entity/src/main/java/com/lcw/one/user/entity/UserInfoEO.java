@@ -5,6 +5,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lcw.one.sys.entity.SysMenuEO;
+import com.lcw.one.user.constant.UserInfoStatusEnum;
+import com.lcw.one.user.constant.UserSupplierStatusEnum;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,15 +23,19 @@ public class UserInfoEO {
     private String account;
     private String name;
     private Integer gender;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
     private String identityNumber;
     private String password;
     private Integer type;
     private String createIp;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     private String lastLoginIp;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastLoginTime;
     private Integer status;
+    private String statusCn;
 
     private UserContactInfoEO userContactInfo = new UserContactInfoEO();
 
@@ -73,7 +79,7 @@ public class UserInfoEO {
         this.gender = gender;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Basic
     @Column(name = "birthday")
     public Date getBirthday() {
@@ -165,6 +171,16 @@ public class UserInfoEO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public String getStatusCn() {
+        statusCn = UserInfoStatusEnum.get(status).getLabel();
+        return statusCn;
+    }
+
+    public void setStatusCn(String statusCn) {
+        this.statusCn = statusCn;
     }
 
     @OneToOne(cascade = {CascadeType.ALL})

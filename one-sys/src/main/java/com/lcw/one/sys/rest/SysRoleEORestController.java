@@ -25,7 +25,7 @@ public class SysRoleEORestController {
 
     @ApiOperation(value = "角色详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysRoleEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<SysRoleEO> getById(@PathVariable("id") String id) {
         return Result.success(sysRoleEOService.get(id));
     }
 
@@ -50,7 +50,7 @@ public class SysRoleEORestController {
 
     @ApiOperation(value = "删除角色")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         sysRoleEOService.delete(id);
         return Result.success();
     }

@@ -51,4 +51,8 @@ public class SysMenuEODao extends BaseRepositoryImpl<SysMenuEO, String> {
         String hql = "update SysMenuEO set delFlag = '" + DeleteFlagEnum.DELETE.getValue() + "' where id parentIds like ?";
         executeUpdate(hql, parentIds + "%");
     }
+
+    public void updateSort(String id, Integer sort) {
+        executeUpdate("update SysMenuEO set sort = ?1 where id = ?2", sort, id);
+    }
 }

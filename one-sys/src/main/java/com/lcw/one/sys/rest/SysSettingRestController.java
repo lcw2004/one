@@ -2,6 +2,7 @@ package com.lcw.one.sys.rest;
 
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
+import com.lcw.one.util.utils.RequestUtils;
 import com.lcw.one.util.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class SysSettingRestController {
 
     @ApiOperation(value = "配置列表")
     @GetMapping("")
-    public ResponseMessage<Map<String, Object>> listSetting() {
+    public ResponseMessage<Map<String, Object>> listSetting(HttpServletRequest request) {
         Map<String, Object> settingMap = new HashMap<>();
         settingMap.put("appName", environment.getProperty("application.name"));
         settingMap.put("appShortName", environment.getProperty("application.shortName"));
@@ -32,6 +34,7 @@ public class SysSettingRestController {
         String maxFileSizeShow = environment.getProperty("spring.http.multipart.max-file-size");
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
+        settingMap.put("basePath", RequestUtils.getBasePath(request));
         return Result.success(settingMap);
     }
 

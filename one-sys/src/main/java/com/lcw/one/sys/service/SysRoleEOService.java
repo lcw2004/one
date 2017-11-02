@@ -11,6 +11,7 @@ import com.lcw.one.util.utils.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +46,15 @@ public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO> {
 
     public List<SysRoleEO> getSysRoleListByUserId(String userId) {
         return dao.getSysRoleListByUserId(userId);
+    }
+
+    public List<String> getSysRoleIdListByUserId(String userId) {
+        List<SysRoleEO> sysRoleEOList = getSysRoleListByUserId(userId);
+        List<String> roleIdList = new ArrayList<>();
+        for (SysRoleEO sysRole: sysRoleEOList) {
+            roleIdList.add(sysRole.getId());
+        }
+        return roleIdList;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class EmailSender {
     }
 
     public void sendEmail(String email, String title, String content) {
-        logger.debug("To:[{}], title:[{}], Content:[{}]", email, title, content);
+        logger.info("To:[{}], title:[{}], Content:[{}]", email, title, content);
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             mimeMessage.addHeader("Content-Type", "text/html;charset=UTF-8");
@@ -43,7 +43,7 @@ public class EmailSender {
     }
 
     public void sendEmail(List<String> emailList, String title, String content) {
-        logger.debug("To:[{}], title:[{}], Content:[{}]", emailList, title, content);
+        logger.info("To:[{}], title:[{}], Content:[{}]", emailList, title, content);
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             mimeMessage.addHeader("Content-Type", "text/html;charset=UTF-8");

@@ -1,8 +1,10 @@
 package com.lcw.one.util.utils;
 
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -49,6 +51,14 @@ public class ObjectUtils {
         String json = GsonUtil.t2Json(obj);
         T dest = (T) GsonUtil.fromJson(json, obj.getClass());
         return dest;
+    }
+
+    public static <E> List<E> cloneAs(Collection objList, Class targetClass) {
+        List<E> copyList = new ArrayList<>();
+        for (Object obj : objList) {
+            copyList.add((E) cloneAs(obj, targetClass));
+        }
+        return copyList;
     }
 
     /**

@@ -33,7 +33,7 @@ public class PageInfo<T> {
     private List<T> list = new ArrayList<T>();
 
     // 预留，用于传输分页时候需要传输的数据
-    private Map<String, String> ext = new HashMap<>();
+    private Map<String, Object> ext = new HashMap<>();
 
     // 排序
     private String orderBy = "";
@@ -102,8 +102,12 @@ public class PageInfo<T> {
      * @param list     本页数据对象列表
      */
     public PageInfo(Integer pageNo, Integer pageSize, Long count, List<T> list) {
-        if (pageNo == null) pageNo = 1;
-        if (pageSize == null) pageSize = 10;
+        if (pageNo == null) {
+            pageNo = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
         this.setCount(count);
         this.setPageNo(pageNo);
         this.setPageSize(pageSize);
@@ -202,11 +206,11 @@ public class PageInfo<T> {
         this.orderBy = orderBy;
     }
 
-    public Map<String, String> getExt() {
+    public Map<String, Object> getExt() {
         return ext;
     }
 
-    public void setExt(Map<String, String> ext) {
+    public void setExt(Map<String, Object> ext) {
         this.ext = ext;
     }
 

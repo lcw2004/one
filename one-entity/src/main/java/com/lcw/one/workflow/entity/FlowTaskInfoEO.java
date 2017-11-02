@@ -15,6 +15,12 @@ public class FlowTaskInfoEO {
     private Integer valid;
     private String taskDesc;
 
+    private Integer x;
+    private Integer y;
+    private Integer height;
+    private Integer width;
+
+
     @Id
     @Column(name = "process_key")
     public String getProcessKey() {
@@ -95,35 +101,43 @@ public class FlowTaskInfoEO {
         this.taskDesc = taskDesc;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FlowTaskInfoEO that = (FlowTaskInfoEO) o;
-
-        if (processKey != null ? !processKey.equals(that.processKey) : that.processKey != null) return false;
-        if (taskKey != null ? !taskKey.equals(that.taskKey) : that.taskKey != null) return false;
-        if (bindRole != null ? !bindRole.equals(that.bindRole) : that.bindRole != null) return false;
-        if (bindForm != null ? !bindForm.equals(that.bindForm) : that.bindForm != null) return false;
-        if (taskName != null ? !taskName.equals(that.taskName) : that.taskName != null) return false;
-        if (rankNum != null ? !rankNum.equals(that.rankNum) : that.rankNum != null) return false;
-        if (valid != null ? !valid.equals(that.valid) : that.valid != null) return false;
-        if (taskDesc != null ? !taskDesc.equals(that.taskDesc) : that.taskDesc != null) return false;
-
-        return true;
+    @Basic
+    @Column(name = "x")
+    public Integer getX() {
+        return x;
     }
 
-    @Override
-    public int hashCode() {
-        int result = processKey != null ? processKey.hashCode() : 0;
-        result = 31 * result + (taskKey != null ? taskKey.hashCode() : 0);
-        result = 31 * result + (bindRole != null ? bindRole.hashCode() : 0);
-        result = 31 * result + (bindForm != null ? bindForm.hashCode() : 0);
-        result = 31 * result + (taskName != null ? taskName.hashCode() : 0);
-        result = 31 * result + (rankNum != null ? rankNum.hashCode() : 0);
-        result = 31 * result + (valid != null ? valid.hashCode() : 0);
-        result = 31 * result + (taskDesc != null ? taskDesc.hashCode() : 0);
-        return result;
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    @Basic
+    @Column(name = "y")
+    public Integer getY() {
+        return y;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
+    }
+
+    @Basic
+    @Column(name = "height")
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    @Basic
+    @Column(name = "width")
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
     }
 }

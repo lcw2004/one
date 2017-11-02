@@ -3,6 +3,7 @@ package com.lcw.one.util.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 功能描述：根据时间格式获取当前时间
      *
+     * @param date 当前时间
+     * @return
+     */
+    public static String dateToString(Date date) {
+        return dateToString(date, yyyy_MM_dd_HH_mm_ss_EN);
+    }
+
+    /**
+     * 功能描述：根据时间格式获取当前时间
+     *
      * @param date          当前时间
      * @param dateFormatStr 时间格式化字符串
      * @return
@@ -42,6 +53,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return format.format(date);
         }
         return null;
+    }
+
+
+    /**
+     * 功能描述：将字符串转为时间
+     *
+     * @param dateTimeStr 当前时间
+     * @return
+     */
+    public static Date stringToDate(String dateTimeStr) {
+        return stringToDate(dateTimeStr, yyyy_MM_dd_HH_mm_ss_EN);
     }
 
     /**
@@ -62,6 +84,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String weekdayOf(Date date) {
+        final String dayNames[] = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (dayOfWeek < 0) {
+            dayOfWeek = 0;
+        }
+        return dayNames[dayOfWeek];
     }
 
 }

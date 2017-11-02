@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class SysDictEORestController {
 
     @ApiOperation(value = "字典详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysDictEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<SysDictEO> getById(@PathVariable("id") String id) {
         return Result.success(sysDictEOService.get(id));
     }
 
@@ -54,7 +53,7 @@ public class SysDictEORestController {
 
     @ApiOperation(value = "删除字典")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         sysDictEOService.delete(id);
         return Result.success();
     }

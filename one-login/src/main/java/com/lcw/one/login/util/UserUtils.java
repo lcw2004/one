@@ -32,7 +32,7 @@ public class UserUtils {
     public static final String CACHE_MENU_TREE = "menuTree";
     public static final String CACHE_AREA_LIST = "areaList";
     public static final String CACHE_OFFICE_LIST = "officeList";
-    public static final  String LOGIN_FAIL_COUNT = "LOGIN_FAIL_COUNT";
+    public static final String LOGIN_FAIL_COUNT = "LOGIN_FAIL_COUNT";
     private static final Long LOGIN_FAIL_COUNT_LIMIT_TIME = 60 * 10L;
 
     private static UserInfoEOService userService = SpringContextHolder.getBean(UserInfoEOService.class);
@@ -55,7 +55,6 @@ public class UserUtils {
 
     /**
      * 获取当前登录用户ID
-     *
      */
     public static String getUserId() {
         String userId = null;
@@ -73,18 +72,17 @@ public class UserUtils {
 
     /**
      * 获取当前登录用户信息
-     *
      */
     public static UserInfoEO getUser() {
         UserInfoEO user = (UserInfoEO) CacheUtils.getCache(CURRENT_USER);
         if (user == null) {
             String userId = getUserId();
 
-            if(StringUtils.isNotEmpty(userId)) {
+            if (StringUtils.isNotEmpty(userId)) {
                 UserInfoEO userInDb = userService.get(userId);
                 user = ObjectUtils.clone(userInDb);
                 user.setPassword(null);
-                if(user.getUserContactInfo() == null) {
+                if (user.getUserContactInfo() == null) {
                     user.setUserContactInfo(new UserContactInfoEO());
                 }
 
@@ -105,7 +103,7 @@ public class UserUtils {
                 userInDb.setIdentityNumber(userInfoEO.getIdentityNumber());
 
                 UserContactInfoEO userContactInfoEO = userInDb.getUserContactInfo();
-                if(userContactInfoEO == null) {
+                if (userContactInfoEO == null) {
                     userContactInfoEO = new UserContactInfoEO();
                     userContactInfoEO.setUserId(userId);
                 }
@@ -122,13 +120,12 @@ public class UserUtils {
 
     /**
      * 获取当前登录用户角色列表
-     *
      */
     public static List<SysRoleEO> getRoleList() {
         List<SysRoleEO> roleList = (List<SysRoleEO>) CacheUtils.getCache(CACHE_ROLE_LIST);
         if (roleList == null) {
             UserInfoEO user = getUser();
-            if(user != null) {
+            if (user != null) {
                 roleList = sysRoleEOService.getSysRoleListByUserId(user.getUserId());
             }
             CacheUtils.putCache(CACHE_ROLE_LIST, roleList);
@@ -151,7 +148,6 @@ public class UserUtils {
 
     /**
      * 获取当前登录用户菜单列表
-     *
      */
     public static List<SysMenuEO> getMenuList() {
         List<SysMenuEO> menuList = (List<SysMenuEO>) CacheUtils.getCache(CACHE_MENU_LIST);
@@ -173,7 +169,6 @@ public class UserUtils {
 
     /**
      * 获取当前登录用户菜单树
-     *
      */
     public static SysMenuEO getMenuTree() {
         SysMenuEO menu = (SysMenuEO) CacheUtils.getCache(CACHE_MENU_TREE);
@@ -189,6 +184,7 @@ public class UserUtils {
 
     /**
      * 判断用户是否是超级管理员
+     *
      * @param userInfoEO
      * @return
      */
@@ -198,6 +194,7 @@ public class UserUtils {
 
     /**
      * 获取用户菜单权限信息
+     *
      * @return
      */
     public static SimpleAuthorizationInfo getAuthInfo() {
@@ -295,6 +292,8 @@ public class UserUtils {
             }
             return map;
         }
-    };
+    }
+
+    ;
 
 }

@@ -6,7 +6,7 @@ import com.lcw.one.sys.entity.SysFileEO;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
-import com.lcw.one.util.utils.Encodes;
+import com.lcw.one.util.utils.cipher.Encodes;
 import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.StringUtils;
 import io.swagger.annotations.Api;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,12 +37,12 @@ public class SysFileDownloadRestController {
     private IFileStore iFileStore;
 
     @GetMapping("/{fileId}")
-    public ResponseMessage<SysFileEO> getById(@NotNull @PathVariable("fileId") String fileId) {
+    public ResponseMessage<SysFileEO> getById(@PathVariable("fileId") String fileId) {
         return Result.success(sysFileEOService.get(fileId));
     }
 
     @GetMapping("/{fileId}/download")
-    public void downFile(HttpServletResponse response, @NotNull @PathVariable("fileId") String fileId, String fileName) {
+    public void downFile(HttpServletResponse response, @PathVariable("fileId") String fileId, String fileName) {
         if (StringUtils.isEmpty(fileId)) {
             throw new OneBaseException("FileId不能为空");
         }

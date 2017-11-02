@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
@@ -334,5 +335,67 @@ public class Reflections {
         Object object = obj;
         String setterMethodName = SETTER_PREFIX + StringUtils.capitalize(propertyName);
         invokeMethodByName(object, setterMethodName, new Object[]{value});
+    }
+
+    /**
+     * 将Bean转为Map，如果有引用，则加点。
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> transBeanToFieldValueMap(Object obj) {
+        Map<String, Object> fieldValueMap = new LinkedHashMap<>();
+        toFieldValueMap(obj, fieldValueMap, "");
+        return fieldValueMap;
+    }
+
+    /**
+     * 获取包括父类的所有属性
+     * @param obj
+     * @return
+     */
+    public static List<Field> getAllFiledList(Class obj) {
+        List<Field> fieldList = new ArrayList<>();
+        getAllFiledList(obj, fieldList);
+        return fieldList;
+    }
+
+    private static void getAllFiledList(Class obj, List<Field> fieldList) {
+        fieldList.addAll(Arrays.asList(obj.getDeclaredFields()));
+
+        Class superClass = obj.getSuperclass();
+        if(superClass.getName().startsWith("com.lcw")) {
+            getAllFiledList(superClass, fieldList);
+        }
+    }
+
+    private static void toFieldValueMap(Object obj, Map<String, Object> valueMap, String fieldNamePrefix) {
+        for (Field field : getAllFiledList(obj.getClass())) {
+            // 字段名
+            String filedName = field.getName();
+            if (com.lcw.one.util.utils.StringUtils.isNotEmpty(fieldNamePrefix)) {
+                filedName = fieldNamePrefix + "." + field.getName();
+            }
+
+            // 字段值
+            Object fieldValue = Reflections.invokeGetter2(obj, field.getName());
+            String filedStringValue = "";
+            if (fieldValue != null) {
+                if (isNormalValue(fieldValue)) {
+                    filedStringValue = String.valueOf(fieldValue);
+                } else if (fieldValue instanceof Date) {
+                    filedStringValue = DateUtils.dateToString((Date) fieldValue, DateUtils.yyyy_MM_dd_HH_mm_ss_EN);
+                } else {
+                    toFieldValueMap(fieldValue, valueMap, filedName);
+                }
+            }
+            valueMap.put(filedName, filedStringValue);
+        }
+    }
+
+    private static boolean isNormalValue(Object obj) {
+        return obj instanceof String ||
+                obj instanceof Integer ||
+                obj instanceof Double ||
+                obj instanceof Boolean;
     }
 }

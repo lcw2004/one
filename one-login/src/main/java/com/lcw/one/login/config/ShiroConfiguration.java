@@ -1,6 +1,7 @@
 package com.lcw.one.login.config;
 
 import com.lcw.one.login.security.FormAuthenticationFilter;
+import com.lcw.one.login.security.filterChain.SimpleFilterChainDefinitionsService;
 import com.lcw.one.login.security.SystemAuthorizingRealm;
 import com.lcw.one.util.constant.GlobalConfig;
 import org.apache.shiro.SecurityUtils;
@@ -71,21 +72,31 @@ public class ShiroConfiguration implements EnvironmentAware {
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         filterMap.put("authc", new FormAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
+        return shiroFilterFactoryBean;
+    }
 
+    @Bean
+    public SimpleFilterChainDefinitionsService abstractFilterChainDefinitionsService() {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/login", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/verifyCode", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/user/supplierRegistry/*", "anon");
+        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/account/*", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/**", "user");
+        filterChainDefinitionMap.put("/account.html", "anon");
         filterChainDefinitionMap.put("/index.html", "user");
         filterChainDefinitionMap.put("/", "user");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/**", "user");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        return shiroFilterFactoryBean;
+
+        SimpleFilterChainDefinitionsService definitionsService = new SimpleFilterChainDefinitionsService();
+        definitionsService.setShiroFilterFactoryBean(shiroFilterFactoryBean());
+        definitionsService.setDefaultFilterChainDefinitionMap(filterChainDefinitionMap);
+        definitionsService.initPermission();
+        definitionsService.updatePermission();
+        return definitionsService;
     }
 
-    
     @Bean(name = "securityManager")
     public SecurityManager securityManager() {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();

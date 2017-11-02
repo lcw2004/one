@@ -16,4 +16,8 @@ public class FlowAuditItemEODao extends BaseRepositoryImpl<FlowAuditItemEO, Stri
         super(JpaEntityInformationSupport.getEntityInformation(FlowAuditItemEO.class, entityManager), entityManager);
     }
 
+    public FlowAuditItemEO getByBusinessIdAndNotFinished(String businessId, String businessType) {
+        return getByHql("from FlowAuditItemEO where isFinished = 0 and businessId = ?1 and businessType = ?2", businessId, businessType);
+    }
+
 }

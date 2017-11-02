@@ -14,6 +14,7 @@ import java.util.Date;
 public class UserBaseInfoEO {
     private String userId;
     private Integer gender;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
     private String identityNumber;
 

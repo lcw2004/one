@@ -24,7 +24,7 @@ public class SysAreaEORestController {
 
     @ApiOperation(value = "区域详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysAreaEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<SysAreaEO> getById(@PathVariable("id") String id) {
         return Result.success(sysAreaEOService.get(id));
     }
 
@@ -55,7 +55,7 @@ public class SysAreaEORestController {
 
     @ApiOperation(value = "删除区域")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         sysAreaEOService.delete(id);
         return Result.success();
     }

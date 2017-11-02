@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 public class AddExpiresHeaderResponse extends HttpServletResponseWrapper {
-    private static final String[] CACHEABLE_CONTENT_TYPES = new String[]{"text/css", "text/javascript", "application/javascript", "image/png", "image/jpeg", "image/gif", "image/jpg"};
+    private static final String[] CACHEABLE_CONTENT_TYPES = new String[]{"text/css", "text/javascript", "application/javascript", "image/png", "image/jpeg", "image/gif", "image/jpg", "application/font-woff2"};
     private long maxAge = 0;
 
     static {

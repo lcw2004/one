@@ -1,11 +1,11 @@
 package com.lcw.one.user.service;
 
-import com.lcw.one.sys.entity.SysUserRoleEO;
 import com.lcw.one.user.dao.UserInfoEODao;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.service.CrudService;
-import com.lcw.one.util.utils.PasswordUtils;
+
+import com.lcw.one.util.utils.cipher.password.PasswordUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +29,12 @@ public class UserInfoEOService extends CrudService<UserInfoEODao, UserInfoEO> {
         dao.save(userInfoEO);
     }
 
+    public void updatePassword(String userId, String newPassword) {
+        UserInfoEO userInfoEO = dao.getOne(userId);
+        userInfoEO.setPassword(PasswordUtils.encryptPassword(newPassword));
+        dao.save(userInfoEO);
+    }
+
     public void updateUserInfoEO(UserInfoEO userInfoEO) {
         UserInfoEO userInfoEOInDb = get(userInfoEO.getUserId());
         userInfoEOInDb.setName(userInfoEO.getName());
@@ -37,5 +43,9 @@ public class UserInfoEOService extends CrudService<UserInfoEODao, UserInfoEO> {
         userInfoEOInDb.setIdentityNumber(userInfoEO.getIdentityNumber());
         userInfoEOInDb.setUserContactInfo(userInfoEO.getUserContactInfo());
         dao.save(userInfoEOInDb);
+    }
+
+    public boolean isExistByAccount(String account) {
+        return dao.isExistByAccount(account);
     }
 }

@@ -88,14 +88,12 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 
     @Override
     public <E> List<E> list(String hql, Object... params) {
-        Query query = RepositoryUtils.getQueryWithParams(entityManager, hql, params);
-        return query.getResultList();
+        return executeList(hql, params);
     }
 
     @Override
     public <E> List<E> list(String hql, Map<String, Object> params) {
-        Query query = RepositoryUtils.getQueryWithParamMap(entityManager, hql, params);
-        return query.getResultList();
+        return executeList(hql, params);
     }
 
     @Override
@@ -131,7 +129,6 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         return RepositoryUtils.getFirst(query);
     }
 
-
     @Override
     public <E> PageInfo<E> executePage(PageInfo pageInfo, String hql, Object... params) {
         // 查询数据，统计条数
@@ -150,17 +147,30 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
 
     @Override
     public <E> PageInfo<E> executePage(PageInfo pageInfo, String hql, Map<String, Object> params) {
-        // 查询数据，统计条数
+        // 查询数据
         Query query = RepositoryUtils.getQueryWithParamMap(entityManager, hql, params);
         query.setFirstResult((pageInfo.getPageNo() - 1) * pageInfo.getPageSize());
         query.setMaxResults(pageInfo.getPageSize());
         List<T> resultList = query.getResultList();
 
+        // 统计条数
         Query pageQuery = RepositoryUtils.getQueryWithParamMap(entityManager, RepositoryUtils.buildCountHQL(hql), params);
         long count = (long) pageQuery.getSingleResult();
 
         pageInfo.setList(resultList);
         pageInfo.setCount(count);
         return pageInfo;
+    }
+
+    @Override
+    public <E> List<E> executeList(String hql, Object... params) {
+        Query query = RepositoryUtils.getQueryWithParams(entityManager, hql, params);
+        return query.getResultList();
+    }
+
+    @Override
+    public <E> List<E> executeList(String hql, Map<String, Object> params) {
+        Query query = RepositoryUtils.getQueryWithParamMap(entityManager, hql, params);
+        return query.getResultList();
     }
 }

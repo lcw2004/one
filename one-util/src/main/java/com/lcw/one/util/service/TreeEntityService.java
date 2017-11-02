@@ -41,4 +41,9 @@ public class TreeEntityService<D extends BaseRepositoryImpl, T extends TreeEntit
     public void deleteTreeEntity(String id) {
         dao.deleteTreeEntity(id);
     }
+
+    public TreeEntity listAsTree() {
+        TreeEntity treeEntity = organizeListAsTree(get("1"), findAll());
+        return treeEntity;
+    }
 }

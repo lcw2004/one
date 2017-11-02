@@ -21,6 +21,11 @@ public class UserInfoEODao extends BaseRepositoryImpl<UserInfoEO, String> {
         return getByHql("from UserInfoEO where account = ?1", account);
     }
 
+    public boolean isExistByAccount(String account) {
+        long count = executeGet("select count(1) from UserInfoEO where account = ?1", account);
+        return count > 0;
+    }
+
     public void updateUserLoginInfo(String userId, String loginIp) {
         UserInfoEO userInfoEO = getOne(userId);
         userInfoEO.setLastLoginIp(loginIp);

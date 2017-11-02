@@ -25,7 +25,7 @@ public class FlowAuditItemEORestController {
 
     @ApiOperation(value = "审核事项详情")
     @GetMapping("/{id}")
-    public ResponseMessage<FlowAuditItemEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<FlowAuditItemEO> getById(@PathVariable("id") String id) {
         return Result.success(flowAuditItemEOService.get(id));
     }
 
@@ -50,7 +50,7 @@ public class FlowAuditItemEORestController {
 
     @ApiOperation(value = "删除审核事项")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         flowAuditItemEOService.delete(id);
         return Result.success();
     }

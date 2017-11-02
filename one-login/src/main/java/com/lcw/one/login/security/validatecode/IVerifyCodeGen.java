@@ -9,9 +9,9 @@ import java.io.OutputStream;
 public interface IVerifyCodeGen {
 
     /**
-     * 生成验证码并返回code，将图片写的os中
-     * @param width
-     * @param height
+     * 生成验证码并返回code，将图片写到传入的os中
+     * @param width 宽度
+     * @param height 高度
      * @param os
      * @return
      * @throws IOException
@@ -20,8 +20,8 @@ public interface IVerifyCodeGen {
 
     /**
      * 生成验证码对象
-     * @param width
-     * @param height
+     * @param width 宽度
+     * @param height 高度
      * @return
      * @throws IOException
      */

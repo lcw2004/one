@@ -18,7 +18,7 @@ public class GlobalConfigInitializer implements EnvironmentAware  {
 
     @Override
     public void setEnvironment(Environment env) {
-        logger.debug("Init global config");
+        logger.info("Init global config");
         if (StringUtils.isEmpty(GlobalConfig.getRestApiPath())) {
             GlobalConfig.setRestApiPath(env.getProperty("restPath"));
         }

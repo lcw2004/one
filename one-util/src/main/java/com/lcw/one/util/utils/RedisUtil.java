@@ -12,8 +12,14 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
+    private static final String LOCK = "_LOCK";
+
     @Autowired
     private RedisTemplate redisTemplate;
+
+    public RedisTemplate getRedisTemplate() {
+        return redisTemplate;
+    }
 
     public void remove(String... keys) {
         for (String key : keys) {
@@ -72,6 +78,31 @@ public class RedisUtil {
 
     public void expire(String key, Long expireTime) {
         this.redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 锁住资源，如果资源已经被锁住了，返回false，如果成功锁住资源，返回true，60秒钟后自动解锁
+     * @param key
+     * @return
+     */
+    public boolean lock(String key) {
+        String newKey = key + LOCK;
+        if(exists(newKey)) {
+            return false;
+        }
+
+        return set(newKey, "1", 60L);
+    }
+
+    /**
+     * 解锁资源
+     * @param key
+     * @return
+     */
+    public boolean unlock(String key) {
+        String newKey = key + LOCK;
+        remove(newKey);
+        return true;
     }
 }
 

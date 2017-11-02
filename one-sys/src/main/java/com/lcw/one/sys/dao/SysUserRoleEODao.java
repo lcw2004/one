@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformationSuppo
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Component
 public class SysUserRoleEODao extends BaseRepositoryImpl<SysUserRoleEO, String> {
@@ -16,4 +17,7 @@ public class SysUserRoleEODao extends BaseRepositoryImpl<SysUserRoleEO, String> 
         super(JpaEntityInformationSupport.getEntityInformation(SysUserRoleEO.class, entityManager), entityManager);
     }
 
+    public void deleteRoleWhereNotIn(String userId, List<String> roleIdList) {
+        executeUpdate("delete from SysUserRoleEO where userId = ?1 and roleId not in ?2", userId, roleIdList);
+    }
 }

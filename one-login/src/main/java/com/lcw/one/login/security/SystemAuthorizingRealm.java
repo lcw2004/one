@@ -1,14 +1,17 @@
 package com.lcw.one.login.security;
 
-import com.lcw.one.login.rest.LoginRestController;
+import com.lcw.one.baseInfo.constant.VerifyCodeTypeEnum;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.CookieUtils;
-import com.lcw.one.util.utils.Encodes;
 import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.SpringContextHolder;
+import com.lcw.one.util.utils.StringUtils;
+import com.lcw.one.util.utils.cipher.Encodes;
+import com.lcw.one.util.utils.cipher.password.PasswordUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -42,10 +45,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
     private static final Logger logger = LoggerFactory.getLogger(SystemAuthorizingRealm.class);
 
-    private static final String HASH_ALGORITHM = "SHA-1";
-    private static final int HASH_INTERATIONS = 1024;
-    public static final int SALT_SIZE = 8;
-
     private UserInfoEOService userService;
 
     private RedisUtil redisUtil;
@@ -75,16 +74,19 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         if (UserUtils.isNeedValidCode(token.getUsername())) {
             HttpServletRequest request = WebUtils.getHttpRequest(SecurityUtils.getSubject());
             String cookieValue = CookieUtils.getCookieValue(request);
-            String validCode = getRedisUtil().get(cookieValue + "_" + LoginRestController.LOGIN_VALID_CODE);
+            String validCode = getRedisUtil().get(cookieValue + "_" + VerifyCodeTypeEnum.LOGIN.getCode());
             if (token.getCaptcha() == null || !token.getCaptcha().toUpperCase().equals(validCode)) {
                 throw new CaptchaException("验证码错误.");
             }
-            getRedisUtil().remove(cookieValue + "_" + LoginRestController.LOGIN_VALID_CODE);
+            getRedisUtil().remove(cookieValue + "_" + VerifyCodeTypeEnum.LOGIN.getCode());
         }
 
         UserInfoEO user = getUserService().getUserByLoginName(token.getUsername());
         if (user == null) {
             return null;
+        }
+        if (StringUtils.isEmpty(user.getPassword())) {
+            throw new OneBaseException("用户密码为空");
         }
 
         byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
@@ -112,8 +114,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
      */
     @PostConstruct
     public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(HASH_ALGORITHM);
-        matcher.setHashIterations(HASH_INTERATIONS);
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(PasswordUtils.HASH_ALGORITHM);
+        matcher.setHashIterations(PasswordUtils.HASH_INTERATIONS);
         setCredentialsMatcher(matcher);
     }
 

@@ -1,16 +1,21 @@
 package com.lcw.one.workflow.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "flow_state")
 public class FlowStateEO {
     private String processKey;
     private Integer processState;
-    private Date upTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date lastUpdateTime;
     private String processDefinitionId;
     private String processName;
+    private List<FlowTaskInfoEO> flowTaskInfoEOList;
 
     @Id
     @Column(name = "process_key")
@@ -33,13 +38,13 @@ public class FlowStateEO {
     }
 
     @Basic
-    @Column(name = "up_time")
-    public Date getUpTime() {
-        return upTime;
+    @Column(name = "last_update_time")
+    public Date getLastUpdateTime() {
+        return lastUpdateTime;
     }
 
-    public void setUpTime(Date upTime) {
-        this.upTime = upTime;
+    public void setLastUpdateTime(Date lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
 
     @Basic
@@ -62,6 +67,15 @@ public class FlowStateEO {
         this.processName = processName;
     }
 
+    @Transient
+    public List<FlowTaskInfoEO> getFlowTaskInfoEOList() {
+        return flowTaskInfoEOList;
+    }
+
+    public void setFlowTaskInfoEOList(List<FlowTaskInfoEO> flowTaskInfoEOList) {
+        this.flowTaskInfoEOList = flowTaskInfoEOList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,7 +85,7 @@ public class FlowStateEO {
 
         if (processKey != null ? !processKey.equals(that.processKey) : that.processKey != null) return false;
         if (processState != null ? !processState.equals(that.processState) : that.processState != null) return false;
-        if (upTime != null ? !upTime.equals(that.upTime) : that.upTime != null) return false;
+        if (lastUpdateTime != null ? !lastUpdateTime.equals(that.lastUpdateTime) : that.lastUpdateTime != null) return false;
         if (processDefinitionId != null ? !processDefinitionId.equals(that.processDefinitionId) : that.processDefinitionId != null)
             return false;
         if (processName != null ? !processName.equals(that.processName) : that.processName != null) return false;
@@ -83,7 +97,7 @@ public class FlowStateEO {
     public int hashCode() {
         int result = processKey != null ? processKey.hashCode() : 0;
         result = 31 * result + (processState != null ? processState.hashCode() : 0);
-        result = 31 * result + (upTime != null ? upTime.hashCode() : 0);
+        result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
         result = 31 * result + (processDefinitionId != null ? processDefinitionId.hashCode() : 0);
         result = 31 * result + (processName != null ? processName.hashCode() : 0);
         return result;

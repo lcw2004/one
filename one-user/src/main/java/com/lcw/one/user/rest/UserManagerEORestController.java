@@ -24,7 +24,7 @@ public class UserManagerEORestController {
 
     @ApiOperation(value = "管理用户详情")
     @GetMapping("/{id}")
-    public ResponseMessage<UserManagerEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<UserManagerEO> getById(@PathVariable("id") String id) {
         return Result.success(userManagerEOService.get(id));
     }
 
@@ -48,7 +48,7 @@ public class UserManagerEORestController {
 
     @ApiOperation(value = "删除管理用户")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         userManagerEOService.delete(id);
         return Result.success();
     }

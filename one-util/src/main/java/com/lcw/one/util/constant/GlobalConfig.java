@@ -13,7 +13,7 @@ public class GlobalConfig {
     /**
      * 注册验证码失效时间
      */
-    private static Long registryCodeExpireTime = 60 * 5L;
+    private static Long registryCodeExpireTime = 60 * 30L;
 
     /**
      * 登录失败次数限制

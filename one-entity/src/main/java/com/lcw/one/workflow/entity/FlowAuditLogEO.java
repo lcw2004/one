@@ -1,5 +1,8 @@
 package com.lcw.one.workflow.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lcw.one.user.entity.UserInfoEO;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,11 +15,14 @@ import java.util.Date;
 public class FlowAuditLogEO {
     private String auditLogId;
     private String auditItemId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date auditTime;
     private String userId;
     private Integer result;
     private String remark;
     private String operateName;
+    private String ip;
+    private UserInfoEO userInfo;
 
     @Id
     @Column(name = "audit_log_id")
@@ -88,4 +94,23 @@ public class FlowAuditLogEO {
         this.operateName = operateName;
     }
 
+    @Basic
+    @Column(name = "ip")
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    public UserInfoEO getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoEO userInfo) {
+        this.userInfo = userInfo;
+    }
 }

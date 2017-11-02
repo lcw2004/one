@@ -25,7 +25,7 @@ public class ${restSimpleName} {
 
     @ApiOperation(value = "|${beanSimpleName}|详情")
     @GetMapping("/{id}")
-    public ResponseMessage<${beanSimpleName}> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<${beanSimpleName}> getById(@PathVariable("id") String id) {
         return Result.success(${serviceVarName}.get(id));
     }
 
@@ -50,7 +50,7 @@ public class ${restSimpleName} {
 
     @ApiOperation(value = "删除|${beanSimpleName}|")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         ${serviceVarName}.delete(id);
         return Result.success();
     }

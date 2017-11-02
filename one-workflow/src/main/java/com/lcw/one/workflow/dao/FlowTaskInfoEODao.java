@@ -33,4 +33,8 @@ public class FlowTaskInfoEODao extends BaseRepositoryImpl<FlowTaskInfoEO, String
         super.executeUpdate("delete from FlowTaskInfoEO where processKey = ?1", processKey);
     }
 
+    public void deleteByTaskKeyNotExist(String processKey, List<String> taskKeyList) {
+        super.executeUpdate("delete from FlowTaskInfoEO where processKey = ?1 and taskKey not in ?2", processKey, taskKeyList);
+    }
+
 }

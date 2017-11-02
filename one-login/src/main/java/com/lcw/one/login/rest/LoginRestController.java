@@ -1,5 +1,6 @@
 package com.lcw.one.login.rest;
 
+import com.lcw.one.baseInfo.constant.VerifyCodeTypeEnum;
 import com.lcw.one.login.security.UsernamePasswordToken;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.security.validatecode.IVerifyCodeGen;
@@ -7,15 +8,19 @@ import com.lcw.one.login.security.validatecode.SimpleCharVerifyCodeGenImpl;
 import com.lcw.one.login.security.validatecode.VerifyCode;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.sys.entity.SysMenuEO;
+import com.lcw.one.user.constant.UserInfoTypeEnum;
+import com.lcw.one.user.constant.UserSupplierStatusEnum;
 import com.lcw.one.user.entity.UserInfoEO;
+import com.lcw.one.user.entity.UserSupplierEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.constant.GlobalConfig;
 import com.lcw.one.util.exception.LoginInvalidException;
 import com.lcw.one.util.http.CookieUtils;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
+import com.lcw.one.util.utils.LoginUserUtils;
 import com.lcw.one.util.utils.RedisUtil;
-import com.lcw.one.util.utils.RequestUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -34,6 +39,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Validated
 @Controller
@@ -42,10 +50,12 @@ import java.io.IOException;
 public class LoginRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginRestController.class);
-    public static final String LOGIN_VALID_CODE = "LOGIN_VALID_CODE";
 
     @Autowired
     private UserInfoEOService userService;
+
+    @Autowired
+    private UserSupplierEOService userSupplierEOService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -63,7 +73,7 @@ public class LoginRestController {
             VerifyCode verifyCode = iVerifyCodeGen.generate(80, 28);
 
             String cookieValue = CookieUtils.getCookieValueIfNullThenSetCookie(request, response);
-            redisUtil.set(cookieValue + "_" + LOGIN_VALID_CODE, verifyCode.getCode(), GlobalConfig.getRegistryCodeExpireTime());
+            redisUtil.set(cookieValue + "_" + VerifyCodeTypeEnum.LOGIN.getCode(), verifyCode.getCode(), GlobalConfig.getRegistryCodeExpireTime());
 
             request.getSession().setAttribute("VerifyCode", verifyCode.getCode());
             response.setHeader("Pragma", "no-cache");
@@ -85,6 +95,7 @@ public class LoginRestController {
                                      @RequestParam @NotNull(message = "请输入密码") String password,
                                      @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
                                      String verifyCode) {
+        String authCode = "";
         Subject subject = SecurityUtils.getSubject();
         try {
             UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password.toCharArray(), verifyCode);
@@ -93,10 +104,21 @@ public class LoginRestController {
 
 
             String cookieValue = CookieUtils.setCookie(request, response);
-            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER, UserUtils.getUser());
-            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER_ID, UserUtils.getUserId());
-            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_USER_NAME, UserUtils.getUser().getName());
-            RequestUtils.cacheCookieInfo(cookieValue + "_" + RequestUtils.LOGIN_ROLE_ID, UserUtils.getRoleIds());
+            LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_USER, UserUtils.getUser());
+            LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_USER_ID, UserUtils.getUserId());
+            LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_USER_NAME, UserUtils.getUser().getName());
+            LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_ROLE_ID, UserUtils.getRoleIds());
+
+            // 非供应商用户不需要完善登录信息
+            UserInfoEO user = UserUtils.getUser();
+            if (user.getType() == UserInfoTypeEnum.SUPPLIER.getValue()) {
+                UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
+                LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_SUPPLIER_ID, userSupplierEO.getSupplierId());
+                LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_SUPPLIER, userSupplierEO);
+            }
+
+            // 返回授权码
+            authCode = cookieValue;
         } catch (CaptchaException e) {
             logger.info("验证码验证失败");
             return Result.error("0002", "您输入的验证码不正确");
@@ -118,14 +140,16 @@ public class LoginRestController {
             return Result.error(e.getMessage());
         }
 
-        return Result.success();
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("authCode", authCode);
+        return Result.success(resultMap);
     }
 
     @ApiOperation(value = "退出登录")
     @GetMapping("/logout")
     @ResponseBody
     public ResponseMessage logout(HttpServletRequest request, HttpServletResponse response) {
-        RequestUtils.clearAll(request);
+        LoginUserUtils.clearAll(CookieUtils.getCookieValue(request));
         CookieUtils.removeCookie(request, response);
         UserUtils.logout();
         return Result.success();
@@ -140,13 +164,46 @@ public class LoginRestController {
     @ApiOperation(value = "获取登录用户信息")
     @GetMapping("/userInfo")
     @ResponseBody
-    public ResponseMessage<UserInfoEO> userInfo() {
+    public ResponseMessage<UserInfoEO> userInfo(HttpServletRequest request) {
+        LoginUserUtils.getLoginUserId(request);
         UserInfoEO user = UserUtils.getUser();
         if (user == null) {
             throw new LoginInvalidException();
         }
         return Result.success(user);
     }
+
+    @ApiOperation(value = "获取当前登录供应商信息")
+    @GetMapping("/supplierInfo")
+    @ResponseBody
+    public ResponseMessage<UserSupplierEO> supplierInfo() {
+        UserInfoEO user = UserUtils.getUser();
+        if (user == null) {
+            throw new LoginInvalidException();
+        }
+
+        UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
+        return Result.success(userSupplierEO);
+    }
+
+    @ApiOperation(value = "判断是否需要完善供应商信息")
+    @GetMapping("/isNeedPerfectSupplierInfo")
+    @ResponseBody
+    public ResponseMessage<Boolean> isNeedPerfectSupplierInfo(HttpServletRequest request) {
+        UserInfoEO user = UserUtils.getUser();
+        if (user == null) {
+            throw new LoginInvalidException();
+        }
+
+        // 非供应商用户不需要完善登录信息
+        if (user.getType() != UserInfoTypeEnum.SUPPLIER.getValue()) {
+            return Result.success(false);
+        }
+
+        UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
+        return Result.success(Objects.equals(userSupplierEO.getStatus(), UserSupplierStatusEnum.NOT_COMMIT.getValue()));
+    }
+
 
     @ApiOperation(value = "获取登录用户菜单权限")
     @GetMapping("/userMenu")
@@ -172,4 +229,20 @@ public class LoginRestController {
         return Result.success();
     }
 
+    @ApiOperation(value = "检查是否已经登录")
+    @GetMapping("/isLogin")
+    @ResponseBody
+    public ResponseMessage<Map<String, Object>> isLogin(HttpServletRequest request) {
+        Boolean isLogin = false;
+        try {
+            LoginUserUtils.getLoginUserId(request);
+            isLogin = true;
+        } catch (LoginInvalidException e) {
+        }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("authCode", CookieUtils.getCookieValue(request));
+        resultMap.put("isLogin", isLogin);
+        return Result.success(resultMap);
+    }
 }

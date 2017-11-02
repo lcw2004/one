@@ -2,11 +2,13 @@ package com.lcw.one.util.service;
 
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import com.lcw.one.util.persistence.entity.TreeEntity;
+import com.lcw.one.util.utils.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -17,6 +19,10 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T> {
     @Autowired
     protected D dao;
 
+    public void flush() {
+        dao.flush();
+    }
+
     @Transactional
     public T save(T entity) {
         if (entity instanceof TreeEntity) {
@@ -25,6 +31,15 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T> {
             entity = (T) dao.save(entity);
         }
         return entity;
+    }
+
+    @Transactional
+    public List<T> save(List<T> entityList) {
+        if (CollectionUtils.isEmpty(entityList)) {
+            return null;
+        }
+        dao.save(entityList);
+        return entityList;
     }
 
     @Transactional
@@ -38,8 +53,24 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T> {
     }
 
     @Transactional
+    public List<T> update(List<T> entityList) {
+        if (CollectionUtils.isEmpty(entityList)) {
+            return null;
+        }
+        dao.save(entityList);
+        return entityList;
+    }
+
+    @Transactional
     public void delete(String id) {
         dao.delete(id);
+    }
+
+    @Transactional
+    public void delete(String... ids) {
+        for (String id : ids) {
+            dao.delete(id);
+        }
     }
 
     public T get(String id) {

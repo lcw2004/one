@@ -26,6 +26,9 @@ public class SysOfficeEOService extends TreeEntityService<SysOfficeEODao, SysOff
     public SysOfficeEO save(SysOfficeEO sysOfficeEO) {
         sysOfficeEO.setParentId(sysOfficeEO.getParent().getId());
         sysOfficeEO.setAreaId(sysOfficeEO.getArea().getId());
+        if (sysOfficeEO.getMasterUserInfo() != null) {
+            sysOfficeEO.setMasterId(sysOfficeEO.getMasterUserInfo().getUserId());
+        }
         return super.save(sysOfficeEO);
     }
 
@@ -33,6 +36,9 @@ public class SysOfficeEOService extends TreeEntityService<SysOfficeEODao, SysOff
     public SysOfficeEO update(SysOfficeEO sysOfficeEO) {
         sysOfficeEO.setParentId(sysOfficeEO.getParent().getId());
         sysOfficeEO.setAreaId(sysOfficeEO.getArea().getId());
+        if (sysOfficeEO.getMasterUserInfo() != null) {
+            sysOfficeEO.setMasterId(sysOfficeEO.getMasterUserInfo().getUserId());
+        }
         return super.update(sysOfficeEO);
     }
 }

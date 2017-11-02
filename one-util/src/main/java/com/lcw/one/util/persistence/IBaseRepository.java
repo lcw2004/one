@@ -78,8 +78,9 @@ public interface IBaseRepository<T, ID extends Serializable> extends PagingAndSo
 
     <E> PageInfo<E> executePage(PageInfo pageInfo, String hql, Object... params);
 
-    /**
-     * 分页获取数据数据
-     */
     <E> PageInfo<E> executePage(PageInfo pageInfo, String hql, Map<String, Object> params);
+
+    <E> List<E> executeList(String hql, Object... params);
+
+    <E> List<E> executeList(String hql, Map<String, Object> params);
 }

@@ -23,7 +23,7 @@ public class SysOfficeEORestController {
 
     @ApiOperation(value = "机构详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysOfficeEO> getById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage<SysOfficeEO> getById(@PathVariable("id") String id) {
         return Result.success(sysOfficeEOService.get(id));
     }
 
@@ -54,7 +54,7 @@ public class SysOfficeEORestController {
 
     @ApiOperation(value = "机构详情")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@NotNull @PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable("id") String id) {
         sysOfficeEOService.delete(id);
         return Result.success();
     }

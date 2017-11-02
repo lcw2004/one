@@ -46,6 +46,10 @@ public class FlowTaskInfoEOService extends CrudService<FlowTaskInfoEODao, FlowTa
         dao.deleteByProcessKey(processKey);
     }
 
+    public void deleteByTaskKeyNotExist(String processKey, List<String> taskKeyList) {
+        dao.deleteByTaskKeyNotExist(processKey, taskKeyList);
+    }
+
     private static void validProcessTaskInfo(FlowTaskInfoEO taskInfoEO) {
         if (taskInfoEO == null) {
             throw new OneBaseException("流程未配置角色和表单");

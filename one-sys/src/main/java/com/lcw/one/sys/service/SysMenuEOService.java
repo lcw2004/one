@@ -14,4 +14,12 @@ public class SysMenuEOService extends TreeEntityService<SysMenuEODao, SysMenuEO>
         return dao.listSysMenuEOByUserId(userId);
     }
 
+    @Override
+    public List<SysMenuEO> findAll() {
+        return dao.findAll();
+    }
+
+    public void updateSort(String id, Integer sort) {
+        dao.updateSort(id, sort);
+    }
 }

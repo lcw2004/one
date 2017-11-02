@@ -42,14 +42,14 @@ public class VariableCreateListener implements ActivitiEventListener {
 
         // 获取该节点绑定的表单
         FlowTaskInfoEO flowTaskInfoEO = processTaskInfoEOService.getFlowTaskInfoEOAndValid(processDefinitionKey, taskDefinitionKey);
-        if(flowTaskInfoEO == null) {
+        if (flowTaskInfoEO == null) {
             throw new OneBaseException("流程[" + processDefinitionKey + "]的节点[" + taskDefinitionKey + "]未配置角色或表单");
         }
 
 
-        String assignee =  taskEntity.getAssignee();
+        String assignee = taskEntity.getAssignee();
         //无需配置 默认启动时已添加指定人员
-        if(StringUtils.isEmpty(assignee)){
+        if (StringUtils.isEmpty(assignee)) {
             taskEntity.addCandidateGroup(flowTaskInfoEO.getBindRole());
             taskEntity.setFormKey(flowTaskInfoEO.getBindForm());
             logger.info("Assign Task To [{}]", flowTaskInfoEO.getBindRole());

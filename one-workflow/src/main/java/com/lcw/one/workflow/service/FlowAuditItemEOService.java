@@ -42,4 +42,8 @@ public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, Flow
         update(flowAuditItemEO);
     }
 
+    public FlowAuditItemEO getByBusinessIdAndNotFinished(String businessId, String businessType) {
+        return dao.getByBusinessIdAndNotFinished(businessId, businessType);
+    }
+
 }

@@ -6,6 +6,12 @@ import java.util.List;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
+    /**
+     * 将字符串数组以逗号分隔的形式拼接起来
+     *
+     * @param stringList
+     * @return
+     */
     public static String listToString(List<String> stringList) {
         if (CollectionUtils.isEmpty(stringList)) {
             return null;
@@ -21,6 +27,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return builder.toString();
     }
 
+    /**
+     * 将字符串从逗号分隔的地方分隔为String数组
+     *
+     * @param string
+     * @return
+     */
     public static List<String> stringToList(String string) {
         if (isEmpty(string)) {
             return null;
@@ -29,6 +41,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return Arrays.asList(string.split(","));
     }
 
+    /**
+     * 将字符串从逗号分隔的地方分隔为int数组
+     *
+     * @param string
+     * @return
+     */
     public static List<Integer> stringToIntList(String string) {
         if (isEmpty(string)) {
             return null;
@@ -44,4 +62,37 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return integerList;
     }
+
+    /**
+     * 对指定数字补0
+     *
+     * @param input 待补0数据
+     * @param num   位数
+     * @return
+     */
+    public static String fillZero(int input, int num) {
+        return String.format("%0" + num + "d", input);
+    }
+
+
+    /**
+     * 对Email进行模糊化处理
+     *
+     * @param email
+     * @return
+     */
+    public static String fuzzyEmail(String email) {
+        int index = email.indexOf("@");
+        if (index < 0) {
+            return email;
+        }
+        String prefix = email.substring(0, index);
+        String suffix = email.substring(index, email.length());
+        if (prefix.length() < 3) {
+            return "***" + suffix;
+        } else {
+            return prefix.substring(0, 2) + "***" + suffix;
+        }
+    }
+
 }

@@ -16,7 +16,9 @@ public class SysFileEO {
     private String fileName;
     private String fileType;
     private String savePath;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastUpdateTime;
     private String url;
     private String remark;

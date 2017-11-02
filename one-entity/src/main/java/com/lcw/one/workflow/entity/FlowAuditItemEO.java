@@ -1,5 +1,7 @@
 package com.lcw.one.workflow.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Date;
@@ -15,12 +17,15 @@ public class FlowAuditItemEO {
     private String taskName;
     private String businessType;
     private String applyUserId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date effectTime;
     private Integer auditStatus;
     private String flowInstanceId;
     private String flowDefinitionId;
     private String businessId;
+    private String secondBusinessId;
     private Integer isEffective;
     private Integer isFinished;
     private String remark;
@@ -123,6 +128,16 @@ public class FlowAuditItemEO {
 
     public void setBusinessId(String businessId) {
         this.businessId = businessId;
+    }
+
+    @Basic
+    @Column(name = "second_business_id")
+    public String getSecondBusinessId() {
+        return secondBusinessId;
+    }
+
+    public void setSecondBusinessId(String secondBusinessId) {
+        this.secondBusinessId = secondBusinessId;
     }
 
     @Basic
