@@ -8,12 +8,8 @@ import com.lcw.one.login.security.validatecode.SimpleCharVerifyCodeGenImpl;
 import com.lcw.one.login.security.validatecode.VerifyCode;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.sys.entity.SysMenuEO;
-import com.lcw.one.user.constant.UserInfoTypeEnum;
-import com.lcw.one.user.constant.UserSupplierStatusEnum;
 import com.lcw.one.user.entity.UserInfoEO;
-import com.lcw.one.user.entity.UserSupplierEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.constant.GlobalConfig;
 import com.lcw.one.util.exception.LoginInvalidException;
 import com.lcw.one.util.http.CookieUtils;
@@ -41,7 +37,6 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Validated
 @Controller
@@ -53,9 +48,6 @@ public class LoginRestController {
 
     @Autowired
     private UserInfoEOService userService;
-
-    @Autowired
-    private UserSupplierEOService userSupplierEOService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -108,14 +100,6 @@ public class LoginRestController {
             LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_USER_ID, UserUtils.getUserId());
             LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_USER_NAME, UserUtils.getUser().getName());
             LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_ROLE_ID, UserUtils.getRoleIds());
-
-            // 非供应商用户不需要完善登录信息
-            UserInfoEO user = UserUtils.getUser();
-            if (user.getType() == UserInfoTypeEnum.SUPPLIER.getValue()) {
-                UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
-                LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_SUPPLIER_ID, userSupplierEO.getSupplierId());
-                LoginUserUtils.set(cookieValue + LoginUserUtils.LOGIN_SUPPLIER, userSupplierEO);
-            }
 
             // 返回授权码
             authCode = cookieValue;
@@ -172,38 +156,6 @@ public class LoginRestController {
         }
         return Result.success(user);
     }
-
-    @ApiOperation(value = "获取当前登录供应商信息")
-    @GetMapping("/supplierInfo")
-    @ResponseBody
-    public ResponseMessage<UserSupplierEO> supplierInfo() {
-        UserInfoEO user = UserUtils.getUser();
-        if (user == null) {
-            throw new LoginInvalidException();
-        }
-
-        UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
-        return Result.success(userSupplierEO);
-    }
-
-    @ApiOperation(value = "判断是否需要完善供应商信息")
-    @GetMapping("/isNeedPerfectSupplierInfo")
-    @ResponseBody
-    public ResponseMessage<Boolean> isNeedPerfectSupplierInfo(HttpServletRequest request) {
-        UserInfoEO user = UserUtils.getUser();
-        if (user == null) {
-            throw new LoginInvalidException();
-        }
-
-        // 非供应商用户不需要完善登录信息
-        if (user.getType() != UserInfoTypeEnum.SUPPLIER.getValue()) {
-            return Result.success(false);
-        }
-
-        UserSupplierEO userSupplierEO = userSupplierEOService.getUserSupplierEOByPrincipalUserUserId(user.getUserId());
-        return Result.success(Objects.equals(userSupplierEO.getStatus(), UserSupplierStatusEnum.NOT_COMMIT.getValue()));
-    }
-
 
     @ApiOperation(value = "获取登录用户菜单权限")
     @GetMapping("/userMenu")

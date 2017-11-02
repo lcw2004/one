@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>1.5.7.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -26,6 +26,9 @@
         <module>one-code-gen</module>
         <module>one-workflow</module>
         <module>one-file-server</module>
+        <module>one-redis</module>
+        <module>one-cms</module>
+        <module>one-cms-front</module>
     </modules>
 
     <properties>
