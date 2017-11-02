@@ -48,7 +48,7 @@ ul, li {
 /*模态框滚动*/
 .modal-scrollable {
   overflow-y: auto;
-  height: 400px;
+  max-height: 450px;
 }
 
 .registry-title {
@@ -83,7 +83,6 @@ ul, li {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 
 .required:before {
   font-family: 'Times New Roman';

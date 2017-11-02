@@ -30,7 +30,7 @@
                 <td>
                   <UserInfoSimpleView :user="obj.principalUser"/>
                 </td>
-                <td>{{ obj.principalUser.userContactInfo.phone }}</td>
+                <td>{{ obj.principalUser.userContactInfo.mobile }}</td>
                 <td>
                   <UserStatusLabel :status="obj.status" :desc="obj.statusCn"/>
                 </td>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import PageMixin from 'mixins/PageMixin.js'
   import UserInfoSimpleView from '../common/UserInfoSimpleView'
   import UserStatusLabel from '../common/UserStatusLabel'
 

@@ -1,10 +1,10 @@
 <template>
-  <transition name="zoom">
+  <OneTransition>
     <div class="modal" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
               <span aria-hidden="true">×</span>
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
@@ -12,43 +12,79 @@
           <div class="modal-body modal-scrollable">
             <div class="row">
               <div class="col-md-12">
-                <Tree :element="topElement" v-model="value" select-type="radio"></Tree>
+                <Tree :element="topElement" v-model="selectValue" :select-type="selectType"></Tree>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" @click="close()">取消</button>
             <button type="button" class="btn btn-primary" @click="ok()">确认</button>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </OneTransition>
 </template>
 
 <script>
+  import ModalMixin from 'mixins/ModalMixin.js'
   export default {
+    mixins: [ModalMixin],
     props: {
-      config: {
-        type: Object,
-        required: true
-      }
+      selectType: {
+        type: String,
+        default: 'radio'
+      },
+      value: {}
     },
     data: () => {
       return {
         topElement: {},
-        value: {}
+        selectValue: {}
       }
     },
     mounted () {
       this.loadTree()
+      this.selectValue = this.value
     },
     methods: {
       ok () {
-        let value = JSON.parse(JSON.stringify(this.value))
-        value.childList = null
+        let value = null
+        if (this.selectType === 'radio') {
+          value = JSON.parse(JSON.stringify(this.selectValue))
+          value.childList = null
+        } else if (this.selectType === 'checkbox') {
+          value = this.selectElement
+        }
         this.$emit('input', value)
-        this.config.show = false
+        this.close()
+      }
+    },
+    computed: {
+      elementMap: function () {
+        const getElementRecursion = function (element) {
+          let elementCopy = JSON.parse(JSON.stringify(element))
+          elementCopy.childList = []
+          elementMap[element.id] = elementCopy
+
+          const childList = element.childList
+          if (childList) {
+            for (let i = 0; i < childList.length; i++) {
+              getElementRecursion(childList[i])
+            }
+          }
+        }
+
+        let elementMap = {}
+        getElementRecursion(this.topElement)
+        return elementMap
+      },
+      selectElement: function () {
+        let selectElement = []
+        for (let id of this.selectValue) {
+          selectElement.push(this.elementMap[id])
+        }
+        return selectElement
       }
     }
   }

@@ -3,8 +3,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> {{ setting.appVersion }}
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; 2014-2017 <a href="https://github.com/lcw2004/one">lcw2004</a>.</strong> All rights reserved.
   </footer>
 </template>
 

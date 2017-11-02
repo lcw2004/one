@@ -1,3 +1,4 @@
+var os = require('os')
 var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
@@ -9,6 +10,10 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+var HappyPackPlugin = require('happypack');
+var happyThreadPool = HappyPackPlugin.ThreadPool({ size: os.cpus().length });
+var VisualizerPlugin = require('webpack-visualizer-plugin');
 
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -28,6 +33,35 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    new HappyPackPlugin({
+      id: 'eslint',
+      threadPool: happyThreadPool,
+      loaders: ['eslint-loader']
+    }),
+    new HappyPackPlugin({
+      id: 'js',
+      threadPool: happyThreadPool,
+      loaders: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true
+        }
+      }]
+    }),
+    new HappyPackPlugin({
+      id: 'css',
+      threadPool: happyThreadPool,
+      loaders: [
+        'vue-loader',
+        'css-loader',
+        'less-loader',
+      ]
+    }),
+    new webpack.DllReferencePlugin({
+      name: 'vendor_library',
+      context: __dirname,
+      manifest: require('../static/dll/vendor-mainfest.json')
+    }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
@@ -36,8 +70,10 @@ var webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true
+      sourceMap: false
     }),
+    // Ignore all locale files of moment.js
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
@@ -78,7 +114,13 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ]),
     new MyWebPackPluginForOne(),
-    ...utils.getHtmlWebpackPlugins()
+    ...utils.getHtmlWebpackPlugins(),
+
+    // 分析打包大小
+    // new BundleAnalyzerPlugin(),
+    // new VisualizerPlugin({
+    //   filename: './statistics.html'
+    // })
   ]
 })
 

@@ -2,38 +2,41 @@
   <section class="content">
     <div class="box">
       <div class="box-body">
-        <!-- 标题 -->
-        <div class="row row-margin-bottom">
-          <div class="col-md-12">
-            <form class="form-inline">
-              <div class="col-md-6">
-                <label class="control-label">类型</label>
-                <select class="form-control inline-block" v-model="param.type">
+        <!--Query Start-->
+        <form class="form-horizontal">
+          <div class="row row-margin-bottom">
+            <div class="col-md-4">
+              <FormGroup label="字典名称">
+                <select class="form-control" v-model="param.type">
                   <option value="">全部</option>
                   <option v-for="dictType of dictTypeList" :value="dictType">{{ dictType }}</option>
                 </select>
-
-                <label class="control-label">描述</label>
-                <input class="form-control inline-block" type="text" v-model="param.description">
+              </FormGroup>
+            </div>
+            <div class="col-md-4">
+              <FormGroup label="字典描述">
+                <input class="form-control" type="text" v-model="param.description">
+              </FormGroup>
+            </div>
+            <div class="col-md-4">
+              <div class="pull-right">
+                <router-link to="/system/dict/add" class="btn btn-primary">添加</router-link>
               </div>
-              <div class="col-md-6">
-                <div class="pull-right">
-                  <router-link to="/system/dict/add" class="btn btn-primary">添加</router-link>
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
-        </div>
+        </form>
+        <!--Query End-->
+
         <div class="row">
           <div class="col-md-12">
             <table class="table table-bordered table-hover">
               <thead>
               <tr>
-                <th>类型</th>
-                <th>描述</th>
-                <th>标签</th>
-                <th>键值</th>
-                <th>排序</th>
+                <th>字典名称</th>
+                <th>字典描述</th>
+                <th>字典值描述</th>
+                <th>字典值</th>
+                <th>排序号</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -61,7 +64,7 @@
 </template>
 
 <script>
-  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import PageMixin from 'mixins/PageMixin.js'
 
   export default {
     mixins: [PageMixin],
@@ -94,8 +97,11 @@
       deleteData (id) {
         this.$confirm('确认删除吗？', () => {
           this.resource.deleteData({id: id}).then((response) => {
-            this.query()
-            this.$notify.success('删除成功！')
+            let result = response.body
+            if (result.ok) {
+              this.query()
+              this.$notify.success('删除成功！')
+            }
           })
         })
       }

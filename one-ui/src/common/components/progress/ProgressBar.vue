@@ -11,7 +11,7 @@
   import common from '../../utils/common'
 
   export default {
-    name: 'Progress',
+    name: 'ProgressBar',
     props: {
       size: {},
       barClass: {}

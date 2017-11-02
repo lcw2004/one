@@ -3,7 +3,7 @@
  */
 
 let limitLength = function (value, maxLength = 10) {
-  if (value.length > maxLength) {
+  if (value && value.length > maxLength) {
     return value.substr(0, maxLength) + '...'
   } else {
     return value

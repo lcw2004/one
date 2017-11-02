@@ -6,7 +6,14 @@
  -->
 
 <template>
-  <el-date-picker v-model="timeRange" type="daterange" align="right" placeholder="选择日期范围" :picker-options="pickerOptions">
+  <el-date-picker
+    v-model="timeRange"
+    type="daterange"
+    align="right"
+    size="small"
+    placeholder="选择日期范围"
+    :value-format="format"
+    :picker-options="pickerOptions">
   </el-date-picker>
 </template>
 
@@ -15,7 +22,14 @@
 
   export default {
     name: 'TimeRangePicker',
-    props: ['from', 'to'],
+    props: {
+      from: {},
+      to: {},
+      format: {
+        type: String,
+        default: 'yyyy-MM-dd'
+      }
+    },
     data: () => {
       return {
         time: '',

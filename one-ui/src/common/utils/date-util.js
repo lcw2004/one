@@ -5,8 +5,12 @@ import moment from 'moment'
 
 const FORMAT_YYYY_MM_DD_HH_MM_SS = 'YYYY-MM-DD HH:mm:ss'
 
-export function parseDate (time) {
-  return moment(time, FORMAT_YYYY_MM_DD_HH_MM_SS)
+export function parseDate (time, format = FORMAT_YYYY_MM_DD_HH_MM_SS) {
+  return moment(time, format)
+}
+
+export function format (mTime, format = FORMAT_YYYY_MM_DD_HH_MM_SS) {
+  return mTime.format(format)
 }
 
 export function isSameDay (time1, time2 = moment()) {

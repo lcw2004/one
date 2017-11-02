@@ -12,7 +12,7 @@
           <label class="control-label col-md-4">采购类别</label>
           <div class="col-md-8">
             <div class="input-group">
-              <input type="text" class="form-control" v-model="selectPurchaseType.name" disabled @click="purchaseTypeConfig.show = true">
+              <input type="text" class="form-control" v-model="selectPurchaseType.name" readonly @click="purchaseTypeConfig.show = true">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary btn-flat" style="height: 30px" v-if="!selectPurchaseType.name"
                         @click="purchaseTypeConfig.show = true">选择</button>

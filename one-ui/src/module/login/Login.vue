@@ -28,6 +28,19 @@
       <div class="login-body-panel">
         <div class="panel-body">
           <p class="login-body-panel-head">欢迎登录 One Base System</p>
+
+          <!-- <div class="row">
+            <div class="col-md-12">
+              您已经登录，请点击头像确认。
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="login-user-img"></div>
+            </div>
+          </div> -->
+
           <form class="form login-form">
             <div class="row">
               <div class="col-md-12">
@@ -80,8 +93,7 @@
             <div class="row">
               <div class="col-md-12">
                 <a class="btn btn-primary btn-lg btn-block" :class="{ disabled: loginBtnDisabled }" @click="login">
-                  <template v-if="loginBtnDisabled">登录中</template>
-                  <template v-if="!loginBtnDisabled">登录</template>
+                  {{ loginBtnText }}
                 </a>
               </div>
             </div>
@@ -89,12 +101,12 @@
             <div class="row" style="margin-top: 20px">
               <div class="col-md-6">
                 <div class="pull-right">
-                  <a href="resetpass.html" class="btn-link login-mar-rgt">忘记密码 ?</a>
+                  <a href="account.html#/forget-password" class="btn-link login-mar-rgt">忘记密码 ?</a>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="pull-left">
-                  <a href="registry.html" class="btn-link login-mar-lft">注册帐号</a>
+                  <a href="account.html#/registry/agreement" class="btn-link login-mar-lft">注册帐号</a>
                 </div>
               </div>
             </div>
@@ -112,6 +124,7 @@
 
 <script>
   import VerifyCodeImg from '../../common/components/base/VerifyCodeImg'
+  import common from '../../common/utils/common.js'
 
   export default {
     components: {
@@ -119,6 +132,10 @@
     },
     data: () => {
       return {
+        actions: {
+          login: {method: 'get', url: '/api/login'},
+          isLogin: {method: 'get', url: '/api/isLogin'}
+        },
         isVerifyCode: false, // 是否显示验证码
         timestamp: '', // 验证码时间戳
         loginInfo: {
@@ -129,20 +146,32 @@
         },
         errorMessage: '',
         result: {}, // 登录结果
-        loginBtnDisabled: false
+        loginBtnDisabled: false,
+        loginBtnText: '登录'
       }
     },
     mounted () {
-      let actions = {
-        login: {method: 'get', url: '/api/login'}
-      }
-      this.resource = this.$resource(null, {}, actions, {emulateJSON: true})
+      this.resource = this.$resource(null, {}, this.actions, {emulateJSON: true})
+      this.checkIsLogin()
     },
     methods: {
+      checkIsLogin () {
+        this.resource.isLogin().then(function (response) {
+          let result = response.body
+          if (result.ok) {
+            let isLogin = result.data.isLogin
+            if (isLogin) {
+              this.handlerForward(result.data)
+            }
+          }
+        })
+      },
+
       /**
        * 登录接口
        */
       login () {
+        console.log(common.getParameterByName('redirect_uri'))
         if (!this.valid()) {
           return
         }
@@ -152,12 +181,13 @@
 
         this.beforeLogin()
         this.resource.login(this.loginInfo).then((response) => {
-          this.afterLogin()
           let result = response.body
           this.result = result
           if (result.ok) {
             // 登录成功
-            window.location.href = '/'
+            this.handlerForward(result.data)
+            this.afterLoginSuccess()
+            return
           } else if (result.code === '0001') {
             // 账号错误
             this.errorMessage = result.message
@@ -173,6 +203,7 @@
             this.focusOnVerifyCode()
           }
           this.refreshVerifyCode()
+          this.afterLoginFail()
         })
       },
 
@@ -222,13 +253,35 @@
        */
       beforeLogin () {
         this.loginBtnDisabled = true
+        this.loginBtnText = '登录中'
       },
 
       /**
-       * 登录接口响应后将用户按钮置为可用
+       * 登录失败后将用户按钮置为可用
        */
-      afterLogin () {
+      afterLoginFail () {
         this.loginBtnDisabled = false
+        this.loginBtnText = '登录'
+      },
+
+      /**
+       * 登录成功之后，将登录按钮改为跳转中
+       */
+      afterLoginSuccess () {
+        this.loginBtnDisabled = true
+        this.loginBtnText = '跳转中，请稍候'
+      },
+
+      handlerForward (resultBody) {
+        // 如果有重定向URL，则先跳转到重定向的页面
+        let redirectUri = common.getParameterByName('redirectUri')
+        let authUrl = common.getParameterByName('authUrl')
+        if (redirectUri) {
+          let newUrl = authUrl + '?redirectUri=' + redirectUri + '&authCode=' + resultBody.authCode
+          window.location.href = newUrl
+        } else {
+          window.location.href = '/'
+        }
       }
     },
     directives: {
@@ -359,6 +412,17 @@
 
   .verify-code {
     margin-bottom: 10px
+  }
+
+  .login-user-img {
+    background-image: url("./images/lnavha_pic.png");
+    height: 80px;
+    width: 80px;
+    background-size: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   /*登录 End */

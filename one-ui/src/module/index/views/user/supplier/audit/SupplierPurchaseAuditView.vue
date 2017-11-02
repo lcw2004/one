@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import FormMixin from '../../../../../../common/mixins/FormMixin.js'
+  import FormMixin from 'mixins/FormMixin.js'
   import BaseInfo from '../info/BaseInfo'
   import AuditLog from '../info/AuditLog'
   import Biddings from '../info/Biddings'

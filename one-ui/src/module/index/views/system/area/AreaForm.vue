@@ -2,31 +2,34 @@
   <section class="content">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">菜单信息</h3>
+        <h3 class="box-title">区域信息</h3>
       </div>
       <div class="box-body">
         <form class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-2 control-label">上级区域</label>
-            <div class="col-sm-4">
-              <div class="input-group">
-                <input type="text" class="form-control" v-model="obj.parent.name"/>
-                <span class="input-group-btn">
-									<button class="btn btn-info" type="button" @click="areaTreeModalConfig.show = true">选择</button>
-								</span>
-              </div>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="上级区域">
+                <div class="input-group">
+                  <input type="text" class="form-control" v-model="obj.parent.name" v-validate="'required'" name="上级区域"/>
+                  <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" @click="areaTreeModalConfig.show = true">选择</button>
+                  </span>
+                </div>
+              </FormGroup>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">区域名称</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" v-model="obj.name"/>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="区域名称">
+                <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="区域名称"/>
+              </FormGroup>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">区域编码</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" v-model="obj.code"/>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="区域编码">
+                <input type="text" class="form-control" v-model="obj.code" v-validate="'required'" name="区域编码"/>
+              </FormGroup>
             </div>
           </div>
         </form>
@@ -34,7 +37,7 @@
       <div class="box-footer">
         <div class="row">
           <div class="col-md-2 col-md-offset-2">
-            <a class="btn btn-block btn-primary" @click="save()">保存</a>
+            <a class="btn btn-block btn-primary" @click="validAndSave()">保存</a>
           </div>
           <div class="col-md-2">
             <a class="btn btn-block btn-default" @click="$router.go(-1)">返回</a>
@@ -48,7 +51,7 @@
 </template>
 
 <script>
-  import FormMixin from '../../../../../common/mixins/FormMixin.js'
+  import FormMixin from 'mixins/FormMixin.js'
   import SelectAreaModal from '../modal/SelectAreaModal'
 
   export default {
@@ -84,7 +87,7 @@
           show: false,
           title: '选择上级机构'
         },
-        // 模态窗属性
+
         areaTreeModalConfig: {
           show: false,
           title: '选择归属区域'

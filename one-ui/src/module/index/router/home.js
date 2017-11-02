@@ -3,6 +3,8 @@ import Desktop from '../views/layout/Desktop'
 import system from './system'
 import user from './user'
 import personal from './personal'
+import cms from './cms'
+import statistic from './statistic'
 
 /*
  * 包含菜单结构的页面
@@ -15,7 +17,9 @@ export default {
     {path: '/', component: Desktop},
     ...system,
     ...user,
-    ...personal
+    ...personal,
+    ...cms,
+    ...statistic
   ],
   beforeEnter: (to, from, next) => {
     console.log('-->Home Router Config')

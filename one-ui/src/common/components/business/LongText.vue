@@ -1,5 +1,5 @@
 <template>
-<span>
+  <span>
     <template v-if="!isHideMore">
       {{ text }}
     </template>
@@ -24,7 +24,8 @@
         default: '15'
       },
       title: {
-        type: String
+        type: String,
+        default: '内容'
       },
       text: {
         type: String,

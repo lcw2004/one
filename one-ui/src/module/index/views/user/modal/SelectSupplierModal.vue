@@ -1,10 +1,10 @@
 <template>
-  <transition name="zoom">
+  <OneTransition>
     <div class="modal" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
               <span aria-hidden="true">×</span>
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
@@ -36,7 +36,7 @@
                     <td>
                       <UserInfoSimpleView :user="obj.principalUser"></UserInfoSimpleView>
                     </td>
-                    <td>{{ obj.principalUser.userContactInfo.phone }}</td>
+                    <td>{{ obj.principalUser.userContactInfo.mobile }}</td>
                     <td>
                       <UserStatusLabel :status="obj.status" :desc="obj.statusCn"></UserStatusLabel>
                     </td>
@@ -48,28 +48,35 @@
             </div>
           </div>
           <div class="modal-footer">
-            <div class="pull-left">
-              选中
-              <template v-for="supplier of selectedSupplierList">
-                <span class="label label-info">{{ supplier.name }}</span>&nbsp;
-              </template>
+            <div class="row">
+              <div class="col-md-10">
+                <div class="pull-left modal-selected-data">
+                  选中
+                  <template v-for="supplier of selectedSupplierList">
+                    <span class="label label-info">{{ supplier.name }}</span>&nbsp;
+                  </template>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
+                <button type="button" class="btn btn-primary" @click="ok()">确认</button>
+              </div>
             </div>
-            <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
-            <button type="button" class="btn btn-primary" @click="ok()">确认</button>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </OneTransition>
 </template>
 
 <script>
-  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import PageMixin from 'mixins/PageMixin.js'
+  import ModalMixin from 'mixins/ModalMixin.js'
   import UserInfoSimpleView from '../common/UserInfoSimpleView'
   import UserStatusLabel from '../common/UserStatusLabel'
 
   export default {
-    mixins: [PageMixin],
+    mixins: [PageMixin, ModalMixin],
     components: {
       UserInfoSimpleView,
       UserStatusLabel
@@ -99,10 +106,19 @@
       }
     },
     methods: {
+      valid () {
+        if (this.selectedSupplierList.length === 0) {
+          this.$notify.warn('请先选择供应商')
+          return false
+        }
+        return true
+      },
       ok () {
-        this.$emit('input', this.selectedSupplierList)
-        this.config.show = false
-        this.isSelectAll = false
+        if (this.valid()) {
+          this.$emit('input', this.selectedSupplierList)
+          this.close()
+          this.isSelectAll = false
+        }
       }
     },
     watch: {
@@ -126,3 +142,10 @@
     }
   }
 </script>
+
+<style>
+  .modal-selected-data {
+    line-height: 24px;
+    text-align: left;
+  }
+</style>

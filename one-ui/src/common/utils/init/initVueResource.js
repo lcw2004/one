@@ -5,20 +5,20 @@ import handlerError from '../handlerError'
 
 function logRequest (request) {
   console.log('-------------------------')
-  console.log('url : ' + request.url)
+  console.log(request.method + ' : ' + request.url)
 }
 
 function logResponse (response) {
-  console.log('status : ' + response.status)
   console.log(response.headers)
-  console.log(response.headers.get('Content-Type'))
   console.log(response.body)
   console.log('-------------------------')
 }
 
 function initProgressBar () {
   Vue.http.interceptors.push(function (request, next) {
-    this.$progress.start()
+    if (this && this.$progress) {
+      this.$progress.start()
+    }
     next((response) => {
       logRequest(request)
       logResponse(response)
@@ -39,7 +39,9 @@ function initProgressBar () {
         }
       }
 
-      this.$progress.done()
+      if (this && this.$progress) {
+        this.$progress.done()
+      }
       return response
     })
   })

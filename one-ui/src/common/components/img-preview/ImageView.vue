@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <a @click="view()" v-show="!isShowImage">查看</a>
+  <span>
+    <a @click="view()" v-show="!isShowImage">{{ text }}</a>
     <img :src="src" height="100" @click="view()" v-show="isShowImage">
-  </div>
+  </span>
 </template>
 
 <script>
@@ -16,6 +16,10 @@
       src: {
         type: String,
         required: true
+      },
+      text: {
+        type: String,
+        default: '查看'
       }
     },
     methods: {

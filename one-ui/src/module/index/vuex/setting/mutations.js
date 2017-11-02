@@ -7,5 +7,6 @@ export default {
     state.appVersion = settings.appVersion
     state.maxFileSize = settings.maxFileSize
     state.maxFileSizeShow = settings.maxFileSizeShow
+    state.basePath = settings.basePath
   }
 }

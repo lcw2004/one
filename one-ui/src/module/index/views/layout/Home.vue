@@ -4,9 +4,9 @@
     <MainSlidebar></MainSlidebar>
     <MainContent></MainContent>
     <MainFooter></MainFooter>
-    <ControlSidebar></ControlSidebar>
+    <!--<ControlSidebar></ControlSidebar>-->
     <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
+    <!--<div class="control-sidebar-bg"></div>-->
   </div>
 </template>
 

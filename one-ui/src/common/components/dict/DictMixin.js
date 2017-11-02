@@ -1,5 +1,9 @@
 export default {
   props: {
+    showEmptyValue: {
+      type: Boolean,
+      default: false
+    },
     type: {
       type: String,
       required: true

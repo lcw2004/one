@@ -9,7 +9,7 @@
     name: 'OneTransition',
     props: {
       name: {
-        default: 'rotate'
+        default: 'zoom'
       },
       mode: {
         default: 'out-in'

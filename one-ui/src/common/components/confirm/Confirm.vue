@@ -10,7 +10,7 @@
               </button>
               <h4 class="modal-title">{{ title }}</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-scrollable">
               {{ message }}
             </div>
             <div class="modal-footer">

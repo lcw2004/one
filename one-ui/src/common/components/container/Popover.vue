@@ -12,6 +12,7 @@
 
 <script>
   export default {
+    name: 'Popover',
     props: {
       title: {
         type: String
@@ -19,11 +20,9 @@
       width: {
         type: Number,
         default: 500
-      }
-    },
-    methods: {
-      getIconWidth: function () {
-        return 9
+      },
+      left: {
+        type: Number
       }
     },
     computed: {
@@ -31,10 +30,9 @@
         return ['fa', 'fa-fw', this.isShow ? 'fa-angle-down' : 'fa-angle-right']
       },
       popoverStyle: function () {
-        let left = this.getIconWidth() - this.width / 2
         return {
-          left: left + 'px',
-          top: '5px',
+          left: this.left + 'px',
+          top: '20px',
           width: this.width + 'px',
           display: 'block',
           maxWidth: '1000px'

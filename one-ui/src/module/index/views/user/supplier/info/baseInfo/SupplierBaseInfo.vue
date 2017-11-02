@@ -20,7 +20,7 @@
         <FormGroupStatic label="法人姓名">{{ obj.legalPersonName }}</FormGroupStatic>
       </div>
       <div class="col-md-6">
-        <FormGroupStatic label="法人身份证">{{ obj.legalPersonName }}</FormGroupStatic>
+        <FormGroupStatic label="法人身份证">{{ obj.legalPersonNumber }}</FormGroupStatic>
       </div>
       <div class="col-md-6">
         <FormGroupStatic label="开户银行">

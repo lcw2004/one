@@ -28,8 +28,24 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/bid': {
-        target: 'http://127.0.0.1:8100',
+      '/api/cms/': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: false
+      },
+      '/api/flow/': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: false
+      },
+      '/api/base/': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: false
+      },
+      '/api/sys/': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: false
+      },
+      '/api/user/': {
+        target: 'http://127.0.0.1:8080',
         changeOrigin: false
       },
       '/api': {

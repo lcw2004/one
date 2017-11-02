@@ -1,6 +1,6 @@
 <template>
   <div class='row'>
-    <div class='col-md-6'>
+    <div class='col-md-8'>
       <ul class='pagination'>
         <li :class="{'disabled' : pageNo <= 1}">
           <a @click='goLastPage'>上一页</a>
@@ -13,7 +13,7 @@
         </li>
       </ul>
     </div>
-    <div class='col-md-6'>
+    <div class='col-md-4'>
       <ul class='pagination pull-right navbar-static-top'>
         <li>
           共 {{ count }} 条，每页

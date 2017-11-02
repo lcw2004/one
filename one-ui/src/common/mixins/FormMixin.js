@@ -1,17 +1,17 @@
 /**
- * 分页mixin，主要功能如下：
- *   1. 定义了pageNo\pageSize\page三个属性，其他地方不再需要定义一遍
- *   2. 根据actions注入resource，引用方可以直接调用
- *   3. 分页变化的时候自动调用 queryForPage 方法查询数据
- *   4. 提供 query 接口供引用方调用，该方法会清除分页
- *
- * 使用：
- *   1. 定义actions
- *   2. 定义param，如果没有则不需要定义
- *   3. 引入分页组件：<Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
  */
 
 let FormMixin = {
+  data: () => {
+    return {
+      isClicked: false
+    }
+  },
+  computed: {
+    id: function () {
+      return this.$route.params.id
+    }
+  },
   mounted () {
     this.resource = this.$resource(null, {}, this.actions)
     this.load()
@@ -29,9 +29,16 @@ let FormMixin = {
       }
     },
     save () {
+      // 防止重复点击
+      if (this.isClicked) {
+        return
+      }
+      this.isClicked = true
+
       let id = this.$route.params.id
       if (id) {
         this.resource.update(null, JSON.stringify(this.obj)).then((response) => {
+          this.isClicked = false
           let result = response.body
           if (result.ok) {
             this.$notify.success('保存成功')
@@ -40,6 +47,7 @@ let FormMixin = {
         })
       } else {
         this.resource.save(null, JSON.stringify(this.obj)).then((response) => {
+          this.isClicked = false
           let result = response.body
           if (result.ok) {
             this.$notify.success('添加成功')
@@ -53,6 +61,16 @@ let FormMixin = {
           }
         })
       }
+    },
+    /**
+    * 验证并保存，验证不通过则弹出提示框，不保存，每个 form 表单需要实现 validate 方法
+    */
+    validAndSave () {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.save()
+        }
+      })
     }
   }
 }

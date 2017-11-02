@@ -15,11 +15,11 @@
         <table class="table table-bordered table-hover">
           <thead>
           <tr>
-            <th>名称</th>
-            <th>链接</th>
-            <th>排序</th>
-            <th>可见</th>
-            <th>权限标识</th>
+            <th>机构名称</th>
+            <th>归属区域</th>
+            <th>机构编码</th>
+            <th>负责人</th>
+            <th>电话</th>
             <th>操作</th>
           </tr>
           </thead>
@@ -28,10 +28,10 @@
             <td>
               <TreeTableColPrefix :obj="obj" @toggle="toggle(obj)">{{ obj.name }}</TreeTableColPrefix>
             </td>
-            <!-- <td>{{ obj.area.name }}</td> -->
+            <td>{{ obj.area.name }}</td>
             <td>{{ obj.code }}</td>
-            <td>{{ obj.typeCN }}</td>
-            <td>{{ obj.remarks }}</td>
+            <td>{{ obj.masterUserInfo == null ? '' : obj.masterUserInfo.name }}</td>
+            <td>{{ obj.phone }}</td>
             <td>
               <router-link :to='"/system/office/" + obj.id + "/form"'>修改</router-link>
               <a @click="deleteData(obj)">删除</a>

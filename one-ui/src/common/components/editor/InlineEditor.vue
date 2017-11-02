@@ -1,25 +1,45 @@
 <template>
-  <Editor v-model="data" type="inline"></Editor>
+  <div>
+    <KindEditor
+      v-model="innerValue"
+      id="editor_id"
+      :height="height"
+      width="100%"
+      pluginsPath="/static/kindeditor/plugins/"
+      :loadStyleMode="false">
+    </KindEditor>
+  </div>
 </template>
 
 <script>
-  import Editor from './Editor'
-
   export default {
     name: 'InlineEditor',
     props: {
-      value: {}
+      value: {},
+      height: {
+        default: '500px'
+      }
     },
-    components: {
-      Editor
+    mounted () {
+      this.innerValue1 = this.value
+    },
+    data: () => {
+      return {
+        innerValue1: ''
+      }
+    },
+    watch: {
+      'innerValue1': function (value) {
+        this.$emit('input', value)
+      }
     },
     computed: {
-      data: {
+      innerValue: {
         get: function () {
           return this.value
         },
-        set: function (newValue) {
-          this.$emit('input', newValue)
+        set: function (value) {
+          this.$emit('input', value)
         }
       }
     }

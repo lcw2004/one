@@ -1,8 +1,5 @@
 <template>
-  <div class="box box-solid">
-    <div class="box-header">
-      <h3 class="box-title">个人信息</h3>
-    </div>
+  <div class="box">
     <div class="box-body">
       <section>
         <h4 class="page-header">基本信息</h4>
@@ -18,17 +15,17 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="col-md-4 control-label">身份证号码</label>
+                <label class="col-md-4 control-label">登录账号</label>
                 <div class="col-md-8">
-                  <p class="form-control-static">{{ user.identityNumber }}</p>
+                  <p class="form-control-static">{{ user.account }}</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label class="col-md-4 control-label">登录账号</label>
+                <label class="col-md-4 control-label">身份证号码</label>
                 <div class="col-md-8">
-                  <p class="form-control-static">{{ user.account }}</p>
+                  <p class="form-control-static">{{ user.identityNumber }}</p>
                 </div>
               </div>
             </div>

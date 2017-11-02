@@ -17,7 +17,7 @@
           <tr>
             <th>名称</th>
             <th>链接</th>
-            <th>排序</th>
+            <th>排序号</th>
             <th>可见</th>
             <th>权限标识</th>
             <th>操作</th>
@@ -29,8 +29,8 @@
               <TreeTableColPrefix :obj="obj" @toggle="toggle(obj)">{{ obj.name }}</TreeTableColPrefix>
             </td>
             <td>{{ obj.href }}</td>
-            <td>{{ obj.sort }}</td>
-            <td>{{ obj.isShowCN }}</td>
+            <td><input type="number" class="form-control input-sm" style="width: 100px" v-model="obj.sort" @blur="updateSort(obj)"></td>
+            <td><DictLabel type="show_hide" :value="obj.isShow"></DictLabel></td>
             <td>{{ obj.permission }}</td>
             <td>
               <router-link :to='"/system/menu/" + obj.id + "/form"'>修改</router-link>
@@ -57,13 +57,14 @@
     mounted () {
       let actions = {
         getMenuTree: {method: 'get', url: '/api/sys/menu/tree'},
-        deleteData: {method: 'delete', url: '/api/sys/menu{/id}'}
+        deleteData: {method: 'delete', url: '/api/sys/menu{/id}'},
+        updateSort: {method: 'post', url: '/api/sys/menu/{id}/sort'}
       }
       this.resource = this.$resource(null, {}, actions)
       this.loadTreeTable()
     },
     methods: {
-      loadTreeTable: function () {
+      loadTreeTable () {
         this.resource.getMenuTree().then((response) => {
           let result = response.body
           if (result.ok) {
@@ -71,7 +72,7 @@
           }
         })
       },
-      deleteData: function (obj) {
+      deleteData (obj) {
         this.$confirm('确认删除菜单[ ' + obj.name + ' ]吗？', () => {
           this.resource.deleteData({id: obj.id}).then((response) => {
             if (response.body.ok) {
@@ -79,6 +80,13 @@
               this.removeElement(obj)
             }
           })
+        })
+      },
+      updateSort (obj) {
+        this.resource.updateSort({id: obj.id, sort: obj.sort}, null).then((response) => {
+          if (response.body.ok) {
+            this.$notify.success('修改成功')
+          }
         })
       }
     }

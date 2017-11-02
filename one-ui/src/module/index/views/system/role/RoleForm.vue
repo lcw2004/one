@@ -6,29 +6,35 @@
       </div>
       <div class="box-body">
         <form class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-2 control-label">角色名称</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" v-model="obj.name"/>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="角色名称">
+                <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="角色名称" />
+              </FormGroup>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">数据范围</label>
-            <div class="col-sm-4">
-              <DictSelect v-model="obj.dataScope" type="sys_data_scope"></DictSelect>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="数据范围">
+                <DictSelect v-model="obj.dataScope" type="sys_data_scope"></DictSelect>
+              </FormGroup>
+            </div>
+            <div class="col-md-6">
               <p class="help-block">特殊情况下，设置为“按明细设置”，可进行跨机构授权</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">备注</label>
-            <div class="col-sm-4">
-              <textarea v-model="obj.remarks" class="form-control" rows="3"></textarea>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="备注">
+                <textarea v-model="obj.remarks" class="form-control" rows="3" maxlength="200"></textarea>
+              </FormGroup>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">角色授权</label>
-            <div class="col-sm-4">
-              <Tree :element="topMenu" v-model="obj.sysMenuEOIdList" select-type="checkbox"></Tree>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="角色授权">
+                <Tree :element="topMenu" v-model="obj.sysMenuEOIdList" select-type="checkbox"></Tree>
+              </FormGroup>
             </div>
           </div>
         </form>
@@ -36,7 +42,7 @@
       <div class="box-footer">
         <div class="row">
           <div class="col-md-2 col-md-offset-2">
-            <a class="btn btn-block btn-primary" @click="save()">保存</a>
+            <a class="btn btn-block btn-primary" @click="validAndSave()">保存</a>
           </div>
           <div class="col-md-2">
             <a class="btn btn-block btn-default" @click="$router.go(-1)">返回</a>
@@ -48,7 +54,7 @@
 </template>
 
 <script>
-  import FormMixin from '../../../../../common/mixins/FormMixin.js'
+  import FormMixin from 'mixins/FormMixin.js'
   export default {
     mixins: [FormMixin],
     data: () => {

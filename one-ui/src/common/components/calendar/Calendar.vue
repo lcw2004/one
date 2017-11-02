@@ -3,7 +3,7 @@
 
 <script>
   let $ = require('jquery')
-  require('fullcalendar')
+//  require('fullcalendar')
 
   export default {
     name: 'Calendar',

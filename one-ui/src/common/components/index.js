@@ -1,66 +1,85 @@
 import Vue from 'vue'
 // base
-import FullScreenBtn from './base/FullScreenBtn'
-import RightPanel from './base/RightPanel'
-import VerifyCodeImg from './base/VerifyCodeImg'
-import Checkbox from './base/Checkbox'
-import FixedContainer from './container/FixedContainer'
-import PopoverContainer from './container/PopoverContainer'
+import FullScreenBtn from 'components/base/FullScreenBtn'
+import RightPanel from 'components/base/RightPanel'
+import VerifyCodeImg from 'components/base/VerifyCodeImg'
+import VerifyCode from 'components/base/VerifyCode'
+import Checkbox from 'components/base/Checkbox'
+import FixedContainer from 'components/container/FixedContainer'
+import PopoverContainer from 'components/container/PopoverContainer'
+import Popover from 'components/container/Popover.vue'
+import Tooltip from 'components/container/Tooltip.vue'
+import TableNoData from 'components/base/TableNoData.vue'
+
 // dict
-import DictSelect from './dict/DictSelect'
-import DictRadio from './dict/DictRadio'
-import DictLabel from './dict/DictLabel'
+import DictSelect from 'components/dict/DictSelect'
+import DictRadio from 'components/dict/DictRadio'
+import DictLabel from 'components/dict/DictLabel'
 
-import OneTransition from './transition/OneTransition'
+import OneTransition from 'components/transition/OneTransition'
 // 分页
-import Pagination from './pagination/Pagination'
+import Pagination from 'components/pagination/Pagination'
 // button
-import FullButton from './button/FullButton'
+import FullButton from 'components/button/FullButton'
+import OneButton from 'components/button/OneButton'
 // Calendar
-import Calendar from './calendar/Calendar'
-// switch
-import BootstrapSwitch from './switch/BootstrapSwitch'
+import Calendar from 'components/calendar/Calendar'
+
 // editor
-import Editor from './editor/Editor'
-import InlineEditor from './editor/InlineEditor'
+import InlineEditor from 'components/editor/InlineEditor'
+import KindEditor from 'components/editor/KindEditor'
 // time
-import TimePicker from './time/TimePicker'
-import TimeRangePicker from './time/TimeRangePicker'
-import DatePicker from './time/DatePicker'
+import TimePicker from 'components/time/TimePicker'
+import TimeRangePicker from 'components/time/TimeRangePicker'
+import DatePicker from 'components/time/DatePicker'
 // Timeline
-import TimeLine from './timeline/TimeLine'
-import TimeLabel from './timeline/TimeLabel'
-import TimeItem from './timeline/TimeItem'
-import TimeItemBody from './timeline/TimeItemBody'
-import TimeItemFooter from './timeline/TimeItemFooter'
-import TimeItemHeader from './timeline/TimeItemHeader'
+import TimeLine from 'components/timeline/TimeLine'
+import TimeLabel from 'components/timeline/TimeLabel'
+import TimeItem from 'components/timeline/TimeItem'
+import TimeItemBody from 'components/timeline/TimeItemBody'
+import TimeItemFooter from 'components/timeline/TimeItemFooter'
+import TimeItemHeader from 'components/timeline/TimeItemHeader'
 // tree
-import Tree from './tree/Tree'
-import TreeTableColPrefix from './tree/TreeTableColPrefix'
+import Tree from 'components/tree/Tree'
+import TreeTableColPrefix from 'components/tree/TreeTableColPrefix'
 
-import notify from './notify'
-import confirm from './confirm'
-import progress from './progress'
-import preview from './img-preview'
 // Form
-import FormGroup from './form/FormGroup'
-import FormGroupStatic from './form/FormGroupStatic'
-import FormControllStatic from './form/FormControllStatic'
+import FormGroup from 'components/form/FormGroup'
+import FormGroupStatic from 'components/form/FormGroupStatic'
+import FormControllStatic from 'components/form/FormControllStatic'
 // File Upload
-import FileUpload from './file-upload/FileUpload'
+import FileUpload from 'components/file-upload/FileUpload'
 
-import FileDownloader from './business/FileDownloader'
-import ImageView from './img-preview/ImageView'
-import LongText from './business/LongText'
+import FileDownloader from 'components/business/FileDownloader'
+import ImageView from 'components/img-preview/ImageView'
+import LongText from 'components/business/LongText'
+
+// QuestionTooltip
+import QuestionTooltip from 'components/questionTooltip/QuestionTooltip.vue'
+
+// echart
+import ECharts from 'components/echart/ECharts.vue'
+
+import OneSwitch from 'components/switch/OneSwitch.vue'
+
+import notify from 'components/notify'
+import confirm from 'components/confirm'
+import progress from 'components/progress'
+import preview from 'components/img-preview'
+import overlay from 'components/overlay'
 
 function initGlobalComponents () {
   // base
   Vue.component(FullScreenBtn.name, FullScreenBtn)
   Vue.component(RightPanel.name, RightPanel)
   Vue.component(VerifyCodeImg.name, VerifyCodeImg)
+  Vue.component(VerifyCode.name, VerifyCode)
   Vue.component(Checkbox.name, Checkbox)
   Vue.component(FixedContainer.name, FixedContainer)
   Vue.component(PopoverContainer.name, PopoverContainer)
+  Vue.component(Popover.name, Popover)
+  Vue.component(Tooltip.name, Tooltip)
+  Vue.component(TableNoData.name, TableNoData)
 
   // dicit
   Vue.component(DictSelect.name, DictSelect)
@@ -74,16 +93,14 @@ function initGlobalComponents () {
 
   // button
   Vue.component(FullButton.name, FullButton)
+  Vue.component(OneButton.name, OneButton)
 
   // Calendar
   Vue.component(Calendar.name, Calendar)
 
-  // switch
-  Vue.component(BootstrapSwitch.name, BootstrapSwitch)
-
   // editor
-  Vue.component(Editor.name, Editor)
   Vue.component(InlineEditor.name, InlineEditor)
+  Vue.component(KindEditor.name, KindEditor)
 
   // time
   Vue.component(TimePicker.name, TimePicker)
@@ -102,6 +119,9 @@ function initGlobalComponents () {
   Vue.component(Tree.name, Tree)
   Vue.component(TreeTableColPrefix.name, TreeTableColPrefix)
 
+  // QuestionTooltip
+  Vue.component(QuestionTooltip.name, QuestionTooltip)
+
   // form
   Vue.component(FormGroup.name, FormGroup)
   Vue.component(FormGroupStatic.name, FormGroupStatic)
@@ -112,11 +132,16 @@ function initGlobalComponents () {
   Vue.component(LongText.name, LongText)
   Vue.component(ImageView.name, ImageView)
 
+  Vue.component(ECharts.name, ECharts)
+
+  Vue.component(OneSwitch.name, OneSwitch)
+
   // message
   Vue.prototype.$notify = notify
   Vue.prototype.$confirm = confirm
   Vue.prototype.$progress = progress
   Vue.prototype.$preview = preview
+  Vue.prototype.$overlay = overlay
 }
 
 export default initGlobalComponents

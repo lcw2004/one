@@ -1,15 +1,15 @@
 <template>
-  <transition name="zoom">
+  <OneTransition>
     <div class="modal" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
               <span aria-hidden="true">×</span>
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body modal-scrollable">
             <!-- 标题 -->
             <div class="row row-margin-bottom">
               <div class="col-md-12">
@@ -47,25 +47,32 @@
             </div>
           </div>
           <div class="modal-footer">
-            <div class="pull-left">
-              选中
-              <template v-if="selectedUser && selectedUser.userInfo"><span class="label label-info">{{ selectedUser.userInfo.name }}</span>
-              </template>
+            <div class="row">
+              <div class="col-md-10">
+                <div class="pull-left modal-selected-data">
+                  选中
+                  <template v-if="selectedUser && selectedUser.userInfo"><span class="label label-info">{{ selectedUser.userInfo.name }}</span>
+                  </template>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
+                <button type="button" class="btn btn-primary" @click="ok()">确认</button>
+              </div>
             </div>
-            <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
-            <button type="button" class="btn btn-primary" @click="ok()">确认</button>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </OneTransition>
 </template>
 
 <script>
-  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import PageMixin from 'mixins/PageMixin.js'
+  import ModalMixin from 'mixins/ModalMixin.js'
 
   export default {
-    mixins: [PageMixin],
+    mixins: [PageMixin, ModalMixin],
     components: {
       PageMixin
     },
@@ -87,7 +94,7 @@
     },
     methods: {
       ok () {
-        this.config.show = false
+        this.close()
         if (this.selectedUser) {
           this.$emit('input', this.selectedUser.userInfo)
         }

@@ -30,7 +30,7 @@
                 <td>
                   <UserInfoSimpleView :user="obj.principalUser"/>
                 </td>
-                <td>{{ obj.principalUser.userContactInfo.phone }}</td>
+                <td>{{ obj.principalUser.userContactInfo.mobile }}</td>
                 <td>
                   <span v-if="obj.status == -1">{{ obj.statusCn }}</span>
                   <span v-if="obj.status == 1" class="label label-primary">{{ obj.statusCn }}</span>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import PageMixin from '../../../../../common/mixins/PageMixin.js'
+  import PageMixin from 'mixins/PageMixin.js'
   import UserInfoSimpleView from '../common/UserInfoSimpleView'
 
   export default {

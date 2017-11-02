@@ -2,6 +2,9 @@
   <form class="form-horizontal">
     <div class="row">
       <div class="col-md-6">
+        <FormGroupStatic label="登录账户">{{ obj.principalUser.account }}</FormGroupStatic>
+      </div>
+      <div class="col-md-6">
         <FormGroupStatic label="姓名">{{ obj.principalUser.name }}</FormGroupStatic>
       </div>
       <div class="col-md-6">

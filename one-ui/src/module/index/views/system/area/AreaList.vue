@@ -61,7 +61,7 @@
       this.loadTreeTable()
     },
     methods: {
-      loadTreeTable: function () {
+      loadTreeTable () {
         this.resource.query().then((response) => {
           let result = response.body
           if (result.ok) {
@@ -69,8 +69,8 @@
           }
         })
       },
-      deleteData: function (obj) {
-        this.$confirm('确认删除区域[ ' + obj.name + ' ]吗？', () => {
+      deleteData (obj) {
+        this.$confirm('确认删除区域【' + obj.name + '】吗？', () => {
           this.resource.deleteData({id: obj.id}).then((response) => {
             if (response.body.ok) {
               this.$notify.success('删除成功')

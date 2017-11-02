@@ -1,4 +1,4 @@
-
+// import moment from 'moment'
 export default {
   props: {
     disabledDate: {
@@ -12,6 +12,14 @@ export default {
         option.disabledDate = this.disabledDate
       }
       return option
+    },
+    time: {
+      get: function () {
+        return this.value
+      },
+      set: function (newDate) {
+        this.$emit('input', newDate)
+      }
     }
   }
 }

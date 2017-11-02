@@ -16,7 +16,7 @@
             <div class="row">
               <div class="col-md-6">
                 <FormGroup label="公司名称">
-                  <input type="text" class="form-control" v-model="supplier.name" maxlength="50" disabled>
+                  <input type="text" class="form-control" v-model="supplier.name" maxlength="50" v-validate="'required'" name="公司名称">
                 </FormGroup>
               </div>
               <div class="col-md-6">
@@ -48,8 +48,8 @@
                 </FormGroup>
               </div>
               <div class="col-md-6">
-                <FormGroup label="法人身份证" required="true">
-                  <input type="text" class="form-control" v-model="supplier.legalPersonNumber" v-validate="'required'" name="法人身份证"
+                <FormGroup label="法人身份证号" required="true">
+                  <input type="text" class="form-control" v-model="supplier.legalPersonNumber" v-validate="'required|idNumber'" name="法人身份证号"
                          maxlength="20">
                 </FormGroup>
               </div>
@@ -145,7 +145,7 @@
               </div>
               <div class="col-md-6">
                 <FormGroup label="从业人数" required="true">
-                  <DictSelect v-model="supplier.emploeeCount" type="supplier_emploee_count" v-validate="'required'" data-vv-value-path="innerValue" data-vv-name="从业人数" ></DictSelect>
+                  <DictSelect v-model="supplier.emploeeCount" type="supplier_emploee_count"></DictSelect>
                 </FormGroup>
               </div>
             </div>
@@ -177,25 +177,33 @@
 
             <div class="row">
               <div class="col-md-6">
-                <FormGroup label="姓名">
-                  <input type="text" class="form-control" v-model="supplier.principalUser.name" disabled>
-                </FormGroup>
-              </div>
-              <div class="col-md-6">
-                <FormGroup label="电子邮箱">
-                  <input type="text" class="form-control" v-model="supplier.principalUser.userContactInfo.email" disabled>
+                <FormGroup label="登录账户">
+                  <input type="text" class="form-control" v-model="supplier.principalUser.account" readonly>
                 </FormGroup>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <FormGroup label="身份证号">
-                  <input type="text" class="form-control" v-model="supplier.principalUser.identityNumber" maxlength="20">
+                <FormGroup label="联系人姓名">
+                  <input type="text" class="form-control" v-model="supplier.principalUser.name" v-validate="'required'" name="联系人姓名">
                 </FormGroup>
               </div>
               <div class="col-md-6">
-                <FormGroup label="性别">
+                <FormGroup label="联系人电子邮箱">
+                  <input type="text" class="form-control" v-model="supplier.principalUser.userContactInfo.email" v-validate="'required|email'" name="联系人电子邮箱">
+                </FormGroup>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <FormGroup label="联系人身份证号">
+                  <input type="text" class="form-control" v-model="supplier.principalUser.identityNumber" maxlength="20" v-validate="'idNumber'" name="联系人身份证号">
+                </FormGroup>
+              </div>
+              <div class="col-md-6">
+                <FormGroup label="联系人性别">
                   <div>
                     <label class="radio-inline"><input type="radio" value="1" v-model="supplier.principalUser.gender"> 男</label>
                     <label class="radio-inline"><input type="radio" value="2" v-model="supplier.principalUser.gender"> 女</label>
@@ -206,12 +214,12 @@
 
             <div class="row">
               <div class="col-md-6">
-                <FormGroup label="所属部门">
+                <FormGroup label="联系人所属部门">
                   <input type="text" class="form-control" v-model="supplier.principalUserInfo.department" maxlength="50">
                 </FormGroup>
               </div>
               <div class="col-md-6">
-                <FormGroup label="职位">
+                <FormGroup label="联系人职位">
                   <input type="text" class="form-control" v-model="supplier.principalUserInfo.position" maxlength="50">
                 </FormGroup>
               </div>
@@ -219,12 +227,12 @@
 
             <div class="row">
               <div class="col-md-6">
-                <FormGroup label="手机号码">
-                  <input type="text" class="form-control" v-model="supplier.principalUser.userContactInfo.mobile" maxlength="11">
+                <FormGroup label="联系人手机号码">
+                  <input type="text" class="form-control" v-model="supplier.principalUser.userContactInfo.mobile" maxlength="11" v-validate="'mobile'" name="联系人手机号码">
                 </FormGroup>
               </div>
               <div class="col-md-6">
-                <FormGroup label="电话号码">
+                <FormGroup label="联系人电话号码">
                   <input type="text" class="form-control" v-model="supplier.principalUser.userContactInfo.phone" maxlength="12">
                 </FormGroup>
               </div>
@@ -234,9 +242,8 @@
           <section>
             <h4 class="page-header">资质文件</h4>
 
-            <QualificationListEdit
-              deletable="false" editable="true"
-              :supplier="supplier" :qualificationList="supplier.qualificationList"></QualificationListEdit>
+            <QualificationListEdit type="3" deletable="false" editable="true"
+                                   :supplier="supplier" v-model="supplier.qualificationList"></QualificationListEdit>
           </section>
 
           <section>
@@ -260,8 +267,8 @@
 </template>
 
 <script>
-  import QualificationListEdit from '../../../personal/supplier/QualificationListEdit'
-  import PurchaseTypeListEdit from '../../../personal/supplier/PurchaseTypeListEdit'
+  import QualificationListEdit from '../../../user/common/QualificationListEdit'
+  import PurchaseTypeListEdit from '../../../user/supplier/edit/PurchaseTypeListEdit'
 
   export default {
     components: {
@@ -296,17 +303,20 @@
     },
     methods: {
       save () {
-        this.$validator.validateAll().then(() => {
-          this.resource.save(null, JSON.stringify(this.supplier)).then((response) => {
-            let result = response.body
-            if (result.ok) {
-              this.$notify.success('提交成功，请等待工作人员审核')
-              if (this.onSave) {
-                this.onSave()
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.resource.save(null, JSON.stringify(this.supplier)).then((response) => {
+              let result = response.body
+              if (result.ok) {
+                this.$notify.success('提交成功，请等待工作人员审核')
+                if (this.onSave) {
+                  this.onSave()
+                }
               }
-            }
-          })
-        }).catch(() => {
+            })
+          } else {
+            this.scrollToError()
+          }
         })
       }
     }

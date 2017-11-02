@@ -4,14 +4,17 @@
 
 <script>
   let $ = require('jquery')
+  // import * as treeUtils from './tree-utils'
   import Vue from 'vue'
   import TreeElement from './TreeElement'
 
   export default {
     name: 'Tree',
+
     components: {
       TreeElement
     },
+
     props: {
       /**
        * 元素
@@ -30,47 +33,49 @@
       },
       value: [Object, Array]
     },
+
     data: () => {
       return {
         // 消息总线，用于父子组件间通讯
-        // 不能注册为公共的组件，否则如果一个页面引用了多个树，会乱发事件
+        // 不能注册为公共的消息组件，否则如果一个页面引用了多个树，会乱发事件
         treeBus: new Vue()
       }
     },
-    mounted: function () {
-      this.initEventOnOfRadio()
-      this.initEventOnOfCheckbox()
+
+    mounted () {
+      this.initEventOfRadio()
+      this.initEventOfCheckbox()
     },
+
     methods: {
-      initEventOnOfRadio: function () {
-        let self = this
-        if (self.selectType === 'radio') {
+      initEventOfRadio () {
+        if (this.selectType === 'radio') {
           // 单选的情况下，直接将数据发给Modal
-          self.treeBus.$on('select-value-radio', function (data) {
-            self.$emit('input', data)
+          this.treeBus.$on('select-value-radio', (data) => {
+            this.$emit('input', data)
           })
         }
       },
-      initEventOnOfCheckbox: function () {
-        const self = this
-        if (self.selectType === 'checkbox') {
-          self.treeBus.$on('select-value-ckbox', function (selectElement, isSelect) {
-            const addOrRemoveRecursion = function (element, isSelect) {
-              var index = $.inArray(element.id, self.value)
+      initEventOfCheckbox () {
+        if (this.selectType === 'checkbox') {
+          this.treeBus.$on('select-value-ckbox', (selectElement, isSelect) => {
+            const addOrRemoveRecursion = function (element, value, isSelect) {
+              var index = $.inArray(element.id, value)
               if (isSelect && index < 0) {
-                self.value.push(element.id)
+                value.push(element.id)
               } else if (!isSelect && index >= 0) {
-                self.value.splice(index, 1)
+                value.splice(index, 1)
               }
 
               const childList = element.childList
               if (childList) {
-                for (let i = 0; i < childList.length; i++) {
-                  addOrRemoveRecursion(childList[i], isSelect)
+                for (let child of childList) {
+                  addOrRemoveRecursion(child, value, isSelect)
                 }
               }
             }
-            addOrRemoveRecursion(selectElement, isSelect)
+
+            addOrRemoveRecursion(selectElement, this.value, isSelect)
           })
         }
       }

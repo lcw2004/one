@@ -1,11 +1,11 @@
 <template>
-  <transition name="fadeDown">
+  <OneTransition name="fadeDown">
     <div class="alert alert-dismissible" :class="style" v-show="isShow" style="margin-bottom: 10px;">
       <button type="button" class="close btn-lg" data-dismiss="alert" aria-hidden="true" @click="close">×</button>
       <i class="icon fa" :class="iconClass"></i>
       {{ message }}
     </div>
-  </transition>
+  </OneTransition>
 </template>
 
 <script>

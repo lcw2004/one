@@ -1,10 +1,10 @@
 <template>
-  <transition name="zoom">
+  <OneTransition>
     <div class="modal" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="config.show = false">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
               <span aria-hidden="true">×</span>
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
@@ -26,25 +26,21 @@
             <div class="pull-left">
               选中 <span v-if="selected" class="icon-selected"><i :class="['fa', selected]"></i></span>
             </div>
-            <button type="button" class="btn btn-default " data-dismiss="modal" @click="config.show = false">取消</button>
+            <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
             <button type="button" class="btn btn-primary" @click="ok()">确认</button>
           </div>
         </div>
       </div>
     </div>
-  </transition>
+  </OneTransition>
 </template>
 
 <script>
   import iconList from './icons'
+  import ModalMixin from 'mixins/ModalMixin.js'
 
   export default {
-    props: {
-      config: {
-        type: Object,
-        required: true
-      }
-    },
+    mixins: [ModalMixin],
     data: () => {
       return {
         iconList: iconList,
@@ -53,7 +49,7 @@
     },
     methods: {
       ok () {
-        this.config.show = false
+        this.close()
         if (this.selected) {
           this.$emit('input', 'fa ' + this.selected)
         }

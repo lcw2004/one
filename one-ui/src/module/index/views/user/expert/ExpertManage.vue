@@ -4,49 +4,44 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header">
-            <form class="form-inline">
-              <div class="col-md-3"><label class="control-label">姓名</label> <input type="text" placeholder="姓名" class="form-control inline-block">
+            <ExpertQueryCondition v-model="param"></ExpertQueryCondition>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="pull-right">
+                  <router-link to="/user/expert/add" class="btn btn-primary btn-sm">添加专家</router-link>
+                </div>
               </div>
-            </form>
+            </div>
           </div>
 
           <div class="box-body">
             <table class="table table-bordered table-hover">
-              <tbody>
+              <thead>
               <tr>
                 <th style="width: 10px">#</th>
                 <th>姓名</th>
+                <th>登录名</th>
                 <th>单位</th>
                 <th>电话</th>
                 <th>状态</th>
                 <th>操作</th>
               </tr>
-              <tr>
-                <td>1</td>
+              </thead>
+              <tbody>
+              <tr v-for="(obj, index) of page.list">
+                <td>{{ index + 1}}</td>
                 <td>
-                  <router-link to="/expert/info">张三</router-link>
+                  <router-link :to="'/user/expert/' + obj.userId + '/view'">{{ obj.userInfo.name }}</router-link>
                 </td>
+                <td>{{ obj.userInfo.account }}</td>
                 <td>某某公司</td>
-                <td>13900000000</td>
+                <td>{{ obj.userInfo.userContactInfo.mobile }}</td>
                 <td>
-                  <span class="label label-warning">审核驳回</span>
+                  <UserStatusLabel :status="obj.userInfo.status" :desc="obj.userInfo.statusCn"/>
                 </td>
                 <td>
-                  <a>删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>
-                  <router-link to="/expert/info">李四</router-link>
-                </td>
-                <td>某某公司</td>
-                <td>13900000000</td>
-                <td>
-                  <span class="label label-danger">停用</span>
-                </td>
-                <td>
-                  <a>启用</a>
+                  <router-link :to="'/user/expert/' + obj.userId + '/edit'">修改</router-link>
                   <a>删除</a>
                 </td>
               </tr>
@@ -84,10 +79,22 @@
 </template>
 
 <script>
+  import PageMixin from 'mixins/PageMixin.js'
+  import UserInfoSimpleView from '../common/UserInfoSimpleView'
+  import UserStatusLabel from '../common/UserStatusLabel'
   export default {
-    components: {},
+    mixins: [PageMixin],
+    components: {
+      UserInfoSimpleView,
+      UserStatusLabel
+    },
     data: () => {
-      return {}
+      return {
+        actions: {
+          list: {method: 'get', url: '/api/user/expert'}
+        },
+        param: {}
+      }
     }
   }
 </script>

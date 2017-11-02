@@ -30,14 +30,15 @@
 </template>
 
 <script>
-  import FormMixin from '../../../../../common/mixins/FormMixin.js'
   import BaseInfo from './info/BaseInfo'
   import AuditLog from './info/AuditLog'
   import Biddings from './info/Biddings'
   import QuestionnaireInfo from './info/QuestionnaireInfo'
 
   export default {
-    mixins: [FormMixin],
+    props: {
+      supplierId: {}
+    },
     components: {
       BaseInfo,
       AuditLog,
@@ -53,6 +54,31 @@
         obj: {},
 
         step: 1
+      }
+    },
+    computed: {
+      id: function () {
+        if (this.supplierId) {
+          return this.supplierId
+        } else {
+          return this.$route.params.id
+        }
+      }
+    },
+    mounted () {
+      this.resource = this.$resource(null, {}, this.actions)
+      this.load()
+    },
+    methods: {
+      load () {
+        if (this.id) {
+          this.resource.get({id: this.id}).then((response) => {
+            let result = response.body
+            if (result.ok && result.data) {
+              this.obj = result.data
+            }
+          })
+        }
       }
     }
   }

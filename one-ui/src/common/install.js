@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
-import ElementUI from 'element-ui'
+
 // 引入资源css资源文件
-import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
-import 'bootstrap-daterangepicker/daterangepicker.css'
-import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
+import 'kindeditor/kindeditor-all-min.js'
+import 'kindeditor/themes/default/default.css'
+
 // 引入自定义组件
 import initGlobalComponents from './components'
 import initViewComponents from '../module/index/views'
@@ -14,13 +14,21 @@ import initFilters from './filters'
 
 import initVeeValidate from './utils/init/initVeeValidate.js'
 import initVueResource from './utils/init/initVueResource.js'
+import initElementUi from './utils/init/installElementUI.js'
+import initGLobalMixins from './utils/init/initGLobalMixins.js'
 
 function install () {
   Vue.config.devtools = true
 
   Vue.use(Vuex)
   Vue.use(VueRouter)
-  Vue.use(ElementUI)
+
+  // 注册自定义组件
+  initGlobalComponents()
+  initViewComponents()
+  initDirectives()
+  initFilters()
+  initGLobalMixins()
 
   // VeeValidate locale
   initVeeValidate()
@@ -28,11 +36,8 @@ function install () {
   // 启用进度条
   initVueResource()
 
-  // 注册自定义组件
-  initGlobalComponents()
-  initViewComponents()
-  initDirectives()
-  initFilters()
+  // 注册element-ui
+  initElementUi()
 }
 
 export default install

@@ -18,7 +18,7 @@ props：
     <label class="control-label" :class="labelClass">{{ label }}</label>
     <div :class="formWidth">
       <slot></slot>
-      <p class="help-block" v-if="isError" style="margin-bottom: -5px;">{{ errors.first(label) }}</p>
+      <p class="help-block" style="margin-bottom: -5px;" v-if="isError">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
@@ -40,6 +40,39 @@ props：
       return {}
     },
     computed: {
+      parent: function () {
+        // 更新到VUe2.5.2之后，获取到的Parent是Transition组件，需要再向上获取一级，才能获取到验证结果。
+        let parent = this.$parent
+        if (parent.$options._componentTag === 'OneTransition') {
+          parent = parent.$parent
+        }
+        return parent
+      },
+      parentErrors: function () {
+        return this.parent.errors
+      },
+      parentFields: function () {
+        return this.parent.fields
+      },
+      isError: function () {
+        if (!this.parentErrors) {
+          return false
+        }
+        return this.parentErrors.has(this.label)
+      },
+      isPass: function () {
+        const field = this.parentFields[this.label]
+        if (!field) {
+          return false
+        }
+        return field.touched && field.valid
+      },
+      isRequired: function () {
+        return this.required === 'true'
+      },
+      errorMessage: function () {
+        return this.parentErrors.first(this.label)
+      },
       labelClass: function () {
         return ['col-md-' + this.width, this.isRequired ? 'required' : '']
       },
@@ -52,24 +85,8 @@ props：
         }
         return formClass
       },
-      errors: function () {
-        return this.$parent.errors
-      },
-      isError: function () {
-        if (!this.errors) {
-          return false
-        }
-        return this.errors.has(this.label)
-      },
-      isPass: function () {
-        const field = this.fields[this.label]
-        return field.touched && field.valid
-      },
       groupClass: function () {
         return {'has-error': this.isError}
-      },
-      isRequired: function () {
-        return this.required === 'true'
       }
     }
   }

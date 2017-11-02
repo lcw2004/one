@@ -9,6 +9,7 @@ function resolve (dir) {
 
 module.exports = {
   // 获取多入口, 注意这个路径， 至于为什么是 ./src仍然需要了解，我觉得应该是 ../src
+  cache: true,
   entry: utils.getEntries('./src/module/**/*.js'),
   output: {
     path: config.build.assetsRoot,
@@ -21,13 +22,23 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src')
+      '@': resolve('src'),
+      'components': resolve('src/common/components'),
+      'mixins': resolve('src/common/mixins'),
+      'utils': resolve('src/common/utils'),
+
+      'element-ui': resolve('node_modules/element-ui'),
+      'moment': 'moment/min/moment.min.js',
+      'vuex': 'vuex/dist/vuex.min.js',
+      'vue-resource': 'vue-resource/dist/vue-resource.min.js',
+      'vue-router': 'vue-router/dist/vue-router.min.js'
     }
   },
   externals: {
     jquery: 'window.$'
   },
   module: {
+    noParse:[/vue\.runtime\.min/, /vue-router\.min/, /vue-resource\.min/, /vuex\.min/, /moment\.min/],
     rules: [
       {
         test: /\.(js|vue)$/,
@@ -45,8 +56,9 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        loader:[ 'happypack/loader?id=js'],
+        include: [resolve('src')],
+        exclude: [path.resolve('../../node_modules')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

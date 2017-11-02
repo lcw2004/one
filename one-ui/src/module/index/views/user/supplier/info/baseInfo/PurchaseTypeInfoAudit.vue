@@ -15,14 +15,16 @@
           <tr v-for="(purchaseType, index) of obj.purchaseTypeList">
             <td>{{ index + 1}}</td>
             <td>{{ purchaseType.basePurchaseType.name }}</td>
-            <td><LongText :text="purchaseType.remark"></LongText></td>
+            <td>
+              <LongText :text="purchaseType.remark"></LongText>
+            </td>
             <td>{{ purchaseType.userInfoEO == null ? '' : purchaseType.userInfoEO.name }}</td>
             <td>
               <template v-if="purchaseType.status != 3">
                 <span v-if="purchaseType.status == 1" class="label label-primary">{{ purchaseType.statusCN }}</span>
                 <span v-if="purchaseType.status == 2" class="label label-success">{{ purchaseType.statusCN }}</span>
               </template>
-              <template  v-if="purchaseType.status == 3">
+              <template v-if="purchaseType.status == 3">
                 <PopoverContainer title="驳回原因">
                   <span slot="outer" class="label label-warning">{{ purchaseType.statusCN }}</span>
                   <div class="row">

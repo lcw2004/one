@@ -2,16 +2,13 @@
   <div>
     <div style="height: 20px">
       <span class="tree-indent" v-for="index in level - 1"></span>
-
       <span class="tree-expander">
-      <input type="checkbox" v-if='selectType == "checkbox"' id="checkbox" v-model="isChecked" :style="halfChecked">
-      <input type="radio" v-if='selectType == "radio"' v-model="selectElementId" :value="element.id">
-    </span>
-
-      <span class="tree-expander" v-show="isFolder">
-      <i @click="toggole()" :class="folderClass"></i>
-    </span>
-
+        <input type="checkbox" v-if='selectType == "checkbox"' v-model="isChecked" :style="halfCheckedStyle">
+        <input type="radio" v-if='selectType == "radio"' v-model="selectValue" :value="element" :key="element.id">
+      </span>
+      <span class="tree-expander" v-if="isFolder">
+        <i @click="toggole()" :class="folderClass"></i>
+      </span>
       <span @click="toggole()">{{ element.name }}</span>
     </div>
 
@@ -25,9 +22,11 @@
 
 <script>
   let $ = require('jquery')
+  // import * as treeUtils from './tree-utils'
 
   export default {
     name: 'TreeElement',
+
     props: {
       /**
        * 元素
@@ -37,7 +36,7 @@
         require: true
       },
       /**
-       * 当前遍历的级别
+       * 当前遍历的深度
        */
       level: {
         type: Number,
@@ -54,15 +53,16 @@
       treeBus: [Object],
       value: [Object, Array]
     },
-    data: () => {
+
+    data: function () {
       return {
         /**
          * 展开的菜单的级数，默认展开三级
          */
-        isExpanded: this.level <= 2,
-        isHalf: true
+        isExpanded: this.level <= 2
       }
     },
+
     methods: {
       /**
        * 切换展开 / 关闭状态
@@ -71,6 +71,7 @@
         this.isExpanded = !this.isExpanded
       }
     },
+
     computed: {
       /**
        * 是否显示文件夹图片
@@ -89,6 +90,35 @@
         }
       },
       /**
+       * CheckBox复选框的半选中状态
+       */
+      halfCheckedStyle: function () {
+        // 检查元素是否有子元素没选中
+        let hasChildNotSelected = false
+        const checkIsAllChildSelected = function (element, elementList) {
+          const index = $.inArray(element.id, elementList)
+          if (index < 0) {
+            hasChildNotSelected = true
+            return
+          }
+
+          const childList = element.childList
+          if (childList) {
+            for (let i = 0; i < childList.length; i++) {
+              checkIsAllChildSelected(childList[i], elementList)
+            }
+          }
+        }
+        checkIsAllChildSelected(this.element, this.value)
+
+        // 返回半选中状态
+        if (hasChildNotSelected) {
+          return {
+            opacity: 0.4
+          }
+        }
+      },
+      /**
        * CheckBox复选框的选中状态
        */
       isChecked: {
@@ -102,41 +132,11 @@
         }
       },
       /**
-       * CheckBox复选框的半选中状态
-       */
-      halfChecked: function () {
-        const self = this
-
-        // 检查元素是否有子元素没选中
-        let hasNotSelectedChild = false
-        const checkStatusRecursion = function (element) {
-          var index = $.inArray(element.id, self.value)
-          if (index < 0) {
-            hasNotSelectedChild = true
-          }
-
-          const childList = element.childList
-          if (childList) {
-            for (let i = 0; i < childList.length; i++) {
-              checkStatusRecursion(childList[i])
-            }
-          }
-        }
-        checkStatusRecursion(self.element)
-
-        // 返回半选中状态
-        if (hasNotSelectedChild) {
-          return {
-            opacity: 0.4
-          }
-        }
-      },
-      /**
        * Radio单选框选中后的值
        */
-      selectElementId: {
+      selectValue: {
         get: function () {
-          return this.value.id
+          return this.value
         },
         set: function () {
           // 如果选中了新值，将新选中的元素广播到tree组件中
