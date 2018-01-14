@@ -8,8 +8,8 @@ import * as identityCode from '../identityCode'
  */
 function attachIdNumberRule () {
   Validator.extend('idNumber', {
-    messages: {
-      zh_CN: field => '请输入正确的身份证号码'
+    getMessage (field, params, data) {
+      return (data && data.message) || '请输入正确的身份证号码'
     },
     validate: value => {
       return identityCode.valid(value)
@@ -22,8 +22,10 @@ function attachIdNumberRule () {
  */
 function attachMobileRule () {
   Validator.extend('mobile', {
-    messages: {
-      zh_CN: field => '必须是11位手机号码'
+    getMessage: field => {
+      return {
+        zh_CN: field => '必须是11位手机号码'
+      }
     },
     validate: value => {
       return value.length === 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)
@@ -36,8 +38,8 @@ function attachMobileRule () {
  */
 function attachPasswordRule () {
   Validator.extend('password', {
-    messages: {
-      zh_CN: field => '请输入6-20位的密码'
+    getMessage (field, params, data) {
+      return (data && data.message) || '请输入6-20位的密码'
     },
     validate: value => {
       return value.length >= 6 && value.length <= 20
@@ -69,12 +71,16 @@ function attachPasswordRule () {
  * 配置vee-validate
  */
 function initVeeValidate () {
+  attachIdNumberRule
+  attachMobileRule
+  attachPasswordRule
+
   attachIdNumberRule()
   attachMobileRule()
   attachPasswordRule()
   // attachOneAfterRule
 
-  Validator.addLocale(cn)
+  Validator.localize('zh_CN', cn)
   const config = {
     locale: 'zh_CN'
   }
