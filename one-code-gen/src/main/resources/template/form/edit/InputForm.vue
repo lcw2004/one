@@ -1,0 +1,1 @@
+<input type="text" class="form-control" v-model="obj.@{field.javaFieldName}" v-validate="'required'" name="@{field.comment}" />

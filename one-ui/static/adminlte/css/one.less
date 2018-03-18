@@ -1,0 +1,126 @@
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+  -webkit-appearance: none;
+  background-color: #FFFFFF;
+}
+
+::-webkit-scrollbar-thumb {
+  height: 5px;
+  border: 1px solid transparent;
+  border-top: none;
+  border-bottom: none;
+  -webkit-border-radius: 6px;
+  background-color: rgba(125, 125, 125, .4);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(125, 125, 125, .5);
+}
+
+/*row间距*/
+.row-margin-bottom {
+  margin-bottom: 10px;
+}
+
+.row-margin-top {
+  margin-bottom: 10px;
+}
+
+/*树前面的空格*/
+.tree-indent {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+}
+.tree-expander {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+/*去掉黑点和空格*/
+ul, li {
+  list-style: none;
+  padding:0; margin:0;
+}
+
+/*模态框滚动*/
+.modal-scrollable {
+  overflow-y: auto;
+  max-height: 450px;
+}
+
+.registry-title {
+  margin-top: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/*Icon*/
+.icon-default {
+  color: #c1c2c5
+}
+.icon-danger {
+  color: #dd4b39
+}
+
+.query {
+  .form-group {
+    margin-bottom: 8px !important;
+  }
+}
+.query input {
+  height: 30px;
+  font-size: 12px;
+}
+.query .btn {
+  height: 30px;
+}
+
+.margin-10 {
+  margin:  10px 0;
+}
+.margin-20 {
+  margin:  20px 0;
+}
+.margin-50 {
+  margin:  50px 0;
+}
+
+.required:before {
+  font-family: 'Times New Roman';
+  font-size: 15px;
+  content: "*";
+  color: #dd4b39;
+  position: relative;
+  top: 3px;
+  right: 5px;
+}
+
+.break-word {
+  white-space:normal;
+  word-break:break-all;
+  word-wrap:break-word;
+}
+
+.btn-query {
+  padding: 0 12px !important;
+}
+
+table {
+  thead {
+    tr {
+      white-space: nowrap;
+    }
+  }
+  tbody {
+    tr {
+    }
+  }
+}
