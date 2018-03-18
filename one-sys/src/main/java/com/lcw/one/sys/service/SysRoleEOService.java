@@ -15,22 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO> {
+public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO, String> {
 
     @Autowired
     private SysMenuEODao sysMenuEODao;
+
+    @Autowired
+    private SysHomeComponentEOService sysHomeComponentEOService;
 
     @Override
     public SysRoleEO save(SysRoleEO sysRoleEO) {
         sysRoleEO.setId(UUID.randomUUID10());
         sysRoleEO.setDelFlag(DeleteFlagEnum.NORMAL.getValue());
         dao.save(sysRoleEO);
+        sysHomeComponentEOService.save(sysRoleEO.getId(), sysRoleEO.getComponentIdList());
         return sysRoleEO;
     }
 
     @Override
     public SysRoleEO update(SysRoleEO sysRoleEO) {
         dao.save(sysRoleEO);
+        sysHomeComponentEOService.save(sysRoleEO.getId(), sysRoleEO.getComponentIdList());
         return sysRoleEO;
     }
 
@@ -41,6 +46,7 @@ public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO> {
         for (SysMenuEO sysMenuEO: sysRoleEO.getSysMenuEOList()) {
             sysRoleEO.getSysMenuEOIdList().add(sysMenuEO.getId());
         }
+        sysRoleEO.setComponentIdList(sysHomeComponentEOService.listByRoleId(id));
         return sysRoleEO;
     }
 
@@ -55,6 +61,15 @@ public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO> {
             roleIdList.add(sysRole.getId());
         }
         return roleIdList;
+    }
+
+    public List<String> getSysRoleNameListByUserId(String userId) {
+        List<SysRoleEO> sysRoleEOList = getSysRoleListByUserId(userId);
+        List<String> roleNameList = new ArrayList<>();
+        for (SysRoleEO sysRole: sysRoleEOList) {
+            roleNameList.add(sysRole.getName());
+        }
+        return roleNameList;
     }
 
     @Override

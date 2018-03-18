@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 审核日志服务
+ */
 @Service
-public class FlowAuditLogEOService extends CrudService<FlowAuditLogEODao, FlowAuditLogEO> {
+public class FlowAuditLogEOService extends CrudService<FlowAuditLogEODao, FlowAuditLogEO, String> {
 
     public List<FlowAuditLogEO> list(String businessType, String businessId, String secondBusinessId) {
         return dao.list(businessType, businessId, secondBusinessId);
     }
 
-    public Long count(String businessType, String businessId) {
-        return dao.count(businessType, businessId);
-    }
 }

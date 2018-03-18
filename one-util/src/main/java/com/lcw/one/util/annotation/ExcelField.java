@@ -41,4 +41,6 @@ public @interface ExcelField {
      * 是否可以为空
      */
     boolean nullable() default true;
+
+    String dict() default "";
 }

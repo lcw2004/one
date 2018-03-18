@@ -57,6 +57,7 @@ public class UserManagerEODao extends BaseRepositoryImpl<UserManagerEO, String> 
             sql.append(" and userInfoEO.identityNumber like :identityNumber ");
             params.put("identityNumber", "%" + userQueryCondition.getUserIdentityNumber() + "%");
         }
+        sql.append(" order by userInfo.createTime desc");
         return page(userQueryCondition.getPageInfo(), sql.toString(), params);
     }
 

@@ -19,6 +19,7 @@ public class SysRoleEO {
     private Integer isDefault;
     private List<SysMenuEO> sysMenuEOList = new ArrayList<>();
     private List<String> sysMenuEOIdList = new ArrayList<>();
+    private List<String> componentIdList = new ArrayList<>();
 
     @Id
     @Column(name = "id")
@@ -122,5 +123,14 @@ public class SysRoleEO {
 
     public void setSysMenuEOIdList(List<String> sysMenuEOIdList) {
         this.sysMenuEOIdList = sysMenuEOIdList;
+    }
+
+    @Transient
+    public List<String> getComponentIdList() {
+        return componentIdList;
+    }
+
+    public void setComponentIdList(List<String> componentIdList) {
+        this.componentIdList = componentIdList;
     }
 }

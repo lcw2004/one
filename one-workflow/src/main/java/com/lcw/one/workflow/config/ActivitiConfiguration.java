@@ -1,13 +1,12 @@
 package com.lcw.one.workflow.config;
 
-import com.lcw.one.workflow.config.listener.VariableCreateListener;
+import com.lcw.one.workflow.config.listener.OneActivitiEventListener;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.spring.boot.ProcessEngineConfigurationConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,12 +19,12 @@ public class ActivitiConfiguration implements ProcessEngineConfigurationConfigur
     private static final String FONT_NAME = "宋体";
 
     @Autowired
-    private VariableCreateListener variableCreateListener;
+    private OneActivitiEventListener oneActivitiEventListener;
 
     public List<ActivitiEventListener> eventListeners() {
         logger.info("Add ActivitiEventListener");
         List<ActivitiEventListener> list = new ArrayList<ActivitiEventListener>();
-        list.add(variableCreateListener);
+        list.add(oneActivitiEventListener);
         return list;
     }
 

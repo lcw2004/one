@@ -1,6 +1,7 @@
 package com.lcw.one.workflow.service;
 
 import com.lcw.one.user.constant.AuditStatusEnum;
+import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.UUID;
@@ -10,6 +11,7 @@ import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.WorkFlowBean;
 import com.lcw.one.workflow.bean.constant.FlowEffectiveEnum;
 import com.lcw.one.workflow.bean.constant.FlowFinishEnum;
+import com.lcw.one.workflow.config.ThreadLocalContext;
 import com.lcw.one.workflow.entity.FlowAuditItemBean;
 import com.lcw.one.workflow.entity.FlowAuditItemEO;
 import com.lcw.one.workflow.entity.FlowAuditLogEO;
@@ -24,6 +26,9 @@ import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * 工作流接口调用相关服务
+ */
 @Service
 public class WorkFlowService {
 
@@ -45,7 +50,6 @@ public class WorkFlowService {
      * @param businessId  业务ID
      * @param applyUserId 申请人ID
      */
-    @Transactional(rollbackOn = Exception.class)
     public void startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String applyUserId, String applyUserName, String operateName, String ip, Map<String, Object> variables) {
         String auditItemId = UUID.randomUUID();
         String flowInstanceId = null;
@@ -97,7 +101,13 @@ public class WorkFlowService {
             if (StringUtils.isNotEmpty(flowInstanceId)) {
                 activitiService.deleteWorkflowInstance(flowInstanceId, "flowId[" + flowId + "]执行异常");
             }
-            throw e;
+
+            Map<String, String> map = ThreadLocalContext.threadLocal.get();
+            if (map != null && !map.isEmpty()) {
+                throw new RuntimeException(map.get("cause"));
+            } else {
+                throw new RuntimeException(e.getMessage());
+            }
         }
     }
 
@@ -110,11 +120,8 @@ public class WorkFlowService {
      * @param remark      审批不通过的理由
      */
     @Transactional(rollbackOn = Exception.class)
-    public void audit(String taskId, String auditUserId, Boolean auditResult, String remark, String ip) {
+    public void audit(LoginUser loginUser, String taskId, Boolean auditResult, String remark) {
         TaskInfoBean taskInfoBean = activitiService.getTask(taskId);
-        if (taskInfoBean == null) {
-            throw new OneBaseException("找不到任务ID为[" + taskId + "]的任务");
-        }
 
         String auditItemId = (String) taskInfoBean.getVariables().get("auditItemId");
         FlowAuditItemEO flowAuditItemEO = flowAuditItemEOService.get(auditItemId);
@@ -128,7 +135,8 @@ public class WorkFlowService {
         flowAuditLogEO.setAuditLogId(UUID.randomUUID());
         flowAuditLogEO.setAuditItemId(auditItemId);
         flowAuditLogEO.setAuditTime(new Date());
-        flowAuditLogEO.setUserId(auditUserId);
+        flowAuditLogEO.setUserId(loginUser.getUserId());
+        flowAuditLogEO.setIp(loginUser.getIp());
         flowAuditLogEO.setResult(auditResult ? 1 : 0);
         flowAuditLogEO.setRemark(remark);
         flowAuditLogEO.setOperateName(auditResult ? "审核通过" : "审核驳回");
@@ -137,8 +145,7 @@ public class WorkFlowService {
         FlowAuditItemBean flowAuditItemBean = new FlowAuditItemBean();
         flowAuditItemBean.setAuditItemId(auditItemId);
         flowAuditItemBean.setBusinessId(flowAuditItemEO.getBusinessId());
-        flowAuditItemBean.setIp(ip);
-        flowAuditItemBean.setUserId(auditUserId);
+        flowAuditItemBean.setLoginUser(loginUser);
         flowAuditItemBean.setAuditRemark(remark);
         flowAuditItemBean.setAuditResult(auditResult);
         flowAuditItemBean.setVariables(taskInfoBean.getVariables());
@@ -163,7 +170,7 @@ public class WorkFlowService {
 
         // 执行工作流
         WorkFlowBean workFlowBean = new WorkFlowBean();
-        workFlowBean.setUserId(auditUserId);
+        workFlowBean.setUserId(loginUser.getUserId());
         workFlowBean.setBusinessKey(flowAuditItemEO.getBusinessId());
         workFlowBean.setFlowId(flowAuditItemEO.getFlowDefinitionId());
         workFlowBean.setTaskId(taskId);

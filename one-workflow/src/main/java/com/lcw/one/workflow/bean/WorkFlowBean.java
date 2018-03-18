@@ -125,10 +125,9 @@ public class WorkFlowBean {
     }
 
     public void putVariables(Map<String, Object> variables) {
-        Set<String> keySet = variables.keySet();
-        for (Iterator<String> it = keySet.iterator(); it.hasNext(); ) {
-            String key = it.next();
-            putVariables(key, variables.get(key));
+        if (this.variables == null) {
+            this.variables = new HashMap<>();
         }
+        this.variables.putAll(variables);
     }
 }

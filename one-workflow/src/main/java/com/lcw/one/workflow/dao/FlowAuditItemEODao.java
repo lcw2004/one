@@ -1,7 +1,7 @@
 package com.lcw.one.workflow.dao;
 
-import com.lcw.one.workflow.entity.FlowAuditItemEO;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
+import com.lcw.one.workflow.entity.FlowAuditItemEO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.stereotype.Component;

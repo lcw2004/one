@@ -3,6 +3,7 @@ package com.lcw.one.sys.rest;
 import com.lcw.one.sys.entity.SysDictEO;
 import com.lcw.one.sys.service.SysDictEOService;
 import com.lcw.one.sys.util.DictUtils;
+import com.lcw.one.util.bean.SysDict;
 import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.http.ResponseMessage;
@@ -66,7 +67,7 @@ public class SysDictEORestController {
 
     @ApiOperation(value = "以Map形式获取所有字典")
     @RequestMapping(value = "/group", method = RequestMethod.GET, produces = "application/json")
-    public ResponseMessage<Map<String, List<SysDictEO>>> groupList() {
+    public ResponseMessage<Map<String, List<SysDict>>> groupList() {
         return Result.success(DictUtils.getDictMap());
     }
 }

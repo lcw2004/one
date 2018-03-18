@@ -32,16 +32,12 @@ public class SysFileUploadRestController {
     @PostMapping(path = "/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseMessage<SysFileEO> upload(String userId, @RequestParam("file") MultipartFile file) {
         SysFileEO sysFileEO;
-        InputStream is = null;
         try {
             sysFileEO = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return Result.error("文件存储失败，请重试");
-        } finally {
-            IOUtils.closeQuietly(is);
         }
-
         return Result.success(sysFileEO);
     }
 

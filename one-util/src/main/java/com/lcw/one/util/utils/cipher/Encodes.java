@@ -22,6 +22,7 @@ import java.net.URLEncoder;
  * 2.自制的base62 编码
  * 3.Commons-Lang的xml/html escape
  * 4.JDK提供的URLEncoder
+ *
  * @author calvin
  * @version 2013-01-15
  */
@@ -113,7 +114,9 @@ public class Encodes {
      */
     public static String urlEncode(String part) {
         try {
-            return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
+            String result = URLEncoder.encode(part, DEFAULT_URL_ENCODING);
+            result = result.replaceAll("%5B", "[").replaceAll("%5D", "]").replaceAll("\\+", " ");
+            return result;
         } catch (UnsupportedEncodingException e) {
             throw Exceptions.unchecked(e);
         }

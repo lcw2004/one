@@ -1,6 +1,11 @@
 server:
   port: 8080
+  context-parameters.office_path: D:\\zzoffice
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
 spring:
+  thymeleaf.cache: false
   mvc:
     static-path-pattern: /**
   http.multipart:
@@ -9,26 +14,32 @@ spring:
 logging.level:
   org.springframework: error
   org.apache.shiro: error
-  org.hibernate.SQL: debug
+  org.hibernate.SQL: error
   com.lcw.one: debug
 
 # Rest API前缀地址
 restPath: /api
 
 # App信息
-application:
-  name: One Admin
-  shortName: One
-  version: 1.1
-
-# 文件服务文件存储地址
-file.path: D:\Files
+one:
+  application:
+    name: One Admin
+    shortName: One
+    version: 1.1
+  # 文件服务文件存储地址
+  file:
+    path: D:\Files
+    temp: D:\Files\temp
+  url: http://localhost:9000
+  weixin:
+    appId: wxa5b74cf00bb65181
+    appSecret: e105d543814851868a8e90c849bb0d82
 
 #=============================#
 #===== Database Settings =====#
 #=============================#
 spring.datasource:
-  url: jdbc:mysql://127.0.0.1:3306/one?useUnicode=true&characterEncoding=utf-8
+  url: jdbc:mysql://127.0.0.1:3306/bidding?useUnicode=true&characterEncoding=utf-8
   username: root
   password: one
   driver-class-name: com.mysql.jdbc.Driver
@@ -56,7 +67,7 @@ mail:
     socketFactory.fallback: false
   from:
     mail: 292232611@qq.com
-    name: 长沙瑞财科技
+    name: 湖南佰瑞信息技术有限公司
   username: 292232611@qq.com
   password: ezkbxarmubuqbigc
 

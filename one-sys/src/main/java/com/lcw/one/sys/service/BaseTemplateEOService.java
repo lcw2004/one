@@ -1,13 +1,12 @@
 package com.lcw.one.sys.service;
 
+import com.lcw.one.baseInfo.entity.BaseTemplateEO;
+import com.lcw.one.baseInfo.entity.BaseTemplateTypeEO;
 import com.lcw.one.sys.dao.BaseTemplateEODao;
-import com.lcw.one.sys.entity.BaseTemplateEO;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.service.CrudService;
-import com.lcw.one.util.utils.BeetlUtils;
-import com.lcw.one.util.utils.CollectionUtils;
-import com.lcw.one.util.utils.GsonUtil;
-import com.lcw.one.util.utils.UUID;
+import com.lcw.one.util.utils.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,10 +14,26 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class BaseTemplateEOService extends CrudService<BaseTemplateEODao, BaseTemplateEO> {
+public class BaseTemplateEOService extends CrudService<BaseTemplateEODao, BaseTemplateEO, String> {
+
+    @Autowired
+    private BaseTemplateTypeEOService baseTemplateTypeEOService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     public List<BaseTemplateEO> list(String templateTypeCode) {
         return dao.list(templateTypeCode);
+    }
+
+    public void cacheTemplate() {
+        List<BaseTemplateTypeEO> baseTemplateTypeEOList = baseTemplateTypeEOService.findAll();
+        for (BaseTemplateTypeEO baseTemplateTypeEO: baseTemplateTypeEOList) {
+            BaseTemplateEO baseTemplateEO = getDefaultTemplate(baseTemplateTypeEO.getCode());
+            if (baseTemplateEO != null) {
+                redisUtil.set(BaseTemplateUtils.TEMPLATE_PREFIX + baseTemplateEO.getCode(), baseTemplateEO.getContent());
+            }
+        }
     }
 
     /**
@@ -31,7 +46,7 @@ public class BaseTemplateEOService extends CrudService<BaseTemplateEODao, BaseTe
         List<BaseTemplateEO> templateEOList = list(templateTypeCode);
 
         if (CollectionUtils.isEmpty(templateEOList)) {
-            throw new OneBaseException("未配置模板");
+            return null;
         }
 
         BaseTemplateEO defaultTemplate = null;
@@ -63,6 +78,9 @@ public class BaseTemplateEOService extends CrudService<BaseTemplateEODao, BaseTe
 
     public String fillTemplateByCode(String templateTypeCode, Map<String, Object> placeholders) {
         BaseTemplateEO templateEO = getDefaultTemplate(templateTypeCode);
+        if (templateEO == null) {
+            throw new OneBaseException("未配置模板");
+        }
         return fillTemplateByTemplateId(templateEO.getTemplateId(), placeholders);
     }
 

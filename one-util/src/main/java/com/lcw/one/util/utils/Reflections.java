@@ -7,7 +7,6 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -34,7 +33,8 @@ public class Reflections {
      */
     public static Object invokeGetter(Object obj, String propertyName) {
         Object object = obj;
-        for (String name : StringUtils.split(propertyName, ".")) {
+        String[] fieldArray = StringUtils.split(propertyName, ".");
+        for (String name : fieldArray) {
             String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(name);
             object = invokeMethod(object, getterMethodName, new Class[]{}, new Object[]{});
         }

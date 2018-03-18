@@ -21,10 +21,17 @@ public class Result {
     }
 
     public static ResponseMessage error(String code, String message) {
-        return error(code, message, null);
+        return message(code, message);
     }
 
-    public static <T> ResponseMessage<T> error(String code, String message, T t) {
+    public static <T> ResponseMessage error(String code, String message, T t) {
+        return message(code, message, t);
+    }
+    public static ResponseMessage message(String code, String message) {
+        return message(code, message, null);
+    }
+
+    public static <T> ResponseMessage<T> message(String code, String message, T t) {
         return new ResponseMessage(code, message, t);
     }
 }

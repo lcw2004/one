@@ -21,8 +21,8 @@ public class PersistenceUtils {
     public static String fillParams(String hql, Map<String, Object> params) {
         String hqlFilled = hql;
         if (CollectionUtils.isNotEmpty(params)) {
-            for (String key : params.keySet()) {
-                hqlFilled = hqlFilled.replaceAll(":" + key, getReplacement(params.get(key)));
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                hqlFilled = hqlFilled.replaceAll(":" + entry.getKey(), getReplacement(entry.getValue()));
             }
         }
         return hqlFilled;

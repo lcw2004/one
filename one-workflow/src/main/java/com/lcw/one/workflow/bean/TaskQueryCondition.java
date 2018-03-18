@@ -1,7 +1,12 @@
 package com.lcw.one.workflow.bean;
 
 import com.lcw.one.util.http.bean.BaseQueryCondition;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.task.TaskQuery;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TaskQueryCondition extends BaseQueryCondition {
@@ -29,6 +34,9 @@ public class TaskQueryCondition extends BaseQueryCondition {
 
     // 业务数据名称
     private String businessName;
+
+    // 工作流状态
+    private String workflowStatus;
 
     public String getRoleIds() {
         return roleIds;
@@ -92,5 +100,90 @@ public class TaskQueryCondition extends BaseQueryCondition {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getWorkflowStatus() {
+        return workflowStatus;
+    }
+
+    public void setWorkflowStatus(String workflowStatus) {
+        this.workflowStatus = workflowStatus;
+    }
+
+    public TaskQuery createTaskQuery(TaskQuery taskQuery) {
+        // 角色ID
+        if (StringUtils.isNotEmpty(this.getRoleIds())) {
+            taskQuery = taskQuery.taskCandidateGroupIn(Arrays.asList(this.getRoleIds().split(",")));
+        }
+        // 用户ID
+        if (StringUtils.isNotEmpty(this.getUserId())) {
+            taskQuery = taskQuery.taskAssignee(this.getUserId());
+        }
+        // 流程实例ID
+        if (StringUtils.isNotEmpty(this.getProcessInstanceId())) {
+            taskQuery = taskQuery.processInstanceId(this.getProcessInstanceId());
+        }
+        // 业务参数ID
+        if (StringUtils.isNotEmpty(this.getBusinessKey())) {
+            taskQuery = taskQuery.processInstanceBusinessKey(this.getBusinessKey());
+        }
+        // 流程节点ID
+        if (StringUtils.isNotEmpty(this.getTaskDefinitionKey())) {
+            taskQuery = taskQuery.taskDefinitionKey(this.getTaskDefinitionKey());
+        }
+        // 流程ID
+        if (StringUtils.isNotEmpty(this.getProcessDefinitionKeys())) {
+            List<String> processDefinitionKeyList = Arrays.asList(this.getProcessDefinitionKeys().split(","));
+            taskQuery = taskQuery.processDefinitionKeyIn(processDefinitionKeyList);
+        }
+        // 业务数据ID
+        if (StringUtils.isNotEmpty(this.getBusinessId())) {
+            taskQuery = taskQuery.processVariableValueLike("businessId", "%" + this.getBusinessId() + "%");
+        }
+        // 业务数据名称
+        if (StringUtils.isNotEmpty(this.getBusinessName())) {
+            taskQuery = taskQuery.processVariableValueLike("businessName", "%" + this.getBusinessName() + "%");
+        }
+        return taskQuery;
+    }
+
+    public HistoricTaskInstanceQuery createHistoricTaskInstanceQuery(HistoricTaskInstanceQuery taskQuery) {
+        // 用户ID
+        if (StringUtils.isNotEmpty(this.getUserId())) {
+            taskQuery = taskQuery.taskAssignee(this.getUserId());
+        }
+        // 流程实例ID
+        if (StringUtils.isNotEmpty(this.getProcessInstanceId())) {
+            taskQuery = taskQuery.processInstanceId(this.getProcessInstanceId());
+        }
+        // 业务参数ID
+        if (StringUtils.isNotEmpty(this.getBusinessKey())) {
+            taskQuery = taskQuery.processInstanceBusinessKey(this.getBusinessKey());
+        }
+        // 流程节点ID
+        if (StringUtils.isNotEmpty(this.getTaskDefinitionKey())) {
+            taskQuery = taskQuery.taskDefinitionKey(this.getTaskDefinitionKey());
+        }
+        // 流程ID
+        if (StringUtils.isNotEmpty(this.getProcessDefinitionKeys())) {
+            List<String> processDefinitionKeyList = Arrays.asList(this.getProcessDefinitionKeys().split(","));
+            taskQuery = taskQuery.processDefinitionKeyIn(processDefinitionKeyList);
+        }
+        // 业务数据ID
+        if (StringUtils.isNotEmpty(this.getBusinessId())) {
+            taskQuery = taskQuery.processVariableValueLike("businessId", "%" + this.getBusinessId() + "%");
+        }
+        // 业务数据名称
+        if (StringUtils.isNotEmpty(this.getBusinessName())) {
+            taskQuery = taskQuery.processVariableValueLike("businessName", "%" + this.getBusinessName() + "%");
+        }
+        if (StringUtils.isNotEmpty(getWorkflowStatus())) {
+            if ("0".equals(getWorkflowStatus())) {
+                taskQuery.unfinished();
+            } else if ("1".equals(getWorkflowStatus())) {
+                taskQuery.finished();
+            }
+        }
+        return taskQuery;
     }
 }

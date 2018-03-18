@@ -3,6 +3,8 @@ package com.lcw.one.util.http;
 import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.StringUtils;
 import com.lcw.one.util.utils.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +25,22 @@ public class CookieUtils {
      * @throws IOException
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieValue) throws IOException {
-        Cookie cookie = getCookie(request, COOKIE_NAME);
+        setCookie(request, response, COOKIE_NAME, cookieValue);
+    }
+
+
+    /**
+     * 设置Cookie值，用传入的Cookie Value
+     *
+     * @param request
+     * @param response
+     * @param cookieValue
+     * @throws IOException
+     */
+    public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName, String cookieValue) throws IOException {
+        Cookie cookie = getCookie(request, cookieName);
         if (cookie == null) {
-            cookie = new Cookie(COOKIE_NAME, cookieValue);
+            cookie = new Cookie(cookieName, cookieValue);
         }
         cookie.setValue(cookieValue);
         cookie.setPath("/");
@@ -36,6 +51,7 @@ public class CookieUtils {
 
     /**
      * 设置Cookie值，随机生成一个Cookie
+     *
      * @param request
      * @param response
      * @return
@@ -49,6 +65,7 @@ public class CookieUtils {
 
     /**
      * 获取Cookie，如果为空则设置Cookie，并返回Cookie值
+     *
      * @param request
      * @param response
      * @return
@@ -64,11 +81,23 @@ public class CookieUtils {
 
     /**
      * 获取Cookie值
+     *
      * @param request
      * @return
      */
     public static String getCookieValue(HttpServletRequest request) {
-        Cookie cookie = getCookie(request, COOKIE_NAME);
+        return getCookieValue(request, COOKIE_NAME);
+    }
+
+
+    /**
+     * 获取Cookie值
+     *
+     * @param request
+     * @return
+     */
+    public static String getCookieValue(HttpServletRequest request, String cookieName) {
+        Cookie cookie = getCookie(request, cookieName);
         if (cookie != null) {
             return cookie.getValue();
         } else {
@@ -78,6 +107,7 @@ public class CookieUtils {
 
     /**
      * 移除Cookie值
+     *
      * @param request
      * @param response
      */
@@ -91,6 +121,7 @@ public class CookieUtils {
 
     /**
      * 获取Cookie对象
+     *
      * @param request
      * @param cookieName
      * @return
@@ -111,4 +142,29 @@ public class CookieUtils {
         return ticket;
     }
 
+    public static String getAuthToken(HttpServletRequest request) {
+        // 从Head中获取token，如果取不到则从session中取
+        // 有些方法比如下载文件的时候不能在head中设置token，所以暂时将token存到session中
+        String token = request.getHeader("authorization");
+        if (StringUtils.isEmpty(token)) {
+            token = getAuthTokenFromSession(request);
+        }
+        return token;
+    }
+
+    public static String getAuthTokenFromSession(HttpServletRequest request) {
+        return (String) request.getSession().getAttribute("token");
+    }
+
+    public static void overWriteJSessionId(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String JSESSIONID = "JSESSIONID";
+            String jSessionId = CookieUtils.getCookieValue(request, JSESSIONID);
+            if (StringUtils.isNotEmpty(jSessionId)) {
+                CookieUtils.setCookie(request, response, JSESSIONID, jSessionId);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

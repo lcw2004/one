@@ -44,7 +44,7 @@ public class LocalFileStoreImplTest {
         is.close();
         Assert.assertEquals(new String(bytes2), randomContent);
 
-        file.delete();
+        Assert.assertTrue(file.delete());
         Assert.assertTrue(!file.exists());
     }
 

@@ -1,10 +1,8 @@
 package com.lcw.one.util.utils;
 
-import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -86,7 +84,7 @@ public class ObjectUtils {
     /**
      * 将对象List按指定字段值转为Map对象
      *
-     * @param list 列表
+     * @param list      列表
      * @param fieldName 字段名
      * @param <ID>
      * @param <E>
@@ -103,5 +101,52 @@ public class ObjectUtils {
             map.put((ID) filedValue, e);
         }
         return map;
+    }
+
+
+    /**
+     * 将对象List按指定字段值转为该字段值的列表
+     *
+     * @param list      列表
+     * @param fieldName 字段名
+     * @return
+     */
+    public static <F, E> List<F> getFieldValueList(List<E> list, String fieldName) {
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+
+        List<F> fList = new ArrayList<>();
+        for (E e : list) {
+            Object filedValue = Reflections.invokeGetter2(e, fieldName);
+            fList.add((F) filedValue);
+        }
+        return fList;
+    }
+
+    /**
+     * 将数据按指定字段排序
+     *
+     * @param dataList   数据列表
+     * @param orderField 排序的序号
+     */
+    public static void orderList(List dataList, final String orderField) {
+        if (StringUtils.isEmpty(orderField)) {
+            return;
+        }
+
+        Collections.sort(dataList, new Comparator<Object>() {
+            public int compare(Object obj1, Object obj2) {
+                Integer sort1 = (Integer) Reflections.invokeGetter2(obj1, orderField);
+                Integer sort2 = (Integer) Reflections.invokeGetter2(obj2, orderField);
+
+                int result = 0;
+                if (sort1 != null && sort2 != null) {
+                    result = sort1.compareTo(sort2);
+                }
+
+                return result;
+            }
+        });
     }
 }

@@ -8,15 +8,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysMenuEOService extends TreeEntityService<SysMenuEODao, SysMenuEO> {
+public class SysMenuEOService extends TreeEntityService<SysMenuEODao, SysMenuEO, String> {
 
-    public List<SysMenuEO> listSysMenuEOByUserId(String userId) {
-        return dao.listSysMenuEOByUserId(userId);
+    @Override
+    public SysMenuEO getTopEntity() {
+        return get("1");
     }
 
     @Override
     public List<SysMenuEO> findAll() {
         return dao.findAll();
+    }
+
+    public List<SysMenuEO> listSysMenuEOByUserId(String userId) {
+        return dao.listSysMenuEOByUserId(userId);
     }
 
     public void updateSort(String id, Integer sort) {

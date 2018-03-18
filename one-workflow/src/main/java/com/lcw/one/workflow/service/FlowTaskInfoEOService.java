@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 流程节点信息县官服务
+ */
 @Service
-public class FlowTaskInfoEOService extends CrudService<FlowTaskInfoEODao, FlowTaskInfoEO> {
-
-    public FlowTaskInfoEO getFlowTaskInfoEO(String processKey, String taskKey) {
-        return dao.getFlowTaskInfoEO(processKey, taskKey);
-    }
+public class FlowTaskInfoEOService extends CrudService<FlowTaskInfoEODao, FlowTaskInfoEO, String> {
 
     public FlowTaskInfoEO getFlowTaskInfoEOAndValid(String processKey, String taskKey) {
         FlowTaskInfoEO flowTaskInfoEO = dao.getFlowTaskInfoEO(processKey, taskKey);
@@ -27,21 +26,6 @@ public class FlowTaskInfoEOService extends CrudService<FlowTaskInfoEODao, FlowTa
         return dao.listFlowTaskInfoEOByProcessKey(processKey);
     }
 
-    public List<FlowTaskInfoEO> listFlowTaskInfoEOByProcessKeyAndValid(String processKey) {
-        List<FlowTaskInfoEO> taskInfoEOList = dao.listFlowTaskInfoEOByProcessKey(processKey);
-        if(CollectionUtils.isEmpty(taskInfoEOList)) {
-            throw new OneBaseException("流程[" + processKey + "]未配置角色和表单");
-        }
-        for (FlowTaskInfoEO taskInfoEO : taskInfoEOList) {
-            validProcessTaskInfo(taskInfoEO);
-        }
-        return taskInfoEOList;
-    }
-
-    public void updateFlowTaskInfoValid(String processKey, int valid) {
-        dao.updateFlowTaskInfoValid(processKey, valid);
-    }
-
     public void deleteByProcessKey(String processKey) {
         dao.deleteByProcessKey(processKey);
     }
@@ -50,7 +34,7 @@ public class FlowTaskInfoEOService extends CrudService<FlowTaskInfoEODao, FlowTa
         dao.deleteByTaskKeyNotExist(processKey, taskKeyList);
     }
 
-    private static void validProcessTaskInfo(FlowTaskInfoEO taskInfoEO) {
+    public static void validProcessTaskInfo(FlowTaskInfoEO taskInfoEO) {
         if (taskInfoEO == null) {
             throw new OneBaseException("流程未配置角色和表单");
         }

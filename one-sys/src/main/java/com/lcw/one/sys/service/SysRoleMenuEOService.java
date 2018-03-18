@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysRoleMenuEOService extends CrudService<SysRoleMenuEODao, SysRoleMenuEO> {
+public class SysRoleMenuEOService extends CrudService<SysRoleMenuEODao, SysRoleMenuEO, String> {
 
 }

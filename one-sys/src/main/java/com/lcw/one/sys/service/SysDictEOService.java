@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysDictEOService extends CrudService<SysDictEODao, SysDictEO> {
+public class SysDictEOService extends CrudService<SysDictEODao, SysDictEO, String> {
 
     public PageInfo<SysDictEO> page(PageInfo pageInfo, String type, String description) {
         return dao.page(pageInfo, type, description);
@@ -19,4 +19,5 @@ public class SysDictEOService extends CrudService<SysDictEODao, SysDictEO> {
     public List<String> listDictType() {
         return dao.listDictType();
     }
+
 }

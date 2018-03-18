@@ -1,6 +1,6 @@
 package com.lcw.one.sys.rest;
 
-import com.lcw.one.sys.entity.BaseTemplateTypeEO;
+import com.lcw.one.baseInfo.entity.BaseTemplateTypeEO;
 import com.lcw.one.sys.service.BaseTemplateTypeEOService;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.http.ResponseMessage;

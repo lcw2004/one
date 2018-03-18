@@ -22,6 +22,7 @@ public class UserManagerEO {
     private UserInfoEO userInfo;
     private SysOfficeEO sysOffice;
     private List<String> roleIdList = new ArrayList<>();
+    private List<String> roleNameList = new ArrayList<>();
 
     @Id
     @Column(name = "user_id")
@@ -90,6 +91,15 @@ public class UserManagerEO {
 
     public void setRoleIdList(List<String> roleIdList) {
         this.roleIdList = roleIdList;
+    }
+
+    @Transient
+    public List<String> getRoleNameList() {
+        return roleNameList;
+    }
+
+    public void setRoleNameList(List<String> roleNameList) {
+        this.roleNameList = roleNameList;
     }
 
     @Transient

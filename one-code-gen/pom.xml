@@ -15,20 +15,18 @@
     <dependencies>
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-util</artifactId>
+            <artifactId>one-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.lcw.one</groupId>
-            <artifactId>one-entity</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>
             <version>2.7.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>3.1.1</version>
         </dependency>
     </dependencies>
 </project>

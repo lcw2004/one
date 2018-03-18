@@ -5,6 +5,9 @@ public class GlobalConfig {
     // Api 前缀
     private static String restApiPath;
 
+    // 项目基础路径
+    private static String oneUrl;
+
     /**
      * Cookie失效时间
      */
@@ -20,12 +23,24 @@ public class GlobalConfig {
      */
     private static Integer maxLoginErrorCount = 3;
 
+    private static String companyName;
+
+    public static String DEFAULT_CHART_SET = "UTF-8";
+
     public static String getRestApiPath() {
         return restApiPath;
     }
 
     public static void setRestApiPath(String restApiPath) {
         GlobalConfig.restApiPath = restApiPath;
+    }
+
+    public static String getOneUrl() {
+        return oneUrl;
+    }
+
+    public static void setOneUrl(String oneUrl) {
+        GlobalConfig.oneUrl = oneUrl;
     }
 
     public static Long getCookieExpireTime() {
@@ -50,5 +65,13 @@ public class GlobalConfig {
 
     public static void setMaxLoginErrorCount(Integer maxLoginErrorCount) {
         GlobalConfig.maxLoginErrorCount = maxLoginErrorCount;
+    }
+
+    public static String getCompanyName() {
+        return companyName;
+    }
+
+    public static void setCompanyName(String companyName) {
+        GlobalConfig.companyName = companyName;
     }
 }

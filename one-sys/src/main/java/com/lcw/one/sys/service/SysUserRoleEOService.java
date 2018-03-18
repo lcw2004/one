@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysUserRoleEOService extends CrudService<SysUserRoleEODao, SysUserRoleEO> {
+public class SysUserRoleEOService extends CrudService<SysUserRoleEODao, SysUserRoleEO, String> {
 
     public void saveSysUserRole(String userId, List<String> roleIdList) {
         if (CollectionUtils.isNotEmpty(roleIdList)) {

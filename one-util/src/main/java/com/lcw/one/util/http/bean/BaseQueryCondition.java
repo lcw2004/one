@@ -1,6 +1,9 @@
 package com.lcw.one.util.http.bean;
 
+import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.http.PageInfo;
+
+import java.util.Map;
 
 public class BaseQueryCondition {
 
@@ -8,6 +11,7 @@ public class BaseQueryCondition {
     private Integer pageSize;
     private String orderBy;
     private Integer orderByType;
+    private LoginUser currentUser;
 
     public Integer getPageNo() {
         return pageNo;
@@ -44,5 +48,17 @@ public class BaseQueryCondition {
     public PageInfo getPageInfo() {
         return new PageInfo(pageNo, pageSize);
     }
+
+    public LoginUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(LoginUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void buildHQL(Map<String, Object> paramMap, StringBuilder hql) {
+    }
+
 
 }

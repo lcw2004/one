@@ -14,9 +14,11 @@ public class RequestInfoFilter implements Filter {
     private static final Log logger = LogFactory.getLog(RequestInfoFilter.class);
     private static final List<String> ignoreList = new ArrayList<>();
 
+    @Override
     public void destroy() {
     }
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ignoreList.add("js");
         ignoreList.add("css");
@@ -26,6 +28,7 @@ public class RequestInfoFilter implements Filter {
         ignoreList.add("jpg");
     }
 
+    @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;

@@ -1,13 +1,14 @@
 package com.lcw.one.workflow.rest;
 
 import com.lcw.one.util.annotation.RequireUser;
+import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.ImageUtils;
-import com.lcw.one.util.utils.LoginUserUtils;
 import com.lcw.one.util.utils.RequestUtils;
+import com.lcw.one.base.utils.LoginUserUtils;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.TaskQueryCondition;
 import com.lcw.one.workflow.entity.FlowAuditItemEO;
@@ -63,37 +64,51 @@ public class FlowRestController {
         return Result.success();
     }
 
+    public ResponseMessage startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String operateName, LoginUser loginUser, @RequestBody Map<String, Object> variables) {
+        workFlowService.startWorkflow(flowId, businessId, secondBusinessId, businessName, loginUser.getUserId(), loginUser.getUserName(), operateName, loginUser.getIp(), variables);
+        return Result.success();
+    }
+
     @GetMapping("/audit")
-    public ResponseMessage audit(HttpServletRequest request, String taskId, String auditUserId, Boolean auditResult, String remark) {
-        String userId = LoginUserUtils.getLoginUserId(request);
-        String ip = RequestUtils.getClientIp(request);
+    public ResponseMessage audit(HttpServletRequest request, String taskId, Boolean auditResult, String remark) {
+        LoginUser loginUser = LoginUserUtils.getCurrentUser(request);
         if (StringUtils.isEmpty(taskId)) {
             throw new OneBaseException("任务ID不能为空");
         }
-        if (StringUtils.isEmpty(auditUserId)) {
+        if (StringUtils.isEmpty(loginUser.getUserId())) {
             throw new OneBaseException("审核人ID不能为空");
         }
         if (!auditResult && StringUtils.isEmpty(remark)) {
             throw new OneBaseException("请输入驳回原因");
         }
-
-        workFlowService.audit(taskId, userId, auditResult, remark, ip);
+        workFlowService.audit(loginUser, taskId, auditResult, remark);
         return Result.success();
     }
 
     @RequireUser
+    @ApiOperation(value = "待办任务")
     @GetMapping(value = "/task/todo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage<PageInfo<TaskInfoBean>> queryTaskList(HttpServletRequest request, @ModelAttribute TaskQueryCondition queryCondition) {
         queryCondition.setUserId(null);
-        queryCondition.setRoleIds(LoginUserUtils.getLoginRoleId(request));
+        queryCondition.setRoleIds(LoginUserUtils.getCurrentUser(request).getRoleIds());
         PageInfo<TaskInfoBean> page = activitiService.queryTaskList(queryCondition);
         return Result.success(page);
     }
 
+    @ApiOperation(value = "任务详情")
     @GetMapping(value = "/task/todo/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage<TaskInfoBean> getTaskInfo(@PathVariable("taskId") String taskId) {
         TaskInfoBean taskInfoBean = activitiService.getTask(taskId);
         return Result.success(taskInfoBean);
+    }
+
+    @RequireUser
+    @ApiOperation(value = "已办任务")
+    @GetMapping(value = "/task/done", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseMessage<PageInfo<TaskInfoBean>> queryTaskHistoryList(HttpServletRequest request, @ModelAttribute TaskQueryCondition queryCondition) {
+        queryCondition.setUserId(LoginUserUtils.getLoginUserId(request));
+        PageInfo<TaskInfoBean> page = activitiService.queryTaskHistoryList(queryCondition);
+        return Result.success(page);
     }
 
     @ApiOperation(value = "流程进度图")

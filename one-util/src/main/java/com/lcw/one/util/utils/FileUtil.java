@@ -3,6 +3,7 @@ package com.lcw.one.util.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
+import java.awt.*;
 import java.io.*;
 
 
@@ -100,21 +101,23 @@ public class FileUtil extends FileUtils {
 
         String[] tempList = file.list();
         File temp = null;
-        for (int i = 0; i < tempList.length; i++) {
-            if (path.endsWith(File.separator)) {
-                temp = new File(path + tempList[i]);
-            } else {
-                temp = new File(path + File.separator + tempList[i]);
-            }
+        if (tempList != null) {
+            for (int i = 0; i < tempList.length; i++) {
+                if (path.endsWith(File.separator)) {
+                    temp = new File(path + tempList[i]);
+                } else {
+                    temp = new File(path + File.separator + tempList[i]);
+                }
 
-            if (temp.isFile()) {
-                temp.delete();
-            }
+                if (temp.isFile()) {
+                    temp.delete();
+                }
 
-            if (temp.isDirectory()) {
-                delAllFile(path + "/" + tempList[i]);
-                delFolder(path + "/" + tempList[i]);
-                flag = true;
+                if (temp.isDirectory()) {
+                    delAllFile(path + "/" + tempList[i]);
+                    delFolder(path + "/" + tempList[i]);
+                    flag = true;
+                }
             }
         }
         return flag;
@@ -182,26 +185,27 @@ public class FileUtil extends FileUtils {
         boolean flag = true;
         // 列出全部文件及子目录
         File[] files = dirFile.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            // 删除子文件
-            if (files[i].isFile()) {
-                flag = deleteFile(files[i].getAbsolutePath());
-                // 如果删除文件失败，则退出循环
-                if (!flag) {
-                    break;
+        if (CollectionUtils.isNotEmpty(files)) {
+            for (int i = 0; i < files.length; i++) {
+                // 删除子文件
+                if (files[i].isFile()) {
+                    flag = deleteFile(files[i].getAbsolutePath());
+                    // 如果删除文件失败，则退出循环
+                    if (!flag) {
+                        break;
+                    }
                 }
-            }
-            // 删除子目录
-            else if (files[i].isDirectory()) {
-                flag = deleteDirectory(files[i]
-                        .getAbsolutePath());
-                // 如果删除子目录失败，则退出循环
-                if (!flag) {
-                    break;
+                // 删除子目录
+                else if (files[i].isDirectory()) {
+                    flag = deleteDirectory(files[i]
+                            .getAbsolutePath());
+                    // 如果删除子目录失败，则退出循环
+                    if (!flag) {
+                        break;
+                    }
                 }
             }
         }
-
         if (!flag) {
             log.info("删除目录失败!");
             return false;
@@ -246,5 +250,20 @@ public class FileUtil extends FileUtils {
     }
 
 
+    /**
+     * 用文件的默认打开方式打开文件
+     *
+     * @param fileName
+     */
+    public static void openFile(String fileName) {
+        try {
+            if (new File(fileName).exists()) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(new File(fileName));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

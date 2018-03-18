@@ -9,9 +9,11 @@ import java.io.IOException;
 
 public class SetCookieFilter implements Filter {
 
+    @Override
     public void destroy() {
     }
 
+    @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
@@ -19,6 +21,7 @@ public class SetCookieFilter implements Filter {
         chain.doFilter(request, resp);
     }
 
+    @Override
     public void init(FilterConfig config) throws ServletException {
 
     }

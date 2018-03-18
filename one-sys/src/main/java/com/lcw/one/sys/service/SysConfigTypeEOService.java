@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysConfigTypeEOService extends CrudService<SysConfigTypeEODao, SysConfigTypeEO> {
+public class SysConfigTypeEOService extends CrudService<SysConfigTypeEODao, SysConfigTypeEO, String> {
 
 }

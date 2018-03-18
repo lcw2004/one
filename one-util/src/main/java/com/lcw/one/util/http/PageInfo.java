@@ -39,7 +39,6 @@ public class PageInfo<T> {
     private String orderBy = "";
 
     public PageInfo() {
-        this.pageSize = -1;
     }
 
     /**
@@ -163,12 +162,13 @@ public class PageInfo<T> {
     }
 
     /**
-     * 设置页面大小（最大500）
+     * 设置页面大小（最大1000）
      *
      * @param pageSize
      */
     public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize <= 0 ? 10 : pageSize;// > 500 ? 500 : pageSize;
+        this.pageSize = pageSize <= 0 ? 10 : pageSize;
+        this.pageSize = this.pageSize > 1000 ? 1000 : this.pageSize;
     }
 
     /**

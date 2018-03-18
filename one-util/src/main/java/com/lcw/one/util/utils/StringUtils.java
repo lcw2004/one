@@ -1,10 +1,21 @@
 package com.lcw.one.util.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
+
+    private static final String DEFAULT_CHAR_SET = "UTF-8";
+
+    public static String safeString(String input) {
+        if (isEmpty(input)) {
+            return "";
+        } else {
+            return input;
+        }
+    }
 
     /**
      * 将字符串数组以逗号分隔的形式拼接起来
@@ -92,6 +103,33 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return "***" + suffix;
         } else {
             return prefix.substring(0, 2) + "***" + suffix;
+        }
+    }
+
+    /**
+     * 限制字符串长度
+     *
+     * @param input  字符串
+     * @param length 长度
+     * @return
+     */
+    public static String limitLength(String input, int length) {
+        if (StringUtils.isEmpty(input)) {
+            return "";
+        }
+
+        if (input.length() > length) {
+            return input.substring(0, length);
+        }
+        return input;
+    }
+
+    public static String valueOf(byte[] bytes) {
+        try {
+            return new String(bytes, DEFAULT_CHAR_SET);
+        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+            return null;
         }
     }
 

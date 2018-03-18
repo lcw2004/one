@@ -2,9 +2,7 @@ package com.lcw.one.workflow.service.flow;
 
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.PageInfo;
-import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.CollectionUtils;
-import com.lcw.one.util.utils.ObjectUtils;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.TaskQueryCondition;
 import com.lcw.one.workflow.bean.WorkFlowBean;
@@ -12,6 +10,8 @@ import com.lcw.one.workflow.service.FlowTaskInfoEOService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.ProcessEngineImpl;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
@@ -95,6 +95,7 @@ public class ActivitiService {
 
     /**
      * 通过流程实例ID获取流程进度图
+     *
      * @param processInstanceId 流程实例ID
      * @return
      */
@@ -103,7 +104,6 @@ public class ActivitiService {
         ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService).getDeployedProcessDefinition(processInstance.getProcessDefinitionId());
         ProcessEngineConfiguration processEngineConfig = ((ProcessEngineImpl) ProcessEngines.getDefaultProcessEngine()).getProcessEngineConfiguration();
         ProcessDiagramGenerator diagramGenerator = processEngineConfig.getProcessDiagramGenerator();
-        logger.info("ActivityFontName:songti ? " + processEngineConfig.getActivityFontName().equals("黑体"));
 
         if (processDefinition != null && processDefinition.isGraphicalNotationDefined()) {
             BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
@@ -117,6 +117,7 @@ public class ActivitiService {
 
     /**
      * 启动工作流
+     *
      * @param workFlowBean
      * @return
      */
@@ -159,6 +160,7 @@ public class ActivitiService {
 
     /**
      * 执行工作流
+     *
      * @param workFlowBean
      * @return
      */
@@ -203,18 +205,44 @@ public class ActivitiService {
     }
 
     /**
+     * 查询已办工作流列表
+     *
+     * @param queryCondition
+     * @return
+     */
+    public PageInfo<TaskInfoBean> queryTaskHistoryList(TaskQueryCondition queryCondition) {
+        PageInfo<TaskInfoBean> page = queryCondition.getPageInfo();
+
+        List<TaskInfoBean> list = new ArrayList<>();
+        try {
+            HistoricTaskInstanceQuery taskQuery = queryCondition.createHistoricTaskInstanceQuery(historyService.createHistoricTaskInstanceQuery());
+            List<HistoricTaskInstance> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+            page.setCount(taskQuery.count());
+            for (HistoricTaskInstance task : taskList) {
+                list.add(transToTaskInfoBean(task));
+            }
+            page.setList(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new OneBaseException("查询失败:" + e.getMessage());
+        }
+        return page;
+    }
+
+
+    /**
      * 查询工作流列表
+     *
      * @param queryCondition
      * @return
      */
     public PageInfo<TaskInfoBean> queryTaskList(TaskQueryCondition queryCondition) {
-        PageInfo<TaskInfoBean> page = new PageInfo<>();
+        PageInfo<TaskInfoBean> page = queryCondition.getPageInfo();
 
         List<TaskInfoBean> list = new ArrayList<>();
         try {
-            TaskQuery taskQuery = createTaskQuery(queryCondition);
-            List<Task> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((queryCondition.getPageNo() - 1) * queryCondition.getPageSize(), queryCondition.getPageSize());
-            page.setPageSize(queryCondition.getPageSize());
+            TaskQuery taskQuery = queryCondition.createTaskQuery(taskService.createTaskQuery());
+            List<Task> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
             page.setCount(taskQuery.count());
             for (Task task : taskList) {
                 list.add(transToTaskInfoBean(task));
@@ -227,46 +255,25 @@ public class ActivitiService {
         return page;
     }
 
-    private TaskQuery createTaskQuery(TaskQueryCondition queryCondition) {
-        TaskQuery taskQuery = taskService.createTaskQuery();
-        // 角色ID
-        if (StringUtils.isNotEmpty(queryCondition.getRoleIds())) {
-            taskQuery = taskQuery.taskCandidateGroupIn(Arrays.asList(queryCondition.getRoleIds().split(",")));
+    /**
+     * 统计工作流列表
+     *
+     * @param queryCondition
+     * @return
+     */
+    public long countTaskList(TaskQueryCondition queryCondition) {
+        try {
+            TaskQuery taskQuery = queryCondition.createTaskQuery(taskService.createTaskQuery());
+            return taskQuery.count();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new OneBaseException("查询失败:" + e.getMessage());
         }
-        // 用户ID
-        if (StringUtils.isNotEmpty(queryCondition.getUserId())) {
-            taskQuery = taskQuery.taskAssignee(queryCondition.getUserId());
-        }
-        // 流程实例ID
-        if (StringUtils.isNotEmpty(queryCondition.getProcessInstanceId())) {
-            taskQuery = taskQuery.processInstanceId(queryCondition.getProcessInstanceId());
-        }
-        // 业务参数ID
-        if (StringUtils.isNotEmpty(queryCondition.getBusinessKey())) {
-            taskQuery = taskQuery.processInstanceBusinessKey(queryCondition.getBusinessKey());
-        }
-        // 流程节点ID
-        if (StringUtils.isNotEmpty(queryCondition.getTaskDefinitionKey())) {
-            taskQuery = taskQuery.taskDefinitionKey(queryCondition.getTaskDefinitionKey());
-        }
-        // 流程ID
-        if (StringUtils.isNotEmpty(queryCondition.getProcessDefinitionKeys())) {
-            List<String> processDefinitionKeyList = Arrays.asList(queryCondition.getProcessDefinitionKeys().split(","));
-            taskQuery = taskQuery.processDefinitionKeyIn(processDefinitionKeyList);
-        }
-        // 业务数据ID
-        if (StringUtils.isNotEmpty(queryCondition.getBusinessId())) {
-            taskQuery = taskQuery.processVariableValueLike("businessId", "%" + queryCondition.getBusinessId() + "%");
-        }
-        // 业务数据名称
-        if (StringUtils.isNotEmpty(queryCondition.getBusinessName())) {
-            taskQuery = taskQuery.processVariableValueLike("businessName", "%" + queryCondition.getBusinessName() + "%");
-        }
-        return taskQuery;
     }
 
     /**
      * 删除流程
+     *
      * @param processInstanceId
      * @param deleteReason
      */
@@ -284,6 +291,7 @@ public class ActivitiService {
 
     /**
      * 查询任务信息
+     *
      * @param taskId
      * @return
      */
@@ -328,5 +336,22 @@ public class ActivitiService {
         return taskInfoBean;
     }
 
+    private TaskInfoBean transToTaskInfoBean(HistoricTaskInstance task) {
+        TaskInfoBean taskInfoBean = new TaskInfoBean();
+        taskInfoBean.setTaskDefinitionKey(task.getTaskDefinitionKey());
+        taskInfoBean.setFormKey(task.getFormKey());
+        taskInfoBean.setProcessDefinitionId(task.getProcessDefinitionId());
+        taskInfoBean.setProcessInstanceId(task.getProcessInstanceId());
+        taskInfoBean.setTaskName(task.getName());
+        taskInfoBean.setTaskId(task.getId());
+        taskInfoBean.setAssigneeId(task.getAssignee());
+        taskInfoBean.setTaskCreateTime(task.getCreateTime());
+        taskInfoBean.setTaskEndTime(task.getEndTime());
+        taskInfoBean.setTaskOwner(task.getOwner());
 
+        HistoricProcessInstance historicInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).includeProcessVariables().singleResult();
+        taskInfoBean.setItemsName(historicInstance.getProcessDefinitionName());
+        taskInfoBean.setVariables(historicInstance.getProcessVariables());
+        return taskInfoBean;
+    }
 }

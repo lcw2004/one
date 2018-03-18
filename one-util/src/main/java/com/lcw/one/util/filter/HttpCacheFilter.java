@@ -14,16 +14,20 @@ import java.io.IOException;
  */
 public class HttpCacheFilter implements Filter {
     private static final Log logger = LogFactory.getLog(HttpCacheFilter.class);
-    private long maxAge = 60 * 60 * 24;
+    private long maxAge = 60 * 60 * 24 * 30;
+
+    @Override
     public void destroy() {
     }
 
+    @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        chain.doFilter(request, new AddExpiresHeaderResponse(response, maxAge));
+        chain.doFilter(request, new AddExpiresHeaderResponse(request, response, maxAge));
     }
 
+    @Override
     public void init(FilterConfig config) throws ServletException {
         String maxAgeStr = config.getInitParameter("maxAge");
         if (StringUtils.isNotEmpty(maxAgeStr)) {

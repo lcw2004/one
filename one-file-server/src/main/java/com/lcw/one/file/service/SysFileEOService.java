@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 @Service
-public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO> {
+public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO, String> {
 
     @Autowired
     private IFileStore iFileStore;
@@ -41,5 +41,13 @@ public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO> {
             throw new OneBaseException("文件存储失败，请重试");
         }
         return sysFileEO;
+    }
+
+    public InputStream loadFile(String fileId) {
+        SysFileEO sysFileEO = this.get(fileId);
+        if (sysFileEO == null) {
+            throw new OneBaseException("FileId[" + fileId + "]不存在");
+        }
+        return iFileStore.loadFile(sysFileEO.getSavePath());
     }
 }

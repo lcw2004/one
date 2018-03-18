@@ -8,11 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
-public abstract class CrudService<D extends BaseRepositoryImpl, T> {
+public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Serializable> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -21,6 +22,10 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T> {
 
     public void flush() {
         dao.flush();
+    }
+
+    public D getDao() {
+        return dao;
     }
 
     @Transactional
@@ -62,19 +67,25 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T> {
     }
 
     @Transactional
-    public void delete(String id) {
+    public void delete(ID id) {
         dao.delete(id);
     }
 
     @Transactional
-    public void delete(String... ids) {
-        for (String id : ids) {
+    public void delete(ID... ids) {
+        for (ID id : ids) {
             dao.delete(id);
         }
     }
 
-    public T get(String id) {
+    public T get(ID id) {
         T t = (T) dao.findOne(id);
+        loadTreeParent(t);
+        return t;
+    }
+
+    public T getOne(ID id) {
+        T t = (T) dao.getOne(id);
         loadTreeParent(t);
         return t;
     }

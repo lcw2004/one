@@ -1,13 +1,12 @@
 package com.lcw.one.user.entity;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lcw.one.sys.entity.SysMenuEO;
 import com.lcw.one.user.constant.UserInfoStatusEnum;
-import com.lcw.one.user.constant.UserSupplierStatusEnum;
+import com.lcw.one.util.bean.LoginUser;
+import com.lcw.one.util.utils.StringUtils;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +37,7 @@ public class UserInfoEO {
     private String statusCn;
 
     private UserContactInfoEO userContactInfo = new UserContactInfoEO();
+    private List<String> roleIdList = new ArrayList<>();
 
     @Id
     @Column(name = "user_id")
@@ -175,7 +175,9 @@ public class UserInfoEO {
 
     @Transient
     public String getStatusCn() {
-        statusCn = UserInfoStatusEnum.get(status).getLabel();
+        if (UserInfoStatusEnum.get(status) != null) {
+            statusCn = UserInfoStatusEnum.get(status).getLabel();
+        }
         return statusCn;
     }
 
@@ -193,4 +195,24 @@ public class UserInfoEO {
         this.userContactInfo = userContactInfo;
     }
 
+    @Transient
+    public List<String> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<String> roleIdList) {
+        this.roleIdList = roleIdList;
+    }
+
+    public LoginUser toLoginUser() {
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserId(this.getUserId());
+        loginUser.setUserName(this.getName());
+        loginUser.setUserAccount(this.getAccount());
+        loginUser.setUserGender(this.getGender());
+        loginUser.setUserStatus(this.getStatus());
+        loginUser.setUserType(this.getType());
+        loginUser.setRoleIds(StringUtils.listToString(getRoleIdList()));
+        return loginUser;
+    }
 }

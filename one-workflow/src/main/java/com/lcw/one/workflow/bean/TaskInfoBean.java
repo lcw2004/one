@@ -1,6 +1,7 @@
 package com.lcw.one.workflow.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lcw.one.util.utils.StringUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -14,12 +15,15 @@ public class TaskInfoBean {
     private String taskDefinitionKey;
     private String formKey;
     private String processDefinitionId;
+    private String processDefinition;
     private String processInstanceId;
     private String taskName;
     private String taskId;
     private String assigneeId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date taskCreateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date taskEndTime;
     private String taskOwner;
     private boolean isSuspended;
     private String itemsName;
@@ -57,6 +61,17 @@ public class TaskInfoBean {
         this.processInstanceId = processInstanceId;
     }
 
+    public String getProcessDefinition() {
+        if (StringUtils.isNotEmpty(processDefinitionId)) {
+            processDefinition = processDefinitionId.substring(0, processDefinitionId.indexOf(":"));
+        }
+        return processDefinition;
+    }
+
+    public void setProcessDefinition(String processDefinition) {
+        this.processDefinition = processDefinition;
+    }
+
     public String getTaskName() {
         return taskName;
     }
@@ -87,6 +102,14 @@ public class TaskInfoBean {
 
     public void setTaskCreateTime(Date taskCreateTime) {
         this.taskCreateTime = taskCreateTime;
+    }
+
+    public Date getTaskEndTime() {
+        return taskEndTime;
+    }
+
+    public void setTaskEndTime(Date taskEndTime) {
+        this.taskEndTime = taskEndTime;
     }
 
     public String getTaskOwner() {

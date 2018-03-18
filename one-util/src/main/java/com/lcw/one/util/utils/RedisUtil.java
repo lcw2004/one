@@ -2,6 +2,7 @@ package com.lcw.one.util.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
@@ -76,6 +77,40 @@ public class RedisUtil {
         return result;
     }
 
+    public <T> boolean setSet(String key, Set<T> set) {
+        boolean result = false;
+        try {
+            SetOperations<Serializable, T> operations = this.redisTemplate.opsForSet();
+            operations.add(key, (T) set.toArray());
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public <T> Set<T> getSet(String key) {
+        SetOperations<Serializable, T> operations = this.redisTemplate.opsForSet();
+        return operations.members(key);
+    }
+
+    public <T> void appendSetValue(String key, T... values) {
+        SetOperations<Serializable, T> operations = this.redisTemplate.opsForSet();
+        operations.add(key, values);
+    }
+
+    public <T> boolean removeSetValue(String key, T... values) {
+        boolean result = false;
+        try {
+            SetOperations<Serializable, T> operations = this.redisTemplate.opsForSet();
+            operations.remove(key, values);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public void expire(String key, Long expireTime) {
         this.redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
     }
@@ -86,12 +121,21 @@ public class RedisUtil {
      * @return
      */
     public boolean lock(String key) {
+        return lock(key, 60L);
+    }
+
+    /**
+     * 锁住资源，如果资源已经被锁住了，返回false，如果成功锁住资源，返回true，指定时间后自动解锁
+     * @param key
+     * @return
+     */
+    public boolean lock(String key, long time) {
         String newKey = key + LOCK;
         if(exists(newKey)) {
             return false;
         }
 
-        return set(newKey, "1", 60L);
+        return set(newKey, "1", time);
     }
 
     /**

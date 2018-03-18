@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,33 +21,53 @@ public class RepositoryUtils {
     private static final Logger logger = LoggerFactory.getLogger(BaseRepositoryImpl.class);
 
     public static Query getQueryWithParams(EntityManager entityManager, String hql, Object... params) {
-        logger.info("HQL [{}]", hql);
+        Query query = entityManager.createQuery(hql);
+        return getQueryWithParams(query, hql, params);
+    }
+
+    public static Query getQueryWithParamMap(EntityManager entityManager, String hql, Map<String, Object> params) {
+        Query query = entityManager.createQuery(hql);
+        return getQueryWithParamMap(query, hql, params);
+    }
+
+    public static Query getNativeQueryWithParams(EntityManager entityManager, String hql, Object... params) {
+        Query query = entityManager.createNativeQuery(hql);
+        return getQueryWithParams(query, hql, params);
+    }
+
+    public static Query getNativeQueryWithParamMap(EntityManager entityManager, String hql, Map<String, Object> params) {
+        Query query = entityManager.createNativeQuery(hql);
+        return getQueryWithParamMap(query, hql, params);
+    }
+
+
+    private static Query getQueryWithParams(Query query, String hql, Object... params) {
+        logger.debug("HQL [{}]", hql);
         if (params != null && params.length > 0) {
-            logger.info("HQL Param: {}", Arrays.asList(params));
-            logger.info("HQL Filled: [{}]", PersistenceUtils.fillParams(hql, params));
+            logger.debug("HQL Param: {}", Arrays.asList(params));
+            logger.debug("HQL Filled: [{}]", PersistenceUtils.fillParams(hql, params));
         }
 
-        Query query = entityManager.createQuery(hql);
         int index = 1;
-        for (Object param : params) {
-            query.setParameter(index, param);
-            index++;
+        if (CollectionUtils.isNotEmpty(params)) {
+            for (Object param : params) {
+                query.setParameter(index, param);
+                index++;
+            }
         }
         return query;
     }
 
-    public static Query getQueryWithParamMap(EntityManager entityManager, String hql, Map<String, Object> params) {
-        logger.info("HQL [{}]", hql);
+    private static Query getQueryWithParamMap(Query query, String hql, Map<String, Object> params) {
+        logger.debug("HQL [{}]", hql);
         if (CollectionUtils.isNotEmpty(params)) {
-            logger.info("HQL Param: {}", params);
-            logger.info("HQL Filled: [{}]", PersistenceUtils.fillParams(hql, params));
+            logger.debug("HQL Param: {}", params);
+            logger.debug("HQL Filled: [{}]", PersistenceUtils.fillParams(hql, params));
         }
 
-        Query query = entityManager.createQuery(hql);
         if (CollectionUtils.isNotEmpty(params)) {
-            for (String key : params.keySet()) {
-                Object value = params.get(key);
-                query.setParameter(key, value);
+            for (Map.Entry<String, Object> entry: params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
         return query;

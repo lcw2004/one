@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserManagerEOService extends CrudService<UserManagerEODao, UserManagerEO> {
+public class UserManagerEOService extends CrudService<UserManagerEODao, UserManagerEO, String> {
 
     @Autowired
     private SysRoleEOService sysRoleEOService;
@@ -34,7 +34,11 @@ public class UserManagerEOService extends CrudService<UserManagerEODao, UserMana
     private SysUserRoleEOService sysUserRoleEOService;
 
     public PageInfo<UserManagerEO> page(ManageUserQueryCondition userQueryCondition) {
-        return dao.page(userQueryCondition);
+        PageInfo<UserManagerEO> pageInfo = dao.page(userQueryCondition);
+        for (UserManagerEO userManager : pageInfo.getList()) {
+            userManager.setRoleNameList(sysRoleEOService.getSysRoleNameListByUserId(userManager.getUserId()));
+        }
+        return pageInfo;
     }
 
     @Override
@@ -79,18 +83,9 @@ public class UserManagerEOService extends CrudService<UserManagerEODao, UserMana
     @Override
     public UserManagerEO update(UserManagerEO entity) {
         // 更新用户信息
-        if(StringUtils.isNotEmpty(entity.getPassword())) {
-            // 如果修改的密码不为空，则更新密码
-            entity.getUserInfo().setPassword(PasswordUtils.encryptPassword(entity.getPassword()));
-            userInfoEOService.save(entity.getUserInfo());
-        } else {
-            // 如果修改的密码为空，则用数据库里面的密码
-            UserInfoEO userInfoEODb = userInfoEOService.get(entity.getUserId());
-            entity.getUserInfo().setPassword(userInfoEODb.getPassword());
-        }
+        entity.getUserInfo().setPassword(entity.getPassword());
+        userInfoEOService.updateUserInfoEO(entity.getUserInfo());
         super.update(entity);
-
-        userContactInfoEOService.save(entity.getUserInfo().getUserContactInfo());
 
         // 更新角色信息
         sysUserRoleEOService.deleteRoleWhereNotIn(entity.getUserId(), entity.getRoleIdList());

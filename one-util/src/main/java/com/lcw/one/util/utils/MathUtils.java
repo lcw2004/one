@@ -1,102 +1,266 @@
 package com.lcw.one.util.utils;
 
+import org.springframework.util.Assert;
+
 import java.math.BigDecimal;
 
 /**
+ * 计算工具类
+ *
  * @version 2017-07-18.
  * @auth Licw
  */
 public class MathUtils {
 
-    private static final int DEF_DIV_SCALE = 10;
+    private static final int DEFAULT_SCALE = 10;
 
-    public static double add(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+    /**
+     * 加法（value1 + value2）
+     *
+     * @param value1
+     * @param value2
+     * @return
+     */
+    public static double add(double value1, double value2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
         return b1.add(b2).doubleValue();
     }
 
-    public static double addRoundHalfUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.add(b2).setScale(scale, 4).doubleValue();
+    /**
+     * 加法（value1 + value2），结果四舍五入
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double addRoundHalfUP(double value1, double value2, int scale) {
+        return add(value1, value2, scale, BigDecimal.ROUND_HALF_UP);
     }
 
-    public static double addRoundUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.add(b2).setScale(scale, 0).doubleValue();
+    /**
+     * 加法（value1 + value2），结果向上取整
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double addRoundUP(double value1, double value2, int scale) {
+        return add(value1, value2, scale, BigDecimal.ROUND_UP);
     }
 
-    public static double subtract(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+    /**
+     * 减法（value1 - value2）
+     *
+     * @param value1
+     * @param value2
+     * @return
+     */
+    public static double subtract(double value1, double value2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
         return b1.subtract(b2).doubleValue();
     }
 
-    public static double subtractRoundHalfUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.subtract(b2).setScale(scale, 4).doubleValue();
+    /**
+     * 减法（value1 - value2），结果四舍五入
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double subtractRoundHalfUP(double value1, double value2, int scale) {
+        return subtract(value1, value2, scale, BigDecimal.ROUND_HALF_UP);
     }
 
-    public static double subtractRoundUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.subtract(b2).setScale(scale, 0).doubleValue();
+    /**
+     * 减法（value1 - value2），结果向上取整
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double subtractRoundUP(double value1, double value2, int scale) {
+        return subtract(value1, value2, scale, BigDecimal.ROUND_UP);
     }
 
-    public static double multiply(double v1, double v2) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+    /**
+     * 乘法（value1 * value2）
+     *
+     * @param value1
+     * @param value2
+     * @return
+     */
+    public static double multiply(double value1, double value2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
         return b1.multiply(b2).doubleValue();
     }
 
-    public static double multiplyRoundHalfUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.multiply(b2).setScale(scale, 4).doubleValue();
+    /**
+     * 乘法（value1 * value2），结果四舍五入
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double multiplyRoundHalfUP(double value1, double value2, int scale) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        return b1.multiply(b2).setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    public static double multiplyRoundUP(double v1, double v2, int scale) {
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.multiply(b2).setScale(scale, 0).doubleValue();
+    /**
+     * 乘法（value1 * value2），结果向上取整
+     *
+     * @param value1
+     * @param value2
+     * @param scale 小数点后位数
+     * @return
+     */
+    public static double multiplyRoundUP(double value1, double value2, int scale) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        return b1.multiply(b2).setScale(scale, BigDecimal.ROUND_UP).doubleValue();
     }
 
-    public static double divide(double v1, double v2) {
-        return divide(v1, v2, 10);
+    /**
+     * 除法（value1 / value2）
+     *
+     * @param value1
+     * @param value2
+     * @return
+     */
+    public static double divide(double value1, double value2) {
+        return divide(value1, value2, DEFAULT_SCALE, BigDecimal.ROUND_HALF_UP);
     }
 
-    public static double divide(double v1, double v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
-        }
-        BigDecimal b = new BigDecimal(Double.toString(v1));
-        BigDecimal one = new BigDecimal(Double.toString(v2));
-        return b.divide(one, scale, 4).doubleValue();
+    /**
+     * 除法（value1 / value2），结果四舍五入
+     *
+     * @param value1
+     * @param value2
+     * @param scale 小数点后位数
+     * @return
+     */
+    public static double divideRoundHalfUP(double value1, double value2, int scale) {
+        return divide(value1, value2, scale, BigDecimal.ROUND_HALF_UP);
     }
 
-    public static double divideRoundUP(double v1, double v2, int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
-        }
-        BigDecimal b = new BigDecimal(Double.toString(v1));
-        BigDecimal one = new BigDecimal(Double.toString(v2));
-        return b.divide(one, scale, 0).doubleValue();
+    /**
+     * 除法（value1 / value2），结果向上取整
+     *
+     * @param value1
+     * @param value2
+     * @param scale  小数点后位数
+     * @return
+     */
+    public static double divideRoundUP(double value1, double value2, int scale) {
+        return divide(value1, value2, scale, BigDecimal.ROUND_UP);
     }
 
-    public static double roundHalfUP(double v, int scale) {
-        BigDecimal decimal = new BigDecimal(Double.toString(v));
-        decimal = decimal.setScale(scale, 4);
+    /**
+     * 四舍五入
+     *
+     * @param value
+     * @param scale 小数点后位数
+     * @return
+     */
+    public static double roundHalfUP(double value, int scale) {
+        BigDecimal decimal = new BigDecimal(Double.toString(value));
+        decimal = decimal.setScale(scale, BigDecimal.ROUND_HALF_UP);
         return decimal.doubleValue();
     }
 
-    public static double roundUP(double v, int scale) {
-        BigDecimal decimal = new BigDecimal(Double.toString(v));
-        decimal = decimal.setScale(scale, 0);
+    /**
+     * 向上取整
+     *
+     * @param value
+     * @param scale 小数点后位数
+     * @return
+     */
+    public static double roundUP(double value, int scale) {
+        BigDecimal decimal = new BigDecimal(Double.toString(value));
+        decimal = decimal.setScale(scale, BigDecimal.ROUND_UP);
         return decimal.doubleValue();
     }
+
+
+    /**
+     * 加法
+     *
+     * @param value1
+     * @param value2
+     * @param scale        小数点后位数
+     * @param roundingMode 舍入方式
+     * @return
+     */
+    private static double add(double value1, double value2, int scale, int roundingMode) {
+        Assert.isTrue(scale >= 0, "The scale must be a positive integer or zero");
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        BigDecimal result = b1.add(b2);
+        result = result.setScale(scale, roundingMode);
+        return result.doubleValue();
+    }
+
+    /**
+     * 减法
+     *
+     * @param value1
+     * @param value2
+     * @param scale        小数点后位数
+     * @param roundingMode 舍入方式
+     * @return
+     */
+    private static double subtract(double value1, double value2, int scale, int roundingMode) {
+        Assert.isTrue(scale >= 0, "The scale must be a positive integer or zero");
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        BigDecimal result = b1.subtract(b2);
+        result = result.setScale(scale, roundingMode);
+        return result.doubleValue();
+    }
+
+    /**
+     * 乘法
+     *
+     * @param value1
+     * @param value2
+     * @param scale        小数点后位数
+     * @param roundingMode 舍入方式
+     * @return
+     */
+    private static double multiply(double value1, double value2, int scale, int roundingMode) {
+        Assert.isTrue(scale >= 0, "The scale must be a positive integer or zero");
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        BigDecimal result = b1.multiply(b2);
+        result = result.setScale(scale, roundingMode);
+        return result.doubleValue();
+    }
+
+    /**
+     * 除法
+     *
+     * @param value1
+     * @param value2
+     * @param scale        小数点后位数
+     * @param roundingMode 舍入方式
+     * @return
+     */
+    private static double divide(double value1, double value2, int scale, int roundingMode) {
+        Assert.isTrue(scale >= 0, "The scale must be a positive integer or zero");
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        BigDecimal b2 = new BigDecimal(Double.toString(value2));
+        BigDecimal result = b1.divide(b2, scale, roundingMode);
+        return result.doubleValue();
+    }
+
+
 }

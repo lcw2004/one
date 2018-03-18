@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserOperationLogEOService extends CrudService<UserOperationLogEODao, UserOperationLogEO> {
+public class UserOperationLogEOService extends CrudService<UserOperationLogEODao, UserOperationLogEO, String> {
 
 }

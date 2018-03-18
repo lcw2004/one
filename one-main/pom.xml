@@ -14,13 +14,13 @@
     <dependencies>
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-util</artifactId>
+            <artifactId>one-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-user</artifactId>
+            <artifactId>one-bidding-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -32,7 +32,7 @@
 
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-login</artifactId>
+            <artifactId>one-login-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -44,17 +44,51 @@
 
         <dependency>
             <groupId>com.lcw.one</groupId>
+            <artifactId>one-bidding</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-plan</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lcw.one</groupId>
             <artifactId>one-file-server</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <!-- 
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-cms</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-contract</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-code-gen</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-statistic</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>com.lcw.one</groupId>
             <artifactId>one-redis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-         -->
     </dependencies>
 
     <build>

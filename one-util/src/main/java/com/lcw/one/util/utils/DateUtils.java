@@ -97,4 +97,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return dayNames[dayOfWeek];
     }
 
+    public static long dayDiff(Date begin, Date end) {
+        long days = Math.abs((end.getTime() - begin.getTime()) / (24 * 60 * 60 * 1000));
+        return days;
+    }
+
+    public static boolean isBetween(Date target, Date begin, Date end) {
+        return begin.before(target) && target.before(end);
+    }
+
+    public static String timeDiffCn(Date date) {
+        long minutes = Math.abs((new Date().getTime() - date.getTime()) / (60 * 1000));
+        if (minutes < 1) {
+            return "1分钟前";
+        } else if (minutes < 60) {
+            return minutes + "分钟前";
+        } else if (minutes < 60 * 24) {
+            return (minutes / 60) + "小时前";
+        } else if (minutes < 60 * 24 * 30) {
+            return (minutes / (60 * 24)) + "天前";
+        } else if (minutes < 60 * 24 * 365) {
+            return (minutes / (60 * 24 * 30)) + "个月前";
+        } else {
+            return (minutes / (60 * 24 * 365)) + "年前";
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.lcw.one.util.filter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.util.Arrays;
@@ -13,9 +14,14 @@ public class AddExpiresHeaderResponse extends HttpServletResponseWrapper {
         Arrays.sort(CACHEABLE_CONTENT_TYPES);
     }
 
-    public AddExpiresHeaderResponse(HttpServletResponse response, long maxAge) {
+    public AddExpiresHeaderResponse(HttpServletRequest request, HttpServletResponse response, long maxAge) {
         super(response);
         this.maxAge = maxAge;
+
+        if (request.getRequestURI().startsWith("/api")) {
+            response.setHeader("Expires", "-1");
+            response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        }
     }
 
     @Override

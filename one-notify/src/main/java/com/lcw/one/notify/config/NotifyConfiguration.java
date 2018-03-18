@@ -1,6 +1,6 @@
 package com.lcw.one.notify.config;
 
-import com.lcw.one.notify.utils.EmailSender;
+import com.lcw.one.notify.service.base.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import java.util.Properties;
 
 @Configuration
 public class NotifyConfiguration {
-
-    private static final Logger logger = LoggerFactory.getLogger(NotifyConfiguration.class);
 
     @Autowired
     private Environment environment;
@@ -36,16 +34,11 @@ public class NotifyConfiguration {
 
         mailSender.setJavaMailProperties(mailProperties);
         mailSender.setHost(environment.getProperty("mail.host"));
-        mailSender.setPort(Integer.valueOf(environment.getProperty("mail.port")));
+        mailSender.setPort(Integer.parseInt(environment.getProperty("mail.port")));
         mailSender.setProtocol(environment.getProperty("mail.protocol"));
         mailSender.setUsername(environment.getProperty("mail.username"));
         mailSender.setPassword(environment.getProperty("mail.password"));
         return mailSender;
     }
 
-    @Bean
-    public EmailSender emailSender(@Value("${mail.from.mail}") String fromEmail,
-                                   @Value("${mail.from.name}") String fromName) {
-        return new EmailSender(javaMailSender(), fromEmail, fromName);
-    }
 }

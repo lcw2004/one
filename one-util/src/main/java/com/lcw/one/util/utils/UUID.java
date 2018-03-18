@@ -19,6 +19,6 @@ public final class UUID {
     }
 
     public static String randomUserId() {
-        return RandomUtils.randomNumberString(10).toLowerCase();
+        return randomUUID10();
     }
 }

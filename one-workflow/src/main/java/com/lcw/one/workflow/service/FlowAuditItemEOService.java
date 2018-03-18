@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * 审核事项相关Service
+ */
 @Service
-public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, FlowAuditItemEO> {
+public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, FlowAuditItemEO, String> {
 
     /**
      * 修改状态为驳回
@@ -42,6 +45,13 @@ public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, Flow
         update(flowAuditItemEO);
     }
 
+    /**
+     * 获取执行中的审核事情
+     *
+     * @param businessId   业务ID
+     * @param businessType 业务类型
+     * @return
+     */
     public FlowAuditItemEO getByBusinessIdAndNotFinished(String businessId, String businessType) {
         return dao.getByBusinessIdAndNotFinished(businessId, businessType);
     }

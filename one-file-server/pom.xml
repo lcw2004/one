@@ -13,12 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-util</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lcw.one</groupId>
-            <artifactId>one-entity</artifactId>
+            <artifactId>one-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

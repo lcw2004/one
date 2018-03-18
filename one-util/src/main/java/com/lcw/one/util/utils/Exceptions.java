@@ -5,8 +5,11 @@
  */
 package com.lcw.one.util.utils;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Set;
 
 /**
  * 关于异常的工具类.
@@ -49,5 +52,19 @@ public class Exceptions {
             cause = cause.getCause();
         }
         return false;
+    }
+
+    /**
+     * 获取第一个验证失败的信息
+     * @param exception
+     * @return
+     */
+    public static ConstraintViolation getFirstError(ConstraintViolationException exception) {
+        ConstraintViolation violation = null;
+        Set<ConstraintViolation<?>> set = exception.getConstraintViolations();
+        if (CollectionUtils.isNotEmpty(set)) {
+             violation = set.iterator().next();
+        }
+        return violation;
     }
 }

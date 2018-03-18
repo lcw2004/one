@@ -33,4 +33,19 @@ public class UserInfoEODao extends BaseRepositoryImpl<UserInfoEO, String> {
         saveAndFlush(userInfoEO);
     }
 
+    public UserInfoEO getUserInfoEOByOpenId(String openId) {
+        return getByHql("select u from UserInfoEO u, UserContactInfoEO uc where u.userId = uc.userId and uc.wechatId = ?1", openId);
+    }
+
+    public UserInfoEO getUserInfoEOByMobile(String mobile) {
+        return getByHql("select u from UserInfoEO u, UserContactInfoEO uc where u.userId = uc.userId and uc.mobile = ?1", mobile);
+    }
+
+    public void unbindWechat(String userId) {
+        executeUpdate("update UserContactInfoEO set wechatId = null where userId = ?1", userId);
+    }
+
+    public Integer getMaxDataScope(String userId) {
+        return executeGet("select sr.dataScope from SysRoleEO sr, SysUserRoleEO ur where sr.id = ur.roleId and ur.userId = ?1 order by sr.dataScope asc", userId);
+    }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SysConfigEOService extends CrudService<SysConfigEODao, SysConfigEO> {
+public class SysConfigEOService extends CrudService<SysConfigEODao, SysConfigEO, String> {
 
     public List<SysConfigEO> list(String typeCode) {
         return dao.list(typeCode);

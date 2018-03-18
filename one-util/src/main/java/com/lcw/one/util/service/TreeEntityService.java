@@ -6,9 +6,10 @@ import com.lcw.one.util.persistence.entity.TreeEntity;
 import com.lcw.one.util.persistence.entity.TreeEntityUtil;
 import com.lcw.one.util.utils.UUID;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TreeEntityService<D extends BaseRepositoryImpl, T extends TreeEntity> extends CrudService<D, T> {
+public abstract class TreeEntityService<D extends BaseRepositoryImpl, T extends TreeEntity, ID extends Serializable> extends CrudService<D, T, ID> {
 
     @Override
     public T save(T t) {
@@ -25,7 +26,7 @@ public class TreeEntityService<D extends BaseRepositoryImpl, T extends TreeEntit
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(ID id) {
         dao.deleteTreeEntity(id);
     }
 
@@ -42,8 +43,10 @@ public class TreeEntityService<D extends BaseRepositoryImpl, T extends TreeEntit
         dao.deleteTreeEntity(id);
     }
 
+    public abstract T getTopEntity();
+
     public TreeEntity listAsTree() {
-        TreeEntity treeEntity = organizeListAsTree(get("1"), findAll());
+        TreeEntity treeEntity = organizeListAsTree(getTopEntity(), findAll());
         return treeEntity;
     }
 }

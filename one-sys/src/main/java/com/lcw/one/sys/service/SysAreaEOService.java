@@ -8,7 +8,11 @@ import com.lcw.one.util.service.TreeEntityService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysAreaEOService extends TreeEntityService<SysAreaEODao, SysAreaEO> {
+public class SysAreaEOService extends TreeEntityService<SysAreaEODao, SysAreaEO, String> {
 
 
+    @Override
+    public SysAreaEO getTopEntity() {
+        return get("1");
+    }
 }

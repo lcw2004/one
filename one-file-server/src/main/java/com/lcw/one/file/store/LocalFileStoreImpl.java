@@ -14,7 +14,7 @@ import java.util.Date;
 @Service
 public class LocalFileStoreImpl implements IFileStore {
 
-    @Value("${file.path}")
+    @Value("${one.file.path}")
     private String basePath;
 
     @Override

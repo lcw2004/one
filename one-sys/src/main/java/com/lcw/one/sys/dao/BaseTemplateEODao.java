@@ -1,6 +1,6 @@
 package com.lcw.one.sys.dao;
 
-import com.lcw.one.sys.entity.BaseTemplateEO;
+import com.lcw.one.baseInfo.entity.BaseTemplateEO;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
