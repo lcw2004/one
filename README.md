@@ -20,7 +20,7 @@
 
 # 技术栈
 ## 后端
--   Spring Boot 1.5.3
+-   Spring Boot 1.5.10
 -   Hibernate 5
 -   Shiro 1.4.0
 -   activiti 5.22.0
@@ -30,62 +30,29 @@
 -   vue2
 -   vuex
 -   vue-router
--   vue-resource
+-   axios
 -   webpack
 -   [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")
 
-## 后端接口开发
+# 文档
+更多项目的文档请参考 [项目wiki](https://github.com/lcw2004/one/wiki)
 
--   启动：
+[项目结构说明](https://github.com/lcw2004/one/wiki/%25E5%25B7%25A5%25E7%25A8%258B%25E7%25BB%2593%25E6%259E%2584%25E8%25AF%25B4%25E6%2598%258E)
 
-    运行one-main工程的OneMainApplication即可启动
-    
--   开发流程：
-    
-    1.  建业务表
-    2.  用idea由数据库生成实体bean
-    3.  将document/one-new.rar解压作为一个业务工程模板，并放置在one文件夹下面，在one/pom.xml的module中添加业务工程
-    4.  在one-code-gen中的CodeGen类中，传入第2步中生成的bean所在的包名以及第3步中的模块名
-    5.  在生成的代码上二次开发
-    
--   测试：
-    
-    访问http://localhost:8080/swagger-ui.html对接口进行测试
-    
-## 前端界面开发
+[后端接口开发](https://github.com/lcw2004/one/wiki/%E5%BC%80%E5%8F%91%EF%BC%88%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%EF%BC%89)
 
-注：需要安装nodejs
+[前端界面开发](https://github.com/lcw2004/one/wiki/%E5%BC%80%E5%8F%91%EF%BC%88%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%EF%BC%89)
 
--   启动：
+[生产环境打包](https://github.com/lcw2004/one/wiki/%E6%89%93%E5%8C%85)
 
-    1.  命令行进入one-ui文件夹
-    2.  运行`npm install`
-    3.  运行`npm run dev`启动前端工程
-    
-更多细节参考one-ui的readme 
+[优化](https://github.com/lcw2004/one/wiki/%E4%BC%98%E5%8C%96)
 
-## 数据库
+# 数据库
 
-目前还没有整理数据库初始化脚本，暂时只有一个navicat导出的mysql数据，在document下面
-
-# 打包
-
-## 前端打包
-
-1.  命令行进入one-ui文件夹
-2.  运行`npm run build`编译前端工程
-3.  编译出来的文件在one-ui/dist文件夹下面
-
-## 后端打包
-
-1.  将one-ui/dist文件夹下面的编译出来的文件拷贝到one-main/src/main/resources/static文件夹下面（打包完成就删掉拷贝过去的内容，没必要提交）
-2.  进入one文件夹
-3.  执行命令编译：`mvn clean pakcage -Dmaven.test.skip=true`
-4.  执行命令启动程序：`java -jar one-main\target\one-main-0.0.1-SNAPSHOT.jar`
-5.  访问`http://localhost:8080/login.html`登录系统
+-   数据库：暂时未提供数据库初始化代码（后期加上），只能提供一个navicat导出的SQL文件，document/one - mysql(navicat).sql
 
 # 运行程序
--   数据库：暂时未提供数据库初始化代码（后期加上），只能提供一个navicat导出的SQL文件，document/one - mysql(navicat).sql
+
 -   redis：需要配置redis
 -   命令行方式运行：在项目根目录运行以下命令即可运行程序：
 
