@@ -85,7 +85,7 @@ function removeFromTopElement (topElement, element) {
 }
 
 const TreeTableMiXin = {
-  data: () => {
+  data: function () {
     return {
       /**
        * 展开状态

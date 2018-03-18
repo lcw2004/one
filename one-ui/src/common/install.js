@@ -7,37 +7,37 @@ import 'kindeditor/kindeditor-all-min.js'
 import 'kindeditor/themes/default/default.css'
 
 // 引入自定义组件
-import initGlobalComponents from './components'
-import initViewComponents from '../module/index/views'
-import initDirectives from './directives'
-import initFilters from './filters'
+import installViewComponents from '../module/index/views'
+import installComponents from './components'
+import installDirectives from './directives'
+import installFilters from './filters'
+import installMixins from './mixins'
 
-import initVeeValidate from './utils/init/initVeeValidate.js'
-import initVueResource from './utils/init/initVueResource.js'
-import initElementUi from './utils/init/installElementUI.js'
-import initGLobalMixins from './utils/init/initGLobalMixins.js'
+// 设置其他组件
+import installVeeValidate from './validator'
+import installAxios from '@utils/init/installAxios.js'
+import installElementUI from '@utils/init/installElementUI.js'
 
 function install () {
-  Vue.config.devtools = true
-
   Vue.use(Vuex)
   Vue.use(VueRouter)
+  Vue.config.devtools = true
 
   // 注册自定义组件
-  initGlobalComponents()
-  initViewComponents()
-  initDirectives()
-  initFilters()
-  initGLobalMixins()
+  installViewComponents()
+  installComponents()
+  installDirectives()
+  installFilters()
+  installMixins()
 
-  // VeeValidate locale
-  initVeeValidate()
+  // VeeValidate验证器
+  installVeeValidate()
 
-  // 启用进度条
-  initVueResource()
+  // 注册API
+  installAxios()
 
   // 注册element-ui
-  initElementUi()
+  installElementUI()
 }
 
 export default install

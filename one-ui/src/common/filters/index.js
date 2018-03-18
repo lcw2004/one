@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import limitLength from './limit-length'
+import fixed from './fixed'
 
-let initFilters = function () {
+export default function () {
   Vue.filter('limitLength', limitLength)
+  Vue.filter('fixed', fixed)
 }
-
-export default initFilters

@@ -12,7 +12,7 @@
  */
 html,
 body {
-  height: 100%;
+  height: 100% !important;
 }
 .layout-boxed html,
 .layout-boxed body {
@@ -142,7 +142,7 @@ body.hold-transition .main-header .logo {
 }
 /* Content */
 .content {
-  min-height: 250px;
+  /* min-height: 250px; */
   padding: 15px;
   margin-right: auto;
   margin-left: auto;
@@ -560,7 +560,7 @@ a:focus {
   display: block;
 }
 .sidebar-menu .treeview-menu {
-  display: none;
+  /*display: none;*/
   list-style: none;
   padding: 0;
   margin: 0;

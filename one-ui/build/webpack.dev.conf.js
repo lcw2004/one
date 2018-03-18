@@ -19,11 +19,6 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
   plugins: [
-    new webpack.DllReferencePlugin({
-      name: 'vendor_library',
-      context: __dirname,
-      manifest: require('../static/dll/vendor-mainfest.json')
-    }),
     new HappyPackPlugin({
       id: 'js',
       loaders: [{
@@ -47,6 +42,7 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new FriendlyErrorsPlugin(),
-    ...utils.getHtmlWebpackPlugins()
+    ...utils.getHtmlWebpackPlugins(),
+    ...utils.getDllPlugins()
   ]
 })

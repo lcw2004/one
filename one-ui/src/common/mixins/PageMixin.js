@@ -10,11 +10,17 @@
  *   2. 定义param，如果没有则不需要定义
  *   3. 引入分页组件：<Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
  */
+import axios from 'axios'
+import template from 'url-template'
+
+function fillTemplate (url, params = {}) {
+  const urlTemplate = template.parse(url)
+  return urlTemplate.expand(params)
+}
 
 let PageMixin = {
-  mounted: function () {
-    this.resource = this.$resource(null, {}, this.actions)
 
+  mounted: function () {
     // 设置了loadAfterMounted属性，并且为false的时候不加载数据
     if (this.param.loadAfterMounted !== undefined && this.param.loadAfterMounted === false) {
       // ignore
@@ -22,13 +28,15 @@ let PageMixin = {
       this.queryForPage()
     }
   },
-  data: () => {
+
+  data: function () {
     return {
       pageNo: 1,
       pageSize: 10,
       page: {}
     }
   },
+
   methods: {
     /**
      * 将传入的分页数据和查询条件数据混合为一个对象，并查询数据
@@ -40,8 +48,8 @@ let PageMixin = {
       }
       param.pageNo = pageNo
       param.pageSize = pageSize
-      this.resource.list(param).then((response) => {
-        let result = response.body
+      axios.get(fillTemplate(this.actions.list.url, param), {params: param}).then((response) => {
+        let result = response.data
         if (result.ok && result.data) {
           this.page = result.data
         }

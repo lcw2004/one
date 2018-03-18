@@ -23,9 +23,12 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      'components': resolve('src/common/components'),
-      'mixins': resolve('src/common/mixins'),
-      'utils': resolve('src/common/utils'),
+      '@api': resolve('src/module/index/api'),
+      '@components': resolve('src/common/components'),
+      '@mixins': resolve('src/common/mixins'),
+      '@directives': resolve('src/common/directives'),
+      '@filters': resolve('src/common/filters'),
+      '@utils': resolve('src/common/utils'),
 
       'element-ui': resolve('node_modules/element-ui'),
       'moment': 'moment/min/moment.min.js',

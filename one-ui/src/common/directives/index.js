@@ -1,14 +1,8 @@
 import Vue from 'vue'
-import validReder from './valid-render.js'
 import focus from './focus.js'
-import checkbox from './checkbox.js'
-import numberLimit from './number-limit.js'
+import number from './number.js'
 
-function initDirectives () {
-  Vue.directive('render', validReder)
+export default function () {
   Vue.directive('focus', focus)
-  Vue.directive('checkbox', checkbox)
-  Vue.directive('num-limit', numberLimit)
+  Vue.directive('number', number)
 }
-
-export default initDirectives

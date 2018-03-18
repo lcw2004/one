@@ -3,6 +3,8 @@ var glob = require('glob');
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+var webpack = require('webpack')
 
 exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -129,4 +131,20 @@ exports.getHtmlWebpackPlugins = function () {
     htmlWebpackPlugins.push(new HtmlWebpackPlugin(conf))
   }
   return htmlWebpackPlugins
+}
+
+exports.getDllPlugins = function () {
+  return [
+    new webpack.DllReferencePlugin({
+      name: 'vendor_library',
+      context: __dirname,
+      manifest: require('../static/dll/vendor-mainfest.json')
+    }),
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, "../static/dll/vendor.*.dll.js"),
+      publicPath: '/static/dll',
+      outputPath: 'static/dll',
+      includeSourcemap: false
+    })
+  ]
 }

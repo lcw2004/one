@@ -4,7 +4,6 @@ var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
 var merge = require('webpack-merge')
-var MyWebPackPluginForOne = require('./webpack_plugin')
 var baseWebpackConfig = require('./webpack.base.conf')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -14,6 +13,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 var HappyPackPlugin = require('happypack');
 var happyThreadPool = HappyPackPlugin.ThreadPool({ size: os.cpus().length });
 var VisualizerPlugin = require('webpack-visualizer-plugin');
+var MyWebPackPluginForOne = require('./webpack-plugin')
 
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -56,11 +56,6 @@ var webpackConfig = merge(baseWebpackConfig, {
         'css-loader',
         'less-loader',
       ]
-    }),
-    new webpack.DllReferencePlugin({
-      name: 'vendor_library',
-      context: __dirname,
-      manifest: require('../static/dll/vendor-mainfest.json')
     }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
@@ -115,6 +110,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     ]),
     new MyWebPackPluginForOne(),
     ...utils.getHtmlWebpackPlugins(),
+    ...utils.getDllPlugins(),
 
     // 分析打包大小
     // new BundleAnalyzerPlugin(),

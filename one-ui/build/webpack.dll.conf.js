@@ -1,18 +1,28 @@
-var path = require('path')
-var utils = require('./utils')
-var webpack = require('webpack')
-var dllPath = path.join(__dirname, '../static/dll/')
+const path = require('path')
+const utils = require('./utils')
+const webpack = require('webpack')
+const dllPath = path.join(__dirname, '../static/dll/')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
+const cleanOptions = {
+  root: path.resolve(__dirname, '../'),
+  exclude:  ['vendor-mainfest.json'],
+  verbose: true,
+  dry: false
+}
 
 module.exports = {
   entry: {
-    vendor: ['lodash.debounce', 'moment', 'photoswipe', 'vee-validate', 'vue', 'vue-resource', 'vue-router', 'vuex']
+    vendor: ['lodash.debounce', 'moment', 'photoswipe', 'vue', 'vue-router', 'vuex', 'axios', 'vee-validate', 'kindeditor', 'url-template', 'babel-polyfill']
   },
   output: {
     path: dllPath,
-    filename: '[name].dll.js',
+    filename: '[name].[hash].dll.js',
     library: '[name]_library'
   },
   plugins: [
+    // 清除dll文件，重新生成
+    new CleanWebpackPlugin([dllPath], cleanOptions),
     // uglifjs压缩
     new webpack.optimize.UglifyJsPlugin({
       compress: {
