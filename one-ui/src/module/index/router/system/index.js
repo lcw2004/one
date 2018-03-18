@@ -1,30 +1,35 @@
-import DictList from '../../views/system/dict/DictList'
-import DictForm from '../../views/system/dict/DictForm'
+import bidding from './bidding.js'
 
-import AreaList from '../../views/system/area/AreaList'
-import AreaForm from '../../views/system/area/AreaForm'
+import DictList from '../../views/system/dict/DictList.vue'
+import DictForm from '../../views/system/dict/DictForm.vue'
 
-import MenuList from '../../views/system/menu/MenuList'
-import MenuForm from '../../views/system/menu/MenuForm'
+import AreaList from '../../views/system/area/AreaList.vue'
+import AreaForm from '../../views/system/area/AreaForm.vue'
 
-import RoleList from '../../views/system/role/RoleList'
-import RoleForm from '../../views/system/role/RoleForm'
+import MenuList from '../../views/system/menu/MenuList.vue'
+import MenuForm from '../../views/system/menu/MenuForm.vue'
 
-import OfficeList from '../../views/system/office/OfficeList'
-import OfficeForm from '../../views/system/office/OfficeForm'
+import RoleList from '../../views/system/role/RoleList.vue'
+import RoleForm from '../../views/system/role/RoleForm.vue'
 
-import UserList from '../../views/system/user/UserList'
-import UserForm from '../../views/system/user/UserForm'
-import UserAdd from '../../views/system/user/UserAdd.vue'
+import OfficeList from '../../views/system/office/OfficeList.vue'
+import OfficeForm from '../../views/system/office/OfficeForm.vue'
 
-import LogList from '../../views/system/log/LogList'
+import LogList from '../../views/system/log/LogList.vue'
 
 import WorkFlowList from '../../views/system/workflow/WorkFlowList.vue'
 import WorkFLowForm from '../../views/system/workflow/WorkFLowForm.vue'
 
 import TemplateList from '../../views/system/template/TemplateList.vue'
+import CodeGenerate from '../../views/system/codeGen/CodeGenerate.vue'
+
+import MsgTemplateList from '../../views/system/msgTemplate/MsgTemplateList.vue'
+import MsgTemplateForm from '../../views/system/msgTemplate/MsgTemplateForm.vue'
+import MsgTemplateAdd from '../../views/system/msgTemplate/MsgTemplateAdd.vue'
 
 export default [
+  ...bidding,
+
   {path: '/system/dict', component: DictList},
   {path: '/system/dict/add', component: DictForm},
   {path: '/system/dict/:id/form', component: DictForm},
@@ -45,14 +50,16 @@ export default [
   {path: '/system/office/add', component: OfficeForm},
   {path: '/system/office/:id/form', component: OfficeForm},
 
-  {path: '/system/user', component: UserList},
-  {path: '/system/user/add', component: UserAdd},
-  {path: '/system/user/:id/form', component: UserForm},
-
   {path: '/system/log', component: LogList},
 
   {path: '/system/workflow', component: WorkFlowList},
   {path: '/system/workflow/:id/form', component: WorkFLowForm},
 
-  {path: '/system/template', component: TemplateList}
+  {path: '/system/template', component: TemplateList},
+
+  {path: '/system/codeGenerate', component: CodeGenerate},
+
+  {path: '/msg/template', component: MsgTemplateList},
+  {path: '/msg/template/add', component: MsgTemplateAdd},
+  {path: '/msg/template/:id/form', component: MsgTemplateForm}
 ]

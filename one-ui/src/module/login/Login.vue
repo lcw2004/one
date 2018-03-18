@@ -123,175 +123,163 @@
 </template>
 
 <script>
-  import VerifyCodeImg from '../../common/components/base/VerifyCodeImg'
-  import common from '../../common/utils/common.js'
+import VerifyCodeImg from '../../common/components/form/verify-code/VerifyCodeImg'
+import { getParameterByName } from '@utils/common.js'
+import api from '@api'
 
-  export default {
-    components: {
-      VerifyCodeImg
-    },
-    data: () => {
-      return {
-        actions: {
-          login: {method: 'get', url: '/api/login'},
-          isLogin: {method: 'get', url: '/api/isLogin'}
-        },
-        isVerifyCode: false, // 是否显示验证码
-        timestamp: '', // 验证码时间戳
-        loginInfo: {
-          username: '',
-          password: '',
-          isRememberMe: false,
-          verifyCode: ''
-        },
-        errorMessage: '',
-        result: {}, // 登录结果
-        loginBtnDisabled: false,
-        loginBtnText: '登录'
-      }
-    },
-    mounted () {
-      this.resource = this.$resource(null, {}, this.actions, {emulateJSON: true})
-      this.checkIsLogin()
-    },
-    methods: {
-      checkIsLogin () {
-        this.resource.isLogin().then(function (response) {
-          let result = response.body
-          if (result.ok) {
-            let isLogin = result.data.isLogin
-            if (isLogin) {
-              this.handlerForward(result.data)
-            }
-          }
-        })
+export default {
+  components: {
+    VerifyCodeImg
+  },
+  data: function () {
+    return {
+      isVerifyCode: false, // 是否显示验证码
+      timestamp: '', // 验证码时间戳
+      loginInfo: {
+        username: '',
+        password: '',
+        isRememberMe: false,
+        verifyCode: ''
       },
-
-      /**
-       * 登录接口
-       */
-      login () {
-        console.log(common.getParameterByName('redirect_uri'))
-        if (!this.valid()) {
-          return
-        }
-        if (this.loginBtnDisabled) {
-          return
-        }
-
-        this.beforeLogin()
-        this.resource.login(this.loginInfo).then((response) => {
-          let result = response.body
-          this.result = result
-          if (result.ok) {
-            // 登录成功
+      errorMessage: '',
+      result: {}, // 登录结果
+      loginBtnDisabled: false,
+      loginBtnText: '登录'
+    }
+  },
+  mounted () {
+    this.checkIsLogin()
+  },
+  methods: {
+    checkIsLogin () {
+      api.system.checkIsLogin().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          let isLogin = result.data.isLogin
+          if (isLogin) {
             this.handlerForward(result.data)
-            this.afterLoginSuccess()
-            return
-          } else if (result.code === '0001') {
-            // 账号错误
-            this.errorMessage = result.message
-            if (result.data != null && result.data) {
-              // 根据后台返回的错误次数启用验证码
-              this.isVerifyCode = true
-              this.focusOnVerifyCode()
-            }
-          } else if (result.code === '0002') {
-            // 验证码错误
-            this.errorMessage = result.message
+          }
+        }
+      })
+    },
+    /**
+     * 登录接口
+     */
+    login () {
+      if (!this.valid()) {
+        return
+      }
+      if (this.loginBtnDisabled) {
+        return
+      }
+      this.beforeLogin()
+      api.system.login(this.loginInfo).then((response) => {
+        let result = response.data
+        this.result = result
+        if (result.ok) {
+          // 登录成功
+          this.handlerForward(result.data)
+          this.afterLoginSuccess()
+          return
+        } else if (result.code === '0001') {
+          // 账号错误
+          this.errorMessage = result.message
+          if (result.data != null && result.data) {
+            // 根据后台返回的错误次数启用验证码
             this.isVerifyCode = true
             this.focusOnVerifyCode()
           }
-          this.refreshVerifyCode()
-          this.afterLoginFail()
-        })
-      },
-
-      /**
-       * 验证，验证通过返回true，验证失败返回false
-       */
-      valid: function () {
-        if (this.loginInfo.username.length <= 0) {
-          document.getElementById('username').focus()
-          this.errorMessage = '请您输入登录账户'
-          return false
-        }
-
-        if (this.loginInfo.password.length <= 0) {
-          document.getElementById('password').focus()
-          this.errorMessage = '请您输入登录密码'
-          return false
-        }
-
-        if (this.isVerifyCode && this.loginInfo.verifyCode.length <= 0) {
+        } else if (result.code === '0002') {
+          // 验证码错误
+          this.errorMessage = result.message
+          this.isVerifyCode = true
           this.focusOnVerifyCode()
-          this.errorMessage = '请您输入验证码'
-          return false
         }
-        return true
-      },
-
-      /**
-       * 刷新验证码
-       */
-      refreshVerifyCode () {
-        this.timestamp = Math.random() + ''
-      },
-
-      /**
-       * 将焦点放在验证码输入框上面
-       */
-      focusOnVerifyCode () {
-        let verifyCodeElement = document.getElementById('verifyCode')
-        if (verifyCodeElement) {
-          verifyCodeElement.focus()
-        }
-      },
-
-      /**
-       * 点击登录后将用户按钮置为不可用
-       */
-      beforeLogin () {
-        this.loginBtnDisabled = true
-        this.loginBtnText = '登录中'
-      },
-
-      /**
-       * 登录失败后将用户按钮置为可用
-       */
-      afterLoginFail () {
-        this.loginBtnDisabled = false
-        this.loginBtnText = '登录'
-      },
-
-      /**
-       * 登录成功之后，将登录按钮改为跳转中
-       */
-      afterLoginSuccess () {
-        this.loginBtnDisabled = true
-        this.loginBtnText = '跳转中，请稍候'
-      },
-
-      handlerForward (resultBody) {
-        // 如果有重定向URL，则先跳转到重定向的页面
-        let redirectUri = common.getParameterByName('redirectUri')
-        let authUrl = common.getParameterByName('authUrl')
-        if (redirectUri) {
-          let newUrl = authUrl + '?redirectUri=' + redirectUri + '&authCode=' + resultBody.authCode
-          window.location.href = newUrl
-        } else {
-          window.location.href = '/'
-        }
+        this.refreshVerifyCode()
+        this.afterLoginFail()
+      }).catch((error) => {
+        console.log(error)
+        this.errorMessage = '登录失败，请重试！'
+        this.afterLoginFail()
+      })
+    },
+    /**
+     * 验证，验证通过返回true，验证失败返回false
+     */
+    valid: function () {
+      if (this.loginInfo.username.length <= 0) {
+        document.getElementById('username').focus()
+        this.errorMessage = '请您输入登录账户'
+        return false
+      }
+      if (this.loginInfo.password.length <= 0) {
+        document.getElementById('password').focus()
+        this.errorMessage = '请您输入登录密码'
+        return false
+      }
+      if (this.isVerifyCode && this.loginInfo.verifyCode.length <= 0) {
+        this.focusOnVerifyCode()
+        this.errorMessage = '请您输入验证码'
+        return false
+      }
+      return true
+    },
+    /**
+     * 刷新验证码
+     */
+    refreshVerifyCode () {
+      this.timestamp = Math.random() + ''
+    },
+    /**
+     * 将焦点放在验证码输入框上面
+     */
+    focusOnVerifyCode () {
+      let verifyCodeElement = document.getElementById('verifyCode')
+      if (verifyCodeElement) {
+        verifyCodeElement.focus()
       }
     },
-    directives: {
-      focus: {
-        inserted: function (el) {
-          el.focus()
-        }
+    /**
+     * 点击登录后将用户按钮置为不可用
+     */
+    beforeLogin () {
+      this.loginBtnDisabled = true
+      this.loginBtnText = '登录中'
+    },
+    /**
+     * 登录失败后将用户按钮置为可用
+     */
+    afterLoginFail () {
+      this.loginBtnDisabled = false
+      this.loginBtnText = '登录'
+    },
+    /**
+     * 登录成功之后，将登录按钮改为跳转中
+     */
+    afterLoginSuccess () {
+      this.loginBtnDisabled = true
+      this.loginBtnText = '跳转中，请稍候'
+    },
+    handlerForward (resultBody) {
+      // 如果有重定向URL，则先跳转到重定向的页面
+      let redirectUri = getParameterByName('redirectUri')
+      let authUrl = getParameterByName('authUrl')
+      if (redirectUri) {
+        let newUrl = authUrl + '?redirectUri=' + redirectUri + '&authCode=' + resultBody.authCode
+        window.location.href = newUrl
+      } else {
+        window.location.href = '/'
+      }
+    }
+  },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.focus()
       }
     }
   }
+}
 </script>
 
 <style>

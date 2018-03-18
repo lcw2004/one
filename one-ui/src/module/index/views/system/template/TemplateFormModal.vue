@@ -1,6 +1,6 @@
 <template>
   <OneTransition>
-    <div class="modal" v-show="config.show" style="display: block">
+    <div :class="fullScreenClass" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -46,38 +46,31 @@
 </template>
 
 <script>
-import ModalMixin from 'mixins/ModalMixin.js'
+import ModalMixin from '@mixins/ModalMixin'
+
 export default {
   mixins: [ModalMixin],
   props: {
-    config: {
-      type: Object,
-      required: true
-    },
     template: {
       type: Object,
       required: true
     }
   },
-  data: () => {
+  data: function () {
     return {
-      actions: {
-        save: {method: 'post', url: '/api/base/template'},
-        update: {method: 'put', url: '/api/base/template'}
-      },
       onValue: 1,
       offValue: 0
     }
   },
   mounted () {
-    this.resource = this.$resource(null, {}, this.actions)
+
   },
   methods: {
     save () {
       let id = this.template.templateId
       if (id) {
-        this.resource.update(null, JSON.stringify(this.template)).then((response) => {
-          let result = response.body
+        this.$api.system.updateTemplate(this.template).then((response) => {
+          let result = response.data
           if (result.ok) {
             this.$notify.success('修改成功')
             this.close()
@@ -85,8 +78,8 @@ export default {
           }
         })
       } else {
-        this.resource.save(null, JSON.stringify(this.template)).then((response) => {
-          let result = response.body
+        this.$api.system.saveTemplate(this.template).then((response) => {
+          let result = response.data
           if (result.ok) {
             this.$notify.success('添加成功')
             this.close()

@@ -1,10 +1,19 @@
 import VueRouter from 'vue-router'
 import home from './home'
+import PrefectOfficeInfo from '../views/personal/supplier/PrefectOfficeInfo.vue'
 
 const router = {
   routes: [
-    home
-  ]
+    home,
+    {path: '/prefect-info', component: PrefectOfficeInfo}
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ x: 0, y: 0 })
+      }, 500)
+    })
+  }
 }
 
 // 构建VueRouter对象
@@ -16,6 +25,7 @@ vueRouter.beforeEach((to, from, next) => {
   // TODO 如果没有登录，则跳转到登录界面
   console.log(to)
   console.log(from)
+  document.body.scrollTop = 0
   next()
 })
 

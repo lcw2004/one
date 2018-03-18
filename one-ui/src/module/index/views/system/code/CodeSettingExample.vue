@@ -19,6 +19,7 @@
 
 <script>
 import * as utils from './code-setting.js'
+
 export default {
   props: {
     codeSetting: {

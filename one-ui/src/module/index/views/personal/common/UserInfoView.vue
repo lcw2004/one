@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box box-primary">
     <div class="box-body">
       <section>
         <h4 class="page-header">基本信息</h4>
@@ -86,19 +86,19 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {}
-    },
-    computed: {
-      user: function () {
-        return this.$store.state.system.userInfo
-      }
-    },
-    methods: {
-      editStart () {
-        this.$emit('edit-start')
-      }
+export default {
+  data: function () {
+    return {}
+  },
+  computed: {
+    user: function () {
+      return this.$store.state.system.userInfo
+    }
+  },
+  methods: {
+    editStart () {
+      this.$emit('edit-start')
     }
   }
+}
 </script>

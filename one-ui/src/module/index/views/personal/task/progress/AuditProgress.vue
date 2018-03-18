@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title"></h3>
       </div>
@@ -30,6 +30,7 @@
 
 <script>
 import AuditLog from '../AuditLog.vue'
+
 export default {
   components: {
     AuditLog

@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <div class="row">
           <div class="col-md-12">
@@ -14,23 +14,23 @@
       <div class="box-body">
         <table class="table table-bordered table-hover">
           <thead>
-          <tr>
-            <th>区域名称</th>
-            <th>区域编码</th>
-            <th>操作</th>
-          </tr>
+            <tr>
+              <th>区域名称</th>
+              <th>区域编码</th>
+              <th>操作</th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="obj of dataList" v-show="obj.isShowInTable" :key="obj.id">
-            <td>
-              <TreeTableColPrefix :obj="obj" @toggle="toggle(obj)">{{ obj.name }}</TreeTableColPrefix>
-            </td>
-            <td>{{ obj.code }}</td>
-            <td>
-              <router-link :to='"/system/area/" + obj.id + "/form"'>修改</router-link>
-              <a @click="deleteData(obj)">删除</a>
-            </td>
-          </tr>
+            <tr v-for="obj of dataList" v-show="obj.isShowInTable" :key="obj.id">
+              <td>
+                <TreeTableColPrefix :obj="obj" @toggle="toggle(obj)">{{ obj.name }}</TreeTableColPrefix>
+              </td>
+              <td>{{ obj.code }}</td>
+              <td>
+                <router-link :to='"/system/area/" + obj.id + "/form"'>修改</router-link>
+                <a @click="deleteData(obj)">删除</a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -39,46 +39,37 @@
 </template>
 
 <script>
-  import TreeTableMiXin from '../../../../../common/mixins/TreeTableMiXin'
-  import TreeTableColPrefix from '../../../../../common/components/tree/TreeTableColPrefix'
+import TreeTableMiXin from '@mixins/TreeTableMiXin'
 
-  export default {
-    mixins: [TreeTableMiXin],
-    components: {
-      TreeTableColPrefix
+export default {
+  mixins: [TreeTableMiXin],
+  data: function () {
+    return {
+      topElement: {}
+    }
+  },
+  mounted () {
+    this.loadTreeTable()
+  },
+  methods: {
+    loadTreeTable () {
+      this.$api.system.getAreaTree().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.topElement = result.data
+        }
+      })
     },
-    data: () => {
-      return {
-        topElement: {}
-      }
-    },
-    mounted () {
-      let actions = {
-        query: {method: 'get', url: '/api/sys/area/tree'},
-        deleteData: {method: 'delete', url: '/api/sys/area{/id}'}
-      }
-      this.resource = this.$resource(null, {}, actions)
-      this.loadTreeTable()
-    },
-    methods: {
-      loadTreeTable () {
-        this.resource.query().then((response) => {
-          let result = response.body
-          if (result.ok) {
-            this.topElement = result.data
+    deleteData (obj) {
+      this.$confirm('确认删除区域【' + obj.name + '】吗？', () => {
+        this.$api.system.deleteArea(obj.id).then((response) => {
+          if (response.data.ok) {
+            this.$notify.success('删除成功')
+            this.removeElement(obj)
           }
         })
-      },
-      deleteData (obj) {
-        this.$confirm('确认删除区域【' + obj.name + '】吗？', () => {
-          this.resource.deleteData({id: obj.id}).then((response) => {
-            if (response.body.ok) {
-              this.$notify.success('删除成功')
-              this.removeElement(obj)
-            }
-          })
-        })
-      }
+      })
     }
   }
+}
 </script>

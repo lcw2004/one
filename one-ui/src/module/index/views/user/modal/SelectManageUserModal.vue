@@ -1,6 +1,6 @@
 <template>
   <OneTransition>
-    <div class="modal" v-show="config.show" style="display: block">
+    <div :class="fullScreenClass" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -9,7 +9,7 @@
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
           </div>
-          <div class="modal-body modal-scrollable">
+          <div class="modal-body">
             <!-- 标题 -->
             <div class="row row-margin-bottom">
               <div class="col-md-12">
@@ -21,24 +21,24 @@
               <div class="col-md-12">
                 <table class="table table-bordered table-hover">
                   <thead>
-                  <tr>
-                    <th style="width: 50px">选择</th>
-                    <th>姓名</th>
-                    <th>账户</th>
-                    <th>手机号码</th>
-                    <th>座机</th>
-                    <th>邮箱</th>
-                  </tr>
+                    <tr>
+                      <th style="width: 50px">选择</th>
+                      <th>姓名</th>
+                      <th>账户</th>
+                      <th>手机号码</th>
+                      <th>座机</th>
+                      <th>邮箱</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="obj of page.list" @click="selectedUser = obj">
-                    <td><input type="radio" :value="obj" v-model="selectedUser" :key="obj.userId"></td>
-                    <td>{{ obj.userInfo.name }}</td>
-                    <td>{{ obj.userInfo.account }}</td>
-                    <td>{{ obj.userInfo.userContactInfo.mobile }}</td>
-                    <td>{{ obj.userInfo.userContactInfo.phone }}</td>
-                    <td>{{ obj.userInfo.userContactInfo.email }}</td>
-                  </tr>
+                    <tr v-for="obj of page.list">
+                      <td><input type="checkbox" :value="obj.userInfo" v-model="selectedUserList" :key="obj.userId"></td>
+                      <td>{{ obj.userInfo.name }}</td>
+                      <td>{{ obj.userInfo.account }}</td>
+                      <td>{{ obj.userInfo.userContactInfo.mobile }}</td>
+                      <td>{{ obj.userInfo.userContactInfo.phone }}</td>
+                      <td>{{ obj.userInfo.userContactInfo.email }}</td>
+                    </tr>
                   </tbody>
                 </table>
 
@@ -51,7 +51,8 @@
               <div class="col-md-10">
                 <div class="pull-left modal-selected-data">
                   选中
-                  <template v-if="selectedUser && selectedUser.userInfo"><span class="label label-info">{{ selectedUser.userInfo.name }}</span>
+                  <template v-for="user of selectedUserList">
+                    <span class="label label-info">{{ user.name }}</span>&nbsp;
                   </template>
                 </div>
               </div>
@@ -68,37 +69,56 @@
 </template>
 
 <script>
-  import PageMixin from 'mixins/PageMixin.js'
-  import ModalMixin from 'mixins/ModalMixin.js'
+import PageMixin from '@mixins/PageMixin'
+import ModalMixin from '@mixins/ModalMixin'
 
-  export default {
-    mixins: [PageMixin, ModalMixin],
-    components: {
-      PageMixin
+export default {
+  mixins: [PageMixin, ModalMixin],
+  components: {
+    PageMixin
+  },
+  props: {
+    config: {
+      type: Object,
+      required: true
     },
-    props: {
-      config: {
-        type: Object,
-        required: true
+    value: {}
+  },
+  data: function () {
+    return {
+      actions: {
+        list: {method: 'get', url: '/api/user/manager'}
       },
-      value: {}
-    },
-    data: () => {
-      return {
-        actions: {
-          list: {method: 'get', url: '/api/user/manager'}
-        },
-        param: {},
-        selectedUser: {}
-      }
-    },
-    methods: {
-      ok () {
-        this.close()
-        if (this.selectedUser) {
-          this.$emit('input', this.selectedUser.userInfo)
-        }
+      param: {},
+      selectedUserList: [],
+      isSelectAll: false
+    }
+  },
+  methods: {
+    ok () {
+      this.close()
+      if (this.selectedUserList && this.selectedUserList.length > 0) {
+        this.$emit('input', this.selectedUserList)
       }
     }
+  },
+  watch: {
+    'isSelectAll': function () {
+      if (this.isSelectAll) {
+        this.selectedUserList = this.page.list
+      } else {
+        this.selectedUserList = []
+      }
+    },
+    /**
+     * 刷新数据的时候重置选中的用户
+     */
+    'page': {
+      handler: function () {
+        this.selectedUserList = []
+      },
+      deep: true
+    }
   }
+}
 </script>

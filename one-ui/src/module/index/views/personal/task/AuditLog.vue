@@ -8,7 +8,7 @@
             <th>操作人</th>
             <th>操作名称</th>
             <th>操作时间</th>
-            <th>备注</th>
+            <th>审核意见</th>
           </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
               <span class="label" :class="labelClass(log)">{{ log.operateName }}</span>
             </td>
             <td>{{ log.auditTime }}</td>
-            <td>{{ log.remark }}</td>
+            <td><LongText :text="log.remark"></LongText></td>
           </tr>
         </tbody>
       </table>
@@ -43,26 +43,22 @@ export default {
       type: String
     }
   },
-  data: () => {
+  data: function () {
     return {
-      actions: {
-        list: {method: 'get', url: '/api/flow/auditLog'}
-      },
       logList: []
     }
   },
   mounted () {
-    this.resource = this.$resource(null, {}, this.actions)
     this.loadData()
   },
   methods: {
     loadData () {
-      this.resource.list({
+      this.$api.system.listAuditLog({
         businessId: this.businessId,
         secondBusinessId: this.secondBusinessId,
         businessType: this.businessType
-      }).then(function (response) {
-        let result = response.body
+      }).then((response) => {
+        let result = response.data
         if (result.ok) {
           this.logList = result.data
         }

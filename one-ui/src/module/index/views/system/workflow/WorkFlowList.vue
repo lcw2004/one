@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-body">
         <!--Query Start-->
         <form class="form-horizontal">
@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-4">
               <div class="pull-right">
-                <FileUpload type="bpmn,zip,bar" btnText="部署流程" url="/api/flow/flowState" :showProgress="false" :callback="uploadSuccess"></FileUpload>
+                <FileUpload type="bpmn,zip,bar" btnText="部署流程" url="/api/flow/flowInfo" :showProgress="false" :callback="uploadSuccess"></FileUpload>
               </div>
             </div>
           </div>
@@ -55,49 +55,47 @@
 </template>
 
 <script>
-  import PageMixin from 'mixins/PageMixin.js'
+import PageMixin from '@mixins/PageMixin'
 
-  export default {
-    mixins: [PageMixin],
-    data: () => {
-      return {
-        actions: {
-          list: {method: 'get', url: '/api/flow/flowState'},
-          deleteData: {method: 'delete', url: '/api/flow/flowState{/id}'},
-          uploadWorkflow: {method: 'post', url: '/api/flow/flowState'}
-        },
-        param: {
-          likeName: ''
-        }
-      }
-    },
-    methods: {
-      deleteData (id) {
-        this.$confirm('确认删除吗？', () => {
-          this.resource.deleteData({id: id}).then((response) => {
-            let result = response.body
-            if (result.ok) {
-              this.query()
-              this.$notify.success('删除成功！')
-            }
-          })
-        })
+export default {
+  mixins: [PageMixin],
+  data: function () {
+    return {
+      actions: {
+        list: {method: 'get', url: '/api/flow/flowInfo'}
       },
-      showSelectFile () {
-        document.getElementById('file').click()
-      },
-      uploadSuccess () {
-        this.$notify.success('部署成功')
-        this.queryForPage()
-      }
-    },
-    watch: {
-      'param': {
-        handler: function () {
-          this.query()
-        },
-        deep: true
+      param: {
+        likeName: ''
       }
     }
+  },
+  methods: {
+    deleteData (id) {
+      this.$confirm('确认删除吗？', () => {
+        this.$api.system.deleteWorkflow(id).then((response) => {
+          let result = response.data
+          if (result.ok) {
+            this.query()
+            this.$notify.success('删除成功！')
+          }
+        })
+      })
+    },
+    showSelectFile () {
+      document.getElementById('file').click()
+    },
+    uploadSuccess () {
+      this.$notify.success('部署成功')
+      this.queryForPage()
+    }
+  },
+  watch: {
+    'param': {
+      handler: function () {
+        this.query()
+      },
+      deep: true
+    }
   }
+}
 </script>

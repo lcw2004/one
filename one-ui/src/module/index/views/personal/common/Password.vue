@@ -2,7 +2,7 @@
   <section class="content">
     <div class="row">
       <div class="col-md-12">
-        <div class="box">
+        <div class="box box-primary">
           <div class="box-body">
             <form class="form-horizontal">
               <div class="row">
@@ -37,28 +37,28 @@
 </template>
 
 <script>
-  export default {
-    components: {},
-    data: () => {
-      return {
-        oldPassword: '',
-        newPassword: '',
-        newPasswordConfirm: ''
-      }
-    },
-    methods: {
-      updatePassword () {
-        this.$validator.validateAll().then((result) => {
-          if (result) {
-            this.$http.put('/api/updatePassword', null, {params: this.$data}).then((response) => {
-              let result = response.body
-              if (result.ok) {
-                this.$notify.success('修改成功')
-              }
-            })
-          }
-        })
-      }
+export default {
+  components: {},
+  data: function () {
+    return {
+      oldPassword: '',
+      newPassword: '',
+      newPasswordConfirm: ''
+    }
+  },
+  methods: {
+    updatePassword () {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.$api.system.updateUserPassword(this.oldPassword, this.newPassword).then((response) => {
+            let result = response.data
+            if (result.ok) {
+              this.$notify.success('修改成功')
+            }
+          })
+        }
+      })
     }
   }
+}
 </script>

@@ -11,7 +11,7 @@
 
         <p>
           {{ userInfo.name }}
-          <small>登录时间：{{ userInfo.lastLoginTime }}</small>
+          <small style="margin-top: 10px">当前时间：{{ systemTimeStr }}</small>
         </p>
       </li>
       <!-- Menu Body -->
@@ -43,27 +43,27 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        isOpen: false
-      }
+export default {
+  data: function () {
+    return {
+      isOpen: false
+    }
+  },
+  methods: {
+    toggole: function () {
+      this.isOpen = !this.isOpen
     },
-    methods: {
-      toggole: function () {
-        this.isOpen = !this.isOpen
-      },
-      logout: function () {
-        this.$http.get('/api/logout').then((response) => {
-          this.$store.dispatch('removeUserInfo')
-          window.location.href = 'login.html'
-        })
-      }
-    },
-    computed: {
-      userInfo: function () {
-        return this.$store.state.system.userInfo
-      }
+    logout: function () {
+      this.$api.system.logout().then((response) => {
+        this.$store.dispatch('removeUserInfo')
+        window.location.href = 'login.html'
+      })
+    }
+  },
+  computed: {
+    userInfo: function () {
+      return this.$store.state.system.userInfo
     }
   }
+}
 </script>

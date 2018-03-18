@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box box-primary">
     <div class="box-header">
       <h3 class="box-title">审核</h3>
     </div>
@@ -13,7 +13,7 @@
       <form class="form-horizontal">
         <div class="row">
           <div class="col-md-8">
-            <FormGroup label="审核意见">
+            <FormGroup label="是否审核通过">
               <div>
                 <div class="radio-inline">
                   <label><input type="radio" :value="true" v-model="auditResult">通过</label>
@@ -25,7 +25,7 @@
             </FormGroup>
           </div>
           <div class="col-md-8">
-            <FormGroup label="驳回理由">
+            <FormGroup label="审核意见">
               <textarea class="form-control" rows="3" v-model="auditRemark" maxlength="200"></textarea>
             </FormGroup>
           </div>
@@ -43,6 +43,7 @@
 
 <script>
 import AuditLog from './AuditLog.vue'
+
 export default {
   components: {
     AuditLog
@@ -52,11 +53,8 @@ export default {
       type: Object
     }
   },
-  data: () => {
+  data: function () {
     return {
-      actions: {
-        audit: {method: 'get', url: '/api/flow/audit'}
-      },
       auditResult: true,
       auditRemark: ''
     }
@@ -85,9 +83,6 @@ export default {
       }
     }
   },
-  mounted () {
-    this.resource = this.$resource(null, {}, this.actions)
-  },
   methods: {
     audit () {
       if (!this.auditResult && this.auditRemark === '') {
@@ -107,8 +102,8 @@ export default {
           auditResult: this.auditResult,
           remark: this.auditRemark
         }
-        this.resource.audit(data).then((response) => {
-          let result = response.body
+        this.$api.system.audit(data).then((response) => {
+          let result = response.data
           if (result.ok) {
             this.$notify.success('审核成功')
             this.$router.go(-1)

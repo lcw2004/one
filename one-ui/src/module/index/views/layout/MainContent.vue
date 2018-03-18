@@ -11,7 +11,7 @@
             <template v-if="index < menuPath.length - 1">
               <i class="fa fa-dashboard" v-if="index == 0"></i> {{ menu.name }}
             </template>
-            <template v-if="index === menuPath.length - 1">
+            <template v-if="index === menuPath.length - 1 && menu.href">
               <router-link :to='menu.href'>{{ menu.name }}</router-link>
             </template>
           </li>
@@ -19,19 +19,21 @@
       </ol>
     </section>
 
-    <router-view></router-view>
+    <!-- <keep-alive> -->
+      <router-view></router-view>
+    <!-- </keep-alive> -->
   </div>
 </template>
 
 <script>
-  export default {
-    computed: {
-      thirdMenu: function () {
-        return this.$store.state.system.thirdMenu
-      },
-      menuPath: function () {
-        return this.$store.state.system.menuPath
-      }
+export default {
+  computed: {
+    thirdMenu: function () {
+      return this.$store.state.system.thirdMenu
+    },
+    menuPath: function () {
+      return this.$store.state.system.menuPath
     }
   }
+}
 </script>

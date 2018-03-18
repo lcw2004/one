@@ -2,92 +2,84 @@
   <li class="dropdown messages-menu" :class="{ open: isOpen }">
     <a class="dropdown-toggle" data-toggle="dropdown" @click="toggole()">
       <i class="fa fa-envelope-o"></i>
-      <span class="label label-success">4</span>
+      <span class="label label-success" v-if="unreadMessageCount > 0">{{ unreadMessageCount }}</span>
     </a>
     <ul class="dropdown-menu">
-      <li class="header">You have 4 messages</li>
+      <li class="header">您有 {{ unreadMessageCount }} 条未读消息</li>
       <li>
-        <!-- inner menu: contains the actual data -->
         <ul class="menu">
-          <li><!-- start message -->
-            <a href="#">
-              <div class="pull-left">
-                <img src="static/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-              </div>
+          <li v-for="obj of messageList">
+            <a class="message" @click="viewMore()">
               <h4>
-                Support Team
-                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                {{ obj.title }}
+                <small><i class="fa fa-clock-o"></i> {{ obj.timeDiff }}</small>
               </h4>
-              <p>Why not buy a new awesome theme?</p>
-            </a>
-          </li>
-          <!-- end message -->
-          <li>
-            <a href="#">
-              <div class="pull-left">
-                <img src="static/adminlte/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-              </div>
-              <h4>
-                AdminLTE Design Team
-                <small><i class="fa fa-clock-o"></i> 2 hours</small>
-              </h4>
-              <p>Why not buy a new awesome theme?</p>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div class="pull-left">
-                <img src="static/adminlte/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-              </div>
-              <h4>
-                Developers
-                <small><i class="fa fa-clock-o"></i> Today</small>
-              </h4>
-              <p>Why not buy a new awesome theme?</p>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div class="pull-left">
-                <img src="static/adminlte/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-              </div>
-              <h4>
-                Sales Department
-                <small><i class="fa fa-clock-o"></i> Yesterday</small>
-              </h4>
-              <p>Why not buy a new awesome theme?</p>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <div class="pull-left">
-                <img src="static/adminlte/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-              </div>
-              <h4>
-                Reviewers
-                <small><i class="fa fa-clock-o"></i> 2 days</small>
-              </h4>
-              <p>Why not buy a new awesome theme?</p>
+              <p>{{ obj.content }}</p>
             </a>
           </li>
         </ul>
       </li>
-      <li class="footer"><a href="#">See All Messages</a></li>
+      <li class="footer">
+        <a @click="viewMore()">查看更多消息</a>
+      </li>
     </ul>
   </li>
 </template>
 
 <script>
-  export default{
-    data: () => {
-      return {
-        isOpen: false
+export default{
+  data: function () {
+    return {
+      isOpen: false,
+      page: {}
+    }
+  },
+  computed: {
+    messageList: function () {
+      return this.$store.state.system.messageList
+    },
+    unreadMessageCount: function () {
+      return this.$store.state.system.unreadMessageCount
+    }
+  },
+  mounted () {
+    this.listMessage()
+    this.interval = setInterval(() => {
+      this.listMessage()
+    }, 1000 * 60)
+  },
+  destroyed () {
+    clearInterval(this.interval)
+  },
+  methods: {
+    toggole () {
+      this.isOpen = !this.isOpen
+      if (this.isOpen) {
+        this.listMessage()
       }
     },
-    methods: {
-      toggole: function () {
-        this.isOpen = !this.isOpen
-      }
+    viewMore () {
+      this.$router.push('/personal/message')
+      this.toggole()
+    },
+    listMessage () {
+      this.$store.dispatch('loadMessage')
     }
   }
+}
 </script>
+
+<style lang="less" scoped>
+.message {
+  h4 {
+    margin-left: 0 !important;
+    margin-bottom: 3px;
+  }
+  p {
+    margin-left: 0 !important;
+    white-space:normal;
+    word-break:break-all;
+    word-wrap:break-word;
+  }
+}
+</style>

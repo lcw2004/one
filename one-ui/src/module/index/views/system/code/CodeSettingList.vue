@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-body">
         <div class="row">
           <div class="col-md-6">
@@ -35,83 +35,78 @@
 </template>
 
 <script>
-  import CodeSettingForm from './CodeSettingForm.vue'
-  export default {
-    components: {
-      CodeSettingForm
-    },
-    data: () => {
-      return {
-        actions: {
-          list: {method: 'get', url: '/api/base/codeSetting'},
-          update: {method: 'put', url: '/api/base/codeSetting'},
-          get: {method: 'get', url: '/api/base/codeSetting/{id}'}
+import CodeSettingForm from './CodeSettingForm.vue'
+
+export default {
+  components: {
+    CodeSettingForm
+  },
+  data: function () {
+    return {
+      list: [],
+      selectSettingId: '',
+      codeSetting: {},
+      sectionList: [
+        {
+          orderIndex: 1,
+          type: 5,
+          content: '',
+          length: 1
         },
-        list: [],
-        selectSettingId: '',
-        codeSetting: {},
-        sectionList: [
-          {
-            orderIndex: 1,
-            type: 5,
-            content: '',
-            length: 1
-          },
-          {
-            orderIndex: 2,
-            type: 4,
-            content: '',
-            length: 1
-          },
-          {
-            orderIndex: 3,
-            type: 6,
-            content: '00001',
-            length: 5
-          }
-        ]
-      }
+        {
+          orderIndex: 2,
+          type: 4,
+          content: '',
+          length: 1
+        },
+        {
+          orderIndex: 3,
+          type: 6,
+          content: '00001',
+          length: 5
+        }
+      ]
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  methods: {
+    loadData () {
+      this.$api.system.listCodeSetting().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.list = result.data
+          this.selectSettingId = this.list[0].settingId
+        }
+      })
     },
-    mounted () {
-      this.resource = this.$resource(null, {}, this.actions)
-      this.loadData()
+    loadCodeSetting (codeSettingId) {
+      this.$api.system.getCodeSetting(codeSettingId).then((response) => {
+        let result = response.data
+        if (result.ok) {
+          let codeSetting = result.data
+          if (codeSetting.sectionEOList.length === 0) {
+            codeSetting.sectionEOList = JSON.parse(JSON.stringify(this.sectionList))
+          }
+          this.codeSetting = codeSetting
+        }
+      })
     },
-    methods: {
-      loadData () {
-        this.resource.list().then(function (response) {
-          let result = response.body
-          if (result.ok) {
-            this.list = result.data
-            this.selectSettingId = this.list[0].settingId
-          }
-        })
-      },
-      loadCodeSetting (codeSettingId) {
-        this.resource.get({id: codeSettingId}).then(function (response) {
-          let result = response.body
-          if (result.ok) {
-            let codeSetting = result.data
-            if (codeSetting.sectionEOList.length === 0) {
-              codeSetting.sectionEOList = JSON.parse(JSON.stringify(this.sectionList))
-            }
-            this.codeSetting = codeSetting
-          }
-        })
-      },
-      update () {
-        this.resource.update(this.codeSetting).then(function (response) {
-          let result = response.body
-          if (result.ok) {
-            this.codeSetting = result.data
-            this.$notify.success('保存成功')
-          }
-        })
-      }
-    },
-    watch: {
-      'selectSettingId': function () {
-        this.loadCodeSetting(this.selectSettingId)
-      }
+    update () {
+      this.$api.system.updateCodeSetting(this.codeSetting).then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.codeSetting = result.data
+          this.$notify.success('保存成功')
+        }
+      })
+    }
+  },
+  watch: {
+    'selectSettingId': function () {
+      this.loadCodeSetting(this.selectSettingId)
     }
   }
+}
 </script>

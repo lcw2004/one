@@ -10,18 +10,18 @@
 </template>
 
 <script>
-  import UserInfoEdit from './UserInfoEdit'
-  import UserInfoView from './UserInfoView'
+import UserInfoEdit from './UserInfoEdit'
+import UserInfoView from './UserInfoView'
 
-  export default {
-    components: {
-      UserInfoEdit,
-      UserInfoView
-    },
-    data: () => {
-      return {
-        editMode: false
-      }
+export default {
+  components: {
+    UserInfoEdit,
+    UserInfoView
+  },
+  data: function () {
+    return {
+      editMode: false
     }
   }
+}
 </script>

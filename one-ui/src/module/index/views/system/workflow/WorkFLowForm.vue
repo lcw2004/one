@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h4>{{ obj.processName }}</h4>
       </div>
@@ -56,18 +56,20 @@
 </template>
 
 <script>
-import FormMixin from 'mixins/FormMixin.js'
+import FormMixin from '@mixins/FormMixin'
+
 export default {
   mixins: [FormMixin],
-  data: () => {
+  data: function () {
     return {
-      actions: {
-        listRole: {method: 'get', url: '/api/sys/role'},
-        get: {method: 'get', url: '/api/flow/flowState{/id}'},
-        save: {method: 'post', url: '/api/flow/flowState'},
-        update: {method: 'put', url: '/api/flow/flowState'}
+      form: {
+        actions: {
+          get: this.$api.system.getWorkflow,
+          save: this.$api.system.saveWorkflow,
+          update: this.$api.system.updateWorkflow
+        },
+        continue: false
       },
-
       obj: {
         'processKey': '',
         'processState': 0,
@@ -82,7 +84,7 @@ export default {
   },
   computed: {
     processImageUrl: function () {
-      return '/api/flow/flowState/' + this.id + '/processImage?t=' + Math.random()
+      return '/api/flow/flowInfo/' + this.id + '/processImage?t=' + Math.random()
     }
   },
   mounted () {
@@ -90,8 +92,8 @@ export default {
   },
   methods: {
     listRole () {
-      this.resource.listRole({pageNo: 1, pageSize: 1000}).then(function (response) {
-        let result = response.body
+      this.$api.system.listRole({pageNo: 1, pageSize: 1000}).then((response) => {
+        let result = response.data
         if (result.ok) {
           this.roleList = result.data.list
         }

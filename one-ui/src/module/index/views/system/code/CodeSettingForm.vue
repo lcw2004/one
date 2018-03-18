@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box box-primary">
     <div class="box-header">
       <h3 class="box-title">编码规则配置</h3>
     </div>
@@ -34,12 +34,6 @@ export default {
       type: Object,
       require: true
     }
-  },
-  data: () => {
-    return {
-    }
-  },
-  methods: {
   }
 }
 </script>

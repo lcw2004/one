@@ -44,40 +44,36 @@
 </template>
 
 <script>
-  import Step from '../step/Step'
-  import StepItem from '../step/StepItem'
-  import ValidOrgInfo from './ValidOrgInfo'
-  import ShowAccount from './ShowAccount'
+import ValidOrgInfo from './ValidOrgInfo'
+import ShowAccount from './ShowAccount'
 
-  export default {
-    components: {
-      Step,
-      StepItem,
-      ValidOrgInfo,
-      ShowAccount
-    },
-    data: () => {
-      return {
-        stepId: 1,
-        maxStep: 2
+export default {
+  components: {
+    ValidOrgInfo,
+    ShowAccount
+  },
+  data: function () {
+    return {
+      stepId: 1,
+      maxStep: 2
+    }
+  },
+  methods: {
+    lastStep () {
+      if (this.stepId > 1) {
+        this.stepId = this.stepId - 1
       }
     },
-    methods: {
-      lastStep () {
-        if (this.stepId > 1) {
-          this.stepId = this.stepId - 1
-        }
-      },
-      nextStep () {
-        if (this.stepId < this.maxStep) {
-          this.stepId = this.stepId + 1
-        }
-      },
-      argee () {
-      },
-      submit () {
-        this.$notify.info('提交成功，请等待工作人员审核')
+    nextStep () {
+      if (this.stepId < this.maxStep) {
+        this.stepId = this.stepId + 1
       }
+    },
+    argee () {
+    },
+    submit () {
+      this.$notify.info('提交成功，请等待工作人员审核')
     }
   }
+}
 </script>

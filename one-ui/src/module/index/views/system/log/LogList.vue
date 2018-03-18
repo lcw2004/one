@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title">系统日志</h3>
       </div>
@@ -42,26 +42,26 @@
           <div class="col-md-12">
             <table class="table table-bordered table-hover">
               <thead>
-              <tr>
-                <th>所在公司</th>
-                <th>所在部门</th>
-                <th>操作用户</th>
-                <th>URI</th>
-                <th>提交方式</th>
-                <th>操作者IP</th>
-                <th>创建时间</th>
-              </tr>
+                <tr>
+                  <th>所在公司</th>
+                  <th>所在部门</th>
+                  <th>操作用户</th>
+                  <th>URI</th>
+                  <th>提交方式</th>
+                  <th>操作者IP</th>
+                  <th>创建时间</th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="obj of page.list">
-                <td>{{ obj.createBy.company.name }}</td>
-                <td>{{ obj.createBy.office.name }}</td>
-                <td>{{ obj.createBy.name }}（{{ obj.createBy.loginName }}）</td>
-                <td>{{ obj.requestUri }}</td>
-                <td>{{ obj.method }}</td>
-                <td>{{ obj.remoteAddr }}</td>
-                <td>{{ obj.createDate }}</td>
-              </tr>
+                <tr v-for="obj of page.list">
+                  <td>{{ obj.createBy.company.name }}</td>
+                  <td>{{ obj.createBy.office.name }}</td>
+                  <td>{{ obj.createBy.name }}（{{ obj.createBy.loginName }}）</td>
+                  <td>{{ obj.requestUri }}</td>
+                  <td>{{ obj.method }}</td>
+                  <td>{{ obj.remoteAddr }}</td>
+                  <td>{{ obj.createDate }}</td>
+                </tr>
               </tbody>
             </table>
             <Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
@@ -73,41 +73,34 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        param: {
-          pageNo: 1,
-          pageSize: 10,
-          requestUri: '',
-          createByName: '',
-          beginDate: '',
-          endDate: ''
-        },
-        page: {}
-      }
-    },
-    mounted: function () {
-      let actions = {
-        list: {method: 'get', url: '/api/sys/log'}
-      }
-      this.resource = this.$resource(null, {}, actions)
-      this.query()
-    },
-    methods: {
-      query: function () {
-        this.resource.list(this.param).then((response) => {
-          this.page = response.body
-        })
-      }
-    },
-    watch: {
-      'param': {
-        handler: function () {
-          this.query()
-        },
-        deep: true
-      }
+export default {
+  data: function () {
+    return {
+      param: {
+        pageNo: 1,
+        pageSize: 10,
+        requestUri: '',
+        createByName: '',
+        beginDate: '',
+        endDate: ''
+      },
+      page: {}
+    }
+  },
+  mounted: function () {
+    this.query()
+  },
+  methods: {
+    query: function () {
+    }
+  },
+  watch: {
+    'param': {
+      handler: function () {
+        this.query()
+      },
+      deep: true
     }
   }
+}
 </script>

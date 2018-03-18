@@ -1,6 +1,6 @@
 <template>
   <OneTransition>
-    <div class="modal" v-show="config.show" style="display: block">
+    <div :class="fullScreenClass" v-show="config.show" style="display: block">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -9,7 +9,7 @@
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
           </div>
-          <div class="modal-body modal-scrollable">
+          <div class="modal-body">
             <div class="row">
               <div class="col-md-12">
                 <FormGroup label="驳回原因" width="2">
@@ -30,36 +30,33 @@
 </template>
 
 <script>
-  import ModalMixin from 'mixins/ModalMixin.js'
-  export default {
-    mixins: [ModalMixin],
-    props: {
-      config: {
-        type: Object,
-        required: true
-      },
-      callback: {
-        type: Function,
-        required: true
-      }
-    },
-    data: () => {
-      return {
-        remark: ''
-      }
-    },
-    methods: {
-      ok: function () {
-        this.$validator.validateAll().then((result) => {
-          if (result) {
-            if (this.callback) {
-              this.callback(this.remark)
-            }
-            this.close()
-            this.remark = ''
+import ModalMixin from '@mixins/ModalMixin'
+
+export default {
+  mixins: [ModalMixin],
+  props: {
+    callback: {
+      type: Function,
+      required: true
+    }
+  },
+  data: function () {
+    return {
+      remark: ''
+    }
+  },
+  methods: {
+    ok: function () {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          if (this.callback) {
+            this.callback(this.remark)
           }
-        })
-      }
+          this.close()
+          this.remark = ''
+        }
+      })
     }
   }
+}
 </script>

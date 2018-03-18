@@ -22,12 +22,12 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li>
-            <a href="#" title="首页"><i class="fa fa-home" style="font-size: 18px"></i></a>
+            <router-link to='/'><i class="fa fa-home" style="font-size: 18px"></i></router-link>
           </li>
 
           <MessagesMenu/>
-          <NotificationsMenu/>
-          <TasksMenu/>
+          <!-- <NotificationsMenu/> -->
+          <!-- <TasksMenu/> -->
           <UserInfoMenu/>
 
           <!-- ControlSidebar 暂时隐藏
@@ -41,41 +41,39 @@
 </template>
 
 <script>
-  let $ = require('jquery')
-  import MessagesMenu from './head/MessagesMenu'
-  import NotificationsMenu from './head/NotificationsMenu'
-  import TasksMenu from './head/TasksMenu'
-  import UserInfoMenu from './head/UserInfoMenu'
+import MessagesMenu from './head/MessagesMenu'
+import NotificationsMenu from './head/NotificationsMenu'
+import TasksMenu from './head/TasksMenu'
+import UserInfoMenu from './head/UserInfoMenu'
 
-  export default {
-    components: {
-      MessagesMenu,
-      NotificationsMenu,
-      TasksMenu,
-      UserInfoMenu
+export default {
+  components: {
+    MessagesMenu,
+    NotificationsMenu,
+    TasksMenu,
+    UserInfoMenu
+  },
+  computed: {
+    setting: function () {
+      return this.$store.state.system.settings
     },
-    computed: {
-      setting: function () {
-        return this.$store.state.setting
-      },
-      topMenu: function () {
-        return this.$store.state.system.topMenu
-      },
-      firstMenu: function () {
-        return this.$store.state.system.firstMenu
+    topMenu: function () {
+      return this.$store.state.system.topMenu
+    },
+    firstMenu: function () {
+      return this.$store.state.system.firstMenu
+    }
+  },
+  methods: {
+    activeFirstMenu (secondMenu) {
+      this.$store.dispatch('activeFirstMenu', secondMenu)
+      if (secondMenu.href) {
+        window.open(secondMenu.href)
       }
     },
-    methods: {
-      activeFirstMenu (secondMenu) {
-        this.$store.dispatch('activeFirstMenu', secondMenu)
-        if (secondMenu.href) {
-          window.open(secondMenu.href)
-        }
-      },
-      toggleSidebar () {
-        let sidebarIsExpand = $('body').hasClass('sidebar-collapse')
-        this.$store.dispatch('toggleSidebarState', sidebarIsExpand)
-      }
+    toggleSidebar () {
+      this.$store.dispatch('toggleSidebarState')
     }
   }
+}
 </script>

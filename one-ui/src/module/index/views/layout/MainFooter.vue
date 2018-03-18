@@ -8,11 +8,11 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      setting: function () {
-        return this.$store.state.setting
-      }
+export default {
+  computed: {
+    setting: function () {
+      return this.$store.state.system.settings
     }
   }
+}
 </script>

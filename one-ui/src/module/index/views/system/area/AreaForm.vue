@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title">区域信息</h3>
       </div>
@@ -51,48 +51,48 @@
 </template>
 
 <script>
-  import FormMixin from 'mixins/FormMixin.js'
-  import SelectAreaModal from '../modal/SelectAreaModal'
+import FormMixin from '@mixins/FormMixin'
+import SelectAreaModal from '../modal/SelectAreaModal'
 
-  export default {
-    mixins: [FormMixin],
-    components: {
-      SelectAreaModal
-    },
-    data: () => {
-      return {
+export default {
+  mixins: [FormMixin],
+  components: {
+    SelectAreaModal
+  },
+  data: function () {
+    return {
+      form: {
         actions: {
-          get: {method: 'get', url: '/api/sys/area{/id}'},
-          save: {method: 'post', url: '/api/sys/area'},
-          update: {method: 'put', url: '/api/sys/area'}
+          get: this.$api.system.getArea,
+          save: this.$api.system.saveArea,
+          update: this.$api.system.updateArea
         },
-
-        obj: {
-          parent: {},
-          area: {},
-          name: '',
-          code: '',
-          type: 1,
-          grade: 1,
-          address: '',
-          zipCode: '',
-          master: '',
-          phone: '',
-          fax: '',
-          email: '',
-          remarks: ''
-        },
-
-        officeTreeModalConfig: {
-          show: false,
-          title: '选择上级机构'
-        },
-
-        areaTreeModalConfig: {
-          show: false,
-          title: '选择归属区域'
-        }
+        continue: false
+      },
+      obj: {
+        parent: {},
+        area: {},
+        name: '',
+        code: '',
+        type: 1,
+        grade: 1,
+        address: '',
+        zipCode: '',
+        master: '',
+        phone: '',
+        fax: '',
+        email: '',
+        remarks: ''
+      },
+      officeTreeModalConfig: {
+        show: false,
+        title: '选择上级机构'
+      },
+      areaTreeModalConfig: {
+        show: false,
+        title: '选择归属区域'
       }
     }
   }
+}
 </script>

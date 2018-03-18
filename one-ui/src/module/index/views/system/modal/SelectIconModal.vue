@@ -1,6 +1,6 @@
 <template>
   <OneTransition>
-    <div class="modal" v-show="config.show" style="display: block">
+    <div :class="fullScreenClass" v-show="config.show" style="display: block">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -9,7 +9,7 @@
             </button>
             <h4 class="modal-title">{{ config.title }}</h4>
           </div>
-          <div class="modal-body modal-scrollable">
+          <div class="modal-body">
             <div class="row">
               <div class="col-md-12 icon" v-for="icons of iconList">
                 <h2>{{ icons.type }}</h2>
@@ -36,26 +36,26 @@
 </template>
 
 <script>
-  import iconList from './icons'
-  import ModalMixin from 'mixins/ModalMixin.js'
+import iconList from './icons'
+import ModalMixin from '@mixins/ModalMixin'
 
-  export default {
-    mixins: [ModalMixin],
-    data: () => {
-      return {
-        iconList: iconList,
-        selected: ''
-      }
-    },
-    methods: {
-      ok () {
-        this.close()
-        if (this.selected) {
-          this.$emit('input', 'fa ' + this.selected)
-        }
+export default {
+  mixins: [ModalMixin],
+  data: function () {
+    return {
+      iconList: iconList,
+      selected: ''
+    }
+  },
+  methods: {
+    ok () {
+      this.close()
+      if (this.selected) {
+        this.$emit('input', 'fa ' + this.selected)
       }
     }
   }
+}
 </script>
 
 <style>

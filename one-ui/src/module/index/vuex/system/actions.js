@@ -16,16 +16,20 @@ export default {
   activeHomePage ({commit}, home) {
     commit(types.ACTIVE_HOME_PAGE, home)
   },
-  initDict ({commit}, dictMap) {
-    commit(types.INIT_DICT, dictMap)
+  initData ({commit}, dictMap) {
+    commit(types.INIT_DATA, dictMap)
+    commit(types.INIT_SYSTEM_TIME, dictMap.systemTime)
   },
-  initUserInfo ({commit}, userInfo) {
-    commit(types.INIT_USER_INFO, userInfo)
+  initSystemTime ({commit}, systemTime) {
+    commit(types.INIT_SYSTEM_TIME, systemTime)
   },
   removeUserInfo ({commit}) {
     commit(types.REMOVE_USER_INFO)
   },
   toggleSidebarState ({commit}, sidebarIsExpand) {
     commit(types.TOGGLE_SIDEBAR, sidebarIsExpand)
+  },
+  loadMessage ({commit}) {
+    commit(types.LOAD_MESSAGE)
   }
 }

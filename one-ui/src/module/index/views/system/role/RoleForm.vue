@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title">角色信息</h3>
       </div>
@@ -37,6 +37,19 @@
               </FormGroup>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="首页组件">
+                <template v-for="component of homeComponentList">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" v-model="obj.componentIdList" :key="component.componentId" :value="component.componentId">{{ component.componentTitle}}
+                    </label>
+                  </div>
+                </template>
+              </FormGroup>
+            </div>
+          </div>
         </form>
       </div>
       <div class="box-footer">
@@ -54,47 +67,58 @@
 </template>
 
 <script>
-  import FormMixin from 'mixins/FormMixin.js'
-  export default {
-    mixins: [FormMixin],
-    data: () => {
-      return {
+import FormMixin from '@mixins/FormMixin'
+
+export default {
+  mixins: [FormMixin],
+  data: function () {
+    return {
+      form: {
         actions: {
-          getMenuTree: {method: 'get', url: '/api/sys/menu/tree'},
-          get: {method: 'get', url: '/api/sys/role{/id}'},
-          save: {method: 'post', url: '/api/sys/role'},
-          update: {method: 'put', url: '/api/sys/role'}
+          get: this.$api.system.getRole,
+          save: this.$api.system.saveRole,
+          update: this.$api.system.updateRole
         },
-
-        obj: {
-          office: {},
-          name: '',
-          dataScope: '',
-          remarks: '',
-          isDefault: 0,
-          sysMenuEOIdList: []
-        },
-
-        topMenu: {},
-
-        companyTreeModalConfig: {
-          show: false,
-          title: '选择所属机构'
-        }
-      }
-    },
-    mounted () {
-      this.loadMenu()
-    },
-    methods: {
-      loadMenu () {
-        this.resource.getMenuTree().then((response) => {
-          let result = response.body
-          if (result.ok) {
-            this.topMenu = result.data
-          }
-        })
+        continue: false
+      },
+      obj: {
+        office: {},
+        name: '',
+        dataScope: '',
+        remarks: '',
+        isDefault: 0,
+        sysMenuEOIdList: [],
+        componentIdList: []
+      },
+      topMenu: {},
+      homeComponentList: [],
+      companyTreeModalConfig: {
+        show: false,
+        title: '选择所属机构'
       }
     }
+  },
+  mounted () {
+    this.loadMenu()
+    this.loadHomeComponent()
+  },
+  methods: {
+    loadHomeComponent () {
+      this.$api.system.listHomeComponent().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.homeComponentList = result.data
+        }
+      })
+    },
+    loadMenu () {
+      this.$api.system.getMenuTree().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.topMenu = result.data
+        }
+      })
+    }
   }
+}
 </script>

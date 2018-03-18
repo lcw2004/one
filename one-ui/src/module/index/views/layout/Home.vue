@@ -11,19 +11,19 @@
 </template>
 
 <script>
-  import MainHead from './MainHead'
-  import MainSlidebar from './MainSlidebar'
-  import MainFooter from './MainFooter'
-  import MainContent from './MainContent'
-  import ControlSidebar from './ControlSidebar'
+import MainHead from './MainHead'
+import MainSlidebar from './MainSlidebar'
+import MainFooter from './MainFooter'
+import MainContent from './MainContent'
+import ControlSidebar from './ControlSidebar'
 
-  export default {
-    components: {
-      MainHead,
-      MainSlidebar,
-      MainFooter,
-      MainContent,
-      ControlSidebar
-    }
+export default {
+  components: {
+    MainHead,
+    MainSlidebar,
+    MainFooter,
+    MainContent,
+    ControlSidebar
   }
+}
 </script>

@@ -1,9 +1,8 @@
 import Home from '../views/layout/Home.vue'
-import Desktop from '../views/layout/Desktop'
+import Desktop from '../views/layout/Desktop.vue'
 import system from './system'
 import user from './user'
 import personal from './personal'
-import cms from './cms'
 
 /*
  * 包含菜单结构的页面
@@ -16,8 +15,7 @@ export default {
     {path: '/', component: Desktop},
     ...system,
     ...user,
-    ...personal,
-    ...cms
+    ...personal
   ],
   beforeEnter: (to, from, next) => {
     console.log('-->Home Router Config')

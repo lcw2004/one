@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box box-primary">
     <div class="box-body">
       <section>
         <h4 class="page-header">基本信息</h4>
@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-6">
               <FormGroup label="身份证号码" inputWidth="6">
-                <input type="text" class="form-control" v-model="user.identityNumber" v-validate="'required|idNumber'" name="身份证号码" maxlength="18">
+                <input type="text" class="form-control" v-model="user.identityNumber" v-validate="'required|identityCode'" name="身份证号码" maxlength="18">
               </FormGroup>
             </div>
           </div>
@@ -66,40 +66,30 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        actions: {
-          updateUserInfo: {method: 'put', url: '/api/updateUserInfo'}
+export default {
+  computed: {
+    user: function () {
+      return this.$store.state.system.userInfo
+    }
+  },
+  methods: {
+    save: function () {
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.$api.system.updateUserInfo(this.user).then((response) => {
+            let result = response.data
+            if (result.ok) {
+              this.$store.dispatch('initUserInfo', result.data)
+              this.$notify.success('保存成功')
+              this.editEnd()
+            }
+          })
         }
-      }
+      })
     },
-    computed: {
-      user: function () {
-        return this.$store.state.system.userInfo
-      }
-    },
-    mounted: function () {
-      this.resource = this.$resource(null, {}, this.actions)
-    },
-    methods: {
-      save: function () {
-        this.$validator.validateAll().then((result) => {
-          if (result) {
-            this.resource.updateUserInfo(null, JSON.stringify(this.user)).then((response) => {
-              let result = response.body
-              if (result.ok) {
-                this.$store.dispatch('initUserInfo', result.data)
-                this.$notify.success('保存成功')
-                this.editEnd()
-              }
-            })
-          }
-        })
-      },
-      editEnd () {
-        this.$emit('edit-end')
-      }
+    editEnd () {
+      this.$emit('edit-end')
     }
   }
+}
 </script>

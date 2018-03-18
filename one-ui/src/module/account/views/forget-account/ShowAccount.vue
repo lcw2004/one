@@ -10,11 +10,11 @@
 </template>
 
 <script>
-  export default {
-    components: {},
-    data: () => {
-      return {}
-    },
-    methods: {}
-  }
+export default {
+  components: {},
+  data: function () {
+    return {}
+  },
+  methods: {}
+}
 </script>

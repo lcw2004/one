@@ -24,15 +24,15 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      user: {
-        type: Object
-      }
-    },
-    data: () => {
-      return {}
-    },
-    methods: {}
-  }
+export default {
+  props: {
+    user: {
+      type: Object
+    }
+  },
+  data: function () {
+    return {}
+  },
+  methods: {}
+}
 </script>

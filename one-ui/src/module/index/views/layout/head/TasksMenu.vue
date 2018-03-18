@@ -79,16 +79,16 @@
 </template>
 
 <script>
-  export default {
-    data: () => {
-      return {
-        isOpen: false
-      }
-    },
-    methods: {
-      toggole: function () {
-        this.isOpen = !this.isOpen
-      }
+export default {
+  data: function () {
+    return {
+      isOpen: false
+    }
+  },
+  methods: {
+    toggole: function () {
+      this.isOpen = !this.isOpen
     }
   }
+}
 </script>
