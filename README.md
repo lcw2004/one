@@ -4,7 +4,7 @@
 另：v2.0版本基本上重新开发了，数据库也有较大改动
 
 ## 演示地址
--   [http://one.lumuxi.me](http://one.lumuxi.me "http://one.lumuxi.me")
+-   [http://one.limuxi.me](http://one.limuxi.me "http://one.limuxi.me")
 -   登录名：admin，密码：admin
 -   服务器在国外，访问起来会有些慢，另初次加载会慢一些。
 
