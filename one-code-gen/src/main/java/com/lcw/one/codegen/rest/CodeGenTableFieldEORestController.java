@@ -21,13 +21,13 @@ public class CodeGenTableFieldEORestController {
 
     @ApiOperation(value = "表字段列表")
     @GetMapping("/{tableId}/field")
-    public ResponseMessage<List<CodeGenTableFieldEO>> list(@PathVariable("tableId") String tableId) {
+    public ResponseMessage<List<CodeGenTableFieldEO>> list(@PathVariable String tableId) {
         return Result.success(codeGenTableFieldEOService.listByTableId(tableId));
     }
 
     @ApiOperation(value = "表字段修改")
     @PutMapping("/{tableId}/field")
-    public ResponseMessage update(@PathVariable("tableId") String tableId, @RequestBody List<CodeGenTableFieldEO> codeGenTableFieldEO) {
+    public ResponseMessage update(@PathVariable String tableId, @RequestBody List<CodeGenTableFieldEO> codeGenTableFieldEO) {
         codeGenTableFieldEOService.update(codeGenTableFieldEO);
         return Result.success();
     }

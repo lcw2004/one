@@ -17,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +83,7 @@ public class HttpClientWrapper {
                 close(entity, request, response);
             }
         } catch (Exception e) {
-            log.error(String.format("执行请求%s异常", new Object[]{url}), e);
+            log.error(String.format("执行请求%s异常", url), e);
         }
         return null;
 
@@ -96,9 +94,9 @@ public class HttpClientWrapper {
             if ((params != null) && (!params.isEmpty())) {
                 List<NameValuePair> pairs = new ArrayList(params.size());
                 for (Map.Entry<String, String> entry : params.entrySet()) {
-                    String value = (String) entry.getValue();
+                    String value = entry.getValue();
                     if (value != null) {
-                        pairs.add(new BasicNameValuePair((String) entry.getKey(), value));
+                        pairs.add(new BasicNameValuePair(entry.getKey(), value));
                     }
                 }
                 url = url + "?" + EntityUtils.toString(new UrlEncodedFormEntity(pairs, charset));
@@ -122,7 +120,7 @@ public class HttpClientWrapper {
                 close(entity, request, response);
             }
         } catch (Exception e) {
-            log.error(String.format("执行请求%s,参数%s异常", new Object[]{url, map2Str(params)}), e);
+            log.error(String.format("执行请求%s,参数%s异常", url, StringUtils.toQueryString(params)), e);
         }
         return null;
     }
@@ -130,12 +128,12 @@ public class HttpClientWrapper {
     public ResponseContent doPost(String url, Map<String, String> params, String charset, Map<String, String> header) {
         try {
             List<NameValuePair> pairs = null;
-            if ((params != null) && (!params.isEmpty())) {
+            if (params != null && !params.isEmpty()) {
                 pairs = new ArrayList(params.size());
                 for (Map.Entry<String, String> entry : params.entrySet()) {
-                    String value = (String) entry.getValue();
+                    String value = entry.getValue();
                     if (value != null) {
-                        pairs.add(new BasicNameValuePair((String) entry.getKey(), value));
+                        pairs.add(new BasicNameValuePair(entry.getKey(), value));
                     }
                 }
             }
@@ -144,13 +142,15 @@ public class HttpClientWrapper {
             CloseableHttpResponse response = null;
             try {
                 HttpPost httpPost = new HttpPost(url);
-                httpPost.setEntity(new UrlEncodedFormEntity(pairs, charset));
+                if (pairs != null) {
+                    httpPost.setEntity(new UrlEncodedFormEntity(pairs, charset));
+                }
                 request = httpPost;
                 ((HttpRequestBase) request).setConfig(this.requestConfig);
                 ((HttpRequestBase) request).addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
                 if ((header != null) && (!header.isEmpty())) {
                     for (Map.Entry<String, String> entry : header.entrySet()) {
-                        ((HttpRequestBase) request).addHeader((String) entry.getKey(), (String) entry.getValue());
+                        ((HttpRequestBase) request).addHeader(entry.getKey(), entry.getValue());
                     }
                 }
                 response = client.execute((HttpUriRequest) request);
@@ -165,7 +165,7 @@ public class HttpClientWrapper {
             }
 
         } catch (Exception e) {
-            log.error(String.format("执行请求%s,参数%s异常", new Object[]{url, map2Str(params)}), e);
+            log.error(String.format("执行请求%s,参数%s异常", url, StringUtils.toQueryString(params)), e);
         }
         return null;
     }
@@ -182,7 +182,7 @@ public class HttpClientWrapper {
                 request.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
                 if ((header != null) && (!header.isEmpty())) {
                     for (Map.Entry<String, String> entry : header.entrySet()) {
-                        request.addHeader((String) entry.getKey(), (String) entry.getValue());
+                        request.addHeader(entry.getKey(), entry.getValue());
                     }
                 }
                 response = client.execute(request);
@@ -196,7 +196,7 @@ public class HttpClientWrapper {
                 close(entity, request, response);
             }
         } catch (Exception e) {
-            log.error(String.format("执行请求%s异常", new Object[]{url}), e);
+            log.error(String.format("执行请求%s异常", url), e);
         }
         return null;
     }
@@ -230,7 +230,7 @@ public class HttpClientWrapper {
                 close(entity, request, response);
             }
         } catch (Exception e) {
-            log.error(String.format("执行请求%s,参数%s异常", new Object[]{url, json}), e);
+            log.error(String.format("执行请求%s,参数%s异常", url, json), e);
         }
         return null;
 
@@ -286,43 +286,4 @@ public class HttpClientWrapper {
         return contenttype.getValue();
     }
 
-
-    public static String map2Str(Map<String, String> params) {
-        StringBuffer url = new StringBuffer();
-        int i = 0;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String paramName = (String) entry.getKey();
-            String paramValue = (String) entry.getValue();
-            if (i == 0) {
-                url.append("?");
-            } else {
-                url.append("&");
-            }
-            url.append(paramName).append("=").append(paramValue);
-            i++;
-        }
-        return url.toString();
-    }
-
-    public static String map2Str(Map<String, String> params, String encoding) {
-        StringBuffer url = new StringBuffer();
-        int i = 0;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            String paramName = (String) entry.getKey();
-            String paramValue = (String) entry.getValue();
-            if (i > 0) {
-                url.append("&");
-            }
-            if (!StringUtils.isEmpty(paramValue)) {
-                try {
-                    paramValue = URLEncoder.encode(paramValue, encoding);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-            url.append(paramName).append("=").append(paramValue);
-            i++;
-        }
-        return url.toString();
-    }
 }

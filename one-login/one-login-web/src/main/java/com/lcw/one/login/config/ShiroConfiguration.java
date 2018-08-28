@@ -3,7 +3,7 @@ package com.lcw.one.login.config;
 import com.lcw.one.login.security.OneFormAuthenticationFilter;
 import com.lcw.one.login.security.filterChain.SimpleFilterChainDefinitionsService;
 import com.lcw.one.login.security.SystemAuthorizingRealm;
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -79,9 +79,11 @@ public class ShiroConfiguration implements EnvironmentAware {
     public SimpleFilterChainDefinitionsService abstractFilterChainDefinitionsService() {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/login", "anon");
+        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/systemInfo", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/verifyCode", "anon");
-        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/user/supplierRegistry/*", "anon");
+        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/user/supplier/registry/*", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/account/*", "anon");
+        filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/sys/file/*/download-ext", "anon");
         filterChainDefinitionMap.put(GlobalConfig.getRestApiPath() + "/**", "user");
         filterChainDefinitionMap.put("/account.html", "anon");
         filterChainDefinitionMap.put("/index.html", "user");

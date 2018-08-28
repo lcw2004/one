@@ -1,21 +1,11 @@
 package com.lcw.one.workflow.audit;
 
-import com.lcw.one.workflow.entity.FlowAuditItemBean;
+import org.activiti.engine.delegate.DelegateExecution;
 
 public interface IDoAudit {
 
-    /**
-     * 审核通过之后的业务逻辑
-     *
-     * @param flowAuditItemEO
-     */
-    void doAgree(FlowAuditItemBean flowAuditItemEO);
+    void doAgree(DelegateExecution execution);
 
-    /**
-     * 审核驳回之后的业务逻辑
-     *
-     * @param flowAuditItemEO
-     */
-    void doReject(FlowAuditItemBean flowAuditItemEO);
+    void doReject(DelegateExecution execution);
 
 }

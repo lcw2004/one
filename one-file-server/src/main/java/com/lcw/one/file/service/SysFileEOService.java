@@ -2,6 +2,7 @@ package com.lcw.one.file.service;
 
 import com.lcw.one.file.dao.SysFileEODao;
 import com.lcw.one.file.store.IFileStore;
+import com.lcw.one.sys.bean.SysFileVO;
 import com.lcw.one.sys.entity.SysFileEO;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.service.CrudService;
@@ -20,11 +21,10 @@ public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO, Strin
     @Autowired
     private IFileStore iFileStore;
 
-    public SysFileEO saveSysFile(String userId, InputStream is, String fileName, String contentType) {
+    public SysFileEO saveSysFile(String userId, InputStream is, String fileName, String contentType, Integer permissionType) {
         SysFileEO sysFileEO;
         try {
             String fileExtension = FileUtil.getFileExtension(fileName);
-
             String path = iFileStore.storeFile(is, fileExtension);
 
             sysFileEO = new SysFileEO();
@@ -35,6 +35,7 @@ public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO, Strin
             sysFileEO.setSavePath(path);
             sysFileEO.setCreateTime(new Date());
             sysFileEO.setUserId(userId);
+            sysFileEO.setPermissionType(permissionType);
             save(sysFileEO);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -49,5 +50,14 @@ public class SysFileEOService extends CrudService<SysFileEODao, SysFileEO, Strin
             throw new OneBaseException("FileId[" + fileId + "]不存在");
         }
         return iFileStore.loadFile(sysFileEO.getSavePath());
+    }
+
+    public SysFileVO getSysFileVO(String fileId) {
+        SysFileEO sysFileEO = get(fileId);
+        SysFileVO sysFileVO = new SysFileVO();
+        sysFileVO.setFileName(sysFileEO.getFileName());
+        sysFileVO.setFileType(sysFileEO.getFileType());
+        sysFileVO.setFileId(sysFileEO.getFileId());
+        return sysFileVO;
     }
 }

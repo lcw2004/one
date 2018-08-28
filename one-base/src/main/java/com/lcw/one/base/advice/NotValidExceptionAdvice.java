@@ -3,7 +3,7 @@ package com.lcw.one.base.advice;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.ResponseMessageCodeEnum;
 import com.lcw.one.util.http.Result;
-import com.lcw.one.util.http.ValidError;
+import com.lcw.one.util.http.bean.ValidError;
 import com.lcw.one.util.utils.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 /**
+ * 验证失败异常拦截器
  * 参考：http://javaninja.net/2013/12/getting-spring-mvc-validation-messages-from-a-json-service/
  */
 @ControllerAdvice

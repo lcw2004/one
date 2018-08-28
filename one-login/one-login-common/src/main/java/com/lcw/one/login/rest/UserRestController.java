@@ -4,10 +4,10 @@ import com.lcw.one.base.utils.LoginUserUtils;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.util.exception.LoginInvalidException;
-import com.lcw.one.util.http.CookieUtils;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.DateUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,12 @@ public class UserRestController {
     @ApiOperation(value = "修改密码")
     @PutMapping("/updatePassword")
     @ResponseBody
-    public ResponseMessage updatePassword(HttpServletRequest request, @NotNull(message = "请输入旧密码") @RequestParam String oldPassword,
+    public ResponseMessage updatePassword(HttpServletRequest request,
+                                          @NotNull(message = "请输入旧密码") @RequestParam String oldPassword,
                                           @NotNull(message = "请输入新密码") @RequestParam String newPassword) {
+        if (oldPassword.equals(newPassword)) {
+            return Result.error("-1", "新密码和旧密码不能相同");
+        }
         userService.updatePassword(LoginUserUtils.getLoginUserId(request), oldPassword, newPassword);
         return Result.success();
     }

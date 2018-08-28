@@ -20,4 +20,8 @@ public class SysUserRoleEODao extends BaseRepositoryImpl<SysUserRoleEO, String> 
     public void deleteRoleWhereNotIn(String userId, List<String> roleIdList) {
         executeUpdate("delete from SysUserRoleEO where userId = ?1 and roleId not in ?2", userId, roleIdList);
     }
+
+    public List<String> listUserIdByRoleId(String roleId) {
+        return executeList("select userId from SysUserRoleEO where roleId = ?1", roleId);
+    }
 }

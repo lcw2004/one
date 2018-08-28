@@ -6,7 +6,7 @@ import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import com.lcw.one.util.utils.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.stereotype.Component;
@@ -36,6 +36,7 @@ public class SysRoleEODao extends BaseRepositoryImpl<SysRoleEO, String> {
             sql.append(" and name like :roleName ");
             params.put("roleName", "%" + roleName + "%");
         }
+        sql.append(" order by orderIndex, name desc");
         return page(pageInfo, sql.toString(), params);
     }
 
@@ -61,6 +62,11 @@ public class SysRoleEODao extends BaseRepositoryImpl<SysRoleEO, String> {
     }
 
     public List<SysRoleEO> getSysRoleListByUserId(String userId) {
-        return list("select r from SysRoleEO r, SysUserRoleEO ur where r.id = ur.roleId and ur.userId = ?1", userId);
+        return list("select r from SysRoleEO r, SysUserRoleEO ur where r.id = ur.roleId and ur.userId = ?1 order by r.orderIndex", userId);
     }
+
+    public Integer getNextSort() {
+        return executeGet("select max(orderIndex + 1) from SysRoleEO");
+    }
+
 }

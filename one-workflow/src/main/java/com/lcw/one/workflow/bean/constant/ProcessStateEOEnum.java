@@ -12,7 +12,7 @@ public enum ProcessStateEOEnum {
     private String label;
     private Integer value;
 
-    private ProcessStateEOEnum(Integer value, String label) {
+    ProcessStateEOEnum(Integer value, String label) {
         this.value = value;
         this.label = label;
     }

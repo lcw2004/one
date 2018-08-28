@@ -2,7 +2,6 @@ package com.lcw.one.sys.rest;
 
 import com.lcw.one.baseInfo.entity.BaseTemplateTypeEO;
 import com.lcw.one.sys.service.BaseTemplateTypeEOService;
-import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import io.swagger.annotations.Api;
@@ -24,8 +23,7 @@ public class BaseTemplateTypeEORestController {
     
     @ApiOperation(value = "系统模板类别列表")
     @GetMapping("")
-    public ResponseMessage<List<BaseTemplateTypeEO>> list(Integer pageNo, Integer pageSize) {
-        PageInfo pageInfo = new PageInfo(pageNo, pageSize);
+    public ResponseMessage<List<BaseTemplateTypeEO>> list() {
         return Result.success(baseTemplateTypeEOService.findAll());
     }
 

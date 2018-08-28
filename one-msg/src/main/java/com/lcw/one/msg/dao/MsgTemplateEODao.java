@@ -41,4 +41,10 @@ public class MsgTemplateEODao extends BaseRepositoryImpl<MsgTemplateEO, String> 
 
         return executePage(pageInfo, hql.toString(), paramMap);
     }
+
+    public boolean isExist(String templateId) {
+        long count = executeGet("select count (1) from MsgTemplateEO where templateId = ?1", templateId);
+        return count > 0;
+    }
+
 }

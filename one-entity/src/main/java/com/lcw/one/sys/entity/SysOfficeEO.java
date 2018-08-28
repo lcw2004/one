@@ -4,6 +4,8 @@ import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.util.persistence.entity.TreeEntity;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @version 2017-04-16.
@@ -26,6 +28,9 @@ public class SysOfficeEO extends TreeEntity<SysOfficeEO> {
 
     private SysAreaEO area;
     private UserInfoEO masterUserInfo;
+
+    private String otherInfo;
+    private Map<String, String> otherInfoMap = new HashMap<>();
 
     @Basic
     @Column(name = "area_id")
@@ -155,5 +160,24 @@ public class SysOfficeEO extends TreeEntity<SysOfficeEO> {
 
     public void setMasterUserInfo(UserInfoEO masterUserInfo) {
         this.masterUserInfo = masterUserInfo;
+    }
+
+    @Basic
+    @Column(name = "other_info")
+    public String getOtherInfo() {
+        return otherInfo;
+    }
+
+    public void setOtherInfo(String otherInfo) {
+        this.otherInfo = otherInfo;
+    }
+
+    @Transient
+    public Map<String, String> getOtherInfoMap() {
+        return otherInfoMap;
+    }
+
+    public void setOtherInfoMap(Map<String, String> otherInfoMap) {
+        this.otherInfoMap = otherInfoMap;
     }
 }

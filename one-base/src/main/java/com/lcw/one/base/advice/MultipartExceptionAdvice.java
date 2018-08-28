@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
 
+/**
+ * 文件上传异常拦截器
+ */
 @ControllerAdvice
 public class MultipartExceptionAdvice {
 
@@ -26,6 +29,7 @@ public class MultipartExceptionAdvice {
     public ResponseMessage handlerOneBaseException(MultipartException exception) {
         logger.warn(exception.getMessage(), exception);
 
+        // 这个异常是使用Tomcat的时候，如果未配置temp路径，运行一段时间会抛出这个异常。现在配置了temp路径，最近没出现过这个异常了。
         if(exception.getMessage().contains("temporary upload location")) {
             return Result.error("系统错误，请重启服务。");
         }

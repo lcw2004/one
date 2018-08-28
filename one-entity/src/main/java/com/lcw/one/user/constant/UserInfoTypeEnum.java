@@ -24,4 +24,16 @@ public enum UserInfoTypeEnum {
     public String getLabel() {
         return label;
     }
+
+    public static UserInfoTypeEnum get(Integer value) {
+        UserInfoTypeEnum[] types = UserInfoTypeEnum.values();
+
+        for (UserInfoTypeEnum type : types) {
+            if (type.getValue() == value) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 }

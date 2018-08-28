@@ -1,10 +1,11 @@
 package com.lcw.one.weixin.rest;
 
 import com.lcw.one.base.utils.LoginUserUtils;
-import com.lcw.one.sys.util.DictUtils;
+import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.DateUtils;
@@ -30,6 +31,9 @@ public class WeixinInitRestController {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private UserSupplierEOService userSupplierEOService;
 
     @Autowired
     private UserInfoEOService userInfoEOService;
@@ -72,16 +76,7 @@ public class WeixinInitRestController {
         if (StringUtils.isEmpty(maxFileSizeStr)) {
             return 0;
         }
-
-        long maxFileSize = 0;
-        if (maxFileSizeStr.toUpperCase().endsWith("MB")) {
-            int mb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
-            maxFileSize = mb * 1024 * 1024L;
-        } else if (maxFileSizeStr.toUpperCase().endsWith("KB")) {
-            int kb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
-            maxFileSize = kb * 1024;
-        }
-        return maxFileSize;
+        return StringUtils.calculateFileBites(maxFileSizeStr);
     }
 
 }

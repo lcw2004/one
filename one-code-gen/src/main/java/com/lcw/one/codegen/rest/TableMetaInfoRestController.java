@@ -41,14 +41,14 @@ public class TableMetaInfoRestController {
     @ApiOperation(value = "获取表字段元数据")
     @GetMapping("/{tableName}")
     @ResponseBody
-    public ResponseMessage getTable(@PathVariable("tableName") String tableName) {
+    public ResponseMessage getTable(@PathVariable String tableName) {
         return Result.success(tableMetaInfoService.getTableByTableName(tableName));
     }
 
     @ApiOperation(value = "预览代码")
     @PostMapping("/{tableName}/{codeType}")
     @ResponseBody
-    public ResponseMessage<List<CodeBean>> previewCode(@PathVariable("tableName") String tableName, @PathVariable("codeType") String codeType, @RequestBody CodeGenStrategy codeGenStrategy) {
+    public ResponseMessage<List<CodeBean>> previewCode(@PathVariable String tableName, @PathVariable String codeType, @RequestBody CodeGenStrategy codeGenStrategy) {
         return Result.success(codeGenerateService.codePreview(tableName, codeType, codeGenStrategy));
     }
 

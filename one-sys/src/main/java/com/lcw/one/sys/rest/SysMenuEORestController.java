@@ -25,7 +25,7 @@ public class SysMenuEORestController {
 
     @ApiOperation(value = "菜单详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysMenuEO> getById(@PathVariable("id") String id) {
+    public ResponseMessage<SysMenuEO> getById(@PathVariable String id) {
         return Result.success(sysMenuEOService.get(id));
     }
 
@@ -50,7 +50,7 @@ public class SysMenuEORestController {
 
     @ApiOperation(value = "新增菜单")
     @PostMapping("/{id}/sort")
-    public ResponseMessage<SysMenuEO> save(@PathVariable("id") String id, String sort) {
+    public ResponseMessage<SysMenuEO> save(@PathVariable String id, String sort) {
         if (StringUtils.isEmpty(sort) && NumberUtils.isDigits(sort)) {
             return Result.error("排序号不能为空");
         }
@@ -66,7 +66,7 @@ public class SysMenuEORestController {
 
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable String id) {
         sysMenuEOService.deleteTreeEntity(id);
         return Result.success();
     }

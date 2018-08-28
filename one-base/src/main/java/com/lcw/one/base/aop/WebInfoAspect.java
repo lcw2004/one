@@ -1,6 +1,5 @@
 package com.lcw.one.base.aop;
 
-import com.lcw.one.util.utils.GsonUtil;
 import com.lcw.one.util.utils.RequestUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,8 +13,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
+/**
+ * 打印RestController的请求信息
+ */
 @Aspect
 @Component
 public class WebInfoAspect {
@@ -46,12 +47,12 @@ public class WebInfoAspect {
         HttpServletRequest request = attributes.getRequest();
 
         // 接收到请求，记录请求内容
-        logger.info("==================== WebLogAspect Start ====================");
+        logger.info("==================== WebInfoAspect Start ====================");
         logger.info("---- {} : {}", request.getMethod(), request.getRequestURL().toString());
         logger.info("---- Http Headers : {}", RequestUtils.getHeaderMap(request));
         logger.info("---- Http Parameters : {}", RequestUtils.getParameterMap(request));
         logger.info("---- Execute Method : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-        logger.info("---- Execute Arguments : {}", Arrays.toString(joinPoint.getArgs()));
+        logger.info("---- Execute Arguments : {}", RequestUtils.formatArgs(joinPoint.getArgs()));
 
         // 执行方法
         long startTime = System.currentTimeMillis();
@@ -60,9 +61,10 @@ public class WebInfoAspect {
 
         logger.info("---- Execute Result : [{}]", String.valueOf(resultObj));
         logger.info("---- Time : {}ms", endTime - startTime);
-        logger.info("==================== WebLogAspect End ====================");
+        logger.info("==================== WebInfoAspect End ====================");
         return resultObj;
     }
+
 
 
 }

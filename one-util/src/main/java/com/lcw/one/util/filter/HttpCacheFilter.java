@@ -1,8 +1,9 @@
 package com.lcw.one.util.filter;
 
+import com.lcw.one.util.http.Settings;
 import com.lcw.one.util.utils.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 添加Http缓存过滤器
+ * Http缓存过滤器
  */
 public class HttpCacheFilter implements Filter {
-    private static final Log logger = LogFactory.getLog(HttpCacheFilter.class);
-    private long maxAge = 60 * 60 * 24 * 30;
+
+    private static final Logger logger = LoggerFactory.getLogger(HttpCacheFilter.class);
+
+    private long maxAge = Settings.HTTP_CACHE_MAX_AGE;
 
     @Override
     public void destroy() {
@@ -28,10 +31,10 @@ public class HttpCacheFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
+    public void init(FilterConfig config) {
         String maxAgeStr = config.getInitParameter("maxAge");
         if (StringUtils.isNotEmpty(maxAgeStr)) {
-            maxAge = Long.valueOf(maxAge);
+            maxAge = Long.valueOf(maxAgeStr);
         }
     }
 

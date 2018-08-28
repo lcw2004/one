@@ -24,7 +24,7 @@ public class MsgTemplateWeixinEORestController {
 
     @ApiOperation(value = "微信消息模板详情")
     @GetMapping("/{id}")
-    public ResponseMessage<MsgTemplateWeixinEO> get(@PathVariable("id") String id) {
+    public ResponseMessage<MsgTemplateWeixinEO> get(@PathVariable String id) {
         return Result.success(msgTemplateWeixinEOService.get(id));
     }
 
@@ -49,7 +49,7 @@ public class MsgTemplateWeixinEORestController {
 
     @ApiOperation(value = "删除微信消息模板")
     @DeleteMapping("/{id}")
-    public ResponseMessage delete(@PathVariable("id") String id) {
+    public ResponseMessage delete(@PathVariable String id) {
         msgTemplateWeixinEOService.delete(id);
         return Result.success();
     }

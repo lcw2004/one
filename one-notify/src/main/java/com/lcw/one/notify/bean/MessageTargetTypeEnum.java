@@ -5,9 +5,10 @@ package com.lcw.one.notify.bean;
  */
 public enum MessageTargetTypeEnum {
 
-    TO_USER(-1, "已删除"),
-    TO_ROLE(0, "未阅读"),
-    TO_OFFICE(1, "已阅读");
+    ALL_USER(1, "全体用户"),
+    TO_USER(2, "指定用户"),
+    TO_ROLE(3, "拥有指定角色的用户"),
+    TO_OFFICE(4, "指定机构下的用户");
 
     private Integer value;
     private String label;

@@ -7,6 +7,6 @@ package com.lcw.one.util.utils.http;
 public class HttpUtilsTest {
 
     public static void main(String[] args) {
-        System.out.println(HttpUtils.getUrlRespContent("http://www.baidu.com").getContent());;
+        System.out.println(HttpUtils.getUrlRespContent("http://www.baidu.com").getContent());
     }
 }

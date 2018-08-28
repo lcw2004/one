@@ -2,10 +2,7 @@ package com.lcw.one.util.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @version 2017-08-15.
@@ -21,7 +18,7 @@ public class ImageUtils {
      * @return
      * @throws IOException
      */
-    public static byte[] cutImage(InputStream is, int spaceWidth) throws IOException {
+    public static BufferedImage cutImageBlank(InputStream is, int spaceWidth) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(is);
 
         int imageWidth = bufferedImage.getWidth();
@@ -53,9 +50,32 @@ public class ImageUtils {
         int newLeftUpY = toIntWithMin(leftUpY - spaceWidth, 0);
         int newRightDownX = toIntWithMax(rightDownX + spaceWidth, imageWidth);
         int newRightDownY = toIntWithMax(rightDownY + spaceWidth, imageHeight);
-        BufferedImage subImage = bufferedImage.getSubimage(newLeftUpX, newLeftUpY, (newRightDownX - newLeftUpX), (newRightDownY - newLeftUpY));
-        return toBytes(subImage, "PNG");
+        return bufferedImage.getSubimage(newLeftUpX, newLeftUpY, (newRightDownX - newLeftUpX), (newRightDownY - newLeftUpY));
     }
+
+
+    /**
+     * 剪切图片，去掉图片的空白部分
+     *
+     * @param is         图片输入流
+     * @param spaceWidth 图片留白长度
+     * @return
+     */
+    public static byte[] cutImage(InputStream is, int spaceWidth) throws IOException {
+        return toBytes(cutImageBlank(is, spaceWidth), "PNG");
+    }
+
+    /**
+     * 剪切图片，去掉图片的空白部分
+     *
+     * @param is         图片输入流
+     * @param spaceWidth 图片留白长度
+     * @return
+     */
+    public static void cutImage(InputStream is, OutputStream os, int spaceWidth) throws IOException {
+        ImageIO.write(cutImageBlank(is, spaceWidth), "PNG", new BufferedOutputStream(os));
+    }
+
 
     public static int toIntWithMin(int input, int minValue) {
         return input > minValue ? input : minValue;
@@ -65,13 +85,12 @@ public class ImageUtils {
         return input > maxValue ? maxValue : input;
     }
 
-    public static byte[] toBytes(BufferedImage image, String formatName) {
+    private static byte[] toBytes(BufferedImage image, String formatName) {
         byte[] bytes = null;
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ImageIO.write(image, formatName, os);
             bytes = os.toByteArray();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -7,7 +7,7 @@ import com.lcw.one.codegen.core.generate.IGenerator;
 import com.lcw.one.codegen.core.template.impl.BeeTlTemplateImpl;
 import com.lcw.one.codegen.core.template.IFillTemplate;
 import com.lcw.one.codegen.util.CodeGenUtil;
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 
 import java.io.File;
 import java.util.Arrays;

@@ -5,7 +5,7 @@ import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.persistence.entity.TreeEntity;
 import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.UUID;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
@@ -27,6 +27,14 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         super(entityInformation, entityManager);
         this.jpaEntityInformation = entityInformation;
         this.entityManager = entityManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public JpaEntityInformation getJpaEntityInformation() {
+        return jpaEntityInformation;
     }
 
     @Override
@@ -52,7 +60,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
                 }
             }
         }
-        return (T) this.save(entity);
+        return this.save(entity);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class WeixinUserController {
 
     @ApiOperation(value = "获取Token")
     @GetMapping(value = "/info")
-    public ResponseMessage userInfo(HttpServletRequest request) throws IOException, WeixinException {
+    public ResponseMessage userInfo(HttpServletRequest request) {
         LoginUser loginUser = LoginUserUtils.getCurrentUser(request);
         UserInfoEO userInfoEO = userInfoEOService.get(loginUser.getUserId());
         return Result.success(userInfoEO);

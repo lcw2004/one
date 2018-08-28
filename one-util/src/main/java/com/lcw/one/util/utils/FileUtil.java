@@ -246,9 +246,13 @@ public class FileUtil extends FileUtils {
      * @return
      */
     public static String getFileName(String fileName) {
+        // 某些未知情况下（不知如何重现），传入的文件名称会包含文件路径，这个地方把文件路径去掉。
+        int fileSepIndex = fileName.lastIndexOf("\\");
+        if (fileSepIndex > 0) {
+            fileName = fileName.substring(fileSepIndex + 1, fileName.length());
+        }
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
-
 
     /**
      * 用文件的默认打开方式打开文件

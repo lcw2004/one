@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysAreaEOService extends TreeEntityService<SysAreaEODao, SysAreaEO, String> {
 
-
     @Override
     public SysAreaEO getTopEntity() {
         return get("1");

@@ -17,6 +17,7 @@ import java.util.Map;
  * @author lcw
  */
 public class ExcelStyleTemplate {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelStyleTemplate.class);
     private static Map<ExcelCellStyleEnum, CellStyle> cellStyleMap;
 

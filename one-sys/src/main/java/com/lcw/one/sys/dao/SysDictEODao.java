@@ -4,7 +4,7 @@ import com.lcw.one.sys.entity.SysDictEO;
 import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
 import org.springframework.stereotype.Component;
@@ -22,25 +22,25 @@ public class SysDictEODao extends BaseRepositoryImpl<SysDictEO, String> {
         super(JpaEntityInformationSupport.getEntityInformation(SysDictEO.class, entityManager), entityManager);
     }
 
-    public PageInfo<SysDictEO> page(PageInfo pageInfo, String type, String description) {
+    public PageInfo<SysDictEO> page(PageInfo pageInfo, String type, String name) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder sql = new StringBuilder();
         sql.append("from SysDictEO where 1=1");
         if(StringUtils.isNotEmpty(type)) {
-            sql.append(" and type = :type ");
-            params.put("type", type);
+            sql.append(" and type like :type ");
+            params.put("type", "%" + type + "%");
         }
-        if(StringUtils.isNotEmpty(description)) {
-            sql.append(" and description like :description ");
-            params.put("description", "%" + description + "%");
+        if(StringUtils.isNotEmpty(name)) {
+            sql.append(" and name like :name ");
+            params.put("name", "%" + name + "%");
         }
-        sql.append(" order by type, sort, value ");
+        sql.append(" and delFlag = ").append(DeleteFlagEnum.NORMAL.getValue());
+        sql.append(" order by type ");
         return page(pageInfo, sql.toString(), params);
     }
 
     public List<String> listDictType() {
-        String sql = "select distinct(type) from SysDictEO order by type ";
-        return list(sql);
+        return list("select distinct(type) from SysDictEO order by type ");
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SysDictEODao extends BaseRepositoryImpl<SysDictEO, String> {
         StringBuilder sql = new StringBuilder();
         sql.append(" from SysDictEO d ");
         sql.append(" where d.delFlag = ").append(DeleteFlagEnum.NORMAL.getValue());
-        sql.append(" order by type, sort, value ");
+        sql.append(" order by type ");
         return list(sql.toString());
     }
 }

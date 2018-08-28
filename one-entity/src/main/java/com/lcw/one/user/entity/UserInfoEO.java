@@ -1,12 +1,13 @@
 package com.lcw.one.user.entity;
 
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lcw.one.user.constant.UserInfoStatusEnum;
 import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.utils.StringUtils;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public class UserInfoEO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastLoginTime;
     private Integer status;
-    private String statusCn;
+    private String statusLabel;
 
     private UserContactInfoEO userContactInfo = new UserContactInfoEO();
     private List<String> roleIdList = new ArrayList<>();
@@ -174,15 +175,16 @@ public class UserInfoEO {
     }
 
     @Transient
-    public String getStatusCn() {
-        if (UserInfoStatusEnum.get(status) != null) {
-            statusCn = UserInfoStatusEnum.get(status).getLabel();
+    public String getStatusLabel() {
+        UserInfoStatusEnum statusEnum = UserInfoStatusEnum.get(status);
+        if (statusEnum != null) {
+            statusLabel = statusEnum.getLabel();
         }
-        return statusCn;
+        return statusLabel;
     }
 
-    public void setStatusCn(String statusCn) {
-        this.statusCn = statusCn;
+    public void setStatusLabel(String statusLabel) {
+        this.statusLabel = statusLabel;
     }
 
     @OneToOne(cascade = {CascadeType.ALL})

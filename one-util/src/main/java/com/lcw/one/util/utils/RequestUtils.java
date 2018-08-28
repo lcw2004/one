@@ -1,19 +1,32 @@
 package com.lcw.one.util.utils;
 
+import com.lcw.one.util.http.bean.BaseQueryCondition;
 import com.lcw.one.util.utils.cipher.Encodes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @version 2017-05-04.
  * @auth Licw
  */
 public class RequestUtils {
+
+    private static final String[] HEADERS_TO_TRY = {
+            "X-Forwarded-For",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENT_IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "HTTP_VIA",
+            "REMOTE_ADDR",
+            "X-Real-IP"};
 
     /**
      * 获取客户端IP地址
@@ -22,14 +35,13 @@ public class RequestUtils {
      * @return
      */
     public static String getClientIp(HttpServletRequest request) {
-        String remoteAddr = "";
-        if (request != null) {
-            remoteAddr = request.getHeader("X-FORWARDED-FOR");
-            if (StringUtils.isEmpty(remoteAddr)) {
-                remoteAddr = request.getRemoteAddr();
+        for (String header : HEADERS_TO_TRY) {
+            String ip = request.getHeader(header);
+            if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+                return ip;
             }
         }
-        return remoteAddr;
+        return request.getRemoteAddr();
     }
 
     /**
@@ -107,7 +119,7 @@ public class RequestUtils {
         Enumeration<String> keys = request.getParameterNames();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
-            if (key.indexOf("passowrd") >= 0) {
+            if (key.contains("passowrd")) {
                 continue;
             }
             map.put(key, request.getParameter(key));
@@ -131,4 +143,31 @@ public class RequestUtils {
         return map;
     }
 
+    /**
+     * 格式化参数
+     *
+     * @param args
+     * @return
+     */
+    public static String formatArgs(Object[] args) {
+        StringBuilder sb = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(args)) {
+            for (int i = 0; i < args.length; i++) {
+                Object arg = args[i];
+                if (arg instanceof HttpServletRequest) {
+                    sb.append("request");
+                } else if (arg instanceof HttpServletResponse) {
+                    sb.append("response");
+                } else if (arg instanceof BaseQueryCondition) {
+                    sb.append(Reflections.getFieldMap(arg));
+                } else {
+                    sb.append(String.valueOf(arg));
+                }
+                if (i < args.length - 1) {
+                    sb.append(", ");
+                }
+            }
+        }
+        return sb.toString();
+    }
 }

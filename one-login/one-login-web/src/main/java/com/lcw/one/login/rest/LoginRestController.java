@@ -1,5 +1,6 @@
 package com.lcw.one.login.rest;
 
+import com.lcw.one.base.config.GlobalConfig;
 import com.lcw.one.login.security.OneUsernamePasswordToken;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.security.validatecode.IVerifyCodeGen;
@@ -8,17 +9,15 @@ import com.lcw.one.login.security.validatecode.VerifyCode;
 import com.lcw.one.login.service.WebLoginService;
 import com.lcw.one.login.util.UserUtils;
 import com.lcw.one.user.constant.VerifyCodeTypeEnum;
-import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.util.constant.GlobalConfig;
-import com.lcw.one.util.http.CookieUtils;
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.StringUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
@@ -46,9 +45,6 @@ import java.util.Map;
 public class LoginRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginRestController.class);
-
-    @Autowired
-    private UserInfoEOService userService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -86,13 +82,14 @@ public class LoginRestController {
     @GetMapping("/login")
     @ResponseBody
     public ResponseMessage loginRest(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(defaultValue = "1") Integer userType,
                                      @RequestParam @NotNull(message = "请输入用户名") String username,
                                      @RequestParam @NotNull(message = "请输入密码") String password,
                                      @RequestParam(value = "isRememberMe", defaultValue = "false") Boolean isRememberMe,
                                      String verifyCode) {
         String token = "";
         try {
-            OneUsernamePasswordToken usernamePasswordToken = new OneUsernamePasswordToken(username, password.toCharArray(), verifyCode);
+            OneUsernamePasswordToken usernamePasswordToken = new OneUsernamePasswordToken(userType, username, password.toCharArray(), verifyCode);
 
             // 调用Shiro登录
             Subject subject = SecurityUtils.getSubject();
@@ -101,6 +98,9 @@ public class LoginRestController {
             token = webLoginService.login(request);
             request.getSession().setAttribute("token", token);
             CookieUtils.setCookie(request, response, token);
+        } catch (OneBaseException e) {
+            logger.error(e.getMessage(), e);
+            return Result.error(e.getMessage());
         } catch (CaptchaException e) {
             logger.info("验证码验证失败");
             return Result.error("0002", "您输入的验证码不正确");
@@ -113,10 +113,6 @@ public class LoginRestController {
             UserUtils.increaseLoginErrorCount(username);
             logger.info("用户[{}]密码验证失败", username);
             return Result.error("0001", "您输入的帐号或密码有误");
-        } catch (AuthenticationException e) {
-            // 记录日志，有未处理的验证失败
-            logger.error(e.getMessage(), e);
-            return Result.error(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return Result.error(e.getMessage());

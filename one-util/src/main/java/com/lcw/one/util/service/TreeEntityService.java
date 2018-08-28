@@ -4,6 +4,7 @@ import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import com.lcw.one.util.persistence.entity.TreeEntity;
 import com.lcw.one.util.persistence.entity.TreeEntityUtil;
+import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.UUID;
 
 import java.io.Serializable;
@@ -48,5 +49,46 @@ public abstract class TreeEntityService<D extends BaseRepositoryImpl, T extends 
     public TreeEntity listAsTree() {
         TreeEntity treeEntity = organizeListAsTree(getTopEntity(), findAll());
         return treeEntity;
+    }
+
+    public List<TreeEntity> listByParentId(String parentId) {
+        return dao.list("from " + getDao().getJpaEntityInformation().getEntityName() + " where parentId = ?1", parentId);
+    }
+
+    public void syncParentIds() {
+        TreeEntity treeEntity = getTopEntity();
+        if (treeEntity.getParentId().equals("0")) {
+            treeEntity.setParentIds("0,");
+        }
+        recursionSetParentIds(treeEntity);
+    }
+
+    private void recursionSetParentIds (TreeEntity parentEntity) {
+        logger.info("Sync parentIds of [{}]", parentEntity.getName());
+        List<TreeEntity> treeEntityList = listByParentId(parentEntity.getId());
+        if (CollectionUtils.isNotEmpty(treeEntityList)) {
+            // 更新子节点的parentIds
+            String parentIds = getParentIds(parentEntity);
+            for (TreeEntity treeEntityChild : treeEntityList) {
+                treeEntityChild.setParentIds(parentIds);
+            }
+            this.getDao().save(treeEntityList);
+
+            // 递归
+            for (TreeEntity treeEntityChild : treeEntityList) {
+                recursionSetParentIds(treeEntityChild);
+            }
+        }
+    }
+
+    private String getParentIds(TreeEntity parentEntity) {
+        String newParentId = null;
+        String parentIds = parentEntity.getParentIds();
+        if (parentIds.endsWith(",")) {
+            newParentId = parentIds + parentEntity.getId() + ",";
+        } else {
+            newParentId = "," + parentIds + parentEntity.getId() + ",";
+        }
+        return newParentId;
     }
 }

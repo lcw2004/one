@@ -1,6 +1,7 @@
 package com.lcw.one.util.persistence.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @MappedSuperclass
@@ -11,7 +12,7 @@ public abstract class TreeEntity<T extends TreeEntity> {
     protected String parentId; // 所有父级编号
     protected String parentIds; // 所有父级编号
     protected T parent;    // 父级编号
-    protected List<T> childList;
+    protected List<T> childList = new ArrayList<>();
     protected Integer delFlag;
 
     @Id

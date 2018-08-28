@@ -1,9 +1,12 @@
+
 package com.lcw.one.util.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
@@ -17,13 +20,17 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
     }
 
+    public static String listToString(List stringList) {
+        return listToString(stringList, ",");
+    }
+
     /**
-     * 将字符串数组以逗号分隔的形式拼接起来
+     * 将字符串数组以指定字符分隔的形式拼接起来
      *
      * @param stringList
      * @return
      */
-    public static String listToString(List<String> stringList) {
+    public static String listToString(List stringList, String splitChar) {
         if (CollectionUtils.isEmpty(stringList)) {
             return null;
         }
@@ -32,7 +39,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         for (int i = 0; i < stringList.size(); i++) {
             builder.append(stringList.get(i));
             if (i < stringList.size() - 1) {
-                builder.append(",");
+                builder.append(splitChar);
             }
         }
         return builder.toString();
@@ -49,7 +56,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return null;
         }
 
-        return Arrays.asList(string.split(","));
+        return stringToList(string, ",");
+    }
+
+    public static List<String> stringToList(String string, String splitChar) {
+        if (isEmpty(string)) {
+            return null;
+        }
+
+        return Arrays.asList(string.split(splitChar));
     }
 
     /**
@@ -133,4 +148,97 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
     }
 
+    /**
+     * 转为查询字符串
+     *
+     * @param params
+     * @return
+     */
+    public static String toQueryString(Map<String, String> params) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        if (CollectionUtils.isNotEmpty(params)) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if (i == 0) {
+                    sb.append("?");
+                } else {
+                    sb.append("&");
+                }
+                sb.append(entry.getKey()).append("=").append(entry.getValue());
+                i++;
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 转为查询字符串
+     *
+     * @param params
+     * @return
+     */
+    public static String toQueryString(Map<String, String> params, String encoding) {
+        StringBuffer sb = new StringBuffer();
+        int i = 0;
+        if (CollectionUtils.isNotEmpty(params)) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                String paramName = entry.getKey();
+                String paramValue = entry.getValue();
+                if (i > 0) {
+                    sb.append("&");
+                }
+                paramValue = encode(encoding, paramValue);
+                sb.append(paramName).append("=").append(paramValue);
+                i++;
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String encode(String value, String encoding) {
+        if (isNotEmpty(value)) {
+            try {
+                value = URLEncoder.encode(value, encoding);
+            } catch (UnsupportedEncodingException e) {
+                // ignore
+            }
+        }
+        return value;
+    }
+
+    public static String html_br(String input) {
+        return input.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
+    }
+
+    /**
+     * 计算文件比特数
+     * @param maxFileSizeStr
+     * @return
+     */
+    public static long calculateFileBites(String maxFileSizeStr) {
+        long maxFileSize = 0;
+        if (maxFileSizeStr.toUpperCase().endsWith("MB")) {
+            int mb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
+            maxFileSize = mb * 1024 * 1024L;
+        } else if (maxFileSizeStr.toUpperCase().endsWith("KB")) {
+            int kb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
+            maxFileSize = kb * 1024;
+        }
+        return maxFileSize;
+    }
+
+    /**
+     * 去空格
+     * @param input
+     * @return
+     */
+    public static String trim(String input) {
+        if (StringUtils.isEmpty(input)) {
+            return "";
+        } else {
+            input = input.trim();
+            input = input.replaceAll("[\\u00A0]+", ""); // 去除Ascii160的空格
+            return input;
+        }
+    }
 }

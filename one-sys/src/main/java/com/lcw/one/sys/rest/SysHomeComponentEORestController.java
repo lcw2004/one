@@ -24,7 +24,7 @@ public class SysHomeComponentEORestController {
 
     @ApiOperation(value = "系统首页组件详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysHomeComponentEO> get(@PathVariable("id") Integer id) {
+    public ResponseMessage<SysHomeComponentEO> get(@PathVariable Integer id) {
         return Result.success(sysHomeComponentEOService.get(id));
     }
 
@@ -49,7 +49,7 @@ public class SysHomeComponentEORestController {
 
     @ApiOperation(value = "删除系统首页组件")
     @DeleteMapping("/{id}")
-    public ResponseMessage delete(@PathVariable("id") Integer id) {
+    public ResponseMessage delete(@PathVariable Integer id) {
         sysHomeComponentEOService.delete(id);
         return Result.success();
     }

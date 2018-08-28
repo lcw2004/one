@@ -20,6 +20,7 @@ public class UserManagerEO {
     private String password;
 
     private UserInfoEO userInfo;
+    private UserInfoEO leader;
     private SysOfficeEO sysOffice;
     private List<String> roleIdList = new ArrayList<>();
     private List<String> roleNameList = new ArrayList<>();
@@ -62,6 +63,16 @@ public class UserManagerEO {
 
     public void setWorkNumber(String workNumber) {
         this.workNumber = workNumber;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "leader_id")
+    public UserInfoEO getLeader() {
+        return leader;
+    }
+
+    public void setLeader(UserInfoEO leader) {
+        this.leader = leader;
     }
 
     @OneToOne

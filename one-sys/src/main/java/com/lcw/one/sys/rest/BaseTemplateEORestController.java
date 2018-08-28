@@ -22,7 +22,7 @@ public class BaseTemplateEORestController {
 
     @ApiOperation(value = "系统模板详情")
     @GetMapping("/{id}")
-    public ResponseMessage<BaseTemplateEO> getById(@PathVariable("id") String id) {
+    public ResponseMessage<BaseTemplateEO> getById(@PathVariable String id) {
         return Result.success(baseTemplateEOService.get(id));
     }
 
@@ -46,7 +46,7 @@ public class BaseTemplateEORestController {
 
     @ApiOperation(value = "删除系统模板")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable String id) {
         baseTemplateEOService.delete(id);
         return Result.success();
     }

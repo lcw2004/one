@@ -2,19 +2,14 @@ package com.lcw.one.workflow.constant;
 
 public enum WorkflowDefEnum {
 
-    SupplierRegistryApply("SupplierRegistryApply", "供应商注册审核"),
-    SupplierPurchaseTypeApply("SupplierPurchaseTypeApply", "供应商投标类别审核"),
-    BiddingProjectSupplierApplyAudit("BiddingProjectSupplierApplyAudit", "招标项目供应商报名审核"),
     PlanPublishAudit("PlanPublishAudit", "计划立项审核"),
-    BiddingProjectPublishAudit("BiddingProjectPublishAudit", "招标项目发布审核"),
-    BiddingProjectAwardAudit("BiddingProjectAwardAudit", "招标项目授标审核"),
-    AuctionProjectPublishAudit("AuctionProjectPublishAudit", "竞价项目授标审核"),
-    AuctionProjectAwardAudit("AuctionProjectAwardAudit", "竞价项目授标审核"),
-    InquireProjectPublishAudit("InquireProjectPublishAudit", "询价项目授标审核"),
-    InquireProjectAwardAudit("InquireProjectAwardAudit", "询价项目授标审核"),
-    CrmProjectAudit("CrmProjectAudit", "CRM项目审核"),
-    CrmProjectPriceAudit("CrmProjectPriceAudit", "CRM项目审核"),
-    CrmContractAudit("CrmContractAudit", "CRM合同审核")
+    ProjectPublishAudit("ProjectPublishAudit", "采购项目发布审核"),
+    ProjectAwardAudit("ProjectAwardAudit", "采购项目授标审核"),
+    ProjectSupplierApplyAudit("ProjectSupplierApplyAudit", "采购项目供应商报名审核"),
+    ContractAudit("ContractAudit", "采购合同审核"),
+
+    SupplierRegistryApply("SupplierRegistryApply", "供应商准入审核"),
+    SupplierInfoChange("SupplierInfoChange", "供应商变更审核"),
     ;
 
     private String flowName;

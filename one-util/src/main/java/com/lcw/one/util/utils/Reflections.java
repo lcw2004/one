@@ -175,6 +175,21 @@ public class Reflections {
         return null;
     }
 
+    public static Map<String, Object> getFieldMap(Object obj) {
+        Map<String, Object> fieldMap = new HashMap<>();
+        Validate.notNull(obj, "object can't be null");
+        for (Class<?> superClass = obj.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
+            Field[] fields = superClass.getDeclaredFields();
+            for (Field field : fields) {
+                Object result = getFieldValue(obj, field.getName());
+                if (result != null) {
+                    fieldMap.put(field.getName(), result);
+                }
+            }
+        }
+        return fieldMap;
+    }
+
     /**
      * 循环向上转型, 获取对象的DeclaredMethod,并强制设置为可访问. 如向上转型到Object仍无法找到, 返回null.
      * 匹配函数名+参数类型。

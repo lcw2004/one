@@ -15,7 +15,7 @@ public class PomUtilsTest {
 
 
     @Test
-    public void testGetPackageFromModule() throws Exception {
+    public void testGetPackageFromModule() {
         Assert.assertEquals(CodeGenUtil.getPackageFromModule("one-sys"), "com.lcw.one.sys");
         Assert.assertEquals(CodeGenUtil.getPackageFromModule("one-code-gen"), "com.lcw.one.codegen");
         Assert.assertEquals(CodeGenUtil.getPackageFromModule("one-test-camel"), "com.lcw.one.testCamel");

@@ -1,5 +1,8 @@
 package com.lcw.one.util.bean;
 
+/**
+ * 系统字典
+ */
 public class SysDict {
 
     private String label;

@@ -24,6 +24,7 @@ public class SysFileEO {
     private String remark;
     private String userId;
     private String contentType;
+    private Integer permissionType;
 
     @Id
     @Column(name = "file_id")
@@ -124,6 +125,16 @@ public class SysFileEO {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    @Basic
+    @Column(name = "permission_type")
+    public Integer getPermissionType() {
+        return permissionType;
+    }
+
+    public void setPermissionType(Integer permissionType) {
+        this.permissionType = permissionType;
     }
 
     @Override

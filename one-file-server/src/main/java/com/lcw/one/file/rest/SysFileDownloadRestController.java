@@ -10,6 +10,7 @@ import com.lcw.one.util.utils.cipher.Encodes;
 import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.StringUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,15 @@ public class SysFileDownloadRestController {
     @Autowired
     private IFileStore iFileStore;
 
+    @ApiOperation("获取文件信息")
     @GetMapping("/{fileId}")
-    public ResponseMessage<SysFileEO> getById(@PathVariable("fileId") String fileId) {
+    public ResponseMessage<SysFileEO> getById(@PathVariable String fileId) {
         return Result.success(sysFileEOService.get(fileId));
     }
 
+    @ApiOperation("下载文件(内部)")
     @GetMapping("/{fileId}/download")
-    public void downFile(HttpServletResponse response, @PathVariable("fileId") String fileId, String fileName) {
+    public void downFile(HttpServletResponse response, @PathVariable String fileId, String fileName) {
         if (StringUtils.isEmpty(fileId)) {
             throw new OneBaseException("FileId不能为空");
         }
@@ -71,6 +74,17 @@ public class SysFileDownloadRestController {
         } finally {
             IOUtils.closeQuietly(is);
             IOUtils.closeQuietly(os);
+        }
+    }
+
+    @ApiOperation("下载文件(外部)")
+    @GetMapping("/{fileId}/download-ext")
+    public void downFile(HttpServletResponse response, @PathVariable String fileId) {
+        SysFileEO sysFileEO = sysFileEOService.get(fileId);
+        if (sysFileEO != null && sysFileEO.getPermissionType() == 1) {
+            downFile(response, fileId, null);
+        } else {
+            throw new OneBaseException("文件不存在");
         }
     }
 

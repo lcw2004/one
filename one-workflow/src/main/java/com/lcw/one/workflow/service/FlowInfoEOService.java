@@ -4,6 +4,7 @@ import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.service.CrudService;
 import com.lcw.one.util.utils.CollectionUtils;
+import com.lcw.one.util.utils.StringUtils;
 import com.lcw.one.workflow.dao.FlowInfoEODao;
 import com.lcw.one.workflow.entity.FlowInfoEO;
 import com.lcw.one.workflow.entity.FlowTaskInfoEO;
@@ -29,82 +30,46 @@ import java.util.List;
 public class FlowInfoEOService extends CrudService<FlowInfoEODao, FlowInfoEO, String> {
 
     @Autowired
-    private ActivitiService activitiService;
-
-    @Autowired
-    private RepositoryService repositoryService;
-
-    @Autowired
     private FlowTaskInfoEOService flowTaskInfoEOService;
 
     @Override
     public FlowInfoEO get(String id) {
         FlowInfoEO flowInfoEO = super.get(id);
-        flowInfoEO.setFlowTaskInfoEOList(flowTaskInfoEOService.listFlowTaskInfoEOByProcessKey(id));
+        if (flowInfoEO != null) {
+            flowInfoEO.setFlowTaskList(flowTaskInfoEOService.listFlowTaskInfoEOByProcessKey(id));
+        }
+        return flowInfoEO;
+    }
+
+    public FlowInfoEO getAndValid(String id) {
+        FlowInfoEO flowInfoEO = super.get(id);
+
+        if (flowInfoEO == null) {
+            throw new OneBaseException("流程[" + id + "]未配置表单");
+        }
+        if (StringUtils.isEmpty(flowInfoEO.getBindViewForm())) {
+            throw new OneBaseException("流程[" + flowInfoEO.getProcessName() + "]未配置表单");
+        }
         return flowInfoEO;
     }
 
     @Override
     public FlowInfoEO update(FlowInfoEO flowInfoEO) {
-        if(CollectionUtils.isNotEmpty(flowInfoEO.getFlowTaskInfoEOList())) {
-            flowTaskInfoEOService.save(flowInfoEO.getFlowTaskInfoEOList());
+        super.update(flowInfoEO);
+        if(CollectionUtils.isNotEmpty(flowInfoEO.getFlowTaskList())) {
+            flowTaskInfoEOService.save(flowInfoEO.getFlowTaskList());
         }
         return flowInfoEO;
     }
 
-    public InputStream progressImage(String processKey) {
-        FlowInfoEO flowInfoEO = super.get(processKey);
-        if (flowInfoEO == null) {
-            throw new OneBaseException("流程" + processKey + "不存在");
-        }
-        return activitiService.viewProcessImage(flowInfoEO.getProcessDefinitionId());
+    @Override
+    public void delete(String s) {
+        flowTaskInfoEOService.deleteByProcessKey(s);
+        super.delete(s);
     }
 
     public PageInfo<FlowInfoEO> page(PageInfo pageInfo, String likeName) {
         return dao.page(pageInfo, likeName);
-    }
-
-    public void deploy(InputStream is, String fileName) {
-        List<ProcessDefinition> processDefinitionList = activitiService.deploy(is, fileName);
-
-        for (ProcessDefinition processDefinition : processDefinitionList) {
-            FlowInfoEO flowInfoEO = new FlowInfoEO();
-            flowInfoEO.setProcessKey(processDefinition.getKey());
-            flowInfoEO.setProcessDefinitionId(processDefinition.getId());
-            flowInfoEO.setProcessName(processDefinition.getName());
-            flowInfoEO.setLastUpdateTime(new Date());
-            super.save(flowInfoEO);
-            saveFlowTaskInfo(processDefinition);
-        }
-    }
-
-    private void saveFlowTaskInfo(ProcessDefinition processDefinition) {
-        ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService).getDeployedProcessDefinition(processDefinition.getId());
-        List<ActivityImpl> activityList = processDefinitionEntity.getActivities();
-
-        List<String> taskKeyList = new ArrayList<>();
-        for (ActivityImpl activityImpl : activityList) {
-            if (activityImpl.getActivityBehavior() instanceof UserTaskActivityBehavior) {
-                FlowTaskInfoEO flowTaskInfoEO = new FlowTaskInfoEO();
-                flowTaskInfoEO.setProcessKey(processDefinition.getKey());
-                flowTaskInfoEO.setTaskKey(activityImpl.getId());
-                flowTaskInfoEO.setTaskName(activityImpl.getProperties().get("name").toString());
-                flowTaskInfoEO.setTaskDesc(activityImpl.getProperties().get("name").toString());
-                flowTaskInfoEO.setRankNum(0);
-                flowTaskInfoEO.setValid(1);
-                flowTaskInfoEO.setX(activityImpl.getX());
-                flowTaskInfoEO.setY(activityImpl.getY());
-                flowTaskInfoEO.setHeight(activityImpl.getHeight());
-                flowTaskInfoEO.setWidth(activityImpl.getWidth());
-
-                flowTaskInfoEOService.save(flowTaskInfoEO);
-
-                taskKeyList.add(activityImpl.getId());
-            }
-        }
-
-        // 清除旧流程的步骤
-        flowTaskInfoEOService.deleteByTaskKeyNotExist(processDefinition.getKey(), taskKeyList);
     }
 
 }

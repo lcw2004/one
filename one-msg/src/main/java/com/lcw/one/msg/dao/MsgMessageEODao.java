@@ -47,7 +47,6 @@ public class MsgMessageEODao extends BaseRepositoryImpl<MsgMessageEO, String> {
             hql.append(" and mu.status != ").append(MsgMessageStatusEnum.DELETED.getValue());
         }
 
-
         // 排序
         hql.append(" order by m.sendTime desc");
 

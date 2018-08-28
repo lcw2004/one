@@ -4,7 +4,7 @@ import com.lcw.one.codegen.bean.*;
 import com.lcw.one.codegen.core.generate.CodeGeneratorFactory;
 import com.lcw.one.codegen.core.generate.IGenerator;
 import com.lcw.one.codegen.core.generate.impl.*;
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.StringUtils;
 import org.apache.commons.io.FileUtils;

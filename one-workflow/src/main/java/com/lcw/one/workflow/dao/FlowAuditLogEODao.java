@@ -20,6 +20,10 @@ public class FlowAuditLogEODao extends BaseRepositoryImpl<FlowAuditLogEO, String
         super(JpaEntityInformationSupport.getEntityInformation(FlowAuditLogEO.class, entityManager), entityManager);
     }
 
+    public List<FlowAuditLogEO> list(String auditItemId) {
+        return executeList("from FlowAuditLogEO where auditItemId = ?1 order by auditTime asc", auditItemId);
+    }
+
     public List<FlowAuditLogEO> list(String businessType, String businessId, String secondBusinessId) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder sql = new StringBuilder();

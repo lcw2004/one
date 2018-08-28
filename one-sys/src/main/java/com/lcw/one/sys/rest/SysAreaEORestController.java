@@ -5,6 +5,7 @@ import com.lcw.one.sys.service.SysAreaEOService;
 import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
+import com.lcw.one.util.persistence.entity.TreeEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class SysAreaEORestController {
 
     @ApiOperation(value = "区域详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysAreaEO> getById(@PathVariable("id") String id) {
+    public ResponseMessage<SysAreaEO> getById(@PathVariable String id) {
         return Result.success(sysAreaEOService.get(id));
     }
 
@@ -55,9 +56,22 @@ public class SysAreaEORestController {
 
     @ApiOperation(value = "删除区域")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable String id) {
         sysAreaEOService.delete(id);
         return Result.success();
+    }
+
+    @ApiOperation(value = "区域列表")
+    @GetMapping("/syncParentId")
+    public ResponseMessage syncParentId() {
+        sysAreaEOService.syncParentIds();
+        return Result.success();
+    }
+
+    @ApiOperation(value = "子节点列表")
+    @GetMapping("/{areaId}/child")
+    public ResponseMessage<List<TreeEntity>> getChildListByAreaId(@PathVariable String areaId) {
+        return Result.success(sysAreaEOService.listByParentId(areaId));
     }
 
 }

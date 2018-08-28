@@ -1,22 +1,22 @@
 package com.lcw.one.workflow.service;
 
+import com.lcw.one.notify.service.IMessageSenderService;
 import com.lcw.one.user.constant.AuditStatusEnum;
 import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.CollectionUtils;
+import com.lcw.one.util.utils.NumberUtils;
+import com.lcw.one.util.utils.StringUtils;
 import com.lcw.one.util.utils.UUID;
-import com.lcw.one.workflow.audit.IDoAudit;
-import com.lcw.one.workflow.audit.IDoAuditFactory;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.WorkFlowBean;
 import com.lcw.one.workflow.bean.constant.FlowEffectiveEnum;
 import com.lcw.one.workflow.bean.constant.FlowFinishEnum;
-import com.lcw.one.workflow.config.ThreadLocalContext;
-import com.lcw.one.workflow.entity.FlowAuditItemBean;
 import com.lcw.one.workflow.entity.FlowAuditItemEO;
 import com.lcw.one.workflow.entity.FlowAuditLogEO;
 import com.lcw.one.workflow.service.flow.ActivitiService;
-import org.apache.commons.lang3.StringUtils;
+import org.activiti.engine.ActivitiException;
+import org.activiti.engine.RepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,31 +43,36 @@ public class WorkFlowService {
     @Autowired
     private ActivitiService activitiService;
 
+    public WorkFlowBean startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String operateName, LoginUser loginUser, Map<String, Object> variables) {
+        return this.startWorkflow(flowId, businessId, secondBusinessId, businessName, operateName, loginUser, variables, null);
+    }
+
     /**
      * 启动工作流
-     *
-     * @param flowId      流程ID（同时作为业务ID，工作流名称作为业务名称）
-     * @param businessId  业务ID
-     * @param applyUserId 申请人ID
      */
-    public void startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String applyUserId, String applyUserName, String operateName, String ip, Map<String, Object> variables) {
-        String auditItemId = UUID.randomUUID();
+    public WorkFlowBean startWorkflow(String flowId, String businessId, String secondBusinessId, String businessName, String operateName, LoginUser loginUser, Map<String, Object> variables, String assigneeId) {
         String flowInstanceId = null;
+        WorkFlowBean workFlowBeanReturn = null;
         try {
+            String auditItemId = UUID.randomUUID();
+
             // 启动工作流，并获取流程实例ID
             WorkFlowBean workFlowBean = new WorkFlowBean();
-            workFlowBean.setUserId(applyUserId);
+            workFlowBean.setUserId(loginUser.getUserId());
+            workFlowBean.setAssigneeId(assigneeId);
             workFlowBean.setFlowId(flowId);
             workFlowBean.setBusinessKey(businessId);
             workFlowBean.putVariables("businessId", businessId);
             workFlowBean.putVariables("businessName", businessName);
             workFlowBean.putVariables("auditItemId", auditItemId);
-            workFlowBean.putVariables("applyUserId", applyUserId);
-            workFlowBean.putVariables("applyUserName", applyUserName);
+            workFlowBean.putVariables("applyUserId", loginUser.getUserId());
+            workFlowBean.putVariables("applyUserName", loginUser.getUserName());
+            workFlowBean.putVariables("applyOfficeId", loginUser.getOfficeId());
             if (CollectionUtils.isNotEmpty(variables)) {
+                // 如果有需要覆盖的参数，由variables设置同名称参数进行覆盖
                 workFlowBean.putVariables(variables);
             }
-            WorkFlowBean workFlowBeanReturn = activitiService.startWorkflow(workFlowBean);
+            workFlowBeanReturn = activitiService.startWorkflow(workFlowBean);
             flowInstanceId = workFlowBeanReturn.getProcessInstanceId();
 
             // 保存审核事项
@@ -77,7 +82,7 @@ public class WorkFlowService {
             flowAuditItemEO.setBusinessId(businessId);
             flowAuditItemEO.setSecondBusinessId(secondBusinessId);
             flowAuditItemEO.setTaskName(workFlowBeanReturn.getTaskDefinitionName());
-            flowAuditItemEO.setApplyUserId(applyUserId);
+            flowAuditItemEO.setApplyUserId(loginUser.getUserId());
             flowAuditItemEO.setStartTime(new Date());
             flowAuditItemEO.setAuditStatus(AuditStatusEnum.AUDIT.getValue());
             flowAuditItemEO.setFlowDefinitionId(flowId);
@@ -91,90 +96,103 @@ public class WorkFlowService {
             flowAuditLogEO.setAuditLogId(UUID.randomUUID());
             flowAuditLogEO.setAuditItemId(auditItemId);
             flowAuditLogEO.setAuditTime(new Date());
-            flowAuditLogEO.setUserId(applyUserId);
+            flowAuditLogEO.setUserId(loginUser.getUserId());
             flowAuditLogEO.setResult(null);
             flowAuditLogEO.setRemark("");
             flowAuditLogEO.setOperateName(operateName);
-            flowAuditLogEO.setIp(ip);
+            flowAuditLogEO.setIp(loginUser.getIp());
             flowAuditLogEOService.save(flowAuditLogEO);
         } catch (Exception e) {
             if (StringUtils.isNotEmpty(flowInstanceId)) {
                 activitiService.deleteWorkflowInstance(flowInstanceId, "flowId[" + flowId + "]执行异常");
             }
-
-            Map<String, String> map = ThreadLocalContext.threadLocal.get();
-            if (map != null && !map.isEmpty()) {
-                throw new RuntimeException(map.get("cause"));
-            } else {
-                throw new RuntimeException(e.getMessage());
-            }
+            handlerException(e);
         }
+        return workFlowBeanReturn;
+    }
+
+    public void audit(LoginUser loginUser, String taskId, Boolean auditResult, String remark, Map<String, Object> variables) {
+        this.audit(loginUser, taskId, auditResult, remark, variables, null);
     }
 
     /**
      * 审核工单
      *
+     * @param loginUser   当前用户
      * @param taskId      任务ID
-     * @param auditUserId 审批人ID
      * @param auditResult 审批结果
      * @param remark      审批不通过的理由
      */
     @Transactional(rollbackOn = Exception.class)
-    public void audit(LoginUser loginUser, String taskId, Boolean auditResult, String remark) {
-        TaskInfoBean taskInfoBean = activitiService.getTask(taskId);
-
-        String auditItemId = (String) taskInfoBean.getVariables().get("auditItemId");
-        FlowAuditItemEO flowAuditItemEO = flowAuditItemEOService.get(auditItemId);
-        String taskName = taskInfoBean.getTaskName();
-        String flowId = flowAuditItemEO.getFlowDefinitionId();
-        String taskDefinitionKey = taskInfoBean.getTaskDefinitionKey();
-        Boolean isFinalAudit = "finalAudit".equals(taskDefinitionKey);
-
-        // 记录审核日志
-        FlowAuditLogEO flowAuditLogEO = new FlowAuditLogEO();
-        flowAuditLogEO.setAuditLogId(UUID.randomUUID());
-        flowAuditLogEO.setAuditItemId(auditItemId);
-        flowAuditLogEO.setAuditTime(new Date());
-        flowAuditLogEO.setUserId(loginUser.getUserId());
-        flowAuditLogEO.setIp(loginUser.getIp());
-        flowAuditLogEO.setResult(auditResult ? 1 : 0);
-        flowAuditLogEO.setRemark(remark);
-        flowAuditLogEO.setOperateName(auditResult ? "审核通过" : "审核驳回");
-        flowAuditLogEOService.save(flowAuditLogEO);
-
-        FlowAuditItemBean flowAuditItemBean = new FlowAuditItemBean();
-        flowAuditItemBean.setAuditItemId(auditItemId);
-        flowAuditItemBean.setBusinessId(flowAuditItemEO.getBusinessId());
-        flowAuditItemBean.setLoginUser(loginUser);
-        flowAuditItemBean.setAuditRemark(remark);
-        flowAuditItemBean.setAuditResult(auditResult);
-        flowAuditItemBean.setVariables(taskInfoBean.getVariables());
-
-        // 调用审核处理接口
-        IDoAudit iDoAudit = IDoAuditFactory.buildIDoAudit(flowId);
-        if (!auditResult) {
-            // 驳回
-            // 任何一个人驳回都结束工单
-            logger.info("Do reject on item: " + flowAuditItemEO.getAuditItemId());
-            iDoAudit.doReject(flowAuditItemBean);
-            flowAuditItemEOService.updateStateWhenReject(auditItemId, remark);
-        } else {
-            // 通过
-            if (isFinalAudit) {
-                // 最后一个通过
-                logger.info("Do agree on item: " + flowAuditItemEO.getAuditItemId());
-                iDoAudit.doAgree(flowAuditItemBean);
-                flowAuditItemEOService.updateStateWhenPass(auditItemId);
-            }
+    public void audit(LoginUser loginUser, String taskId, Boolean auditResult, String remark, Map<String, Object> variables, Map<String, Object> localVariables) {
+        if (!auditResult && StringUtils.isEmpty(remark)) {
+            throw new OneBaseException("请输入驳回原因");
         }
 
-        // 执行工作流
-        WorkFlowBean workFlowBean = new WorkFlowBean();
-        workFlowBean.setUserId(loginUser.getUserId());
-        workFlowBean.setBusinessKey(flowAuditItemEO.getBusinessId());
-        workFlowBean.setFlowId(flowAuditItemEO.getFlowDefinitionId());
-        workFlowBean.setTaskId(taskId);
-        workFlowBean.putVariables("auditResult", auditResult);
-        activitiService.execWorkflow(workFlowBean);
+        try {
+            TaskInfoBean taskInfoBean = activitiService.getTask(taskId);
+
+            String auditItemId = (String) taskInfoBean.getVariables().get("auditItemId");
+            FlowAuditItemEO flowAuditItemEO = flowAuditItemEOService.get(auditItemId);
+
+            // 记录审核日志
+            FlowAuditLogEO flowAuditLogEO = new FlowAuditLogEO();
+            flowAuditLogEO.setAuditLogId(UUID.randomUUID());
+            flowAuditLogEO.setAuditItemId(auditItemId);
+            flowAuditLogEO.setAuditTime(new Date());
+            flowAuditLogEO.setUserId(loginUser.getUserId());
+            flowAuditLogEO.setIp(loginUser.getIp());
+            flowAuditLogEO.setResult(NumberUtils.boolToInt(auditResult));
+            flowAuditLogEO.setRemark(remark);
+            flowAuditLogEO.setOperateName(taskInfoBean.getTaskName());
+            flowAuditLogEOService.save(flowAuditLogEO);
+
+            // 执行工作流
+            WorkFlowBean workFlowBean = new WorkFlowBean();
+            workFlowBean.setUserId(loginUser.getUserId());
+            workFlowBean.setBusinessKey(flowAuditItemEO.getBusinessId());
+            workFlowBean.setFlowId(flowAuditItemEO.getFlowDefinitionId());
+            workFlowBean.setTaskId(taskInfoBean.getTaskId());
+            workFlowBean.putVariables("auditUserId", loginUser.getUserId());
+            workFlowBean.putVariables("auditResult", auditResult);
+            workFlowBean.putVariables("auditRemark", remark);
+            workFlowBean.putVariables("loginUser", loginUser);
+            workFlowBean.putVariables(variables);
+            workFlowBean.putLocalVariables(localVariables);
+            activitiService.execWorkflow(workFlowBean);
+        } catch (Exception e) {
+            handlerException(e);
+        }
     }
+
+    /**
+     * 处理工作流异常
+     *
+     * @param e
+     */
+    private void handlerException(Exception e) {
+        if (e instanceof ActivitiException) {
+            Throwable cause = e.getCause();
+            if (cause != null) {
+                if (cause instanceof OneBaseException) {
+                    throw (OneBaseException) cause;
+                } else {
+                    logger.error(cause.getMessage(), cause);
+                    throw new OneBaseException(cause.getMessage());
+                }
+            }
+        } else {
+            throw new OneBaseException(e.getMessage());
+        }
+    }
+
+    public TaskInfoBean getTask(String taskId) {
+        return activitiService.getTask(taskId);
+    }
+
+    public String getBusinessId(String taskId) {
+        TaskInfoBean taskInfoBean = this.getTask(taskId);
+        return  (String) taskInfoBean.getVariables().get("businessId");
+    }
+
 }

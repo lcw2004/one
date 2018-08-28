@@ -1,6 +1,5 @@
 package com.lcw.one.weixin.rest;
 
-import com.foxinmy.weixin4j.exception.WeixinException;
 import com.foxinmy.weixin4j.model.WeixinAccount;
 import com.foxinmy.weixin4j.mp.api.OauthApi;
 import com.foxinmy.weixin4j.mp.model.OauthToken;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +44,7 @@ public class WeixinAuthController {
 
     @ApiOperation(value = "微信回调页面")
     @GetMapping(value = "")
-    public String authPage(HttpServletRequest request, String code) throws IOException, WeixinException {
+    public String authPage(HttpServletRequest request, String code) {
         if (isLogin(request)) {
             // 用户已经登录
             return toHome();
@@ -92,7 +90,7 @@ public class WeixinAuthController {
             if (StringUtils.isEmpty(openId)) {
                 return Result.error("登录失败");
             }
-            String token = weixinLoginService.loginByAccount(request, account, password, openId);
+            String token = weixinLoginService.bindWeChatId(request, account, password, openId);
             request.getSession().setAttribute("token", token);
         } catch (OneBaseException e) {
             return Result.error(e.getMessage());

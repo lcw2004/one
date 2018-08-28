@@ -1,6 +1,6 @@
 package com.lcw.one.login.security.filterChain;
 
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.lcw.one.notify.rest;
 
 import com.lcw.one.notify.bean.MessageBean;
-import com.lcw.one.notify.service.base.WebSocketService;
+import com.lcw.one.notify.channel.base.WebSocketService;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.GsonUtil;

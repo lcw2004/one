@@ -1,6 +1,5 @@
 package com.lcw.one.base.config;
 
-import com.lcw.one.util.constant.GlobalConfig;
 import com.lcw.one.util.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +17,11 @@ public class GlobalConfigInitializer implements EnvironmentAware  {
 
     @Override
     public void setEnvironment(Environment env) {
-        logger.info("Init global config");
+        logger.info("初始化全局配置");
         if (StringUtils.isEmpty(GlobalConfig.getRestApiPath())) {
             GlobalConfig.setRestApiPath(env.getProperty("restPath"));
         }
         GlobalConfig.setOneUrl(env.getProperty("one.url"));
-        GlobalConfig.setCookieExpireTime(60 * 30L);
-        GlobalConfig.setRegistryCodeExpireTime(60 * 5L);
-        GlobalConfig.setMaxLoginErrorCount(3);
         GlobalConfig.setCompanyName(env.getProperty("mail.from.name"));
     }
 

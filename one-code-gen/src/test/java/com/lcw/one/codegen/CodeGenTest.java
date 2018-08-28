@@ -5,6 +5,7 @@ import com.lcw.one.codegen.core.generate.*;
 import com.lcw.one.codegen.core.generate.impl.*;
 import com.lcw.one.codegen.core.form.FormTemplateBuilder;
 import com.lcw.one.codegen.util.NameUtils;
+import com.lcw.one.util.utils.FileUtil;
 import com.lcw.one.util.utils.GsonUtil;
 import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.StringUtils;
@@ -47,37 +48,37 @@ public class CodeGenTest {
     }
 
     @Test
-    public void testGenerateBean() throws Exception {
+    public void testGenerateBean() {
         generate(new BeanGenerator());
     }
 
     @Test
-    public void testGenerateDao() throws Exception {
+    public void testGenerateDao() {
         generate(new DaoGenerator());
     }
 
     @Test
-    public void testGenerateService() throws Exception {
+    public void testGenerateService() {
         generate(new ServiceGenerator());
     }
 
     @Test
-    public void testGenerateController() throws Exception {
+    public void testGenerateController() {
         generate(new ControllerGenerator());
     }
 
     @Test
-    public void testGenerateVueList() throws Exception {
+    public void testGenerateVueList() {
         generate(new VueListGenerator());
     }
 
     @Test
-    public void testGenerateVueView() throws Exception {
+    public void testGenerateVueView() {
         generate(new VueViewGenerator());
     }
 
     @Test
-    public void testGenerateVueEdit() throws Exception {
+    public void testGenerateVueEdit() {
         generate(new VueEditGenerator());
     }
 

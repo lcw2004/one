@@ -1,13 +1,17 @@
 package com.lcw.one.base.config;
 
+import com.lcw.one.util.http.Settings;
+import com.lcw.one.sys.entity.SystemInfo;
 import com.lcw.one.util.filter.HttpCacheFilter;
 import com.lcw.one.util.filter.OverWriteJSessionIdFilter;
 import com.lcw.one.util.utils.FileUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -17,6 +21,8 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 public class OneWebConfig {
 
+    @Autowired
+    private Environment environment;
 
     @Value("${one.file.temp}")
     private String tempPath;
@@ -35,7 +41,7 @@ public class OneWebConfig {
         registration.setFilter(new HttpCacheFilter());
         registration.addUrlPatterns("/*");
         registration.setName("httpCacheFilter");
-        registration.addInitParameter("maxAge", String.valueOf(60 * 60 * 24 * 7));
+        registration.addInitParameter("maxAge", String.valueOf(Settings.HTTP_CACHE_MAX_AGE));
         registration.setOrder(8);
         return registration;
     }
@@ -48,5 +54,16 @@ public class OneWebConfig {
         registration.setName("jSessionIdFilter");
         registration.setOrder(1);
         return registration;
+    }
+
+    @Bean
+    public SystemInfo systemInfo() {
+        SystemInfo systemInfo = new SystemInfo();
+        systemInfo.setFullName(environment.getProperty("one.application.name"));
+        systemInfo.setShortName(environment.getProperty("one.application.shortName"));
+        systemInfo.setVersion(environment.getProperty("one.application.version"));
+        systemInfo.setPowerByName(environment.getProperty("one.application.powerByName"));
+        systemInfo.setPowerByLink(environment.getProperty("one.application.powerByLink"));
+        return systemInfo;
     }
 }

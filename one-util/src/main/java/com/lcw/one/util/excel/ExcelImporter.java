@@ -4,6 +4,7 @@ package com.lcw.one.util.excel;
 import com.lcw.one.util.excel.rule.ExcelClassRule;
 import com.lcw.one.util.excel.rule.ExcelFieldRule;
 import com.lcw.one.util.exception.OneBaseException;
+import com.lcw.one.util.utils.ObjectUtils;
 import com.lcw.one.util.utils.Reflections;
 import com.lcw.one.util.utils.StringUtils;
 import org.apache.poi.POIXMLException;
@@ -20,8 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ExcelImporter {
     private static final Logger logger = LoggerFactory.getLogger(ExcelImporter.class);
@@ -94,9 +94,8 @@ public class ExcelImporter {
      * @param headNum        指定行（从0开始）
      * @param sheetIndex     指定Sheet页（从0开始）
      * @return
-     * @throws IOException
      */
-    public <T> List<T> parse(ExcelClassRule excelClassRule, int headNum, int sheetIndex) throws IOException {
+    public <T> List<T> parse(ExcelClassRule excelClassRule, int headNum, int sheetIndex) {
         // 获取每个字段对应的类型
         excelClassRule.fetchFieldClass(clazz);
         logger.info(excelClassRule.toString());
@@ -107,10 +106,17 @@ public class ExcelImporter {
             throw new OneBaseException("文档的第" + sheetIndex + "个Sheet不存在");
         }
 
+        // 验证Excel
+        validateExcel(sheet, headNum, excelClassRule);
+
         // 转换为数据列表
-        List<T> tList = new ArrayList<>();
+        List<T> tList = new LinkedList<>();
         for (int i = headNum; i <= sheet.getLastRowNum(); i++) {
-            tList.add(this.<T>parseRowAsObject(excelClassRule, i, sheet.getRow(i)));
+            if (sheet.getRow(i) == null) {
+                logger.warn("文档的第{}列是一个空行，可能是Excel出问题了，后面的数据都忽略导入！", i);
+                break;
+            }
+            tList.add(this.parseRowAsObject(excelClassRule, i, sheet.getRow(i)));
         }
 
         return tList;
@@ -136,12 +142,21 @@ public class ExcelImporter {
             Cell cell = dataRow.getCell(excelFieldRule.getIndex());
 
             Object value;
-            if (StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
-                // 获取字段值
-                value = POIUtils.getDictValue(cell, excelFieldRule);
+            if (excelFieldRule.getFieldClass() == Map.class) {
+                // Map类型获取字典值
+                value = POIUtils.getCellValueAsClass(cell, String.class);
+                if (StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
+                    // 获取字段值
+                    value = POIUtils.getDictValue(cell, excelFieldRule.getDictType(), String.class);
+                }
             } else {
-                // 获取原值
-                value = POIUtils.getCellValueAsClass(cell, excelFieldRule.getFieldClass());
+                if (StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
+                    // 获取字段值
+                    value = POIUtils.getDictValue(cell, excelFieldRule.getDictType(), String.class);
+                } else {
+                    // 获取原值
+                    value = POIUtils.getCellValueAsClass(cell, excelFieldRule.getFieldClass());
+                }
             }
 
             // 验证是否为null
@@ -151,7 +166,19 @@ public class ExcelImporter {
                 }
             }
 
-            Reflections.invokeSetter2(t, excelFieldRule.getFieldName(), value);
+            if (excelFieldRule.getFieldClass() == Map.class) {
+                Object mapObj = Reflections.invokeGetter(t, excelFieldRule.getFieldName());
+                if (mapObj != null) {
+                    Map map = (Map) mapObj;
+                    map.put(excelFieldRule.getTitle(), value);
+                } else {
+                    Map map = new HashMap();
+                    map.put(excelFieldRule.getTitle(), value);
+                    Reflections.invokeSetter2(t, excelFieldRule.getFieldName(), map);
+                }
+            } else {
+                Reflections.invokeSetter2(t, excelFieldRule.getFieldName(), value);
+            }
         }
 
         // 注入排序号
@@ -161,5 +188,28 @@ public class ExcelImporter {
         return t;
     }
 
+    private void validateExcel(Sheet sheet, int headRowNumber, ExcelClassRule excelClassRule) {
+        if (headRowNumber > 1) {
+            Row headRow = sheet.getRow(headRowNumber - 1);
+            if (headRow != null) {
+                Map<Integer, ExcelFieldRule> map = ObjectUtils.asMapByFiled(excelClassRule.getFieldRuleList(), "index");
+                for (int i = 0; i < headRow.getLastCellNum(); i++) {
+                    String value = null;
+                    Cell cell = headRow.getCell(i);
+                    if (cell != null) {
+                        value = (String) POIUtils.getCellValueAsClass(cell, String.class);
+                    }
+
+                    if (map != null && map.containsKey(i)) {
+                        ExcelFieldRule rule = map.get(i);
+                        if (!rule.getTitle().equals(value)) {
+                            logger.warn("不是合法的模板文件，Excel头部[{}]，字段名称[{}]", value, rule.getTitle());
+                            throw new OneBaseException("不是合法的模板文件，请不要修改标题");
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

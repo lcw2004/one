@@ -1,6 +1,8 @@
 package com.lcw.one.util.bean;
 
-public class LoginUser {
+import java.io.Serializable;
+
+public class LoginUser implements Serializable {
 
     private String userId;
     private String userName;
@@ -110,5 +112,23 @@ public class LoginUser {
 
     public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginUser{" +
+                "userId='" + userId + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userAccount='" + userAccount + '\'' +
+                ", userGender=" + userGender +
+                ", userStatus=" + userStatus +
+                ", userType=" + userType +
+                ", ip='" + ip + '\'' +
+                ", officeId='" + officeId + '\'' +
+                ", officeParentIds='" + officeParentIds + '\'' +
+                ", roleIds='" + roleIds + '\'' +
+                ", dataScope=" + dataScope +
+                ", supplierId='" + supplierId + '\'' +
+                '}';
     }
 }

@@ -1,13 +1,14 @@
 package com.lcw.one.login.rest;
 
+import com.lcw.one.base.service.VerifyCodeService;
 import com.lcw.one.notify.service.IMessageSenderService;
 import com.lcw.one.sys.service.BaseTemplateEOService;
 import com.lcw.one.user.constant.VerifyCodeTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 import com.lcw.one.util.exception.OneBaseException;
-import com.lcw.one.util.http.CookieUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.RandomUtils;
@@ -19,7 +20,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,9 +50,12 @@ public class AccountRestController {
     private UserInfoEOService userInfoEOService;
 
     @Autowired
+    private VerifyCodeService verifyCodeService;
+
+    @Autowired
     private BaseTemplateEOService baseTemplateEOService;
 
-    public void validVerifyCode(HttpServletRequest request, String captcha) {
+    public void validImageVerifyCode(HttpServletRequest request, String captcha) {
         String cookieValue = CookieUtils.getCookieValue(request);
         String validCode = redisUtil.get(cookieValue + "_" + VerifyCodeTypeEnum.LOGIN.getCode());
         if (StringUtils.isEmpty(captcha) || !captcha.toUpperCase().equals(validCode)) {
@@ -65,8 +68,8 @@ public class AccountRestController {
     @GetMapping(value = "/validAccount")
     public ResponseMessage validAccount(HttpServletRequest request, HttpServletResponse response,
                                         String account, String captcha) throws IOException {
-        // 验证验证码是否正确
-        validVerifyCode(request, captcha);
+        // 验证图片验证码是否正确
+        validImageVerifyCode(request, captcha);
 
         // 验证系统中是否有该用户
         UserInfoEO userInfoEO = userInfoEOService.getUserByLoginName(account);
@@ -100,19 +103,10 @@ public class AccountRestController {
 
     @ApiOperation(value = "验证用户输入的验证码")
     @GetMapping(value = "/validVerifyCode")
-    public ResponseMessage validVerifyCode(HttpServletRequest request, HttpServletResponse response, String verifyCode) throws IOException {
-        // 验证
-        if (StringUtils.isEmpty(verifyCode)) {
-            return Result.error("0003", "请输入验证码");
-        }
+    public ResponseMessage validImageVerifyCode(HttpServletRequest request, HttpServletResponse response, String verifyCode) {
+        // 验证用户输入的验证码
         String cookieValue = CookieUtils.getCookieValue(request);
-        String validCodeRedis = redisUtil.get(cookieValue + "_" + VerifyCodeTypeEnum.RESET_PASSWORD.getCode());
-        if (StringUtils.isEmpty(validCodeRedis)) {
-            return Result.error("0003", "验证码已经失效");
-        }
-        if (!validCodeRedis.equals(verifyCode)) {
-            return Result.error("0003", "请输入正确的验证码");
-        }
+        verifyCodeService.validVerifyCode(cookieValue, VerifyCodeTypeEnum.RESET_PASSWORD, verifyCode);
 
         // 验证通过清除验证码
         redisUtil.remove(cookieValue + "_" + VerifyCodeTypeEnum.RESET_PASSWORD.getCode());
@@ -124,7 +118,7 @@ public class AccountRestController {
 
     @ApiOperation(value = "重置密码")
     @GetMapping(value = "/resetPassword")
-    public ResponseMessage resetPassword(HttpServletRequest request, HttpServletResponse response, String password) throws IOException {
+    public ResponseMessage resetPassword(HttpServletRequest request, HttpServletResponse response, String password) {
         if (StringUtils.isEmpty(password)) {
             return Result.error("0001", "密码不能为空");
         }
@@ -139,8 +133,7 @@ public class AccountRestController {
         userInfoEOService.updatePassword(userId, password);
 
         // 修改成功清除缓存
-        redisUtil.remove(cookieValue + "_" + RESET_PASSWORD_AUTH_CODE,
-                cookieValue + "_" + RESET_PASSWORD_USER_ID);
+        redisUtil.remove(cookieValue + "_" + RESET_PASSWORD_AUTH_CODE, cookieValue + "_" + RESET_PASSWORD_USER_ID);
         return Result.success();
     }
 }

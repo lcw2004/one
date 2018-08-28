@@ -15,6 +15,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Excel导出工具
@@ -175,11 +176,11 @@ public class ExcelExporter {
             dataRow.setHeightInPoints(DEFAULT_HEIGHT_IN_POINTS);
             for (ExcelFieldRule excelFieldRule : excelClassRule.getFieldRuleList()) {
                 Object value = Reflections.invokeGetter(data, excelFieldRule.getFieldName());
-                if (StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
+                if (excelFieldRule.getFieldClass() != Map.class && StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
                     String dictLabel = ExcelDictCache.getLabelCache(excelFieldRule.getDictType(), String.valueOf(value));
-                    POIUtils.setCellValue(workbook, dataRow, excelFieldRule.getIndex(), dictLabel, excelStyle.getNormalStyle());
+                    POIUtils.setCellValue(workbook, dataRow, excelFieldRule.getIndex(), dictLabel, excelStyle.getNormalStyle(), excelFieldRule);
                 } else {
-                    POIUtils.setCellValue(workbook, dataRow, excelFieldRule.getIndex(), value, excelStyle.getNormalStyle());
+                    POIUtils.setCellValue(workbook, dataRow, excelFieldRule.getIndex(), value, excelStyle.getNormalStyle(), excelFieldRule);
                 }
 
             }

@@ -4,11 +4,11 @@ import com.lcw.one.msg.entity.MsgMessageEO;
 import com.lcw.one.msg.entity.MsgTemplateEO;
 import com.lcw.one.msg.service.MsgTemplateEOService;
 import com.lcw.one.notify.bean.MessageTargetTypeEnum;
-import com.lcw.one.notify.service.IMessageSender;
-import com.lcw.one.notify.service.sender.IMessageSenderFactory;
+import com.lcw.one.notify.sender.IMessageSender;
 import com.lcw.one.notify.service.IMessageSenderService;
-import com.lcw.one.notify.service.base.EmailService;
-import com.lcw.one.notify.service.base.SmsService;
+import com.lcw.one.notify.channel.base.EmailService;
+import com.lcw.one.notify.channel.base.SmsService;
+import com.lcw.one.notify.sender.IMessageSenderFactory;
 import com.lcw.one.notify.utils.MessageUtils;
 import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.StringUtils;
@@ -58,14 +58,15 @@ public class SimpleMessageSenderServiceImpl implements IMessageSenderService {
 
     @Override
     public void sendMessage(String userId, String templateId, Map<String, Object> placeholderMap) {
-       this.sendMessage(Arrays.asList(userId), templateId, placeholderMap);
+        Assert.isTrue(StringUtils.isNotEmpty(userId), "用户ID不能为空");
+        this.sendMessage(Arrays.asList(userId), templateId, placeholderMap);
     }
 
     @Override
     public void sendMessage(List<String> userIdList, String templateId, Map<String, Object> placeholderMap) {
         Assert.isTrue(StringUtils.isNotEmpty(templateId), "消息模板编号不能为空");
         MsgTemplateEO msgTemplateEO = msgTemplateEOService.get(templateId);
-        Assert.isTrue(msgTemplateEO != null, "消息模板不存在");
+        Assert.isTrue(msgTemplateEO != null, String.format("消息模板[%s]不存在", templateId));
 
         MsgMessageEO msgMessageEO = new MsgMessageEO();
         msgMessageEO.setMessageId(UUID.randomUUID());

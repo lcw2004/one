@@ -1,6 +1,9 @@
 package com.lcw.one.util.utils.http;
 
 
+import com.lcw.one.util.http.Settings;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public class HttpUtils {
@@ -281,21 +284,17 @@ public class HttpUtils {
         return ret;
     }
 
-    public static void testGet() {
-        String url = "http://127.0.0.1:8888";
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
-            String json = "{'msgtype':'01','name':'login" + i + "','desc':'用户登录','resptime':30}";
-            ResponseContent responseContent = postJsonEntity(url, json, 60000);
-            System.out.println(i + ":" + responseContent.getContent());
-        }
-        System.out.println(System.currentTimeMillis() - start + "ms");
-        try {
-            for (; ; ) {
-                Thread.sleep(1000L);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public static void addImageHeader(HttpServletResponse response) {
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
     }
+
+
+    public static void addCacheImageHeader(HttpServletResponse response) {
+        response.setHeader("Cache-Control" , "max-age=" + Settings.HTTP_CACHE_MAX_AGE);
+        response.setContentType("image/jpeg");
+    }
+
 }

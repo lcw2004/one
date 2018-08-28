@@ -9,6 +9,14 @@ import java.text.DecimalFormat;
  */
 public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
+    public static Double safeDouble(Double input) {
+        return input == null ? 0D : input;
+    }
+
+    public static Integer safeInteger(Integer input) {
+        return input == null ? 0 : input;
+    }
+
     public static int safeLongToInt(long input) {
         if (input < Integer.MIN_VALUE || input > Integer.MAX_VALUE) {
             throw new IllegalArgumentException(input + " cannot be cast to int without changing its value.");
@@ -24,14 +32,26 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
         }
     }
 
+    public static int compareTo(Double value1, Double value2) {
+        return new BigDecimal(value1).compareTo(new BigDecimal(value2));
+    }
+
     public static String formatDouble(Double value) {
+        return formatDouble(value, "########.00");
+    }
+
+    public static String formatDoubleNoDot(Double value) {
+        return formatDouble(value, "########");
+    }
+
+    public static String formatDouble(Double value, String pattern) {
         if (value == null) {
             return "";
         }
         if (value == 0d) {
             return "0.00";
         }
-        DecimalFormat df = new DecimalFormat("########.00");
+        DecimalFormat df = new DecimalFormat(pattern);
         return df.format(value.doubleValue());
     }
 
@@ -44,11 +64,19 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
         if (inputValue.getClass() == Integer.class) {
             return new BigDecimal((Integer) inputValue).toPlainString();
         } else if (inputValue.getClass() == Double.class) {
-            return new BigDecimal((Double) inputValue).toPlainString();
+            String value = NumberUtils.formatDoubleNoDot((Double) inputValue);
+            if (value.endsWith(".00")) {
+                value = value.substring(0, value.length() - 3);
+            }
+            return value;
         } else if (inputValue.getClass() == Float.class) {
             return new BigDecimal((Float) inputValue).toPlainString();
         } else {
             return "";
         }
+    }
+
+    public static int boolToInt(boolean value) {
+        return value ? 1 : 0;
     }
 }

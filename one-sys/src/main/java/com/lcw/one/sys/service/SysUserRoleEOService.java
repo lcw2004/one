@@ -11,6 +11,10 @@ import java.util.List;
 @Service
 public class SysUserRoleEOService extends CrudService<SysUserRoleEODao, SysUserRoleEO, String> {
 
+    public List<String> listUserIdByRoleId(String roleId) {
+        return dao.listUserIdByRoleId(roleId);
+    }
+
     public void saveSysUserRole(String userId, List<String> roleIdList) {
         if (CollectionUtils.isNotEmpty(roleIdList)) {
             for (String roleId : roleIdList) {

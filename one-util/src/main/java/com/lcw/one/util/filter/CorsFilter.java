@@ -1,14 +1,17 @@
 package com.lcw.one.util.filter;
 
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 跨域过滤器
+ *
+ */
 public class CorsFilter implements Filter {
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) {
 	}
 
 	@Override

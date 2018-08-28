@@ -1,10 +1,10 @@
 package com.lcw.one.main.rest;
 
-import com.lcw.one.base.utils.LoginUserUtils;
+import com.lcw.one.base.config.GlobalConfig;
 import com.lcw.one.login.util.UserUtils;
-import com.lcw.one.sys.util.DictUtils;
+import com.lcw.one.sys.entity.SystemInfo;
+import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
-import com.lcw.one.user.constant.UserSupplierStatusEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.util.bean.LoginUser;
@@ -13,6 +13,7 @@ import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.DateUtils;
 import com.lcw.one.util.utils.RequestUtils;
 import com.lcw.one.util.utils.StringUtils;
+import com.lcw.one.base.utils.LoginUserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "${restPath}/")
@@ -37,6 +37,9 @@ public class InitRestController {
 
     @Autowired
     private UserInfoEOService userInfoEOService;
+
+    @Autowired
+    private SystemInfo systemInfo;
 
     @ApiOperation(value = "获取初始化数据")
     @GetMapping("initData")
@@ -53,7 +56,16 @@ public class InitRestController {
         result.put("userOffice", UserUtils.getUserOffice());
         result.put("sysDict", DictUtils.getDictMap());
         result.put("sysSetting", listSetting(request));
+        if (loginUser.getUserType() == UserInfoTypeEnum.SUPPLIER.getValue()) {
+            result.put("supplierId", LoginUserUtils.getLoginSupplierId(token));
+        }
         return Result.success(result);
+    }
+
+    @ApiOperation(value = "获取系统信息")
+    @GetMapping("systemInfo")
+    public ResponseMessage<SystemInfo> systemInfo(HttpServletRequest request) {
+        return Result.success(systemInfo);
     }
 
     private UserInfoEO userInfo(String userId) {
@@ -69,6 +81,8 @@ public class InitRestController {
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));
+        settingMap.put("isEnableSignIn", GlobalConfig.getBooleanValue("is_enable_sign_in"));
+        settingMap.put("isEnableBidCheck", GlobalConfig.getBooleanValue("is_enable_bid_check"));
         return settingMap;
     }
 
@@ -76,16 +90,7 @@ public class InitRestController {
         if(StringUtils.isEmpty(maxFileSizeStr)) {
             return 0;
         }
-
-        long maxFileSize = 0;
-        if (maxFileSizeStr.toUpperCase().endsWith("MB")) {
-            int mb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
-            maxFileSize = mb * 1024 * 1024L;
-        } else if (maxFileSizeStr.toUpperCase().endsWith("KB")) {
-            int kb = Integer.parseInt(maxFileSizeStr.substring(0, maxFileSizeStr.length() - 2));
-            maxFileSize = kb * 1024;
-        }
-        return maxFileSize;
+        return StringUtils.calculateFileBites(maxFileSizeStr);
     }
 
 }

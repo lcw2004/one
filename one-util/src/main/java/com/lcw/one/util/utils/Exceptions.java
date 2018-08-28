@@ -13,6 +13,7 @@ import java.util.Set;
 
 /**
  * 关于异常的工具类.
+ *
  * @author calvin
  * @version 2013-01-15
  */
@@ -33,9 +34,16 @@ public class Exceptions {
      * 将ErrorStack转化为String.
      */
     public static String getStackTraceAsString(Exception e) {
-        StringWriter stringWriter = new StringWriter();
-        e.printStackTrace(new PrintWriter(stringWriter));
-        return stringWriter.toString();
+        String stackTrace = null;
+        StringWriter stringWriter = null;
+        try {
+            stringWriter = new StringWriter();
+            e.printStackTrace(new PrintWriter(stringWriter));
+            stackTrace = stringWriter.toString();
+        } finally {
+            IOUtils.closeQuietly(stringWriter);
+        }
+        return stackTrace;
     }
 
     /**
@@ -56,6 +64,7 @@ public class Exceptions {
 
     /**
      * 获取第一个验证失败的信息
+     *
      * @param exception
      * @return
      */
@@ -63,8 +72,19 @@ public class Exceptions {
         ConstraintViolation violation = null;
         Set<ConstraintViolation<?>> set = exception.getConstraintViolations();
         if (CollectionUtils.isNotEmpty(set)) {
-             violation = set.iterator().next();
+            violation = set.iterator().next();
         }
         return violation;
+    }
+
+    public static String getMessage(Exception e) {
+        String message = e.getMessage();
+        if (StringUtils.isEmpty(message) && e.getCause() != null) {
+            message = e.getCause().getMessage();
+        }
+        if (StringUtils.isEmpty(message)) {
+            message = getStackTraceAsString(e);
+        }
+        return message;
     }
 }

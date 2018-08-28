@@ -1,5 +1,7 @@
 package com.lcw.one.util.utils;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.lang.annotation.Annotation;
@@ -47,4 +49,11 @@ public class AspectHelper {
         }
         return returnUrl;
     }
+
+    public static <T extends Annotation> T getMethodAnnotation(ProceedingJoinPoint joinPoint, Class<T> clazz) {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
+        return method.getAnnotation(clazz);
+    }
+
 }

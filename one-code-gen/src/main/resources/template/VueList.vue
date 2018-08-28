@@ -29,7 +29,7 @@
 	                  <%
 	                    for (field in table.fieldList) {
 	                      if (field.isList == 1) {
-	                  	    print("                  <th>" + field.fieldName + "</th>\n");
+	                  	    print("                    <th>" + field.fieldName + "</th>\n");
 	                      }
 	                    }
 	                  %>
@@ -43,9 +43,9 @@
 	                    for (field in table.fieldList) {
 	                      if (field.isList == 1) {
 	                        if (field.showType == "4" || field.showType == "6") {
-	                          print("                  <td><DictLabel :value=\"obj." + field.javaFieldName + "\" type=\"" + field.dictType + "\"></DictLabel></td>\n");
+	                          print("                    <td><DictLabel :value=\"obj." + field.javaFieldName + "\" type=\"" + field.dictType + "\"></DictLabel></td>\n");
 	                        } else {
-	                          print("                  <td>{{ obj." + field.javaFieldName + " }}</td>\n");
+	                          print("                    <td>{{ obj." + field.javaFieldName + " }}</td>\n");
 	                        }
 	                      }
 	                    }
@@ -107,14 +107,6 @@
             }
           })
         })
-      }
-    },
-    watch: {
-      'param': {
-        handler: function () {
-          this.query()
-        },
-        deep: true
       }
     }
   }

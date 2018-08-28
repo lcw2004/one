@@ -25,11 +25,11 @@ public class SysHomeComponentEODao extends BaseRepositoryImpl<SysHomeComponentEO
     }
 
     public List<String> listByRoleId(String roleId) {
-        return executeList("select distinct rc.componentId from SysRoleComponentEO rc where rc.roleId = ?1", roleId);
+        return executeList("select distinct rc.componentId from SysRoleComponentEO rc where rc.roleId = ?1 order by componentId", roleId);
     }
 
     public List<SysHomeComponentEO> listByUserId(String userId) {
-        return list("select distinct c from SysHomeComponentEO c, SysRoleComponentEO rc, SysUserRoleEO ur where c.componentId = rc.componentId and rc.roleId = ur.roleId and ur.userId = ?1", userId);
+        return list("select distinct c from SysHomeComponentEO c, SysRoleComponentEO rc, SysUserRoleEO ur where c.componentId = rc.componentId and rc.roleId = ur.roleId and ur.userId = ?1 order by c.componentId", userId);
     }
     
 }

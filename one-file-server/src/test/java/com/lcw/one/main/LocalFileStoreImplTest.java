@@ -1,6 +1,6 @@
 package com.lcw.one.main;
 
-import com.lcw.one.file.store.LocalFileStoreImpl;
+import com.lcw.one.file.store.impl.LocalFileStoreImpl;
 import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.UUID;
 import org.junit.Assert;

@@ -31,4 +31,5 @@ public interface IExcelStyle {
     CellStyle getDollarStyle();
 
     CellStyle getRateStyle();
+
 }

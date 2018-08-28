@@ -27,8 +27,8 @@ public class WeixinLoginService {
      * @param openId   微信OpenId
      * @return
      */
-    public String loginByAccount(HttpServletRequest request, String account, String password, String openId) {
-        UserInfoEO userInfoEO = userInfoEOService.login(account, password, openId);
+    public String bindWeChatId(HttpServletRequest request, String account, String password, String openId) {
+        UserInfoEO userInfoEO = userInfoEOService.loginAndBindWeChatId(account, password, openId);
         LoginUser loginUser = userInfoEO.toLoginUser();
         loginUser.setIp(RequestUtils.getClientIp(request));
         return commonLoginService.loginSuccess(loginUser);

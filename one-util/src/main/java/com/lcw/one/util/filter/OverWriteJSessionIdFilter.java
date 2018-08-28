@@ -1,7 +1,6 @@
 package com.lcw.one.util.filter;
 
-import com.lcw.one.util.http.CookieUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ public class OverWriteJSessionIdFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override

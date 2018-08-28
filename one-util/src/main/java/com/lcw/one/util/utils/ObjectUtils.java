@@ -47,14 +47,13 @@ public class ObjectUtils {
      */
     public static <T> T clone(T obj) {
         String json = GsonUtil.t2Json(obj);
-        T dest = (T) GsonUtil.fromJson(json, obj.getClass());
-        return dest;
+        return (T) GsonUtil.fromJson(json, obj.getClass());
     }
 
     public static <E> List<E> cloneAs(Collection objList, Class targetClass) {
         List<E> copyList = new ArrayList<>();
         for (Object obj : objList) {
-            copyList.add((E) cloneAs(obj, targetClass));
+            copyList.add(cloneAs(obj, targetClass));
         }
         return copyList;
     }
@@ -69,8 +68,7 @@ public class ObjectUtils {
      */
     public static <T> T cloneAs(Object obj, Class targetClass) {
         String json = GsonUtil.t2Json(obj);
-        T dest = (T) GsonUtil.fromJson(json, targetClass);
-        return dest;
+        return (T) GsonUtil.fromJson(json, targetClass);
     }
 
     public static <T extends Serializable> List<T> cloneSerializable(Collection<T> objList) {
@@ -98,7 +96,9 @@ public class ObjectUtils {
         Map<ID, E> map = new HashMap<>();
         for (E e : list) {
             Object filedValue = Reflections.invokeGetter2(e, fieldName);
-            map.put((ID) filedValue, e);
+            if (filedValue != null) {
+                map.put((ID) filedValue, e);
+            }
         }
         return map;
     }
@@ -119,9 +119,34 @@ public class ObjectUtils {
         List<F> fList = new ArrayList<>();
         for (E e : list) {
             Object filedValue = Reflections.invokeGetter2(e, fieldName);
-            fList.add((F) filedValue);
+            if (filedValue != null) {
+                fList.add((F) filedValue);
+            }
         }
         return fList;
+    }
+
+
+    /**
+     * 将对象List按指定字段值转为该字段值的列表
+     *
+     * @param list      列表
+     * @param fieldName 字段名
+     * @return
+     */
+    public static <F, E> Set<F> getFieldValueSet(List<E> list, String fieldName) {
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+
+        Set<F> set = new HashSet<>();
+        for (E e : list) {
+            Object filedValue = Reflections.invokeGetter2(e, fieldName);
+            if (filedValue != null) {
+                set.add((F) filedValue);
+            }
+        }
+        return set;
     }
 
     /**
@@ -131,22 +156,19 @@ public class ObjectUtils {
      * @param orderField 排序的序号
      */
     public static void orderList(List dataList, final String orderField) {
-        if (StringUtils.isEmpty(orderField)) {
+        if (StringUtils.isEmpty(orderField) || CollectionUtils.isEmpty(dataList)) {
             return;
         }
 
-        Collections.sort(dataList, new Comparator<Object>() {
-            public int compare(Object obj1, Object obj2) {
-                Integer sort1 = (Integer) Reflections.invokeGetter2(obj1, orderField);
-                Integer sort2 = (Integer) Reflections.invokeGetter2(obj2, orderField);
+        Collections.sort(dataList, (obj1, obj2) -> {
+            Integer sort1 = (Integer) Reflections.invokeGetter2(obj1, orderField);
+            Integer sort2 = (Integer) Reflections.invokeGetter2(obj2, orderField);
 
-                int result = 0;
-                if (sort1 != null && sort2 != null) {
-                    result = sort1.compareTo(sort2);
-                }
-
-                return result;
+            int result = 0;
+            if (sort1 != null && sort2 != null) {
+                result = sort1.compareTo(sort2);
             }
+            return result;
         });
     }
 }

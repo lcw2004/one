@@ -1,5 +1,7 @@
 package com.lcw.one.workflow.bean;
 
+import com.lcw.one.util.utils.CollectionUtils;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,6 +10,8 @@ import java.util.Set;
 public class WorkFlowBean {
 
     private String userId;
+
+    private String assigneeId;
 
     private String flowId;
 
@@ -35,6 +39,14 @@ public class WorkFlowBean {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(String assigneeId) {
+        this.assigneeId = assigneeId;
     }
 
     public String getFlowId() {
@@ -94,6 +106,9 @@ public class WorkFlowBean {
     }
 
     public Map<String, Object> getVariables() {
+        if (this.variables == null) {
+            this.variables = new HashMap<>();
+        }
         return variables;
     }
 
@@ -102,6 +117,9 @@ public class WorkFlowBean {
     }
 
     public Map<String, Object> getLocalVariables() {
+        if (this.localVariables == null) {
+            this.localVariables = new HashMap<>();
+        }
         return localVariables;
     }
 
@@ -118,16 +136,22 @@ public class WorkFlowBean {
     }
 
     public void putVariables(String key, Object value) {
-        if (variables == null) {
-            variables = new HashMap<>();
-        }
-        variables.put(key, value);
+        getVariables().put(key, value);
     }
 
     public void putVariables(Map<String, Object> variables) {
-        if (this.variables == null) {
-            this.variables = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(variables)) {
+            getVariables().putAll(variables);
         }
-        this.variables.putAll(variables);
+    }
+
+    public void putLocalVariables(String key, Object value) {
+        getLocalVariables().put(key, value);
+    }
+
+    public void putLocalVariables(Map<String, Object> variables) {
+        if (CollectionUtils.isNotEmpty(variables)) {
+            getLocalVariables().putAll(variables);
+        }
     }
 }

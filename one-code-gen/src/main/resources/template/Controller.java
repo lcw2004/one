@@ -28,7 +28,7 @@ public class @{table.className}RestController {
 
     @ApiOperation(value = "@{table.tableName}详情")
     @GetMapping("/{id}")
-    public ResponseMessage<@{table.className}> get(@PathVariable("id") String id) {
+    public ResponseMessage<@{table.className}> get(@PathVariable String id) {
         return Result.success(@{table.classNameLowerCamel}Service.get(id));
     }
 
@@ -61,7 +61,7 @@ public class @{table.className}RestController {
 
     @ApiOperation(value = "删除@{table.tableName}")
     @DeleteMapping("/{id}")
-    public ResponseMessage delete(@PathVariable("id") String id) {
+    public ResponseMessage delete(@PathVariable String id) {
         @{table.classNameLowerCamel}Service.delete(id);
         return Result.success();
     }

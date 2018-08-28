@@ -1,143 +1,205 @@
 package com.lcw.one.workflow.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lcw.one.sys.entity.SysOfficeEO;
+import com.lcw.one.sys.entity.SysRoleEO;
+import com.lcw.one.user.entity.UserInfoEO;
 
+import javax.persistence.*;
+import java.lang.String;
+import java.lang.Integer;
+
+/**
+ * 工作流配置
+ */
 @Entity
 @Table(name = "flow_task_info")
 @IdClass(FlowTaskInfoEOPK.class)
 public class FlowTaskInfoEO {
-    private String processKey;
-    private String taskKey;
-    private String bindRole;
-    private String bindForm;
-    private String taskName;
-    private Integer rankNum;
-    private Integer valid;
-    private String taskDesc;
 
-    private Integer x;
-    private Integer y;
-    private Integer height;
-    private Integer width;
+	/**
+	 * 流程节点ID
+	 */
+	@Id
+	@Column(name = "task_key")
+	private String taskKey;
 
+	/**
+	 * 流程ID
+	 */
+	@Id
+	@Column(name = "process_key")
+	private String processKey;
 
-    @Id
-    @Column(name = "process_key")
-    public String getProcessKey() {
-        return processKey;
+	/**
+	 * 任务名称
+	 */
+	@Basic
+	@Column(name = "task_name")
+	private String taskName;
+
+	/**
+	 * 描述
+	 */
+	@Basic
+	@Column(name = "task_desc")
+	private String taskDesc;
+
+	/**
+	 * 绑定对象类型
+	 */
+	@Basic
+	@Column(name = "bind_type")
+	private Integer bindType;
+
+	/**
+	 * 绑定角色
+	 */
+	@Basic
+	@Column(name = "bind_role_id")
+	private String bindRoleId;
+
+	/**
+	 * 绑定机构
+	 */
+	@Basic
+	@Column(name = "bind_office_id")
+	private String bindOfficeId;
+
+	/**
+	 * 绑定用户
+	 */
+	@Basic
+	@Column(name = "bind_user_id")
+	private String bindUserId;
+
+	/**
+	 * 绑定操作表单
+	 */
+	@Basic
+	@Column(name = "bind_operation_form")
+	private String bindOperationForm;
+
+    /**
+     * 绑定服务
+     */
+	@Basic
+    @Column(name = "bind_service")
+    private String bindService;
+
+    @ManyToOne
+    @JoinColumn(name = "bind_role_id", insertable = false, updatable = false)
+    private SysRoleEO bindRole;
+
+    @ManyToOne
+    @JoinColumn(name = "bind_office_id", insertable = false, updatable = false)
+    private SysOfficeEO bindOffice;
+
+    @ManyToOne
+    @JoinColumn(name = "bind_user_id", insertable = false, updatable = false)
+    private UserInfoEO bindUser;
+
+    public String getTaskKey () {
+        return this.taskKey;
     }
 
-    public void setProcessKey(String pkProcessKey) {
-        this.processKey = pkProcessKey;
+    public void setTaskKey (String taskKey) {
+        this.taskKey = taskKey;
     }
 
-    @Id
-    @Column(name = "task_key")
-    public String getTaskKey() {
-        return taskKey;
+    public String getProcessKey () {
+        return this.processKey;
     }
 
-    public void setTaskKey(String pkTaskKey) {
-        this.taskKey = pkTaskKey;
+    public void setProcessKey (String processKey) {
+        this.processKey = processKey;
     }
 
-    @Basic
-    @Column(name = "bind_role")
-    public String getBindRole() {
-        return bindRole;
+    public String getTaskName () {
+        return this.taskName;
     }
 
-    public void setBindRole(String bindRole) {
-        this.bindRole = bindRole;
-    }
-
-    @Basic
-    @Column(name = "bind_form")
-    public String getBindForm() {
-        return bindForm;
-    }
-
-    public void setBindForm(String bindForm) {
-        this.bindForm = bindForm;
-    }
-
-    @Basic
-    @Column(name = "task_name")
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
+    public void setTaskName (String taskName) {
         this.taskName = taskName;
     }
 
-    @Basic
-    @Column(name = "rank_num")
-    public Integer getRankNum() {
-        return rankNum;
+    public String getTaskDesc () {
+        return this.taskDesc;
     }
 
-    public void setRankNum(Integer rankNum) {
-        this.rankNum = rankNum;
-    }
-
-    @Basic
-    @Column(name = "valid")
-    public Integer getValid() {
-        return valid;
-    }
-
-    public void setValid(Integer valid) {
-        this.valid = valid;
-    }
-
-    @Basic
-    @Column(name = "task_desc")
-    public String getTaskDesc() {
-        return taskDesc;
-    }
-
-    public void setTaskDesc(String taskDesc) {
+    public void setTaskDesc (String taskDesc) {
         this.taskDesc = taskDesc;
     }
 
-    @Basic
-    @Column(name = "x")
-    public Integer getX() {
-        return x;
+    public Integer getBindType () {
+        return this.bindType;
     }
 
-    public void setX(Integer x) {
-        this.x = x;
+    public void setBindType (Integer bindType) {
+        this.bindType = bindType;
     }
 
-    @Basic
-    @Column(name = "y")
-    public Integer getY() {
-        return y;
+    public String getBindRoleId () {
+        return this.bindRoleId;
     }
 
-    public void setY(Integer y) {
-        this.y = y;
+    public void setBindRoleId (String bindRoleId) {
+        this.bindRoleId = bindRoleId;
     }
 
-    @Basic
-    @Column(name = "height")
-    public Integer getHeight() {
-        return height;
+    public String getBindOfficeId () {
+        return this.bindOfficeId;
     }
 
-    public void setHeight(Integer height) {
-        this.height = height;
+    public void setBindOfficeId (String bindOfficeId) {
+        this.bindOfficeId = bindOfficeId;
     }
 
-    @Basic
-    @Column(name = "width")
-    public Integer getWidth() {
-        return width;
+    public String getBindUserId () {
+        return this.bindUserId;
     }
 
-    public void setWidth(Integer width) {
-        this.width = width;
+    public void setBindUserId (String bindUserId) {
+        this.bindUserId = bindUserId;
+    }
+
+    public String getBindOperationForm () {
+        return this.bindOperationForm;
+    }
+
+    public void setBindOperationForm (String bindOperationForm) {
+        this.bindOperationForm = bindOperationForm;
+    }
+
+    public SysRoleEO getBindRole() {
+        return bindRole;
+    }
+
+    public void setBindRole(SysRoleEO bindRole) {
+        this.bindRole = bindRole;
+    }
+
+    public SysOfficeEO getBindOffice() {
+        return bindOffice;
+    }
+
+    public void setBindOffice(SysOfficeEO bindOffice) {
+        this.bindOffice = bindOffice;
+    }
+
+    public UserInfoEO getBindUser() {
+        return bindUser;
+    }
+
+    public void setBindUser(UserInfoEO bindUser) {
+        this.bindUser = bindUser;
+    }
+
+    public String getBindService() {
+        return bindService;
+    }
+
+    public void setBindService(String bindService) {
+        this.bindService = bindService;
     }
 }

@@ -27,6 +27,9 @@ public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO, Strin
     public SysRoleEO save(SysRoleEO sysRoleEO) {
         sysRoleEO.setId(UUID.randomUUID10());
         sysRoleEO.setDelFlag(DeleteFlagEnum.NORMAL.getValue());
+        if (sysRoleEO.getOrderIndex() == null) {
+            sysRoleEO.setOrderIndex(dao.getNextSort());
+        }
         dao.save(sysRoleEO);
         sysHomeComponentEOService.save(sysRoleEO.getId(), sysRoleEO.getComponentIdList());
         return sysRoleEO;

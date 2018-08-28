@@ -22,7 +22,12 @@ public class SpringContextHolder {
     }
 
     public static <T> T getBean(String name) {
-        return (T) getApplicationContext().getBean(name);
+        try {
+            return (T) getApplicationContext().getBean(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void setApplicationContext(ApplicationContext applicationContext) {

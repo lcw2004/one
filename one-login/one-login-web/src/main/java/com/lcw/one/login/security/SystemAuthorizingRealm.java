@@ -1,17 +1,17 @@
 package com.lcw.one.login.security;
 
-import com.lcw.one.user.constant.VerifyCodeTypeEnum;
 import com.lcw.one.login.security.exception.CaptchaException;
 import com.lcw.one.login.util.UserUtils;
+import com.lcw.one.user.constant.VerifyCodeTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.util.exception.OneBaseException;
-import com.lcw.one.util.http.CookieUtils;
 import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.SpringContextHolder;
 import com.lcw.one.util.utils.StringUtils;
 import com.lcw.one.util.utils.cipher.Encodes;
 import com.lcw.one.util.utils.cipher.password.PasswordUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -19,10 +19,8 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -81,13 +79,15 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
             getRedisUtil().remove(cookieValue + "_" + VerifyCodeTypeEnum.LOGIN.getCode());
         }
 
-        UserInfoEO user = getUserService().getUserByLoginName(token.getUsername());
+        UserInfoEO user = getUserService().getUserByLoginName(token.getUserType(), token.getUsername());
         if (user == null) {
+            logger.info("用户不存在：UserName[{}], UserType[{}]", token.getUsername(), token.getUserType());
             return null;
         }
         if (StringUtils.isEmpty(user.getPassword())) {
             throw new OneBaseException("用户密码为空");
         }
+        logger.info("用户登录：UserId[{}], Account[{}]", user.getUserId(), user.getAccount());
 
         byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
         return new SimpleAuthenticationInfo(new Principal(user), user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
@@ -117,26 +117,6 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(PasswordUtils.HASH_ALGORITHM);
         matcher.setHashIterations(PasswordUtils.HASH_INTERATIONS);
         setCredentialsMatcher(matcher);
-    }
-
-    /**
-     * 清空用户关联权限认证，待下次使用时重新加载
-     */
-    public void clearCachedAuthorizationInfo(String principal) {
-        SimplePrincipalCollection principals = new SimplePrincipalCollection(principal, getName());
-        clearCachedAuthorizationInfo(principals);
-    }
-
-    /**
-     * 清空所有关联认证
-     */
-    public void clearAllCachedAuthorizationInfo() {
-        Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
-        if (cache != null) {
-            for (Object key : cache.keys()) {
-                cache.remove(key);
-            }
-        }
     }
 
 

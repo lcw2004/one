@@ -34,6 +34,7 @@ public class ExcelClassRule {
         if (this.getFieldRuleList() == null) {
             this.fieldRuleList = new ArrayList<>();
         }
+        excelFieldRule.setIndex(this.fieldRuleList.size());
         this.fieldRuleList.add(excelFieldRule);
     }
 

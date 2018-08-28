@@ -3,9 +3,9 @@ package com.lcw.one.base.utils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.util.bean.LoginUser;
-import com.lcw.one.util.constant.GlobalConfig;
+import com.lcw.one.base.config.GlobalConfig;
 import com.lcw.one.util.exception.LoginInvalidException;
-import com.lcw.one.util.http.CookieUtils;
+import com.lcw.one.util.utils.http.CookieUtils;
 import com.lcw.one.util.utils.RedisUtil;
 import com.lcw.one.util.utils.RequestUtils;
 import com.lcw.one.util.utils.SpringContextHolder;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
+ * 当前登录用户工具类
  */
 public class LoginUserUtils {
 
@@ -46,6 +46,16 @@ public class LoginUserUtils {
         return getRedisUtil().get(token + LOGIN_USER_NEW) != null;
     }
 
+    /**
+     * 模拟系统用户
+     * @return
+     */
+    public static LoginUser getSystemUser() {
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserId("0");
+        return loginUser;
+    }
+
     public static LoginUser getCurrentUser(String cookieValue) {
         LoginUser loginUser = getRedisUtil().get(cookieValue + LOGIN_USER_NEW);
         if (loginUser == null) {
@@ -71,6 +81,16 @@ public class LoginUserUtils {
             throw new LoginInvalidException();
         }
         return loginUser.getUserId();
+    }
+
+    public static String getLoginUserIdNoException(HttpServletRequest request) {
+        String userId = null;
+        try {
+            userId = getLoginUserIdWithoutFlush(CookieUtils.getAuthToken(request));
+        } catch (LoginInvalidException e) {
+            // ignore
+        }
+        return userId;
     }
 
     public static String getLoginUserId(String cookieValue) {
@@ -133,12 +153,16 @@ public class LoginUserUtils {
             return;
         }
         LoginUser loginUser = getRedisUtil().get(sessionId + LOGIN_USER_NEW);
-        String supplierId = loginUser.getSupplierId();
+        if (loginUser == null) {
+            return;
+        }
         String userId = loginUser.getUserId();
-        getRedisUtil().remove(
-                userId + LOGIN_STATE,
-                supplierId + LOGIN_STATE,
-                sessionId + LOGIN_USER_NEW);
+        if (StringUtils.isNotEmpty(userId)) {
+            getRedisUtil().remove(userId + LOGIN_STATE, sessionId + LOGIN_USER_NEW);
+        }
+        if (StringUtils.isNotEmpty(loginUser.getSupplierId())) {
+            getRedisUtil().remove(loginUser.getSupplierId() + LOGIN_STATE);
+        }
     }
 
     public static void flushAll(String sessionId) {

@@ -32,13 +32,13 @@ public class WeixinTestController {
 
     @ApiOperation(value = "获取Token")
     @GetMapping(value = "/token")
-    public ResponseMessage token() throws IOException, WeixinException {
+    public ResponseMessage token() throws WeixinException {
         return Result.success(tokenManager.getAccessToken());
     }
 
     @ApiOperation(value = "获取菜单")
     @GetMapping(value = "/menu")
-    public ResponseMessage menu() throws IOException, WeixinException {
+    public ResponseMessage menu() throws WeixinException {
         MenuApi menuApi = new MenuApi(tokenManager);
         List<Button> buttonList = new ArrayList<>();
 

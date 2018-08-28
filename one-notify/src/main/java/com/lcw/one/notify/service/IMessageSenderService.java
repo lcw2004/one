@@ -5,7 +5,6 @@ import java.util.Map;
 
 public interface IMessageSenderService {
 
-
     /**
      * 发送Email到用户邮箱
      *

@@ -6,6 +6,7 @@ import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.TaskQueryCondition;
 import com.lcw.one.workflow.bean.WorkFlowBean;
+import com.lcw.one.workflow.config.ThreadLocalContext;
 import com.lcw.one.workflow.service.FlowTaskInfoEOService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
@@ -14,15 +15,18 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.ProcessEngineImpl;
 import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.persistence.entity.IdentityLinkEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +61,9 @@ public class ActivitiService {
 
     @Autowired
     private FlowTaskInfoEOService processTaskInfoEOService;
+
+    @Autowired
+    private ManagementService managementService;
 
     /**
      * 部署工作流
@@ -108,9 +115,13 @@ public class ActivitiService {
         if (processDefinition != null && processDefinition.isGraphicalNotationDefined()) {
             BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
             return diagramGenerator.generateDiagram(bpmnModel, "png",
-                    runtimeService.getActiveActivityIds(processInstance.getId()), Collections.<String>emptyList(),
-                    processEngineConfig.getActivityFontName(), processEngineConfig.getLabelFontName(), processEngineConfig.getAnnotationFontName(),
-                    processEngineConfig.getClassLoader(), 1.0);
+                    runtimeService.getActiveActivityIds(processInstance.getId()),
+                    Collections.emptyList(),
+                    processEngineConfig.getActivityFontName(),
+                    processEngineConfig.getLabelFontName(),
+                    processEngineConfig.getAnnotationFontName(),
+                    processEngineConfig.getClassLoader(),
+                    1.0);
         }
         return null;
     }
@@ -133,28 +144,30 @@ public class ActivitiService {
             throw new OneBaseException("业务ID不能为空");
         }
 
-        String businessKey = workFlowBean.getFlowId() + ":" + workFlowBean.getBusinessKey();
-        Map<String, Object> variables = workFlowBean.getVariables();
-        variables.put("processBusinessKey", businessKey);
-        variables.put("applyUserId", workFlowBean.getUserId());
-
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(workFlowBean.getFlowId()).latestVersion().singleResult();
-        variables.put("processName_", processDefinition.getName());
-
-        ProcessInstance processInstance;
         try {
-            identityService.setAuthenticatedUserId(workFlowBean.getUserId());
-            processInstance = runtimeService.startProcessInstanceByKey(workFlowBean.getFlowId(), businessKey, variables);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new OneBaseException(e.getMessage());
-        } finally {
-            identityService.setAuthenticatedUserId(null);
-        }
+            ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey(workFlowBean.getFlowId()).latestVersion().singleResult();
+            if (processDefinition == null) {
+                throw new OneBaseException("请先部署工作流");
+            }
 
-        workFlowBean.setProcessInstanceId(processInstance.getProcessInstanceId());
-        workFlowBean.setBusinessKey(processInstance.getBusinessKey());
-        workFlowBean.setTaskDefinitionName(processDefinition.getName());
+            String businessKey = workFlowBean.getFlowId() + ":" + workFlowBean.getBusinessKey();
+            Map<String, Object> variables = workFlowBean.getVariables();
+            variables.put("processBusinessKey", businessKey);
+            variables.put("applyUserId", workFlowBean.getUserId());
+            variables.put("assigneeId", workFlowBean.getAssigneeId());
+            variables.put("processName_", processDefinition.getName());
+
+            identityService.setAuthenticatedUserId(workFlowBean.getUserId());
+
+            // 失败会抛出异常
+            ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(workFlowBean.getFlowId(), businessKey, variables);
+
+            workFlowBean.setProcessInstanceId(processInstance.getProcessInstanceId());
+            workFlowBean.setBusinessKey(processInstance.getBusinessKey());
+            workFlowBean.setTaskDefinitionName(processDefinition.getName());
+        } catch (Exception e) {
+            return handlerActivitiException(e);
+        }
         return workFlowBean;
     }
 
@@ -195,10 +208,11 @@ public class ActivitiService {
             taskService.setAssignee(taskId, userId);
 
             taskService.setVariablesLocal(taskId, workFlowBean.getLocalVariables());
+            taskService.setVariables(taskId, workFlowBean.getVariables());
             taskService.complete(taskId, variables);
         } catch (Exception e) {
             logger.error("执行环节任务异常", e);
-            throw new OneBaseException(e.getMessage());
+            handlerActivitiException(e);
         }
 
         return workFlowBean;
@@ -243,6 +257,7 @@ public class ActivitiService {
         try {
             TaskQuery taskQuery = queryCondition.createTaskQuery(taskService.createTaskQuery());
             List<Task> taskList = taskQuery.orderByTaskCreateTime().desc().listPage((page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+
             page.setCount(taskQuery.count());
             for (Task task : taskList) {
                 list.add(transToTaskInfoBean(task));
@@ -253,6 +268,73 @@ public class ActivitiService {
             throw new OneBaseException("查询失败:" + e.getMessage());
         }
         return page;
+    }
+
+    /**
+     * 查询工作流列表
+     *
+     * @param queryCondition
+     * @return
+     */
+    public PageInfo<TaskInfoBean> queryTaskListNative(TaskQueryCondition queryCondition) {
+        PageInfo<TaskInfoBean> page = queryCondition.getPageInfo();
+
+        List<TaskInfoBean> list = new ArrayList<>();
+        try {
+            String listSQL = createNativeQuerySQL(queryCondition);
+            String countSQL = "select count(1) from (" + listSQL + ") as t";
+            logger.info("Native SQL: {}", listSQL);
+
+            NativeTaskQuery listTaskQuery = taskService.createNativeTaskQuery().sql(listSQL);
+            buildParams(listTaskQuery, queryCondition);
+            List<Task> taskList = listTaskQuery.listPage((page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+
+            NativeTaskQuery countTaskQuery = taskService.createNativeTaskQuery().sql(countSQL);
+            buildParams(countTaskQuery, queryCondition);
+            long count = countTaskQuery.count();
+            page.setCount(count);
+
+            for (Task task : taskList) {
+                list.add(transToTaskInfoBean(task));
+            }
+            page.setList(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new OneBaseException("查询失败:" + e.getMessage());
+        }
+        return page;
+    }
+
+    public NativeTaskQuery buildParams(NativeTaskQuery query, TaskQueryCondition queryCondition) {
+        if (queryCondition.getCurrentUser() != null) {
+            query.parameter("gourpIn", queryCondition.getCurrentUser().getRoleIds());
+            query.parameter("userId", queryCondition.getCurrentUser().getUserId());
+        }
+        return query;
+    }
+
+    public String createNativeQuerySQL(TaskQueryCondition queryCondition) {
+        String taskTableName = managementService.getTableName(Task.class);
+        String identityLinkTableName = managementService.getTableName(IdentityLinkEntity.class);
+        String variableTableName = managementService.getTableName(VariableInstanceEntity.class);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT * FROM ").append(taskTableName).append(" WHERE 1=1 ");
+
+        if (queryCondition.getCurrentUser() != null) {
+            sql.append(" AND ID_ IN (");
+            sql.append("   SELECT DISTINCT TASK_ID_ FROM ").append(identityLinkTableName);
+            sql.append("   WHERE type_ = 'candidate' ");
+            sql.append("   AND group_id_ IN (#{gourpIn}) OR user_id_ = #{userId}");
+            sql.append(") ");
+        }
+
+//        sql.append("AND EXECUTION_ID_ IN (" +
+//                "   SELECT DISTINCT execution_id_ FROM act_ru_variable WHERE 1=1 " +
+//                "   AND name_ = 'businessName' " +
+//                "   AND text_ LIKE '%测试PRO2018022600002%')");
+
+        return sql.toString();
     }
 
     /**
@@ -312,6 +394,28 @@ public class ActivitiService {
         return taskInfoBean;
     }
 
+    /**
+     * 查询历史任务信息
+     *
+             * @param taskId
+     * @return
+             */
+    public TaskInfoBean getHistoryTask(String taskId) {
+        TaskInfoBean taskInfoBean = null;
+        try {
+            HistoricTaskInstanceQuery taskQuery = historyService.createHistoricTaskInstanceQuery();
+            HistoricTaskInstance task = taskQuery.taskId(taskId).singleResult();
+            if (task == null) {
+                throw new OneBaseException("找不到ID" + taskId + "为的任务");
+            }
+
+            taskInfoBean = transToTaskInfoBean(task);
+        } catch (Exception e) {
+            logger.info(e.getMessage(), e);
+            throw new OneBaseException("查询失败" + e.getMessage());
+        }
+        return taskInfoBean;
+    }
 
     private TaskInfoBean transToTaskInfoBean(Task task) {
         TaskInfoBean taskInfoBean = new TaskInfoBean();
@@ -329,10 +433,10 @@ public class ActivitiService {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(task.getProcessDefinitionId()).singleResult();
         taskInfoBean.setItemsName(processDefinition.getName());
 
-        Map<String, Object> instVars = runtimeService.getVariables(task.getProcessInstanceId());
-        Map<String, Object> vars = runtimeService.getVariables(task.getProcessInstanceId());
-        vars.putAll(instVars);
-        taskInfoBean.setVariables(vars);
+        Map<String, Object> variables = runtimeService.getVariables(task.getProcessInstanceId());
+        Map<String, Object> variablesLocal = taskService.getVariablesLocal(task.getId());
+        variables.putAll(variablesLocal);
+        taskInfoBean.setVariables(variables);
         return taskInfoBean;
     }
 
@@ -354,4 +458,16 @@ public class ActivitiService {
         taskInfoBean.setVariables(historicInstance.getProcessVariables());
         return taskInfoBean;
     }
+
+    private WorkFlowBean handlerActivitiException(Exception e) {
+        Map<String, String> resultMap = ThreadLocalContext.threadLocal.get();
+        if (CollectionUtils.isNotEmpty(resultMap) && resultMap.containsKey("cause")) {
+            String cause = resultMap.get("cause");
+            ThreadLocalContext.threadLocal.remove();
+            throw new OneBaseException(cause);
+        } else {
+            throw new OneBaseException(e.getMessage(), e);
+        }
+    }
+
 }

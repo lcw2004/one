@@ -1,10 +1,10 @@
 package com.lcw.one.file.rest;
 
 import com.lcw.one.file.service.SysFileEOService;
+import com.lcw.one.sys.constant.SysFilePermissionTypeEnum;
 import com.lcw.one.sys.entity.SysFileEO;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
-import com.lcw.one.util.utils.IOUtils;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class SysFileUploadRestController {
     public ResponseMessage<SysFileEO> upload(String userId, @RequestParam("file") MultipartFile file) {
         SysFileEO sysFileEO;
         try {
-            sysFileEO = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+            sysFileEO = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType(), SysFilePermissionTypeEnum.INNER.getValue());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             return Result.error("文件存储失败，请重试");
@@ -42,7 +42,7 @@ public class SysFileUploadRestController {
     }
 
     public SysFileEO saveSysFile(String userId, InputStream is, String fileName, String contentType) {
-        return sysFileEOService.saveSysFile(userId, is, fileName, contentType);
+        return sysFileEOService.saveSysFile(userId, is, fileName, contentType, SysFilePermissionTypeEnum.INNER.getValue());
     }
 
 }

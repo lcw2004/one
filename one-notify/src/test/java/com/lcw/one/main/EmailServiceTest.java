@@ -1,6 +1,6 @@
 package com.lcw.one.main;
 
-import com.lcw.one.notify.service.base.EmailService;
+import com.lcw.one.notify.channel.base.EmailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,7 +29,7 @@ public class EmailServiceTest {
 
     @Test
     public void sendEmailList() {
-        List<String> emailList = Arrays.asList(new String[]{"lcw2004@163.com", "292232611@qq.com"});
+        List<String> emailList = Arrays.asList("lcw2004@163.com", "292232611@qq.com");
         EmailService emailService = new EmailService(javaMailSender, fromEmail, fromName);
         emailService.sendEmail(emailList, "邮件标题", "邮件内容");
     }

@@ -1,35 +1,34 @@
 package com.lcw.one.workflow.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.lang.String;
+import java.lang.Integer;
 
-/**
- * @version 2017-05-10.
- * @auth Licw
- */
 public class FlowTaskInfoEOPK implements Serializable {
-    private String processKey;
+
+    @Id
+    @Column(name = "task_key")
     private String taskKey;
 
+    @Id
     @Column(name = "process_key")
-    @Id
-    public String getProcessKey() {
-        return processKey;
+    private String processKey;
+
+    public String getTaskKey () {
+        return this.taskKey;
     }
 
-    public void setProcessKey(String pkProcessKey) {
-        this.processKey = pkProcessKey;
+    public void setTaskKey (String taskKey) {
+        this.taskKey = taskKey;
     }
 
-    @Column(name = "task_key")
-    @Id
-    public String getTaskKey() {
-        return taskKey;
+    public String getProcessKey () {
+        return this.processKey;
     }
 
-    public void setTaskKey(String pkTaskKey) {
-        this.taskKey = pkTaskKey;
+    public void setProcessKey (String processKey) {
+        this.processKey = processKey;
     }
 
     @Override
@@ -39,16 +38,18 @@ public class FlowTaskInfoEOPK implements Serializable {
 
         FlowTaskInfoEOPK that = (FlowTaskInfoEOPK) o;
 
-        if (processKey != null ? !processKey.equals(that.processKey) : that.processKey != null) return false;
         if (taskKey != null ? !taskKey.equals(that.taskKey) : that.taskKey != null) return false;
+        if (processKey != null ? !processKey.equals(that.processKey) : that.processKey != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = processKey != null ? processKey.hashCode() : 0;
+        int result = 0;
         result = 31 * result + (taskKey != null ? taskKey.hashCode() : 0);
+        result = 31 * result + (processKey != null ? processKey.hashCode() : 0);
         return result;
     }
+
 }

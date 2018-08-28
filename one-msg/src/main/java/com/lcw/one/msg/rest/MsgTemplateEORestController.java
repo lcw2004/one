@@ -34,7 +34,7 @@ public class MsgTemplateEORestController {
 
     @ApiOperation(value = "系统消息模板详情")
     @GetMapping("/{id}")
-    public ResponseMessage<MsgTemplateEO> get(@PathVariable("id") String id) {
+    public ResponseMessage<MsgTemplateEO> get(@PathVariable String id) {
         return Result.success(msgTemplateEOService.get(id));
     }
 
@@ -59,7 +59,7 @@ public class MsgTemplateEORestController {
 
     @ApiOperation(value = "删除系统消息模板")
     @DeleteMapping("/{id}")
-    public ResponseMessage delete(@PathVariable("id") String id) {
+    public ResponseMessage delete(@PathVariable String id) {
         msgTemplateEOService.delete(id);
         return Result.success();
     }

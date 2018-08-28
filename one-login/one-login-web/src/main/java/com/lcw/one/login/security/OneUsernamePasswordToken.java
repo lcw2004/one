@@ -13,18 +13,21 @@ package com.lcw.one.login.security;
  */
 public class OneUsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswordToken {
 
+    private Integer userType;
     private String captcha;
 
     public OneUsernamePasswordToken() {
         super();
     }
 
-    public OneUsernamePasswordToken(String username, char[] password) {
+    public OneUsernamePasswordToken(Integer userType, String username, char[] password) {
         super(username, password);
+        this.userType = userType;
     }
 
-    public OneUsernamePasswordToken(String username, char[] password, String captcha) {
+    public OneUsernamePasswordToken(Integer userType, String username, char[] password, String captcha) {
         super(username, password);
+        this.userType = userType;
         this.captcha = captcha;
     }
 
@@ -33,11 +36,12 @@ public class OneUsernamePasswordToken extends org.apache.shiro.authc.UsernamePas
         this.captcha = captcha;
     }
 
+    public Integer getUserType() {
+        return userType;
+    }
+
     public String getCaptcha() {
         return captcha;
     }
 
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
-    }
 }

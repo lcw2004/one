@@ -4,8 +4,8 @@ import com.lcw.one.util.excel.rule.ExcelFieldRule;
 import com.lcw.one.util.utils.DateUtils;
 import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.NumberUtils;
-import com.lcw.one.util.utils.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -21,6 +21,8 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class POIUtils {
 
@@ -41,20 +43,22 @@ public class POIUtils {
 
         if (filedClass == String.class) {
             if (NumberUtils.isNumber(inputValue)) {
-                value = NumberUtils.numberToString(inputValue);
+                value = NumberUtils.numberToString(inputValue).trim();
             } else {
-                value = String.valueOf(inputValue);
+                value = StringUtils.trim(String.valueOf(inputValue));
             }
         } else if (filedClass == Integer.class) {
-            value = Double.valueOf(inputValue.toString()).intValue();
+            value = Double.valueOf(inputValue.toString().trim()).intValue();
         } else if (filedClass == Long.class) {
-            value = Double.valueOf(inputValue.toString()).longValue();
+            value = Double.valueOf(inputValue.toString().trim()).longValue();
         } else if (filedClass == Double.class) {
-            value = Double.valueOf(inputValue.toString());
+            value = Double.valueOf(inputValue.toString().trim());
         } else if (filedClass == Float.class) {
-            value = Float.valueOf(inputValue.toString());
+            value = Float.valueOf(inputValue.toString().trim());
         } else if (filedClass == Date.class) {
             value = DateUtil.getJavaDate((Double) inputValue);
+        } else if (filedClass == List.class) {
+
         } else {
             value = null;
         }
@@ -226,6 +230,10 @@ public class POIUtils {
         return headerRow;
     }
 
+    public static void setCellValue(Workbook workbook, Row row, int colNum, Object value, CellStyle cellStyle) {
+        setCellValue(workbook, row, colNum, value, cellStyle, null);
+    }
+
     /**
      * 设置单元格的值
      *
@@ -234,10 +242,14 @@ public class POIUtils {
      * @param value     需要填充的值
      * @param cellStyle 样式
      */
-    public static void setCellValue(Workbook workbook, Row row, int colNum, Object value, CellStyle cellStyle) {
+    public static void setCellValue(Workbook workbook, Row row, int colNum, Object value, CellStyle cellStyle, ExcelFieldRule excelFieldRule) {
         Cell cell = createCell(row, colNum);
         cell.setCellStyle(cellStyle);
-        setCellValue(workbook, cell, value, cellStyle);
+        setCellValue(workbook, cell, value, cellStyle, excelFieldRule);
+    }
+
+    public static void setCellValue(Workbook workbook, Cell cell, Object val, CellStyle cellStyle) {
+        setCellValue(workbook, cell, val, cellStyle, null);
     }
 
     /**
@@ -247,7 +259,7 @@ public class POIUtils {
      * @param val  需要设置的值
      * @return
      */
-    private static void setCellValue(Workbook workbook, Cell cell, Object val, CellStyle cellStyle) {
+    public static void setCellValue(Workbook workbook, Cell cell, Object val, CellStyle cellStyle, ExcelFieldRule excelFieldRule) {
         try {
             if (val == null) {
                 cell.setCellValue("");
@@ -268,8 +280,29 @@ public class POIUtils {
                 cell.setCellValue(String.valueOf(val));
                 cell.setCellType(CellType.STRING);
             } else if (val instanceof Date || val instanceof Timestamp) {
-                cell.setCellValue(String.valueOf(DateUtils.dateToString((Date)val, DateUtils.yyyy_MM_dd_HH_mm_ss_CN)));
+                String format = DateUtils.yyyy_MM_dd_HH_mm_ss_CN;
+                if (StringUtils.isNotEmpty(excelFieldRule.getFormat())) {
+                    format = excelFieldRule.getFormat();
+                }
+                cell.setCellValue(String.valueOf(DateUtils.dateToString((Date)val, format)));
                 cell.setCellType(CellType.STRING);
+            } else if (val instanceof List) {
+                cellStyle.setWrapText(true);
+                cell.setCellValue(StringUtils.listToString((List) val, "\n"));
+                cell.setCellType(CellType.STRING);
+
+                // 重新设置行高
+                cell.getRow().setHeightInPoints(15 * ((List) val).size());
+            } else if (val instanceof Map) {
+                Map map = (Map) val;
+                if (map.containsKey(excelFieldRule.getTitle())) {
+                    String value = (String) map.get(excelFieldRule.getTitle());
+                    if (StringUtils.isNotEmpty(excelFieldRule.getDictType())) {
+                        value = ExcelDictCache.getLabelCache(excelFieldRule.getDictType(), value);
+                    }
+                    cell.setCellValue(String.valueOf(value));
+                    cell.setCellType(CellType.STRING);
+                }
             } else {
                 if (val.getClass() != Class.class) {
                     cell.setCellValue((String) val.getClass().getMethod("setValue", Object.class).invoke(null, val));
@@ -372,16 +405,16 @@ public class POIUtils {
     /**
      * 根据字典，将值转为对应的类型
      * @param cell
-     * @param excelFieldRule
+     * @param dictType
      * @return
      */
-    public static Object getDictValue(Cell cell, ExcelFieldRule excelFieldRule) {
+    public static Object getDictValue(Cell cell, String dictType, Class clazz) {
         Object cellValue = POIUtils.getCellValueAsClass(cell, String.class);
 
         // 从字典中获取对应的Value
-        Object dictValue = ExcelDictCache.getValueCache(excelFieldRule.getDictType(), String.valueOf(cellValue));
+        Object dictValue = ExcelDictCache.getValueCache(dictType, String.valueOf(cellValue));
 
         // 将Value转为对应的字段类型
-        return POIUtils.getValueAsClass(dictValue, excelFieldRule.getFieldClass());
+        return POIUtils.getValueAsClass(dictValue, clazz);
     }
 }

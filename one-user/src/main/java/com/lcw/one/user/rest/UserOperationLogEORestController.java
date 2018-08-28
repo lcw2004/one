@@ -25,7 +25,7 @@ public class UserOperationLogEORestController {
 
     @ApiOperation(value = "|UserOperationLogEO|详情")
     @GetMapping("/{id}")
-    public ResponseMessage<UserOperationLogEO> getById(@PathVariable("id") String id) {
+    public ResponseMessage<UserOperationLogEO> getById(@PathVariable String id) {
         return Result.success(userOperationLogEOService.get(id));
     }
 
@@ -50,7 +50,7 @@ public class UserOperationLogEORestController {
 
     @ApiOperation(value = "删除|UserOperationLogEO|")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable String id) {
         userOperationLogEOService.delete(id);
         return Result.success();
     }

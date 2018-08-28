@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class SysConfigEO {
     private String configId;
     private String typeCode;
+    private String configName;
     private String configKey;
     private String configValue;
     private String remark;
@@ -33,6 +34,16 @@ public class SysConfigEO {
 
     public void setTypeCode(String typeCode) {
         this.typeCode = typeCode;
+    }
+
+    @Basic
+    @Column(name = "config_name")
+    public String getConfigName() {
+        return configName;
+    }
+
+    public void setConfigName(String configName) {
+        this.configName = configName;
     }
 
     @Basic

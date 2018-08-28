@@ -4,7 +4,9 @@ import com.lcw.one.util.http.PageInfo;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.ImageUtils;
+import com.lcw.one.util.utils.http.HttpUtils;
 import com.lcw.one.workflow.entity.FlowInfoEO;
+import com.lcw.one.workflow.service.FlowInfoActivitiService;
 import com.lcw.one.workflow.service.FlowInfoEOService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,9 +31,12 @@ public class FlowInfoEORestController {
     @Autowired
     private FlowInfoEOService flowInfoEOService;
 
+    @Autowired
+    private FlowInfoActivitiService flowInfoActivitiService;
+
     @ApiOperation(value = "工作流详情")
     @GetMapping("/{processKey}")
-    public ResponseMessage<FlowInfoEO> getById(@PathVariable("processKey") String processKey) {
+    public ResponseMessage<FlowInfoEO> getById(@PathVariable String processKey) {
         return Result.success(flowInfoEOService.get(processKey));
     }
 
@@ -46,7 +51,7 @@ public class FlowInfoEORestController {
     @PostMapping("")
     public ResponseMessage deploy(@RequestParam("file") MultipartFile file) throws IOException {
         if (file != null) {
-            flowInfoEOService.deploy(file.getInputStream(), file.getOriginalFilename());
+            flowInfoActivitiService.deploy(file.getInputStream(), file.getOriginalFilename());
             return Result.success();
         } else {
             return Result.error("上传文件失败");
@@ -55,30 +60,26 @@ public class FlowInfoEORestController {
 
     @ApiOperation(value = "修改工作流")
     @PutMapping("")
-    public ResponseMessage update(@RequestBody FlowInfoEO flowInfoEO) throws IOException {
+    public ResponseMessage update(@RequestBody FlowInfoEO flowInfoEO) {
         flowInfoEOService.update(flowInfoEO);
         return Result.success(flowInfoEO);
     }
 
     @ApiOperation(value = "删除工作流")
     @DeleteMapping("/{processKey}")
-    public ResponseMessage deleteById(@PathVariable("processKey") String processKey) {
+    public ResponseMessage deleteById(@PathVariable String processKey) {
         flowInfoEOService.delete(processKey);
         return Result.success();
     }
 
     @ApiOperation(value = "工作流流程图片")
     @GetMapping(value = "/{processKey}/processImage")
-    public void processImage(HttpServletResponse response, @PathVariable("processKey") String processKey) {
+    public void processImage(HttpServletResponse response, @PathVariable String processKey) {
         InputStream is = null;
         try {
-            is = flowInfoEOService.progressImage(processKey);
+            is = flowInfoActivitiService.progressImage(processKey);
             byte[] bytes = ImageUtils.cutImage(is, 10);
-
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.setContentType("image/jpeg");
+            HttpUtils.addImageHeader(response);
             response.getOutputStream().write(bytes);
             response.getOutputStream().flush();
         } catch (IOException e) {

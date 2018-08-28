@@ -32,7 +32,7 @@ public class SimpleCharVerifyCodeGenImpl implements IVerifyCodeGen {
     }
 
     @Override
-    public VerifyCode generate(int width, int height) throws IOException {
+    public VerifyCode generate(int width, int height) {
         ByteArrayOutputStream baos = null;
         VerifyCode verifyCode = null;
         try {

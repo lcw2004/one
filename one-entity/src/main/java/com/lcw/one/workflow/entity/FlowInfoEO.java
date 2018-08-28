@@ -1,105 +1,118 @@
 package com.lcw.one.workflow.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.util.Date;
+import java.lang.String;
+import java.lang.Integer;
 import java.util.List;
 
+/**
+ * 工作流状态
+ */
 @Entity
 @Table(name = "flow_info")
 public class FlowInfoEO {
-    private String processKey;
-    private Integer processState;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date lastUpdateTime;
-    private String processDefinitionId;
-    private String processName;
-    private List<FlowTaskInfoEO> flowTaskInfoEOList;
 
-    @Id
-    @Column(name = "process_key")
-    public String getProcessKey() {
-        return processKey;
+	/**
+	 * 流程ID
+	 */
+	@Id
+	@Column(name = "process_key")
+	private String processKey;
+
+	/**
+	 * 流程状态
+	 */
+	@Basic
+	@Column(name = "process_state")
+	private Integer processState;
+
+	/**
+	 * 流程定义ID
+	 */
+	@Basic
+	@Column(name = "process_definition_id")
+	private String processDefinitionId;
+
+	/**
+	 * 流程名称
+	 */
+	@Basic
+	@Column(name = "process_name")
+	private String processName;
+
+	/**
+	 * 绑定表单
+	 */
+	@Basic
+	@Column(name = "bind_view_form")
+	private String bindViewForm;
+
+	/**
+	 * 更新时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Basic
+	@Column(name = "last_update_time")
+	private Date lastUpdateTime;
+
+	@Transient
+	private List<FlowTaskInfoEO> flowTaskList;
+
+    public String getProcessKey () {
+        return this.processKey;
     }
 
-    public void setProcessKey(String pkProcessKey) {
-        this.processKey = pkProcessKey;
+    public void setProcessKey (String processKey) {
+        this.processKey = processKey;
     }
 
-    @Basic
-    @Column(name = "process_state")
-    public Integer getProcessState() {
-        return processState;
+    public Integer getProcessState () {
+        return this.processState;
     }
 
-    public void setProcessState(Integer processState) {
+    public void setProcessState (Integer processState) {
         this.processState = processState;
     }
 
-    @Basic
-    @Column(name = "last_update_time")
-    public Date getLastUpdateTime() {
-        return lastUpdateTime;
+    public String getProcessDefinitionId () {
+        return this.processDefinitionId;
     }
 
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    @Basic
-    @Column(name = "process_definition_id")
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
-
-    public void setProcessDefinitionId(String processDefinitionId) {
+    public void setProcessDefinitionId (String processDefinitionId) {
         this.processDefinitionId = processDefinitionId;
     }
 
-    @Basic
-    @Column(name = "process_name")
-    public String getProcessName() {
-        return processName;
+    public String getProcessName () {
+        return this.processName;
     }
 
-    public void setProcessName(String processName) {
+    public void setProcessName (String processName) {
         this.processName = processName;
     }
 
-    @Transient
-    public List<FlowTaskInfoEO> getFlowTaskInfoEOList() {
-        return flowTaskInfoEOList;
+    public String getBindViewForm () {
+        return this.bindViewForm;
     }
 
-    public void setFlowTaskInfoEOList(List<FlowTaskInfoEO> flowTaskInfoEOList) {
-        this.flowTaskInfoEOList = flowTaskInfoEOList;
+    public void setBindViewForm (String bindViewForm) {
+        this.bindViewForm = bindViewForm;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FlowInfoEO that = (FlowInfoEO) o;
-
-        if (processKey != null ? !processKey.equals(that.processKey) : that.processKey != null) return false;
-        if (processState != null ? !processState.equals(that.processState) : that.processState != null) return false;
-        if (lastUpdateTime != null ? !lastUpdateTime.equals(that.lastUpdateTime) : that.lastUpdateTime != null) return false;
-        if (processDefinitionId != null ? !processDefinitionId.equals(that.processDefinitionId) : that.processDefinitionId != null)
-            return false;
-        if (processName != null ? !processName.equals(that.processName) : that.processName != null) return false;
-
-        return true;
+    public Date getLastUpdateTime () {
+        return this.lastUpdateTime;
     }
 
-    @Override
-    public int hashCode() {
-        int result = processKey != null ? processKey.hashCode() : 0;
-        result = 31 * result + (processState != null ? processState.hashCode() : 0);
-        result = 31 * result + (lastUpdateTime != null ? lastUpdateTime.hashCode() : 0);
-        result = 31 * result + (processDefinitionId != null ? processDefinitionId.hashCode() : 0);
-        result = 31 * result + (processName != null ? processName.hashCode() : 0);
-        return result;
+    public void setLastUpdateTime (Date lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
+
+	public List<FlowTaskInfoEO> getFlowTaskList() {
+		return flowTaskList;
+	}
+
+	public void setFlowTaskList(List<FlowTaskInfoEO> flowTaskList) {
+		this.flowTaskList = flowTaskList;
+	}
 }

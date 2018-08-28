@@ -17,6 +17,7 @@ public class SysRoleEO {
     private String remarks;
     private Integer delFlag;
     private Integer isDefault;
+    private Integer orderIndex;
     private List<SysMenuEO> sysMenuEOList = new ArrayList<>();
     private List<String> sysMenuEOIdList = new ArrayList<>();
     private List<String> componentIdList = new ArrayList<>();
@@ -81,30 +82,14 @@ public class SysRoleEO {
         this.isDefault = isDefault;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SysRoleEO sysRoleEO = (SysRoleEO) o;
-
-        if (id != null ? !id.equals(sysRoleEO.id) : sysRoleEO.id != null) return false;
-        if (name != null ? !name.equals(sysRoleEO.name) : sysRoleEO.name != null) return false;
-        if (dataScope != null ? !dataScope.equals(sysRoleEO.dataScope) : sysRoleEO.dataScope != null) return false;
-        if (remarks != null ? !remarks.equals(sysRoleEO.remarks) : sysRoleEO.remarks != null) return false;
-        if (delFlag != null ? !delFlag.equals(sysRoleEO.delFlag) : sysRoleEO.delFlag != null) return false;
-
-        return true;
+    @Basic
+    @Column(name = "order_index")
+    public Integer getOrderIndex() {
+        return orderIndex;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (dataScope != null ? dataScope.hashCode() : 0);
-        result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
-        result = 31 * result + (delFlag != null ? delFlag.hashCode() : 0);
-        return result;
+    public void setOrderIndex(Integer orderIndex) {
+        this.orderIndex = orderIndex;
     }
 
     @Transient

@@ -1,7 +1,7 @@
 package com.lcw.one.util.persistence.entity;
 
 import com.lcw.one.util.utils.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 
 import javax.persistence.Transient;
 import java.util.ArrayList;

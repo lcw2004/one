@@ -1,6 +1,9 @@
 package com.lcw.one.user.bean;
 
 import com.lcw.one.util.http.bean.BaseQueryCondition;
+import com.lcw.one.util.utils.StringUtils;
+
+import java.util.Map;
 
 /**
  * @version 2017-04-30.
@@ -120,5 +123,19 @@ public class UserQueryCondition extends BaseQueryCondition {
 
     public void setUserIdentityNumber(String userIdentityNumber) {
         this.userIdentityNumber = userIdentityNumber;
+    }
+
+    @Override
+    public void buildHQL(Map<String, Object> paramMap, StringBuilder hql) {
+        if (StringUtils.isNotEmpty(getUserLikeName())) {
+            hql.append(" and (" );
+            hql.append("    u.userInfo.name like :userLikeName ");
+            hql.append("    or u.userInfo.account like :userLikeName ");
+            hql.append("    or u.userInfo.userContactInfo.mobile like :userLikeName ");
+            hql.append("    or u.userInfo.userContactInfo.phone like :userLikeName ");
+            hql.append(" ) ");
+            paramMap.put("userLikeName", "%" + getUserLikeName() + "%");
+        }
+
     }
 }

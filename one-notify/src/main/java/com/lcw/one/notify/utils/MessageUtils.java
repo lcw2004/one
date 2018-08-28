@@ -5,7 +5,6 @@ import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.util.utils.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -32,7 +31,7 @@ public class MessageUtils {
                 messageBody = messageBody.replace(PLACEHOLDER_START + placeholder + PLACEHOLDER_END, String.valueOf(placeHolderValueMap.get(placeholder)));
             }
         }
-        return messageBody;
+        return StringUtils.html_br(messageBody);
     }
 
     /**
@@ -65,7 +64,7 @@ public class MessageUtils {
      */
     private static void validatePlaceHolder(List<String> placeholderList, Map<String, Object> placeHolderValueMap) {
         // 无占位符需要填充
-        if (placeholderList.size() == 0) {
+        if (CollectionUtils.isEmpty(placeholderList)) {
             return;
         }
         if (CollectionUtils.isEmpty(placeHolderValueMap)) {

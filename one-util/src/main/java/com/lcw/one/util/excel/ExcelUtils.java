@@ -10,6 +10,8 @@ import java.util.List;
 
 public class ExcelUtils {
 
+    public static final String EXCEL_XLSX = "xlsx";
+
     /**
      * 将Excel文件解析为一个List
      *
@@ -24,7 +26,7 @@ public class ExcelUtils {
         List<T> tList;
         try {
             excelImporter = new ExcelImporter(tClass);
-            excelImporter.initExcel(is, "xlsx");
+            excelImporter.initExcel(is, EXCEL_XLSX);
             tList = excelImporter.parse();
         } finally {
             if (excelImporter != null) {
@@ -49,7 +51,7 @@ public class ExcelUtils {
         List<T> tList;
         try {
             excelImporter = new ExcelImporter(tClass);
-            excelImporter.initExcel(is, "xlsx");
+            excelImporter.initExcel(is, EXCEL_XLSX);
             tList = excelImporter.parse(excelClassRule);
         } finally {
             if (excelImporter != null) {

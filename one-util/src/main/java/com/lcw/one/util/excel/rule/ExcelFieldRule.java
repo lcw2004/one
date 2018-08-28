@@ -22,11 +22,6 @@ public class ExcelFieldRule {
     private int index;
 
     /**
-     *
-     */
-    private int align;
-
-    /**
      * 是否可以为空：true - 可以，false - 不可以
      */
     private boolean nullable;
@@ -54,27 +49,28 @@ public class ExcelFieldRule {
         this.fieldClass = field.getType();
         this.title = excelField.title();
         this.index = excelField.column();
-        this.align = excelField.align();
         this.nullable = excelField.nullable();
         this.dictType = excelField.dict();
     }
 
-    public ExcelFieldRule(String fieldName, String title, int index, int align, boolean nullable, Class fieldClass) {
+    public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass) {
         this.fieldName = fieldName;
         this.title = title;
         this.index = index;
-        this.align = align;
         this.nullable = nullable;
         this.fieldClass = fieldClass;
     }
 
-    public ExcelFieldRule(String fieldName, String title, int index, int align, boolean nullable, Class fieldClass, String dictType) {
-        this(fieldName, title, index, align, nullable, fieldClass);
+    public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass, String dictType) {
+        this(fieldName, title,  nullable, fieldClass);
         this.dictType = dictType;
     }
 
-    public ExcelFieldRule(String fieldName, String title, int index, int align, boolean nullable, Class fieldClass, String dictType, String format) {
-        this(fieldName, title, index, align, nullable, fieldClass);
+    public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass, String dictType, String format) {
+        this.fieldName = fieldName;
+        this.title = title;
+        this.nullable = nullable;
+        this.fieldClass = fieldClass;
         this.dictType = dictType;
         this.format = format;
     }
@@ -101,14 +97,6 @@ public class ExcelFieldRule {
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public int getAlign() {
-        return align;
-    }
-
-    public void setAlign(int align) {
-        this.align = align;
     }
 
     public boolean isNullable() {
@@ -149,7 +137,6 @@ public class ExcelFieldRule {
                 "fieldName='" + fieldName + '\'' +
                 ", title='" + title + '\'' +
                 ", index=" + index +
-                ", align=" + align +
                 ", fieldClass=" + fieldClass +
                 '}';
     }

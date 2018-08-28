@@ -2,9 +2,12 @@ package com.lcw.one.login.service;
 
 import com.lcw.one.base.utils.LoginUserUtils;
 import com.lcw.one.login.utils.UserUtilService;
+import com.lcw.one.user.constant.UserInfoStatusEnum;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
+import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.util.bean.LoginUser;
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,19 @@ public class CommonLoginService {
     @Autowired
     private UserUtilService userUtilService;
 
+    public void validUser(LoginUser loginUser) {
+        UserInfoEO userInfoEO = userInfoEOService.get(loginUser.getUserId());
+
+        if (userInfoEO.getStatus() == UserInfoStatusEnum.STOP.getValue()) {
+            throw new OneBaseException("用户的账户已经停用");
+        }
+    }
+
     public String loginSuccess(LoginUser loginUser) {
+        validUser(loginUser);
+
         // 更新用户的登录时间以及登录IP
-        userInfoEOService.updateUserLoginInfo(loginUser.getUserId(), loginUser.getIp());
+        userInfoEOService.updateLoginIp(loginUser.getUserId(), loginUser.getIp());
         userUtilService.fetchOtherInfo(loginUser);
 
         // 缓存登录用户信息

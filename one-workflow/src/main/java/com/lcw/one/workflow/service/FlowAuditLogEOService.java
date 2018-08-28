@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class FlowAuditLogEOService extends CrudService<FlowAuditLogEODao, FlowAuditLogEO, String> {
 
+    public List<FlowAuditLogEO> list(String auditItemId) {
+        return dao.list(auditItemId);
+    }
+
     public List<FlowAuditLogEO> list(String businessType, String businessId, String secondBusinessId) {
         return dao.list(businessType, businessId, secondBusinessId);
     }

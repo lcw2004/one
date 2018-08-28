@@ -19,8 +19,10 @@ public class ShiroExceptionAdvice {
     private static final Logger logger = LoggerFactory.getLogger(ShiroExceptionAdvice.class);
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({AuthenticationException.class, UnknownAccountException.class,
-            UnauthenticatedException.class, IncorrectCredentialsException.class,
+    @ExceptionHandler({AuthenticationException.class,
+            UnknownAccountException.class,
+            UnauthenticatedException.class,
+            IncorrectCredentialsException.class,
             UnauthorizedException.class})
     @ResponseBody
     public void unauthorized(Exception exception) {

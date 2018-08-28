@@ -1,9 +1,9 @@
 package com.lcw.one.notify.config;
 
-import com.lcw.one.notify.websocket.HandShakeInterceptor;
-import com.lcw.one.notify.websocket.OneChannelInterceptor;
-import com.lcw.one.notify.websocket.OneWebSocketHandlerDecorator;
-import com.lcw.one.notify.websocket.SocketSessionRegistry;
+import com.lcw.one.notify.channel.websocket.HandShakeInterceptor;
+import com.lcw.one.notify.channel.websocket.OneChannelInterceptor;
+import com.lcw.one.notify.channel.websocket.OneWebSocketHandlerDecorator;
+import com.lcw.one.notify.channel.websocket.SocketSessionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

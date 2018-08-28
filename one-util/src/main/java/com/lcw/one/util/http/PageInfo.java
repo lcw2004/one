@@ -1,6 +1,6 @@
 package com.lcw.one.util.http;
 
-import org.apache.commons.lang3.StringUtils;
+import com.lcw.one.util.utils.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

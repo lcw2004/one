@@ -2,7 +2,7 @@ package com.lcw.one.sys.rest;
 
 import com.lcw.one.sys.entity.SysDictEO;
 import com.lcw.one.sys.service.SysDictEOService;
-import com.lcw.one.sys.util.DictUtils;
+import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.util.bean.SysDict;
 import com.lcw.one.util.constant.DeleteFlagEnum;
 import com.lcw.one.util.http.PageInfo;
@@ -27,21 +27,21 @@ public class SysDictEORestController {
 
     @ApiOperation(value = "字典详情")
     @GetMapping("/{id}")
-    public ResponseMessage<SysDictEO> getById(@PathVariable("id") String id) {
+    public ResponseMessage<SysDictEO> getById(@PathVariable String id) {
         return Result.success(sysDictEOService.get(id));
     }
 
     @ApiOperation(value = "字典查询")
     @GetMapping("")
-    public ResponseMessage<PageInfo<SysDictEO>> list(Integer pageNo, Integer pageSize, String type, String description) {
+    public ResponseMessage<PageInfo<SysDictEO>> list(Integer pageNo, Integer pageSize, String type, String name) {
         PageInfo pageInfo = new PageInfo(pageNo, pageSize);
-        return Result.success(sysDictEOService.page(pageInfo, type, description));
+        return Result.success(sysDictEOService.page(pageInfo, type, name));
     }
 
     @ApiOperation(value = "新增字典")
     @PostMapping("")
     public ResponseMessage<SysDictEO> save(@RequestBody SysDictEO sysMenuEO) {
-        sysMenuEO.setId(UUID.randomUUID10());
+        sysMenuEO.setDictId(UUID.randomUUID10());
         sysMenuEO.setDelFlag(DeleteFlagEnum.NORMAL.getValue());
         return Result.success(sysDictEOService.save(sysMenuEO));
     }
@@ -54,7 +54,7 @@ public class SysDictEORestController {
 
     @ApiOperation(value = "删除字典")
     @DeleteMapping("/{id}")
-    public ResponseMessage deleteById(@PathVariable("id") String id) {
+    public ResponseMessage deleteById(@PathVariable String id) {
         sysDictEOService.delete(id);
         return Result.success();
     }
