@@ -1,25 +1,29 @@
 <template>
   <ul class="sidebar-menu">
-    <li class="treeview" v-for="secondMenu of firstMenu.childList" :class="getTreeViewClass(secondMenu)">
-      <a @click="activeSecondMenu(secondMenu)">
-        <i :class="secondMenu.icon" v-if="secondMenu.icon"></i>
-        <i v-if="isShowFirstChar(secondMenu)" style="font-style: normal;">{{ firstChar(secondMenu) }}</i> <!-- 如果未设置LOGO，则显示菜单的第一个字 -->
-        <span>{{ secondMenu.name }}</span>
-        <span class="pull-right-container">
-          <i class="fa fa-angle-left pull-right"></i>
-        </span>
-      </a>
-      <ul class="treeview-menu" v-show="secondMenu.isShow === 1" :class="getTreeMenuClass(secondMenu)">
-        <li :class="{'active': thirdMenuInStore.id == thirdMenu.id}" @click="activeThirdMenu(thirdMenu)" :id="'menu_' + thirdMenu.id" v-for="thirdMenu of secondMenu.childList">
-          <router-link :to='thirdMenu.href'><i :class="thirdMenu.icon"></i> {{ thirdMenu.name }}</router-link>
-        </li>
-      </ul>
-    </li>
+    <template v-for="secondMenu of firstMenu.childList">
+      <li v-if="secondMenu.isShow" class="treeview" :class="getTreeViewClass(secondMenu)">
+        <a @click="activeSecondMenu(secondMenu)">
+          <i v-if="secondMenu.icon" :class="secondMenu.icon"></i>
+          <i v-if="isShowFirstChar(secondMenu)" style="font-style: normal;">{{ firstChar(secondMenu) }}</i>
+          <span>{{ secondMenu.name }}</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul v-show="secondMenu.isShowInMenu === 1" class="treeview-menu" :class="getTreeMenuClass(secondMenu)">
+          <template v-for="thirdMenu of secondMenu.childList">
+            <li v-if="thirdMenu.isShow" :class="{'active': thirdMenuInStore.id == thirdMenu.id}" @click="activeThirdMenu(thirdMenu)">
+              <a @click="goToPage(thirdMenu)" class="treeview-menu-a"><i :class="thirdMenu.icon"></i> {{ thirdMenu.name }}</a>
+            </li>
+          </template>
+        </ul>
+      </li>
+    </template>
   </ul>
 </template>
 
 <script>
-import setHtmlTitle from '@utils/setHtmlTitle'
+import { setHtmlTitle } from '@utils/common'
 
 export default {
   data: function () {
@@ -50,6 +54,9 @@ export default {
       setHtmlTitle(this.appName + ' - ' + thirdMenu.name)
       this.$store.dispatch('activeThirdMenu', thirdMenu)
     },
+    /**
+     * 如果未设置LOGO，则显示菜单的第一个字
+     */
     isShowFirstChar (menu) {
       if (menu.icon) {
         return false
@@ -66,18 +73,36 @@ export default {
       return firstChar
     },
     toggle (menu) {
-      menu.isShow = menu.isShow === 1 ? 0 : 1
+      if (menu.isShowInMenu === 1) {
+        this.$set(menu, 'isShowInMenu', 0)
+      } else {
+        this.$set(menu, 'isShowInMenu', 1)
+      }
     },
     getTreeViewClass (menu) {
       return {
-        'active': menu.isShow === 1
+        'active': menu.isShowInMenu === 1
       }
     },
     getTreeMenuClass (menu) {
       return {
-        'menu-open': menu.isShow === 1
+        'menu-open': menu.isShowInMenu === 1
       }
+    },
+    goToPage (menu) {
+      // 如下代码用于点击菜单的时候强制刷新页面
+      this.$store.dispatch('isShowRouterView', false)
+      this.$nextTick(() => {
+        this.$router.push(menu.href)
+        this.$store.dispatch('isShowRouterView', true)
+      })
     }
   }
 }
 </script>
+
+<style lang="less" type="text/less">
+.treeview-menu-a {
+  padding-left: 25px !important;
+}
+</style>

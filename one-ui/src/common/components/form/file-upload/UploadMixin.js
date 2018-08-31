@@ -1,31 +1,71 @@
-import { uuid } from '@utils/common.js'
+import { uuid, clearInputFile } from '@utils/common'
+
 export default {
   props: {
+    /**
+     * 上传地址
+     */
     url: {
       type: String,
       default: '/api/sys/file/upload'
     },
+
+    /**
+     * 文件类型
+     */
     type: {
       type: String
     },
+
+    /**
+     * 文件大小
+     */
     size: {
       type: String
     },
+
+    /**
+     * 显示进度条
+     */
     showProgress: {
       type: Boolean,
       default: true
     },
+
+    /**
+     * 是否根据slot来显示（默认显示按钮）
+     */
+    isSlot: {
+      type: Boolean,
+      default: false
+    },
+
+    /**
+     * 按钮文本
+     */
     btnText: {
       type: String,
       default: '上传文件'
     },
+
+    /**
+     * 按钮样式
+     */
     btnClass: {
       type: String,
       default: 'btn btn-primary'
     },
+
+    /**
+     * 成功回调
+     */
     callback: {
       type: Function
     },
+
+    /**
+     * 失败回调
+     */
     errorCallback: {
       type: Function
     }
@@ -101,12 +141,13 @@ export default {
           if (this.callback) {
             this.callback(result.data)
           }
+          this.$emit('success', result.data)
         }
-        event.target.value = null
+        clearInputFile(event.target)
       }, response => {
         this.$notify.warn('上传文件失败，请重试！')
         self.progressWidth = 0
-        event.target.value = null
+        clearInputFile(event.target)
       })
     },
 
@@ -154,6 +195,7 @@ export default {
      */
     handlerError (msg) {
       this.$notify.warn(msg)
+      this.$emit('error', msg)
       if (this.errorCallback) {
         this.errorCallback(msg)
       }

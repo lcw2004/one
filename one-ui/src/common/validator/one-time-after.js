@@ -20,13 +20,13 @@ function attachRule () {
       if (!fieldPath || fieldPath === '' || !filedValue || filedValue === '') {
         return false
       }
-      return moment(value, FORMAT_YYYY_MM_DD_HH_MM_SS).isAfter(moment(filedValue, FORMAT_YYYY_MM_DD_HH_MM_SS))
+      return !moment(value, FORMAT_YYYY_MM_DD_HH_MM_SS).isBefore(moment(filedValue, FORMAT_YYYY_MM_DD_HH_MM_SS))
     }
   })
 }
 
 /**
- * 手机号码验证规则
+ * 时间验证规则
  */
 export default function attachOneTimeAfterRule (self) {
   let oneTimeAfterFunc = attachRule.bind(self)

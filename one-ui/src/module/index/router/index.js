@@ -1,11 +1,9 @@
 import VueRouter from 'vue-router'
 import home from './home'
-import PrefectOfficeInfo from '../views/personal/supplier/PrefectOfficeInfo.vue'
 
 const router = {
   routes: [
-    home,
-    {path: '/prefect-info', component: PrefectOfficeInfo}
+    home
   ],
   scrollBehavior (to, from, savedPosition) {
     return new Promise((resolve, reject) => {

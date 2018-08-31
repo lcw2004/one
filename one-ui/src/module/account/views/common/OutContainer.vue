@@ -21,6 +21,9 @@
 
 <script>
 export default {
+  inject: {
+    $validator: '$validator'
+  },
   props: {
     title: {
       type: String,
@@ -39,74 +42,74 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less" type="text/less" scoped>
 .about-page {
   background: #f7f7f7;
-  margin-bottom: 50px;
-}
+  padding-bottom: 100px;
 
-.about-header {
-  color: #fff;
-  background-color: #357ca5;
-}
+  .about-header {
+    color: #fff;
+    background-color: #357ca5;
 
-.about-header-inner {
-  position: relative;
-  z-index: 2;
-  padding: 55px 20px 85px 20px;
-  text-align: center;
-}
-
-.about-content {
-  z-index: 4;
-  background: #fff;
-  max-width: 930px;
-  margin: -50px auto 20px auto;
-  @media (max-width: 660px) {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  padding: 10px 20px 10px 20px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, .2);
-  z-index: 1020;
-  color: #555;
-
-  h2 {
-    font-weight: 300;
-    font-size: 1.6em;
-    position: relative;
-    padding-bottom: 10px;
-    color: #22273f;
-    margin-bottom: 20px;
-    &:before {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      content: " ";
-      height: 2px;
-      width: 40px;
-      background: #ff7777;
+    .about-header-inner {
+      position: relative;
+      z-index: 2;
+      padding: 55px 20px 85px 20px;
+      text-align: center;
     }
   }
-  h3 {
-    font-size: 1.2em;
-    text-transform: capitalize;
-    font-weight: normal;
-    margin-top: 0;
+
+  .about-content {
+    z-index: 4;
+    background: #fff;
+    max-width: 930px;
+    margin: -50px auto 20px auto;
+    @media (max-width: 660px) {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+    padding: 10px 20px 10px 20px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, .2);
+    z-index: 1020;
+    color: #555;
+
+    h2 {
+      font-weight: 300;
+      font-size: 1.6em;
+      position: relative;
+      padding-bottom: 10px;
+      color: #22273f;
+      margin-bottom: 20px;
+      &:before {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        content: " ";
+        height: 2px;
+        width: 40px;
+        background: #ff7777;
+      }
+    }
+    h3 {
+      font-size: 1.2em;
+      text-transform: capitalize;
+      font-weight: normal;
+      margin-top: 0;
+    }
   }
-}
 
-.about-back {
-  position: absolute;
-  top: 10px;
-  left: 25px;
+  .about-back {
+    position: absolute;
+    top: 10px;
+    left: 25px;
 
-  a {
-    color: white;
-    text-decoration: none;
+    a {
+      color: white;
+      text-decoration: none;
 
-    &:hover{
-      color: darken(white, 10%);
+      &:hover{
+        color: darken(white, 10%);
+      }
     }
   }
 }

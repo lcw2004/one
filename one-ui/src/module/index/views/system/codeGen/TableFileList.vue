@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row row-margin-bottom">
+    <div class="row margin-bottom-10">
       <div class="col-md-6">
         <FormGroup label="表名">
           {{ tableInfo.tableName }}

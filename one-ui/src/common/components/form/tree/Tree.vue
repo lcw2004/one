@@ -1,12 +1,11 @@
 <template>
-  <TreeElement :element="element" :level="1" :value="value" :select-type="selectType" :tree-bus="treeBus"></TreeElement>
+  <TreeElement :element="element" :level="1" :value="value" :select-type="selectType" :tree-bus="treeBus" :isCanSelect="isCanSelect"></TreeElement>
 </template>
 
 <script>
 // import * as treeUtils from './tree-utils'
 import Vue from 'vue'
 import TreeElement from './TreeElement'
-let $ = require('jquery')
 
 export default {
   name: 'Tree',
@@ -28,6 +27,17 @@ export default {
      */
     selectType: {
       type: String
+    },
+    /**
+     * 是否级联选中父节点
+     */
+    isSelectParent: {
+      type: Boolean,
+      default: true
+    },
+    isCanSelect: {
+      type: Boolean,
+      default: true
     },
     value: [Object, Array]
   },
@@ -55,10 +65,16 @@ export default {
     }
   },
   mounted () {
+    this.initEvent()
     this.initEventOfRadio()
     this.initEventOfCheckbox()
   },
   methods: {
+    initEvent () {
+      this.treeBus.$on('element-click', (data) => {
+        this.$emit('element-click', data)
+      })
+    },
     initEventOfRadio () {
       if (this.selectType === 'radio') {
         // 单选的情况下，直接将数据发给Modal
@@ -70,35 +86,44 @@ export default {
     initEventOfCheckbox () {
       if (this.selectType === 'checkbox') {
         this.treeBus.$on('select-value-ckbox', (selectElement, isSelect) => {
+          /**
+          * 遍历添加/删除子节点
+          **/
           const addOrRemoveRecursion = function (element, value, isSelect) {
-            var index = $.inArray(element.id, value)
-            if (isSelect && index < 0) {
+            var index = value.indexOf(element.id)
+            if (isSelect && index < 0 && parent.isOptional !== 0) {
               value.push(element.id)
             } else if (!isSelect && index >= 0) {
               value.splice(index, 1)
             }
-            const childList = element.childList
-            if (childList) {
-              for (let child of childList) {
+            if (element.childList) {
+              for (let child of element.childList) {
                 addOrRemoveRecursion(child, value, isSelect)
               }
             }
           }
+
+          /**
+          * 遍历添加父节点
+          **/
           let self = this
           const addParentRecursion = function (element, value) {
             let parent = self.elementMap[element.parentId]
             if (parent) {
-              var index = $.inArray(parent.id, value)
-              if (index < 0) {
+              if (value.indexOf(parent.id) < 0 && parent.isOptional !== 0) {
                 value.push(parent.id)
               }
               addParentRecursion(parent, value)
             }
           }
+          let newValue = this.value
           if (isSelect) {
-            addParentRecursion(selectElement, this.value)
+            if (this.isSelectParent) {
+              addParentRecursion(selectElement, newValue)
+            }
           }
-          addOrRemoveRecursion(selectElement, this.value, isSelect)
+          addOrRemoveRecursion(selectElement, newValue, isSelect)
+          this.$emit('input', newValue)
         })
       }
     }
@@ -106,7 +131,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   ul,
   li {
     margin-top: 0;

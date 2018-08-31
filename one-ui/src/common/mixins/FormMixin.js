@@ -49,7 +49,7 @@ let FormMixin = {
     }
   },
 
-  mounted () {
+  created () {
     this.load()
   },
 
@@ -63,6 +63,10 @@ let FormMixin = {
           const result = response.data
           if (result.ok && result.data) {
             this.obj = result.data
+            // 加载数据完成之后的会调
+            if (this.afterLoadData) {
+              this.afterLoadData(result.data)
+            }
           }
         })
       }
@@ -76,10 +80,13 @@ let FormMixin = {
       if (this.loading) {
         return
       }
-      this.loading = true
 
+      this.loading = true
+      this.$overlay.start('保存中')
       this.form.actions.save(this.obj).then((response) => {
         this.loading = false
+        this.$overlay.done()
+
         const result = response.data
         if (result.ok) {
           this.$notify.success('添加成功')
@@ -106,10 +113,12 @@ let FormMixin = {
       if (this.loading) {
         return
       }
-      this.loading = true
 
+      this.loading = true
+      this.$overlay.start('保存中')
       this.form.actions.update(this.obj).then((response) => {
         this.loading = false
+        this.$overlay.done()
         const result = response.data
         if (result.ok) {
           this.$notify.success('修改成功')

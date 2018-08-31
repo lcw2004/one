@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .progress-xxxs {
     height: 2px
   }

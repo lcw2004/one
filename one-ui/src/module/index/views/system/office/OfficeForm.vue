@@ -8,23 +8,23 @@
         <form class="form-horizontal">
           <section>
             <h4 class="page-header">基本信息</h4>
-  
+
             <div class="row">
               <div class="col-md-5">
-                <FormGroup label="上级机构">
+                <FormGroup label="上级机构" :required="true">
                   <div class="input-group">
-                    <input type="text" class="form-control" v-model="obj.parent == null ? '' : obj.parent.name" v-validate="'required'" name="上级机构"/>
+                    <input type="text" class="form-control" v-model="parentName" v-validate="'required'" name="上级机构" readonly/>
                     <span class="input-group-btn">
-                    <button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
-                  </span>
+                      <button class="btn btn-info" type="button" @click="officeTreeModalConfig.show = true">选择</button>
+                    </span>
                   </div>
                   <SelectOfficeModal :config="officeTreeModalConfig" v-model="obj.parent"></SelectOfficeModal>
                 </FormGroup>
               </div>
               <div class="col-md-5">
-                <FormGroup label="归属区域">
+                <FormGroup label="归属区域" :required="true">
                   <div class="input-group">
-                    <input type="text" class="form-control" v-model="obj.area.name" v-validate="'required'" name="归属区域"/>
+                    <input type="text" class="form-control" v-model="areaName" v-validate="'required'" name="归属区域" readonly/>
                     <span class="input-group-btn">
                       <button class="btn btn-info" type="button" @click="areaTreeModalConfig.show = true">选择</button>
                     </span>
@@ -35,12 +35,12 @@
             </div>
             <div class="row">
               <div class="col-md-5">
-                <FormGroup label="机构名称">
+                <FormGroup label="机构名称" :required="true">
                   <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="机构名称"/>
                 </FormGroup>
               </div>
               <div class="col-md-5">
-                <FormGroup label="机构编码">
+                <FormGroup label="机构编码" :required="true">
                   <input type="text" class="form-control" v-model="obj.code" v-validate="'required'" name="机构编码"/>
                 </FormGroup>
               </div>
@@ -58,17 +58,17 @@
               </div>
             </div>
           </section>
-  
+
           <section>
             <h4 class="page-header">联系方式</h4>
             <div class="row">
               <div class="col-md-5">
                 <FormGroup label="负责人">
                   <div class="input-group">
-                    <input type="text" class="form-control" v-model="obj.masterUserInfo == null ? '' : obj.masterUserInfo.name" v-validate="'required'" name="负责人"/>
+                    <input type="text" class="form-control" v-model="userName" readonly/>
                     <span class="input-group-btn">
-                    <button class="btn btn-info" type="button" @click="managerUserModalConfig.show = true">选择</button>
-                  </span>
+                      <button class="btn btn-info" type="button" @click="managerUserModalConfig.show = true">选择</button>
+                    </span>
                   </div>
                   <SelectSingleManageUserModal :config="managerUserModalConfig" v-model="obj.masterUserInfo"></SelectSingleManageUserModal>
                 </FormGroup>
@@ -82,19 +82,19 @@
             <div class="row">
               <div class="col-md-5">
                 <FormGroup label="邮政编码">
-                  <input type="text" class="form-control" v-model="obj.zipCode" />
+                  <input type="text" class="form-control" v-model="obj.zipCode" v-validate="'zipCode'" name="邮政编码"/>
                 </FormGroup>
               </div>
               <div class="col-md-5">
                 <FormGroup label="电话">
-                  <input type="text" class="form-control" v-model="obj.phone" />
+                  <input type="text" class="form-control" v-model="obj.phone" v-validate="'phone'" name="电话"/>
                 </FormGroup>
               </div>
             </div>
             <div class="row">
               <div class="col-md-5">
                 <FormGroup label="传真">
-                  <input type="text" class="form-control" v-model="obj.fax" />
+                  <input type="text" class="form-control" v-model="obj.fax" v-validate="'fax'" name="传真"/>
                 </FormGroup>
               </div>
               <div class="col-md-5">
@@ -104,14 +104,46 @@
               </div>
             </div>
           </section>
-  
-          <div class="row">
-            <div class="col-md-10">
-              <FormGroup label="备注" width="2">
-                <textarea class="form-control" rows="3" v-model="obj.remarks" maxlength="200"></textarea>
-              </FormGroup>
+
+          <section>
+            <h4 class="page-header">其他信息</h4>
+            <div class="row">
+              <div class="col-md-5">
+                <FormGroup label="资料费开户银行">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankName" maxlength="30"/>
+                </FormGroup>
+              </div>
+              <div class="col-md-5">
+                <FormGroup label="保证金银行">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankName" maxlength="30"/>
+                </FormGroup>
+              </div>
             </div>
-          </div>
+            <div class="row">
+              <div class="col-md-5">
+                <FormGroup label="资料费账号">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankAccount" maxlength="20"/>
+                </FormGroup>
+              </div>
+              <div class="col-md-5">
+                <FormGroup label="保证金账号">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankAccount" maxlength="20"/>
+                </FormGroup>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-5">
+                <FormGroup label="资料费银行开户名">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankUserName" maxlength="20"/>
+                </FormGroup>
+              </div>
+              <div class="col-md-5">
+                <FormGroup label="保证金银行开户名">
+                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankUserName" maxlength="20"/>
+                </FormGroup>
+              </div>
+            </div>
+          </section>
         </form>
       </div>
       <div class="box-footer">
@@ -164,7 +196,15 @@ export default {
         phone: '',
         fax: '',
         email: '',
-        remarks: ''
+        remarks: '',
+        otherInfoMap: {
+          fileFeeBankName: '',
+          fileFeeBankAccount: '',
+          fileFeeBankUserName: '',
+          promiseFeeBankName: '',
+          promiseFeeBankAccount: '',
+          promiseFeeBankUserName: ''
+        }
       },
       officeTreeModalConfig: {
         show: false,
@@ -178,6 +218,28 @@ export default {
         show: false,
         title: '选择负责人'
       }
+    }
+  },
+  computed: {
+    parentName: function () {
+      return this.obj.parent ? this.obj.parent.name : ''
+    },
+    areaName: function () {
+      return this.obj.area ? this.obj.area.name : ''
+    },
+    userName: function () {
+      return this.obj.masterUserInfo ? this.obj.masterUserInfo.name : ''
+    }
+  },
+  watch: {
+    'parentName': function () {
+      this.$validator.validate('上级机构', this.parentName)
+    },
+    'areaName': function () {
+      this.$validator.validate('归属区域', this.areaName)
+    },
+    'userName': function () {
+      this.$validator.validate('负责人', this.userName)
     }
   }
 }

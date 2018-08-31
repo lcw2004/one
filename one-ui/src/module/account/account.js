@@ -6,7 +6,7 @@ import installDirectives from '../../common/directives'
 import installComponents from '../../common/components'
 import installMixins from '../../common/mixins'
 import installVeeValidate from '../../common/validator'
-import installElementUI from '@utils/init/installElementUI.js'
+import installElementUI from '@utils/init/installElementUI'
 import router from './router'
 import Account from './Account.vue'
 

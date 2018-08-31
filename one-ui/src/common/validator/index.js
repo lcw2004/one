@@ -6,14 +6,24 @@ import cn from 'vee-validate/dist/locale/zh_CN'
 import attachIdentityCodeRule from './identity-code.js'
 import attachOfficeCodeRule from './office-code.js'
 import attachMobileRule from './mobile.js'
+import attachPhoneRule from './phone.js'
+import attachFaxRule from './fax.js'
+import attachZipCodeRule from './zipCode.js'
+import attachWebSiteRule from './webSite.js'
 import attachPasswordRule from './password.js'
+import attachBankCardRule from './bank-card.js'
 import dictionary from './dictionary'
 
 function attachValidRule () {
   attachIdentityCodeRule()
   attachOfficeCodeRule()
   attachMobileRule()
+  attachPhoneRule()
+  attachFaxRule()
+  attachZipCodeRule()
+  attachWebSiteRule()
   attachPasswordRule()
+  attachBankCardRule()
 }
 
 /**

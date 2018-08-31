@@ -6,7 +6,6 @@ let $ = require('jquery')
 require('fullcalendar')
 
 export default {
-  name: 'Calendar',
   props: {
     events: {
       type: Array
@@ -77,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   a {
     cursor: pointer;
   }

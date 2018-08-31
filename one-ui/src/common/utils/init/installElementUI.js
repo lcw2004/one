@@ -3,12 +3,17 @@
 
 require('element-ui/lib/theme-chalk/index.css')
 import Vue from 'vue'
-import { DatePicker, TimeSelect, Step, Steps, Switch, Progress, InputNumber, RadioGroup, RadioButton, Cascader, CheckboxGroup, Checkbox, Radio, Select, Option } from 'element-ui'
+import { Input, Message, Button, Popover, Tooltip, Dialog, DatePicker, TimeSelect, Step, Steps, Switch, Progress, InputNumber, RadioGroup, RadioButton, Cascader, CheckboxGroup, Checkbox, Radio, Select, Option } from 'element-ui'
 
 /**
  * 因为只用到了部分组件，固单独注册
  */
 function install () {
+  Vue.component(Input.name, Input)
+  Vue.component(Button.name, Button)
+  Vue.component(Popover.name, Popover)
+  Vue.component(Tooltip.name, Tooltip)
+  Vue.component(Dialog.name, Dialog)
   Vue.component(Switch.name, Switch)
   Vue.component(DatePicker.name, DatePicker)
   Vue.component(TimeSelect.name, TimeSelect)
@@ -24,6 +29,9 @@ function install () {
   Vue.component(Radio.name, Radio)
   Vue.component(Select.name, Select)
   Vue.component(Option.name, Option)
+
+  // Vue.prototype.$notify = Notification
+  Vue.prototype.$message = Message
 }
 
 export default install

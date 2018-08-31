@@ -8,9 +8,9 @@
         <form class="form-horizontal">
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="上级菜单">
+              <FormGroup label="上级菜单" :required="true">
                 <div class="input-group">
-                  <input type="text" class="form-control" v-model="obj.parent.name" v-validate="'required'" name="上级菜单"/>
+                  <input type="text" class="form-control" v-model="obj.parent.name" v-validate="'required'" name="上级菜单" readonly/>
                   <span class="input-group-btn">
                     <button class="btn btn-info" type="button" @click="menuTreeModalConfig.show = true">选择</button>
                   </span>
@@ -20,7 +20,7 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="菜单名称">
+              <FormGroup label="菜单名称" :required="true">
                 <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="菜单名称"/>
               </FormGroup>
             </div>
@@ -35,7 +35,7 @@
           <div class="row">
             <div class="col-md-6">
               <FormGroup label="排序">
-                <input type="number" class="form-control" v-model="obj.sort" />
+                <input type="tel" class="form-control" v-model="obj.sort" />
               </FormGroup>
             </div>
           </div>
@@ -82,7 +82,7 @@
           </div>
         </div>
       </div>
-  
+
       <SelectIconModal :config="iconModalConfig" v-model="obj.icon" />
       <SelectMenuModal :config="menuTreeModalConfig" v-model="obj.parent" />
     </div>

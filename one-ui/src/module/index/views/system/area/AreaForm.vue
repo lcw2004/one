@@ -8,7 +8,7 @@
         <form class="form-horizontal">
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="上级区域">
+              <FormGroup label="上级区域" :required="true">
                 <div class="input-group">
                   <input type="text" class="form-control" v-model="obj.parent.name" v-validate="'required'" name="上级区域"/>
                   <span class="input-group-btn">
@@ -20,14 +20,14 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="区域名称">
+              <FormGroup label="区域名称" :required="true">
                 <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="区域名称"/>
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="区域编码">
+              <FormGroup label="区域编码" :required="true">
                 <input type="text" class="form-control" v-model="obj.code" v-validate="'required'" name="区域编码"/>
               </FormGroup>
             </div>

@@ -1,10 +1,10 @@
 <template>
   <header class="main-header">
     <!-- Logo -->
-    <a href="#" class="logo">
+    <router-link to='/' class="logo">
       <span class="logo-mini">{{ setting.appShortName }}</span>
       <span class="logo-lg">{{ setting.appName }}</span>
-    </a>
+    </router-link>
 
     <nav class="navbar navbar-static-top">
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" @click="toggleSidebar">
@@ -21,19 +21,23 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <li>
-            <router-link to='/'><i class="fa fa-home" style="font-size: 18px"></i></router-link>
-          </li>
+          <!-- 首页 -->
+          <li><a @click="home()"><i class="fa fa-home" style="font-size: 18px"></i></a></li>
 
+          <!-- 消息 -->
           <MessagesMenu/>
-          <!-- <NotificationsMenu/> -->
-          <!-- <TasksMenu/> -->
-          <UserInfoMenu/>
 
-          <!-- ControlSidebar 暂时隐藏
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>-->
+          <!-- 退出 -->
+          <li><a @click="logout()"><i class="fa fa-power-off" style="font-size: 16px"></i></a></li>
+
+          <!-- 通知 -->
+          <!-- <NotificationsMenu/> -->
+
+          <!-- 任务 -->
+          <!-- <TasksMenu/> -->
+
+          <!-- 用户信息 -->
+          <UserInfoMenu/>
         </ul>
       </div>
     </nav>
@@ -73,6 +77,12 @@ export default {
     },
     toggleSidebar () {
       this.$store.dispatch('toggleSidebarState')
+    },
+    logout () {
+      this.$store.dispatch('logout')
+    },
+    home () {
+      this.$router.push('/')
     }
   }
 }

@@ -5,14 +5,18 @@
         <h3 class="box-title"></h3>
       </div>
       <div class="box-body">
-        <div class="col-md-12">
-          <div class="process-img">
-            <img :src="progressImageUrl"></img>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="process-img">
+              <img :src="progressImageUrl" @click="$preview.openImg(progressImageUrl)"></img>
+            </div>
           </div>
         </div>
 
-        <div class="col-md-12">
-          <hr class="divider">
+        <div class="row">
+          <div class="col-md-12">
+            <hr class="divider">
+          </div>
         </div>
 
         <div class="row">
@@ -22,14 +26,13 @@
         </div>
       </div>
       <div class="box-footer">
-
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import AuditLog from '../AuditLog.vue'
+import AuditLog from '../view/form/AuditLog.vue'
 
 export default {
   components: {

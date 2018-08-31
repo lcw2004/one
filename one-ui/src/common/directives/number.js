@@ -16,9 +16,18 @@ function onlyNumber (value) {
   return value
 }
 
+function limitLength (value, maxLength) {
+  let newValue = value
+  if (maxLength && value && value.length > maxLength) {
+    newValue = value.slice(0, maxLength)
+  }
+  return newValue
+}
+
 export default {
   bind: function (el, binding, vnode) {
     console.log('---------------------------------')
+    console.log('bind')
     el.handler = function () {
       el.value = onlyNumber(el.value)
     }
@@ -34,7 +43,13 @@ export default {
   },
   update: function (el, binding, vnode) {
     console.log('---------------------------------')
+    console.log('update')
     console.log(binding)
+    if (!binding.value) {
+      return
+    }
+    let newValue = onlyNumber(el.value)
+    el.value = limitLength(newValue, binding.value.maxLength)
     console.log('---------------------------------')
   },
   unbind: function (el) {

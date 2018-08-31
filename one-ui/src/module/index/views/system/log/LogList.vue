@@ -1,66 +1,43 @@
 <template>
   <section class="content">
     <div class="box box-primary">
-      <div class="box-header">
-        <h3 class="box-title">系统日志</h3>
-      </div>
       <div class="box-body">
-        <div class="row row-margin-bottom">
-          <div class="col-md-12">
-            <form class="form-inline" @keyup.enter="query()">
-              <div class="form-group">
-                <label class="control-label">URI</label>
-                <input class="form-control inline-block" type="text" v-model="param.requestUri">
-              </div>
-              <div class="form-group">
-                <label class="control-label">操作用户</label>
-                <input class="form-control inline-block" type="text" v-model="param.createByName" placeholder="姓名/登录名">
-              </div>
-              <div class="form-group">
-                <label class="control-label">时间</label>
-                <div class='input-group date'>
-                  <input type='text' class="form-control form-date" v-model="param.beginDate"/>
-                  <span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar"></span>
-								</span>
-                </div>
-                -
-                <div class='input-group date'>
-                  <input type='text' class="form-control form-date" v-model="param.endDate"/>
-                  <span class="input-group-addon">
-									<span class="glyphicon glyphicon-calendar"></span>
-								</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <a class="btn btn-primary" @click="query()">查询</a>
-              </div>
-            </form>
-          </div>
-        </div>
+        <!--Query Start-->
+        <LogQueryCondition v-model="param"></LogQueryCondition>
+        <!--Query End-->
+
         <div class="row">
           <div class="col-md-12">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>所在公司</th>
-                  <th>所在部门</th>
                   <th>操作用户</th>
+                  <th>HTTP方法</th>
                   <th>URI</th>
-                  <th>提交方式</th>
-                  <th>操作者IP</th>
-                  <th>创建时间</th>
+                  <th>操作时间</th>
+                  <th>操作IP</th>
+                  <th>执行耗时</th>
+                  <th>是否异常</th>
+                  <th>执行类</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="obj of page.list">
-                  <td>{{ obj.createBy.company.name }}</td>
-                  <td>{{ obj.createBy.office.name }}</td>
-                  <td>{{ obj.createBy.name }}（{{ obj.createBy.loginName }}）</td>
-                  <td>{{ obj.requestUri }}</td>
-                  <td>{{ obj.method }}</td>
-                  <td>{{ obj.remoteAddr }}</td>
-                  <td>{{ obj.createDate }}</td>
+                  <td><template v-if="obj.userInfo">{{ obj.userInfo.name }}</template></td>
+                  <td>{{ obj.httpMethod }}</td>
+                  <td>{{ obj.httpUri | limitLength(20) }}</td>
+                  <td>{{ obj.createTime }}</td>
+                  <td>{{ obj.httpRemoteHost }}</td>
+                  <td>{{ obj.executeTime }}</td>
+                  <td>
+                    <span class="label label-warning" v-if="obj.isFail == 1">异常</span>
+                    <span class="label label-default" v-else>正常</span>
+                  </td>
+                  <td>{{ simplifyClassName(obj.className) | limitLength(20) }}</td>
+                  <td>
+                    <router-link :to='"/system/log/" + obj.logId + "/view"'>查看</router-link>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -73,33 +50,30 @@
 </template>
 
 <script>
+import PageMixin from '@mixins/PageMixin'
+import LogQueryCondition from './LogQueryCondition.vue'
+
 export default {
+  mixins: [PageMixin],
+  components: {
+    LogQueryCondition
+  },
   data: function () {
     return {
-      param: {
-        pageNo: 1,
-        pageSize: 10,
-        requestUri: '',
-        createByName: '',
-        beginDate: '',
-        endDate: ''
+      actions: {
+        list: {method: 'get', url: '/api/sys/log'}
       },
-      page: {}
+      param: {
+      }
     }
-  },
-  mounted: function () {
-    this.query()
   },
   methods: {
-    query: function () {
-    }
-  },
-  watch: {
-    'param': {
-      handler: function () {
-        this.query()
-      },
-      deep: true
+    simplifyClassName (className) {
+      if (className.length < 20) {
+        return className
+      } else {
+        return className.substring(className.lastIndexOf('.') + 1)
+      }
     }
   }
 }

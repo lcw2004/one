@@ -1,19 +1,19 @@
 <template>
   <div>
-    <template v-for="(obj, index) of dataList">
-      <CommonStatistic v-if="index < 8" :value="obj"></CommonStatistic>
+    <template v-for="(obj, index) of showDataList">
+      <CommonStatistic1 v-if="index < 8" :value="obj"></CommonStatistic1>
     </template>
   </div>
 </template>
 
 <script>
-import TaskStatistic from './statistic/TaskStatistic.vue'
 import CommonStatistic from './statistic/CommonStatistic.vue'
+import CommonStatistic1 from './statistic/CommonStatistic1.vue'
 
 export default {
   components: {
-    TaskStatistic,
-    CommonStatistic
+    CommonStatistic,
+    CommonStatistic1
   },
   props: {
     dataList: {
@@ -21,11 +21,10 @@ export default {
       required: true
     }
   },
-  data: function () {
-    return {
+  computed: {
+    showDataList: function () {
+      return this.dataList
     }
-  },
-  methods: {
   }
 }
 </script>

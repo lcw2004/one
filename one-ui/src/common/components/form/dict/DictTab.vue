@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less">
 .col-md-tag {
   width: 12%;
   float: left;

@@ -4,7 +4,7 @@
       <div class="box-body">
         <!--Query Start-->
         <form class="form-horizontal">
-          <div class="row row-margin-bottom">
+          <div class="row margin-bottom-10">
             <div class="col-md-4">
               <FormGroup label="查询条件">
                 <input class="form-control" type="text" placeholder="编号/名称/内容" v-model="param.likeName">
@@ -26,7 +26,7 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <th style="width: 10px">#</th>
+                  <th style="width: 10px">序号</th>
                   <th>模板编号</th>
                   <th>模板类型</th>
                   <th>模板标题</th>
@@ -103,19 +103,11 @@ export default {
         })
       })
     }
-  },
-  watch: {
-    'param': {
-      handler: function () {
-        this.query()
-      },
-      deep: true
-    }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less">
 .word_warp {
   white-space: normal;
   word-break: break-all;

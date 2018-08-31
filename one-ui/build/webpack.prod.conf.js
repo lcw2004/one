@@ -65,6 +65,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
+      output: {
+        comments: false, // 去掉注释内容
+      },
       sourceMap: false
     }),
     // Ignore all locale files of moment.js

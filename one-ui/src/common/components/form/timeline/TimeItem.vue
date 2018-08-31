@@ -3,7 +3,7 @@
     <i :class="iconClass"></i>
     <div class="timeline-item">
       <span class="time">
-        <a @click="showDetail = !showDetail">{{ explandText }} <i :class="expandClass"></i></a>
+        <a v-if="hasBody" @click="showDetail = !showDetail">{{ expandText }} <i :class="expandClass"></i></a>
         <i class="fa fa-clock-o" v-if="time"></i> {{ time }}
       </span>
 
@@ -13,12 +13,12 @@
       </h3>
 
       <!-- timeline-body -->
-      <div class="timeline-body" v-show="showBody && showDetail">
+      <div class="timeline-body" v-show="hasBody && showDetail">
         <slot name="body"></slot>
       </div>
 
       <!-- timeline-footer -->
-      <div class="timeline-footer" v-if="showFooter">
+      <div class="timeline-footer" v-if="hasFooter">
         <slot name="footer"></slot>
       </div>
     </div>
@@ -40,11 +40,11 @@ export default {
       type: String,
       required: false
     },
-    showBody: {
+    hasBody: {
       type: Boolean,
       default: true
     },
-    showFooter: {
+    hasFooter: {
       type: Boolean,
       default: true
     }
@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    explandText: function () {
+    expandText: function () {
       return this.showDetail ? '收起' : '展开'
     },
     iconClass: function () {
@@ -71,14 +71,14 @@ export default {
     headerClass: function () {
       return {
         'timeline-header': true,
-        'no-border': !this.showDetail
+        'no-border': !this.showDetail || !this.hasBody
       }
     }
   }
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .time > a {
     margin-right: 20px
   }

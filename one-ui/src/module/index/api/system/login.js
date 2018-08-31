@@ -4,6 +4,10 @@ export function login (params) {
   return axios.get('/api/login', {params: params})
 }
 
+export function systemInfo () {
+  return axios.get('/api/systemInfo')
+}
+
 export function logout () {
   return axios.get('/api/logout')
 }
@@ -29,5 +33,5 @@ export function updateUserInfo (userInfo) {
 }
 
 export function getCurrentSupplierInfo () {
-  return axios.get(`/api/supplierInfo`)
+  return axios.get(`/api/user/supplier/current`)
 }

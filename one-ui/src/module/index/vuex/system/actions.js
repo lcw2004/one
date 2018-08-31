@@ -13,8 +13,8 @@ export default {
   activeThirdMenu ({commit}, menu) {
     commit(types.ACTIVE_THIRD_MENU, menu)
   },
-  activeHomePage ({commit}, home) {
-    commit(types.ACTIVE_HOME_PAGE, home)
+  activePageTitle ({commit}, title) {
+    commit(types.ACTIVE_PAGE_TITLE, title)
   },
   initData ({commit}, dictMap) {
     commit(types.INIT_DATA, dictMap)
@@ -23,13 +23,34 @@ export default {
   initSystemTime ({commit}, systemTime) {
     commit(types.INIT_SYSTEM_TIME, systemTime)
   },
-  removeUserInfo ({commit}) {
-    commit(types.REMOVE_USER_INFO)
+  initArea ({commit}) {
+    commit(types.INIT_AREA)
+  },
+  initPurchaseType ({commit}) {
+    commit(types.INIT_PURCHASE_TYPE)
+  },
+  initUserInfo ({commit}, userInfo) {
+    commit(types.INIT_USER_INFO, userInfo)
+  },
+  initRoleList ({commit}) {
+    commit(types.INIT_ROLE_LIST)
+  },
+  logout ({commit}) {
+    commit(types.LOGOUT)
   },
   toggleSidebarState ({commit}, sidebarIsExpand) {
     commit(types.TOGGLE_SIDEBAR, sidebarIsExpand)
   },
   loadMessage ({commit}) {
     commit(types.LOAD_MESSAGE)
+  },
+  loadSupplier ({commit}, supplierId) {
+    commit(types.LOAD_SUPPLIER, supplierId)
+  },
+  loadCurrentSupplier ({commit}) {
+    commit(types.LOAD_CURRENT_SUPPLIER)
+  },
+  isShowRouterView ({commit}, isShowRouterView) {
+    commit(types.IS_SHOW_ROUTER_VIEW, isShowRouterView)
   }
 }

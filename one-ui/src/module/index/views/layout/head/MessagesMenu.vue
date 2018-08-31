@@ -9,12 +9,12 @@
       <li>
         <ul class="menu">
           <li v-for="obj of messageList">
-            <a class="message" @click="viewMore()">
+            <a class="one-message" @click="viewMore()">
               <h4>
                 {{ obj.title }}
                 <small><i class="fa fa-clock-o"></i> {{ obj.timeDiff }}</small>
               </h4>
-              <p>{{ obj.content }}</p>
+              <p v-html="obj.content"></p>
             </a>
           </li>
         </ul>
@@ -59,27 +59,40 @@ export default{
       }
     },
     viewMore () {
-      this.$router.push('/personal/message')
+      this.$store.dispatch('activePageTitle', '消息中心')
+      this.goToPage('/personal/message')
       this.toggole()
     },
     listMessage () {
       this.$store.dispatch('loadMessage')
+    },
+    goToPage (url) {
+      // 如下代码用于点击菜单的时候强制刷新页面
+      this.$store.dispatch('isShowRouterView', false)
+      this.$nextTick(() => {
+        this.$router.push(url)
+        this.$store.dispatch('isShowRouterView', true)
+      })
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
-.message {
+<style lang="less" type="text/less">
+.one-message {
   h4 {
     margin-left: 0 !important;
     margin-bottom: 3px;
   }
   p {
     margin-left: 0 !important;
-    white-space:normal;
-    word-break:break-all;
-    word-wrap:break-word;
+    margin-top: 10px !important;
+    white-space: normal !important;
+    word-break: normalbreak-all;
+    word-wrap: break-word;
+  }
+  a {
+    margin: 0 5px;
   }
 }
 </style>

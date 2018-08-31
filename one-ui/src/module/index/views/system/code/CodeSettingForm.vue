@@ -1,20 +1,23 @@
 <template>
-  <div class="box box-primary">
-    <div class="box-header">
-      <h3 class="box-title">编码规则配置</h3>
-    </div>
-    <div class="box-body">
-      <div class="row">
-        <div class="col-md-12">
-          <template v-for="section of codeSetting.sectionEOList">
-            <CodeSettingSection :section="section"></CodeSettingSection>
-          </template>
-        </div>
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <template v-for="section of codeSetting.sectionEOList">
+          <CodeSettingSection :section="section"></CodeSettingSection>
+        </template>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <CodeSettingExample :codeSetting="codeSetting"></CodeSettingExample>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <CodeSettingExample :codeSetting="codeSetting"></CodeSettingExample>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 margin-20">
+        <button type="button" class="btn btn-block btn-primary" @click="update()">
+          保存
+        </button>
       </div>
     </div>
   </div>
@@ -33,6 +36,17 @@ export default {
     codeSetting: {
       type: Object,
       require: true
+    }
+  },
+  methods: {
+    update () {
+      this.$api.system.updateCodeSetting(this.codeSetting).then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.codeSetting = result.data
+          this.$notify.success('保存成功')
+        }
+      })
     }
   }
 }

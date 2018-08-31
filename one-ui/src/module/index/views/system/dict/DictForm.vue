@@ -8,36 +8,22 @@
         <form class="form-horizontal">
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="字典名称">
-                <input type="text" class="form-control" v-model="obj.type" v-validate="'required'" name="字典名称" />
+              <FormGroup label="字典类别" :required="true">
+                <input type="text" class="form-control" v-model="obj.type" v-validate="'required'" name="字典类别" maxlength="100"/>
+              </FormGroup>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="字典名称" :required="true">
+                <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="字典名称" maxlength="100" />
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <FormGroup label="字典描述">
-                <input type="text" class="form-control" v-model="obj.description" v-validate="'required'" name="字典描述" />
-              </FormGroup>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <FormGroup label="字典值描述">
-                <input type="text" class="form-control" v-model="obj.label" v-validate="'required'" name="字典值描述" />
-              </FormGroup>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <FormGroup label="字典值">
-                <input type="text" class="form-control" v-model="obj.value" v-validate="'required'" name="字典值" />
-              </FormGroup>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <FormGroup label="排序号">
-                <input type="number" class="form-control" v-model="obj.sort" v-validate="'required'" name="排序号" />
+                <textarea class="form-control" rows="3" v-model="obj.remark" maxlength="200"></textarea>
               </FormGroup>
             </div>
           </div>
@@ -74,18 +60,9 @@ export default {
       },
       obj: {
         type: '',
-        description: '',
-        label: '',
-        value: '',
-        sort: 1
+        name: '',
+        remark: ''
       }
-    }
-  },
-  methods: {
-    clear () {
-      this.obj.label = ''
-      this.obj.value = ''
-      this.obj.sort = Number.parseInt(this.obj.sort) + 1
     }
   }
 }

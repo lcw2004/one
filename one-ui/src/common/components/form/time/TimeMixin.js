@@ -23,6 +23,7 @@ export default {
       },
       set: function (newDate) {
         this.$emit('input', newDate)
+        this.$emit('change')
       }
     },
     currentTime: function () {

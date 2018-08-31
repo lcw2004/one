@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ModalMixin from '@mixins/ModalSimpleMixin.js'
+import ModalMixin from '@mixins/ModalMixin'
 
 export default {
   mixins: [ModalMixin],

@@ -30,23 +30,28 @@ TODO 将用户ID改成token
 -->
 
 <template>
-  <div>
+  <div style="display: inline-block">
     <input type="file" style="display: none" :id="id" @change="uploadFile($event)">
 
-    <div class="row">
-      <div class="col-md-12">
-        <button type="button" :class="btnClass" @click="selectFile">
-          <i class="fa fa-upload"></i> {{ btnText }}
-        </button>
-        <QuestionTooltip>
-          <div style="text-align: left">
-            <template v-if="type">文件类型：{{ type }}</template><br>
-            文件大小：不超过{{ maxFileSizeShow }}
-          </div>
-        </QuestionTooltip>
-      </div>
-    </div>
+    <!--上传按钮-->
+    <template v-if="!isSlot">
+      <button type="button" :class="btnClass" @click="selectFile">
+        <i class="fa fa-upload"></i> {{ btnText }}
+      </button>
+      <QuestionTooltip>
+        <div style="text-align: left">
+          <template v-if="type">文件类型：{{ type }}<br></template>
+          文件大小：不超过{{ maxFileSizeShow }}
+        </div>
+      </QuestionTooltip>
+    </template>
 
+    <!--上传Slot-->
+    <span v-if="isSlot" @click="selectFile">
+      <slot></slot>
+    </span>
+
+    <!-- 上传进度 -->
     <template v-if="fileName && showProgress">
       <div class="row file-detail">
         <div class="col-md-12">
@@ -54,9 +59,9 @@ TODO 将用户ID改成token
           <span class="pull-right" v-if="!isSuccess">{{ progressWidth }}%</span>
 
           <span class="pull-right" v-if="isSuccess">
-              <span class="file-detail-success">
-              	<i class="fa fa-fw fa-check-circle"></i> 上传成功
-              </span>
+            <span class="file-detail-success">
+              <i class="fa fa-fw fa-check-circle"></i> 上传成功
+            </span>
           	<i class="file-detail-name fa fa-fw fa-close" title="删除" @click="clear()"></i>
           </span>
         </div>
@@ -95,17 +100,22 @@ export default {
 }
 </script>
 
-<style>
-  .file-detail {
-    margin-top: 10px;
-  }
+<style lang="less" type="text/less">
+ .file-detail {
+   margin-top: 10px;
 
-  .file-detail .file-detail-name {
-    font-size: 13px;
-    color: #777;
-  }
+   .file-detail-name {
+     font-size: 13px;
+     color: #777;
+     cursor: pointer;
 
-  .file-detail .file-detail-success {
-    color: #00a65a;
-  }
+     &:hover {
+       color: #72afd2;
+     }
+   }
+
+   .file-detail-success {
+     color: #00a65a;
+   }
+ }
 </style>

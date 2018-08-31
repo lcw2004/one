@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import setHtmlTitle from '@utils/setHtmlTitle'
+import { setHtmlTitle } from '@utils/common'
 import Home from './views/layout/Home'
 
 export default {
@@ -17,10 +17,6 @@ export default {
   },
   mounted () {
     this.loadInitData()
-    this.interval = setInterval(() => {
-      this.checkIsLogin()
-    }, 1000 * 60)
-    this.initSocket()
   },
   destroyed () {
     clearInterval(this.interval)
@@ -37,34 +33,26 @@ export default {
         let result = response.data
         if (result.ok) {
           let data = result.data
-          // 菜单
-          this.initMenu(data.userMenu)
-          // 字典
-          this.$store.dispatch('initData', data)
-          // 系统网页标题
+
+          // 设置系统页面标题
           setHtmlTitle(data.sysSetting.appName)
+
+          // 初始化数据
+          this.$store.dispatch('initData', data)
+
           // 是否完善供应商信息
           let isNeed = data.isNeedPerfectSupplierInfo
           if (isNeed) {
-            this.$router.push('/prefect-info')
+            this.$router.push('/supplier/prefect')
           }
+
+          this.doAfterInitSuccess()
+        } else {
+          this.toLoginPage()
         }
-        // 50ms后关闭加载组件，并显示页面
-        setTimeout(() => {
-          this.$overlay.done()
-          this.initOk = true
-        }, 10)
       })
     },
-    /**
-     * 初始化菜单
-     */
-    initMenu (topMenu) {
-      this.$store.dispatch('initTopMenu', topMenu)
-      if (topMenu && topMenu.childList && topMenu.childList.length > 0) {
-        this.$store.dispatch('activeFirstMenu', topMenu.childList[0])
-      }
-    },
+
     /**
      * 检查是否退出系统，如果已经退出系统，则跳转到登录界面
      */
@@ -80,27 +68,43 @@ export default {
         }
       })
     },
+
+    doAfterInitSuccess () {
+      // 初始化Socket
+      this.initSocket()
+
+      // 设置定时器检查登录状态
+      this.interval = setInterval(this.checkIsLogin, 1000 * 60)
+
+      // 50ms后关闭加载组件，并显示页面
+      setTimeout(() => {
+        this.$overlay.done()
+        this.initOk = true
+      }, 10)
+    },
+
     /**
      * 初始化Socket链接
      */
     initSocket () {
-      this.$sockjs.connect()
-      // 订阅系统公告
-      this.$sockjs.subscribe('/broker/notice', (subscription) => {
-        this.subscription = subscription
-      }, (result) => {
-        this.$notify.success(JSON.parse(result.body).data.content)
-      })
+//      this.$sockjs.connect()
+//      // 订阅系统公告
+//      this.$sockjs.subscribe('/broker/notice', (subscription) => {
+//        this.subscription = subscription
+//      }, (result) => {
+//        this.$notify.success(JSON.parse(result.body).data.content)
+//      })
     },
+
     /**
      * 取消订阅消息
-     * @return {[type]} [description]
      */
     unSubscribe () {
-      if (this.subscription) {
-        this.subscription.unsubscribe()
-      }
+//      if (this.subscription) {
+//        this.subscription.unsubscribe()
+//      }
     },
+
     toLoginPage () {
       window.location.href = 'login.html'
     }

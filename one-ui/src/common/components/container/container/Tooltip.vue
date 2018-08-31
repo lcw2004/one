@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { uuid } from '@utils/common.js'
+import { uuid } from '@utils/common'
 
 export default {
   name: 'Tooltip',

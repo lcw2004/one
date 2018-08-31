@@ -8,12 +8,7 @@
 </template>
 
 <script>
-import CodeView from './CodeView.vue'
-
 export default {
-  components: {
-    CodeView
-  },
   props: {
     tableId: {
       type: String,

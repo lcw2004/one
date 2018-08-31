@@ -4,7 +4,7 @@
       <div class="box-body">
         <!--Query Start-->
         <form class="form-horizontal">
-          <div class="row row-margin-bottom">
+          <div class="row margin-bottom-10">
             <div class="col-md-4">
               <FormGroup label="查询条件">
                 <input class="form-control inline-block" type="text" placeholder="流程ID/流程名称" v-model="param.likeName">
@@ -87,14 +87,6 @@ export default {
     uploadSuccess () {
       this.$notify.success('部署成功')
       this.queryForPage()
-    }
-  },
-  watch: {
-    'param': {
-      handler: function () {
-        this.query()
-      },
-      deep: true
     }
   }
 }

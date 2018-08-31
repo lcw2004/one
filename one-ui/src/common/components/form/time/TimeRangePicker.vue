@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less">
 .date-picker {
   .el-input {
     width: 100% !important;

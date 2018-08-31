@@ -1,47 +1,33 @@
 <template>
-  <OneTransition>
-    <div :class="fullScreenClass" v-show="config.show" style="display: block">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
-            <span aria-hidden="true">×</span>
-          </button>
-          <h4 class="modal-title" v-text="config.title"></h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li :class="{active : selectedCodeType == tab.codeType}" v-for="tab of tabs" v-if="tab.isShow">
-                    <a @click="selectedCodeType = tab.codeType">
-                      {{ tab.codeType }}
-                    </a>
-                  </li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane active">
-                    <CodePreview :tableId="table.tableId" :codeType="selectedCodeType" :strategy="strategy"></CodePreview>
-                  </div>
-                </div>
-              </div>
+  <OneModal :title="config.title" :show.sync="config.show" size="large">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="nav-tabs-custom">
+          <ul class="nav nav-tabs">
+            <li :class="{active : selectedCodeType == tab.codeType}" v-for="tab of tabs" v-if="tab.isShow">
+              <a @click="selectedCodeType = tab.codeType">
+                {{ tab.codeType }}
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active">
+              <CodePreview :tableId="table.tableId" :codeType="selectedCodeType" :strategy="strategy"></CodePreview>
             </div>
           </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
-          <button type="button" class="btn btn-primary" @click="ok()">确认</button>
         </div>
       </div>
     </div>
-  </div>
-  </OneTransition>
+
+    <div class="modal-footer" slot="footer">
+      <button type="button" class="btn btn-default " @click="close()">取消</button>
+      <button type="button" class="btn btn-primary" @click="ok()">确认</button>
+    </div>
+  </OneModal>
 </template>
 
 <script>
-import ModalMixin from '@mixins/ModalMixin.js'
+import ModalMixin from '@mixins/ModalMixin'
 import CodePreview from './CodePreview.vue'
 
 export default {
@@ -50,10 +36,6 @@ export default {
   },
   mixins: [ModalMixin],
   props: {
-    config: {
-      type: Object,
-      required: true
-    },
     strategy: {
       type: Object,
       required: true

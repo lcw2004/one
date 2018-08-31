@@ -1,11 +1,19 @@
 <template>
-  <span @click="isShow = !isShow">
-    <slot name="outer"></slot>
-    <i :class="iconClass" style="cursor:pointer; position: relative;">
-      <Popover v-if="isShow" :title="title" :width="width" :left="left">
+  <span>
+    <slot name="outer" @click="isShow = true"></slot>
+
+    <el-popover
+      placement="bottom"
+      :width="width"
+      :title="title"
+      trigger="click"
+      v-model="isShow"
+      @show="onShow"
+      @hide="onHide">
         <slot></slot>
-      </Popover>
-    </i>
+
+        <i :class="iconClass" slot="reference"></i>
+      </el-popover>
   </span>
 </template>
 
@@ -36,6 +44,12 @@ export default {
       return 9
     },
     getWidth () {
+    },
+    onShow () {
+      this.isShow = true
+    },
+    onHide () {
+      this.isShow = false
     }
   },
   mounted () {
@@ -63,7 +77,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   i {
     font-size: 15px;
   }

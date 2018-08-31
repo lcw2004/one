@@ -10,7 +10,7 @@
         </div>
 
         <div class="box-body">
-          <div class="row row-margin-bottom">
+          <div class="row margin-bottom-10">
             <div class="col-md-12">
               <Step>
                 <StepItem index="1" name="验证机构" :is-active="stepId == 1"/>

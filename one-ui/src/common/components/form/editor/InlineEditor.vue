@@ -6,13 +6,14 @@
       :height="height"
       width="100%"
       pluginsPath="/static/kindeditor/plugins/"
+      uploadJson="/api/sys/file/kind-upload"
       :loadStyleMode="false">
     </KindEditor>
   </div>
 </template>
 
 <script>
-import { uuid } from '@utils/common.js'
+import { uuid } from '@utils/common'
 
 export default {
   name: 'InlineEditor',

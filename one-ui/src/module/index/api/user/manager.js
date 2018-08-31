@@ -16,3 +16,12 @@ export function updateManagerUser (obj) {
 export function deleteManagerUser (objId) {
   return axios.delete(`/api/user/manager/${objId}`)
 }
+export function getCurrentManagerUser (objId) {
+  return axios.get(`/api/user/manager/userInfo`)
+}
+export function updateCurrentManagerUser (user) {
+  return axios.put(`/api/user/manager/userInfo`, user)
+}
+export function downloadManagerUserTemplate () {
+  window.location.href = `/api/user/manager/template`
+}

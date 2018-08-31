@@ -20,7 +20,7 @@
     </section>
 
     <!-- <keep-alive> -->
-      <router-view></router-view>
+      <router-view v-if="isShowRouterView"></router-view>
     <!-- </keep-alive> -->
   </div>
 </template>
@@ -33,6 +33,9 @@ export default {
     },
     menuPath: function () {
       return this.$store.state.system.menuPath
+    },
+    isShowRouterView: function () {
+      return this.$store.state.system.isShowRouterView
     }
   }
 }

@@ -29,7 +29,7 @@
                 <TreeTableColPrefix :obj="obj" @toggle="toggle(obj)">{{ obj.name }}</TreeTableColPrefix>
               </td>
               <td>{{ obj.href }}</td>
-              <td><input type="number" class="form-control input-sm" style="width: 100px" v-model="obj.sort" @blur="updateSort(obj)"></td>
+              <td><input type="tel" class="form-control input-sm" style="width: 100px" v-model="obj.sort" @blur="updateSort(obj)"></td>
               <td><DictLabel type="show_hide" :value="obj.isShow"></DictLabel></td>
               <td>{{ obj.permission }}</td>
               <td>

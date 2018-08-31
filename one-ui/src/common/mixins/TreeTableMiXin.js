@@ -115,6 +115,7 @@ const TreeTableMiXin = {
       }
       menu.isExpanded = !isExpanded
     },
+
     /**
      * 全部展开/收缩 菜单
      */
@@ -122,6 +123,7 @@ const TreeTableMiXin = {
       toggleAllMenu(this.topElement, !this.toggleStatus)
       this.toggleStatus = !this.toggleStatus
     },
+
     /**
      * 移除元素以及该元素的子元素
      */

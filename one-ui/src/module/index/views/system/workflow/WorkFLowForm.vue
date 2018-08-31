@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="process-img">
-                <img :src="processImageUrl"></img>
+                <img :src="processImageUrl" @click="$preview.openImg(processImageUrl)"></img>
               </div>
             </div>
 
@@ -17,25 +17,50 @@
               <hr class="divider">
             </div>
 
-            <template v-for="taskInfo of obj.flowTaskInfoEOList">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="pull-right">
-                    <h4>{{ taskInfo.taskName }}</h4>
+            <div class="col-md-10 col-md-offset-2">
+              <form class="form-horizontal">
+                <div class="row">
+                  <div class="col-md-12">
+                    <FormGroupStatic label="流程ID" width="2">{{ obj.processKey }}</FormGroupStatic>
+                  </div>
+                  <div class="col-md-12">
+                    <FormGroupStatic label="流程名称" width="2">{{ obj.processName }}</FormGroupStatic>
+                  </div>
+                  <div class="col-md-12">
+                    <FormGroup label="流程表单" width="2" inputWidth="4">
+                      <input type="text" class="form-control" v-model="obj.bindViewForm" maxlength="100" v-validate="'required'" name="流程表单">
+                    </FormGroup>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <FormGroup label="审核角色">
-                    <select class="form-control" v-model="taskInfo.bindRole">
-                      <option value="">请选择该节点审核角色</option>
-                      <option v-for="role of roleList" :value="role.id">{{ role.name }}</option>
-                    </select>
+              </form>
+            </div>
+
+            <template v-for="taskInfo of obj.flowTaskList">
+                <div class="col-md-10 col-md-offset-2">
+                  <h4>{{ taskInfo.taskName }}</h4>
+                </div>
+                <div class="col-md-10 col-md-offset-2">
+                  <FormGroup label="审核对象" width="2">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <DictElSelect v-model.number="taskInfo.bindType" type="workflow_bind_type"></DictElSelect>
+                      </div>
+                    </div>
+                    <WorkFlowTaskBind :taskInfo="taskInfo" @change="validTaskInfo(taskInfo)"></WorkFlowTaskBind>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p class="text-red has-error" v-if="errors.has(taskInfo.taskName)">{{ errors.first(taskInfo.taskName) }}</p>
+                      </div>
+                    </div>
                   </FormGroup>
-                  <FormGroup label="审核表单链接">
-                    <input type="text" class="form-control" v-model="taskInfo.bindForm" maxlength="100">
+                  <FormGroup label="操作表单" width="2">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" v-model="taskInfo.bindOperationForm" maxlength="100">
+                      </div>
+                    </div>
                   </FormGroup>
                 </div>
-              </div>
             </template>
           </div>
         </form>
@@ -51,15 +76,19 @@
         </div>
       </div>
     </div>
-    </div>
   </section>
 </template>
 
 <script>
 import FormMixin from '@mixins/FormMixin'
+import { isEmpty } from '@utils/common'
+import WorkFlowTaskBind from './WorkFlowTaskBind.vue'
 
 export default {
   mixins: [FormMixin],
+  components: {
+    WorkFlowTaskBind
+  },
   data: function () {
     return {
       form: {
@@ -71,15 +100,12 @@ export default {
         continue: false
       },
       obj: {
-        'processKey': '',
-        'processState': 0,
-        'lastUpdateTime': '',
-        'processDefinitionId': '',
-        'processName': '',
-        'flowTaskInfoEOList': []
-      },
-
-      roleList: []
+        processKey: null,
+        bindViewForm: null,
+        processDefinitionId: null,
+        processName: null,
+        flowTaskInfoEOList: []
+      }
     }
   },
   computed: {
@@ -88,41 +114,60 @@ export default {
     }
   },
   mounted () {
-    this.listRole()
+    this.$store.dispatch('initRoleList')
   },
   methods: {
-    listRole () {
-      this.$api.system.listRole({pageNo: 1, pageSize: 1000}).then((response) => {
-        let result = response.data
-        if (result.ok) {
-          this.roleList = result.data.list
+    validTaskInfo (taskInfo) {
+      this.errors.remove(taskInfo.taskName)
+      if (taskInfo.bindType === 2) {
+        if (isEmpty(taskInfo.bindRoleId)) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核角色`)
         }
-      })
-    },
-    validate () {
-      for (let taskInfo of this.obj.flowTaskInfoEOList) {
-        if (!taskInfo.bindRole || taskInfo.bindRole === '') {
-          this.$notify.warn('请选择节点【' + taskInfo.taskName + '】的审核角色')
-          return false
+      } else if (taskInfo.bindType === 3) {
+        if (taskInfo.bindOffice == null) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核部门`)
         }
-
-        if (!taskInfo.bindForm || taskInfo.bindForm === '') {
-          this.$notify.warn('请选择节点【' + taskInfo.taskName + '】的审核表单链接')
-          return false
+      } else if (taskInfo.bindType === 4) {
+        if (taskInfo.bindUser == null) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核人`)
+        }
+      } else if (taskInfo.bindType === 5) {
+        if (taskInfo.bindOffice == null) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核部门`)
+        }
+        if (isEmpty(taskInfo.bindRoleId)) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核角色`)
+        }
+      } else if (taskInfo.bindType === 8) {
+        if (isEmpty(taskInfo.bindRoleId)) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的审核角色`)
+        }
+      } else if (taskInfo.bindType === 9) {
+        if (taskInfo.bindService == null) {
+          this.errors.add(taskInfo.taskName, `请选择节点[${taskInfo.taskName}]的服务`)
         }
       }
-      return true
+    },
+    valid () {
+      for (let taskInfo of this.obj.flowTaskList) {
+        this.validTaskInfo(taskInfo)
+      }
+      return this.errors.count() === 0
+    },
+    validAndSave () {
+      this.valid()
+      this.$validator.validateAll().then((result) => {
+        if (result && this.valid()) {
+          if (this.$route.params.id) {
+            this.update()
+          } else {
+            this.save()
+          }
+        } else {
+          this.scrollToError()
+        }
+      })
     }
   }
 }
 </script>
-
-<style>
-.process-img {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: #ffffff;
-  text-align: center;
-  border: 1px dashed #3c8dbc;
-}
-</style>

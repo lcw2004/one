@@ -128,6 +128,11 @@ exports.getHtmlWebpackPlugins = function () {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }
+    if (page === 'login') {
+      conf.chunks = ['manifest', 'vendor', 'login']
+    } else if (page === 'account') {
+      conf.chunks = ['manifest', 'vendor', 'account', 'common', 'router', 'api', 'mixin']
+    }
     htmlWebpackPlugins.push(new HtmlWebpackPlugin(conf))
   }
   return htmlWebpackPlugins

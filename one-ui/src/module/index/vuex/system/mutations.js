@@ -1,6 +1,7 @@
 import * as types from './mutation-types'
 import * as dateUtil from '@utils/date-util'
 import api from '@api'
+import overlay from '@components/form/overlay'
 
 let timeTimer = null
 
@@ -8,6 +9,7 @@ export default {
   [types.INIT_TOP_MENU] (state, menu) {
     state.topMenu = menu
     state.menuMap = toMenuMapById(menu)
+    state.permisionMap = getPermisionMap(state.menuMap)
   },
   [types.ACTIVE_FIRST_MENU] (state, menu) {
     state.firstMenu = menu
@@ -19,34 +21,76 @@ export default {
     state.thirdMenu = menu
     state.menuPath = getMenuPath(state.menuMap, menu)
   },
-  [types.ACTIVE_HOME_PAGE] (state, menu) {
+  [types.ACTIVE_PAGE_TITLE] (state, title) {
     let menuPath = []
     menuPath.push({
-      name: '首页'
+      name: title
     })
     state.menuPath = menuPath
     state.thirdMenu = {
-      name: '首页'
+      name: title
     }
     state.secondMenu = {}
   },
   [types.INIT_DATA] (state, initData) {
     state.token = initData.token
     state.dictMap = initData.sysDict
+    state.settings = initData.sysSetting
     state.userInfo = initData.userInfo
     state.supplierId = initData.supplierId
-    state.settings = initData.sysSetting
     state.userOffice = initData.userOffice
     state.userRoleType = initData.userRoleType
+
+    // 初始化菜单
+    const topMenu = initData.userMenu
+    state.topMenu = topMenu
+    state.menuMap = toMenuMapById(topMenu)
+    state.permisionMap = getPermisionMap(state.menuMap)
+    if (topMenu && topMenu.childList && topMenu.childList.length > 0) {
+      state.firstMenu = topMenu.childList[0]
+    }
+  },
+  [types.INIT_USER_INFO] (state, userInfo) {
+    state.userInfo = userInfo
   },
   [types.INIT_SYSTEM_TIME] (state, systemTime) {
     state.systemTime = systemTime
     startTimeTimer(state)
   },
-  [types.REMOVE_USER_INFO] (state) {
-    state.userInfo = {
-      name: '---'
+  [types.INIT_AREA] (state) {
+    api.system.getAreaTree().then((response) => {
+      let result = response.data
+      if (result.ok) {
+        state.topArea = result.data
+      }
+    })
+  },
+  [types.INIT_PURCHASE_TYPE] (state) {
+    api.system.getPurchaseTypeTree().then((response) => {
+      let result = response.data
+      if (result.ok) {
+        state.topPurchaseType = result.data
+      }
+    })
+  },
+  [types.INIT_ROLE_LIST] (state) {
+    if (!state.roleList || state.roleList.length === 0) {
+      api.system.listRole({pageNo: 1, pageSize: 1000}).then((response) => {
+        let result = response.data
+        if (result.ok) {
+          state.roleList = result.data.list
+        }
+      })
     }
+  },
+  [types.LOGOUT] (state) {
+    overlay.start('退出中')
+    api.system.logout().then((response) => {
+      window.location.href = 'login.html'
+    })
+    setTimeout(() => {
+      window.location.href = 'login.html'
+    }, 100)
   },
   [types.TOGGLE_SIDEBAR] (state) {
     state.sidebarIsExpand = !state.sidebarIsExpand
@@ -68,6 +112,25 @@ export default {
         state.unreadMessageCount = result.data.ext.unReadCount
       }
     })
+  },
+  [types.LOAD_SUPPLIER] (state, supplierId) {
+    api.user.getSupplierInfo(supplierId).then((response) => {
+      let result = response.data
+      if (result.ok) {
+        state.supplierInfo = result.data
+      }
+    })
+  },
+  [types.LOAD_CURRENT_SUPPLIER] (state) {
+    api.system.getCurrentSupplierInfo().then((response) => {
+      let result = response.data
+      if (result.ok) {
+        state.supplierInfo = result.data
+      }
+    })
+  },
+  [types.IS_SHOW_ROUTER_VIEW] (state, isShowRouterView) {
+    state.isShowRouterView = isShowRouterView
   }
 }
 
@@ -120,7 +183,6 @@ function toMenuMapById (topMenu) {
 
 function getMapRecursion (menuMap, parentMenu) {
   menuMap[parentMenu.id] = parentMenu
-  parentMenu.isShow = 0
 
   if (parentMenu.childList) {
     for (let childMenu of parentMenu.childList) {
@@ -129,10 +191,12 @@ function getMapRecursion (menuMap, parentMenu) {
   }
 }
 
-// function closeChildMenu (menu) {
-//   if (menu.childList) {
-//     for (let childMenu of menu.childList) {
-//       childMenu.isOpen = 0
-//     }
-//   }
-// }
+function getPermisionMap (menuMap) {
+  let permisionMap = {}
+  for (let menu of Object.values(menuMap)) {
+    if (menu.permission) {
+      permisionMap[menu.permission] = menu
+    }
+  }
+  return permisionMap
+}

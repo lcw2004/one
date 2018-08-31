@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 // area
 import AreaSelect from './form/area/AreaSelect.vue'
+import AreaLabel from './form/area/AreaLabel.vue'
 
 // button
 import FullButton from './form/button/FullButton.vue'
@@ -9,7 +10,7 @@ import OneButton from './form/button/OneButton.vue'
 import FullScreenBtn from './form/button/FullScreenBtn.vue'
 
 // calendar
-import Calendar from './form/calendar/Calendar.vue'
+// import Calendar from './form/calendar/Calendar.vue'
 
 // dict
 import DictSelect from './form/dict/DictSelect.vue'
@@ -17,6 +18,7 @@ import DictElSelect from './form/dict/DictElSelect.vue'
 import DictRadio from './form/dict/DictRadio.vue'
 import DictLabel from './form/dict/DictLabel.vue'
 import DictTab from './form/dict/DictTab.vue'
+import DictTab1 from './form/dict/DictTab1.vue'
 
 // echart
 import ECharts from './form/echart/ECharts.vue'
@@ -42,6 +44,9 @@ import FormControllStatic from './form/form/FormControllStatic.vue'
 // 分页
 import Pagination from './form/pagination/Pagination.vue'
 
+// 权限
+import Permission from './form/permission/Permission.vue'
+
 // switch
 import OneSwitch from './form/switch/OneSwitch.vue'
 
@@ -56,6 +61,7 @@ import LongText from './form/text/LongText.vue'
 import TimePicker from './form/time/TimePicker.vue'
 import TimeRangePicker from './form/time/TimeRangePicker.vue'
 import DatePicker from './form/time/DatePicker.vue'
+import WeekPicker from './form/time/WeekPicker.vue'
 
 // Timeline
 import TimeLine from './form/timeline/TimeLine.vue'
@@ -72,6 +78,9 @@ import Tree from './form/tree/Tree.vue'
 import VerifyCodeImg from './form/verify-code/VerifyCodeImg.vue'
 import VerifyCode from './form/verify-code/VerifyCode.vue'
 
+// code
+import CodeView from './form/code/CodeView.vue'
+
 // container
 import FixedContainer from './container/container/FixedContainer.vue'
 import PopoverContainer from './container/container/PopoverContainer.vue'
@@ -87,6 +96,9 @@ import OneTransition from './container/transition/OneTransition.vue'
 
 // QuestionTooltip
 import QuestionTooltip from './container/questionTooltip/QuestionTooltip.vue'
+import OneTooltip from './container/questionTooltip/OneTooltip.vue'
+
+import WordOpenButton from './form/word/WordOpenButton.vue'
 
 import notify from './form/notify'
 import confirm from './form/confirm'
@@ -98,6 +110,7 @@ import sockjs from './other/sockjs'
 function initGlobalComponents () {
   // area
   Vue.component(AreaSelect.name, AreaSelect)
+  Vue.component(AreaLabel.name, AreaLabel)
 
   // button
   Vue.component(FullScreenBtn.name, FullScreenBtn)
@@ -105,7 +118,7 @@ function initGlobalComponents () {
   Vue.component(OneButton.name, OneButton)
 
   // calendar
-  Vue.component(Calendar.name, Calendar)
+  // Vue.component(Calendar.name, Calendar)
 
   // dict
   Vue.component(DictSelect.name, DictSelect)
@@ -113,6 +126,7 @@ function initGlobalComponents () {
   Vue.component(DictRadio.name, DictRadio)
   Vue.component(DictLabel.name, DictLabel)
   Vue.component(DictTab.name, DictTab)
+  Vue.component(DictTab1.name, DictTab1)
 
   // echat
   Vue.component(ECharts.name, ECharts)
@@ -136,6 +150,9 @@ function initGlobalComponents () {
   // pagination
   Vue.component(Pagination.name, Pagination)
 
+  // permission
+  Vue.component(Permission.name, Permission)
+
   // switch
   Vue.component(OneSwitch.name, OneSwitch)
 
@@ -150,6 +167,7 @@ function initGlobalComponents () {
   Vue.component(TimePicker.name, TimePicker)
   Vue.component(TimeRangePicker.name, TimeRangePicker)
   Vue.component(DatePicker.name, DatePicker)
+  Vue.component(WeekPicker.name, WeekPicker)
 
   // Timeline
   Vue.component(TimeLine.name, TimeLine)
@@ -165,6 +183,9 @@ function initGlobalComponents () {
   // verify-code
   Vue.component(VerifyCodeImg.name, VerifyCodeImg)
   Vue.component(VerifyCode.name, VerifyCode)
+
+  // code
+  Vue.component(CodeView.name, CodeView)
 
   // container ----------------------------------
   // container
@@ -182,6 +203,9 @@ function initGlobalComponents () {
 
   // QuestionTooltip
   Vue.component(QuestionTooltip.name, QuestionTooltip)
+  Vue.component(OneTooltip.name, OneTooltip)
+
+  Vue.component(WordOpenButton.name, WordOpenButton)
 
   // message
   Vue.prototype.$notify = notify

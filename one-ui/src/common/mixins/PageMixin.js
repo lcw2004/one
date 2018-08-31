@@ -11,12 +11,7 @@
  *   3. 引入分页组件：<Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
  */
 import axios from 'axios'
-import template from 'url-template'
-
-function fillTemplate (url, params = {}) {
-  const urlTemplate = template.parse(url)
-  return urlTemplate.expand(params)
-}
+import { fillUrlTemplate } from '@utils/common'
 
 let PageMixin = {
 
@@ -48,7 +43,7 @@ let PageMixin = {
       }
       param.pageNo = pageNo
       param.pageSize = pageSize
-      axios.get(fillTemplate(this.actions.list.url, param), {params: param}).then((response) => {
+      axios.get(fillUrlTemplate(this.actions.list.url, param), {params: param}).then((response) => {
         let result = response.data
         if (result.ok && result.data) {
           this.page = result.data

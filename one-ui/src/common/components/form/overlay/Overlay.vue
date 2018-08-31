@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .overlay-item {
     width: 60px;
     height: 60px;

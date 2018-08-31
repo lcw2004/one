@@ -1,26 +1,32 @@
 <template>
   <section class="content">
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title">消息中心</h3>
       </div>
       <div class="box-body">
         <div class="row">
           <div class="col-md-12">
-            <div class="pull-right">
-              <span class="message_count">
-                <span class="message_unread">{{ unReadCount }}条未读/</span>
-                <span class="message_read">{{ totalCount }}条消息</span>
-              </span>
-              <template v-if="messageIdList.length > 0">
-                <a @click="markMessageAsRead()">标为已读</a>
+            <div class="message-title">
+              <div class="pull-left">
+                <input type="checkbox" v-model="isSelectAll"> <span class="select-all">全选</span>
+              </div>
+              <div class="pull-right">
+                <span class="message_count">
+                  <span class="message_unread">{{ unReadCount }}条未读</span>
+                  <span> / </span>
+                  <span class="message_read">{{ totalCount }}条消息</span>
+                </span>
+                <template v-if="messageIdList.length > 0">
+                  <a @click="markMessageAsRead()">标为已读</a>
+                  <span class="btn-line"></span>
+                  <a @click="markMessageAsDelete()">删除</a>
+                  <span class="btn-line"></span>
+                </template>
+                <a @click="markAllMessageAsRead()">全部标为已读</a>
                 <span class="btn-line"></span>
-                <a @click="markMessageAsDelete()">删除</a>
-                <span class="btn-line"></span>
-              </template>
-              <a @click="markAllMessageAsRead()">全部标为已读</a>
-              <span class="btn-line"></span>
-              <a @click="markAllMessageAsDelete()">全部删除</a>
+                <a @click="markAllMessageAsDelete()">全部删除</a>
+              </div>
             </div>
           </div>
           <div class="col-md-12">
@@ -34,7 +40,7 @@
                       <span v-if="obj.status == 1" class="message_read">{{ obj.title }}</span>
                     </div>
                   <td>
-                    <i v-if="obj.status == 0" class="fa fa-fw fa-envelope-o" style="color: #3c8dbc"></i>
+                    <i v-if="obj.status == 0" class="fa fa-fw fa-envelope" style="color: #3c8dbc"></i>
                     <i v-if="obj.status == 1" class="fa fa-fw fa-envelope-o" style="color: #999999"></i>
                   </td>
                   <td>
@@ -52,7 +58,7 @@
                 </tr>
               </tbody>
             </table>
-
+            <TableNoData :data="page.list">暂无消息</TableNoData>
             <Pagination :page="page" @page="handlerPage(arguments)"></Pagination>
           </div>
         </div>
@@ -74,7 +80,8 @@ export default {
       param: {
         loadAfterMounted: true
       },
-      messageIdList: []
+      messageIdList: [],
+      isSelectAll: false
     }
   },
   computed: {
@@ -87,6 +94,8 @@ export default {
   },
   methods: {
     loadData () {
+      this.isSelectAll = false
+      this.messageIdList = []
       this.query()
       this.$store.dispatch('loadMessage')
     },
@@ -138,11 +147,31 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    'isSelectAll': function () {
+      if (this.isSelectAll) {
+        for (let msg of this.page.list) {
+          this.messageIdList.push(msg.messageId)
+        }
+      } else {
+        this.messageIdList = []
+      }
+    }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less" scoped>
+.message-title {
+  padding-left: 20px;
+  height: 29px;
+  border-bottom: 1px solid #e5e5e5;
+
+  .select-all {
+    margin-left: 12px;
+  }
+}
 .message_table {
   border-collapse: collapse;
   width: 100%;
@@ -152,16 +181,17 @@ export default {
   tr td {
     font-size: 14px;
     color: #2d2d2d;
-    padding-bottom: 20px;
     vertical-align: text-top;
+    border-bottom: 1px dotted #e5e5e5;
   }
   tr:not(:first-of-type) {
-    border-bottom: 1px dotted #e5e5e5;
+    // border-bottom: 1px dotted #e5e5e5;
   }
   tr input[type=checkbox] {
     width: 13px;
     height: 13px;
-    margin-top: 5px;
+    margin-top: 13px;
+    margin-bottom: 13px;
   }
 
   tr td:first-of-type {
@@ -169,18 +199,18 @@ export default {
   }
   tr:first-of-type {
     background: #f4f5f6;
-    height: 40px;
+    // height: 40px;
   }
 
   tr:first-of-type {
-    height: 60px;
+    // height: 60px;
     background-color: #fff;
   }
   tr td:nth-of-type(1) {
     width: 44px;
   }
   tr td:nth-of-type(2) {
-    width: 96px;
+    width: 180px;
   }
   tr td:nth-of-type(3) {
     width: 25px;
@@ -218,14 +248,9 @@ export default {
   word-break:break-all;
   word-wrap:break-word;
   font-size: 12px;
-}
-.btn-line {
-  width: 0;
-  height: 13px;
-  border-left: 1px solid #999;
-  display: inline-block;
-  margin: 0 10px;
-  vertical-align: middle;
-}
 
+  a {
+    margin: 0 5px;
+  }
+}
 </style>

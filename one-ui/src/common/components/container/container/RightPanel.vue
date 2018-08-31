@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .panel-contains {
     top: 50px;
     right: 0;

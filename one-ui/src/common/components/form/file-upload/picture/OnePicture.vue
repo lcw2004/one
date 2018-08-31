@@ -5,19 +5,12 @@
       <i class="el-icon-zoom-in" @click="preview()"></i>
       <i class="el-icon-delete" @click="remove()" v-if="editable"></i>
     </span>
-
-    <PictureModal v-if="config.show" :config="config" :imageUrl="imageUrl"></PictureModal>
   </div>
 </template>
 
 <script>
-import PictureModal from './PictureModal.vue'
-
 export default {
   name: 'OnePicture',
-  components: {
-    PictureModal
-  },
   props: {
     fileId: {
       type: String,
@@ -35,11 +28,7 @@ export default {
   },
   data: function () {
     return {
-      showAction: false,
-      config: {
-        show: false,
-        title: ''
-      }
+      showAction: false
     }
   },
   methods: {
@@ -47,7 +36,7 @@ export default {
       this.$emit('remove')
     },
     preview () {
-      this.config.show = true
+      this.$preview.openImg(this.imageUrl)
     }
   }
 }

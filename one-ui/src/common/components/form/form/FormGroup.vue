@@ -10,15 +10,15 @@ props：
 <FormGroup label="">
   ...
 </FormGroup>
-
 -->
 
 <template>
-  <div class="form-group" :class="{ 'has-error': isError }">
+  <div class="form-group" :class="{ 'has-error': isError }" :style="groupStyle">
     <label class="control-label" :class="labelClass" v-if="width > 0">{{ label }}</label>
     <div :class="formWidth">
       <slot></slot>
-      <p class="help-block" style="margin-bottom: -5px;" v-if="isError">{{ errorMessage }}</p>
+      <!-- <p class="help-block" style="margin-bottom: -5px;" v-if="isError">{{ errorMessage }}</p> -->
+      <p class="has-error" v-if="isError" :style="errorStyle">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
@@ -44,10 +44,26 @@ export default {
     name: {
       type: String,
       required: false
+    },
+    isContainer: {
+      type: Boolean,
+      default: false
+    },
+    noBottom: {
+      type: Boolean,
+      default: false
     }
   },
+  mounted () {
+    this.$nextTick(() => {
+      let height = this.$el.offsetHeight
+      this.errorTop = height > 0 ? height : 32
+    })
+  },
   data: function () {
-    return {}
+    return {
+      errorTop: 0
+    }
   },
   computed: {
     validateName: function () {
@@ -108,7 +124,47 @@ export default {
     },
     groupClass: function () {
       return {'has-error': this.isError}
+    },
+    groupStyle: function () {
+      let style = {}
+      if (this.noBottom) {
+        style['margin-bottom'] = '0'
+      }
+      return style
+    },
+    errorStyle: function () {
+      return {
+        top: (this.errorTop - 5) + 'px'
+      }
     }
   }
 }
 </script>
+
+<style lang="less" type="text/less">
+p.has-error {
+  left: 20px;
+  top: auto;
+  padding: 0 5px 1px;
+  font-size: 11px;
+  color: #fff !important;
+  max-width: none;
+  position: absolute;
+  background: #ff6969;
+  z-index: 1000;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 5px 10px #dedede;
+  box-shadow: 0 5px 10px #dedede
+}
+
+p.has-error:after {
+  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #ff6969;
+  border-style: solid;
+  border-width: 6px;
+  content: "";
+  height: 0;
+  left: 15px;
+  position: absolute;
+  top: -11px
+}
+</style>

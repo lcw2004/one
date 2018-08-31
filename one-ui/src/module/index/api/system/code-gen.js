@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { stringify } from '@utils/common.js'
+import { stringifyAxios } from '@utils/common'
 
 export function listTable (tableName) {
   return axios.get(`/api/codeGen/table`, {params: {tableName}})
@@ -22,12 +22,7 @@ export function generate (codeGenStrategy) {
 }
 
 export function listCodeGenTable (tableList) {
-  return axios.get(`api/codeGen/tableEO`, {
-    params: {tableList: tableList},
-    paramsSerializer: function (params) {
-      return stringify(params)
-    }
-  })
+  return axios.get(`api/codeGen/tableEO`, stringifyAxios({tableList}))
 }
 
 export function saveCodeGenTable (table) {

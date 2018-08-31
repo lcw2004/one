@@ -5,6 +5,8 @@
       v-model="innerValue"
       :options="areaList"
       :props="props"
+      :clearable="true"
+      :filterable="true"
       size="small"
       :change-on-select="changeOnSelect"
       @change="onChange">
@@ -15,7 +17,6 @@
 <script>
 export default {
   name: 'AreaSelect',
-  components: {},
   props: {
     value: {
       type: String
@@ -31,13 +32,19 @@ export default {
         value: 'id',
         label: 'name',
         children: 'childList'
-      },
-      topArea: {}
+      }
     }
   },
   computed: {
+    topArea: function () {
+      return this.$store.state.system.topArea
+    },
     areaList: function () {
-      return [this.topArea]
+      if (this.topArea.childList) {
+        return this.topArea.childList
+      } else {
+        return []
+      }
     },
     innerValue: {
       get: function () {
@@ -45,7 +52,9 @@ export default {
         let areaIdList = []
         if (area) {
           let areaIds = area.parentIds + area.id
-          areaIdList = areaIds.split(',')
+          if (areaIds) {
+            areaIdList = areaIds.split(',')
+          }
         } else {
           areaIdList = []
         }
@@ -71,12 +80,9 @@ export default {
     }
   },
   mounted () {
-    this.$api.system.getAreaTree().then((response) => {
-      let result = response.data
-      if (result.ok) {
-        this.topArea = result.data
-      }
-    })
+    if (!this.topArea.id) {
+      this.$store.dispatch('initArea')
+    }
   },
   methods: {
     onChange (value) {
@@ -87,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less">
 .cascader {
   .el-cascader {
     width: 100%;
@@ -96,5 +102,8 @@ export default {
       border-radius: 0 !important;
     }
   }
+}
+.el-cascader-menu {
+  min-width: 180px !important;
 }
 </style>

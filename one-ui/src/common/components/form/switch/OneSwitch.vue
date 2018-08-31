@@ -4,13 +4,13 @@
       v-model="valueCopy"
       active-color="#00a65a"
       inactive-color="#d2d6de"
-      :active-value="1"
-      :inactive-value="0"
+      :active-value="activeValue"
+      :inactive-value="inactiveValue"
       @change="onChange(arguments[0])">
     </el-switch>
     <span class="switch-text" v-if="showText">
-      <template v-if="value == 0"><span class="label label-default">{{ inactiveText }}</span></template>
-      <template v-if="value == 1"><span class="label label-success">{{ activeText }}</span></template>
+      <template v-if="value == inactiveValue"><span class="label label-default">{{ inactiveText }}</span></template>
+      <template v-if="value == activeValue"><span class="label label-success">{{ activeText }}</span></template>
     </span>
   </span>
 </template>
@@ -30,6 +30,14 @@ export default {
     inactiveText: {
       type: String,
       default: '否'
+    },
+    activeValue: {
+      type: Number,
+      default: 1
+    },
+    inactiveValue: {
+      type: Number,
+      default: 0
     },
     value: {}
   },
@@ -51,7 +59,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less" type="text/less" scoped>
 .switch-text {
   margin-left: 10px;
   vertical-align: middle;

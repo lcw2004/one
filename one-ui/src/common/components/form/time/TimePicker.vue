@@ -6,6 +6,7 @@
       size="small"
       placeholder="选择时间"
       :value-format="format"
+      :picker-options="pickerOptions"
       :default-value="currentTime">
     </el-date-picker>
   </div>

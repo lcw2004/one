@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .fix-container {
     position: fixed;
     top: 60px;

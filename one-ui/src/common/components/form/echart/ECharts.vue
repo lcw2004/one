@@ -2,9 +2,9 @@
   <div class="echarts"></div>
 </template>
 
-<style>
+<style lang="less" type="text/less">
   .echarts {
-    width: 500px;
+    width: 100%;
     height: 350px;
   }
 </style>
@@ -36,7 +36,7 @@ import 'echarts/lib/chart/pie'
 //  import 'echarts/lib/chart/treemap'
 //  import 'echarts/lib/chart/graph'
 //  import 'echarts/lib/chart/gauge'
-//  import 'echarts/lib/chart/funnel'
+import 'echarts/lib/chart/funnel'
 //  import 'echarts/lib/chart/parallel'
 //  import 'echarts/lib/chart/sankey'
 //  import 'echarts/lib/chart/boxplot'

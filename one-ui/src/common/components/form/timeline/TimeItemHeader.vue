@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .timeline-header > a {
     font-size: 15px;
     font-weight: normal;

@@ -25,11 +25,11 @@ restPath: /api
 # App信息
 one:
   application:
-    name: 招投标平台
-    shortName: 招采
+    name: One Admin System
+    shortName: One
     version: V1.2
-    powerByName: 湖南佰瑞信息技术有限公司
-    powerByLink: http://www.bairuisoftware.com
+    powerByName: lcw2004
+    powerByLink: https://github.com/lcw2004
   # 文件服务文件存储地址
   file:
     path: D:\Files
@@ -55,6 +55,7 @@ spring.datasource:
     time-between-eviction-runs-millis: 60000
     min-evictable-idle-time-millis: 300000
     validation-query: SELECT 'x' FROM DUAL
+
 #=============================#
 #=====   Email Settings  =====#
 #=============================#
@@ -71,7 +72,7 @@ mail:
     socketFactory.fallback: false
   from:
     mail: 292232611@qq.com
-    name: 湖南佰瑞信息技术有限公司
+    name: 292232611
   username: 292232611@qq.com
   password: ezkbxarmubuqbigc
 

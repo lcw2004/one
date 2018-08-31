@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .btn_add {
     width: 100%;
     height: 38px;

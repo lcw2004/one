@@ -1,6 +1,6 @@
 <template>
-  <div class="row row-margin-bottom">
-    <div class="col-md-8">
+  <div class="row margin-bottom-10">
+    <div class="col-md-12">
       <div class="row">
         <div class="col-md-2">
           <p class="form-control-static">段{{ section.orderIndex }}</p>
@@ -25,7 +25,7 @@
           <template v-if="section.type == 6">
             长度
             <select class="form-control" v-model="section.length" style="width: 110px; display:inline" @change="fillContent()">
-              <option :value="i + 2" v-for="i in 8">{{ i + 2}}</option>
+              <option :value="i + 2" v-for="i in 8">{{ i + 2 }}</option>
             </select>
             起始值 <input type="text" class="form-control" v-model="section.content"  style="width: 110px; display:inline">
           </template>

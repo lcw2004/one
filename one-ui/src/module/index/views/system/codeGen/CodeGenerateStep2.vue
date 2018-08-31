@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr v-for="(table, index) of tableList">
-            <td>{{ index + 1}}</td>
+            <td>{{ index + 1 }}</td>
             <td>{{ table.tableId }}</td>
             <td><input type="text" class="form-control input-sm" style="width: 100px" v-model.trim="table.tableName" @blur="saveCodeGenTable(table)"></td>
             <td><input type="text" class="form-control input-sm" style="width: 100px" v-model.trim="table.restPath" @blur="saveCodeGenTable(table)"></td>
@@ -39,7 +39,7 @@
         </tbody>
       </table>
     </div>
-  
+
     <div class="box-footer">
       <div class="col-md-4 col-sm-0"></div>
       <div class="col-md-2 col-sm-2">
@@ -49,7 +49,7 @@
         <button type="button" class="btn btn-block btn-primary" @click="generate()">生成代码</button>
       </div>
     </div>
-  
+
     <CodePreviewModal v-if="codePreviewModalconfig.show" :config="codePreviewModalconfig" :table="table" :strategy="strategy"></CodePreviewModal>
     <TableFieldListModal v-if="tableFieldListModalconfig.show" :config="tableFieldListModalconfig" :table="table" :strategy="strategy"></TableFieldListModal>
   </div>

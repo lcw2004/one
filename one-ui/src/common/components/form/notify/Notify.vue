@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .notifications {
     position: fixed;
     top: 60px;

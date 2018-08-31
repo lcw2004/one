@@ -8,19 +8,29 @@
         <form class="form-horizontal">
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="角色名称">
-                <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="角色名称" />
+              <FormGroup label="角色名称" :required="true">
+                <input type="text" class="form-control" v-model="obj.name" v-validate="'required'" name="角色名称" maxlength="50"/>
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="数据范围">
-                <DictSelect v-model="obj.dataScope" type="sys_data_scope"></DictSelect>
+              <FormGroup label="数据范围" :required="true">
+                <DictSelect v-model="obj.dataScope" type="sys_data_scope" v-validate="'required'" data-vv-value-path="innerValue" data-vv-name="数据范围"></DictSelect>
               </FormGroup>
             </div>
             <div class="col-md-6">
-              <p class="help-block">特殊情况下，设置为“按明细设置”，可进行跨机构授权</p>
+              <!-- <p class="help-block">特殊情况下，设置为“按明细设置”，可进行跨机构授权</p> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <FormGroup label="排序号">
+                <input type="text" class="form-control" v-model="obj.orderIndex" maxlength="5"/>
+              </FormGroup>
+            </div>
+            <div class="col-md-6">
+              <p class="help-block">用于角色排序，序号小的排序靠前。</p>
             </div>
           </div>
           <div class="row">
@@ -32,8 +42,8 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="角色授权">
-                <Tree :element="topMenu" v-model="obj.sysMenuEOIdList" select-type="checkbox"></Tree>
+              <FormGroup label="角色授权" :required="true">
+                <Tree :element="topMenu" v-model="obj.sysMenuEOIdList" select-type="checkbox" v-validate="'required'" data-vv-value-path="innerValue" data-vv-name="角色授权"></Tree>
               </FormGroup>
             </div>
           </div>
@@ -43,7 +53,7 @@
                 <template v-for="component of homeComponentList">
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" v-model="obj.componentIdList" :key="component.componentId" :value="component.componentId">{{ component.componentTitle}}
+                      <input type="checkbox" v-model="obj.componentIdList" :key="component.componentId" :value="component.componentId">{{ component.componentTitle }}
                     </label>
                   </div>
                 </template>
@@ -84,8 +94,9 @@ export default {
       obj: {
         office: {},
         name: '',
-        dataScope: '',
+        dataScope: null,
         remarks: '',
+        orderIndex: null,
         isDefault: 0,
         sysMenuEOIdList: [],
         componentIdList: []

@@ -2,20 +2,20 @@
   <section class="content">
     <div class="box box-primary">
       <div class="box-header">
-        <h3 class="box-title">角色信息</h3>
+        <h3 class="box-title">修改消息模板</h3>
       </div>
       <div class="box-body">
         <form class="form-horizontal">
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="模板编号">
+              <FormGroup label="模板编号" :required="true">
                 <input type="text" class="form-control" v-model="obj.templateId" v-validate="'required'" name="模板编号" readonly/>
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="消息类型">
+              <FormGroup label="消息类型" :required="true">
                 <select class="form-control" v-model="obj.msgTypeCode" v-validate="'required'" name="消息类型">
                   <option v-for="msgType of msgTypeList" :value="msgType.msgTypeCode" :key="msgType.msgTypeCode">{{ msgType.msgTypeName }}</option>
                 </select>
@@ -24,25 +24,25 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="模板标题">
-                <input type="text" class="form-control" v-model="obj.title" v-validate="'required'" name="模板标题" />
+              <FormGroup label="模板标题" :required="true">
+                <input type="text" class="form-control" v-model="obj.title" v-validate="'required'" name="模板标题" maxlength="50"/>
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="消息内容">
+              <FormGroup label="消息内容" :required="true">
                 <textarea v-model="obj.content" class="form-control" rows="4" maxlength="200"  v-validate="'required'" name="消息内容" ></textarea>
               </FormGroup>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <FormGroup label="发送渠道" :width="2">
+              <FormGroup label="发送渠道" :width="2" :required="true">
                 <div>
                   <div class="checkbox-inline" v-for="channel of msgChannelList">
                     <label>
-                      <input type="checkbox" :value="channel.channelId" v-model="obj.channelIdList"> {{ channel.channelName }}
+                      <input type="checkbox" :value="channel.channelId" v-model="obj.channelIdList" v-validate="'required'" name="发送渠道"> {{ channel.channelName }}
                     </label>
                   </div>
                 </div>

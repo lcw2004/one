@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" type="text/less">
 .el-select {
   width: 100%;
 

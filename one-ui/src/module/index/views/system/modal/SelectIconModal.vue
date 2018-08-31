@@ -1,38 +1,25 @@
 <template>
-  <OneTransition>
-    <div :class="fullScreenClass" v-show="config.show" style="display: block">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
-              <span aria-hidden="true">×</span>
-            </button>
-            <h4 class="modal-title">{{ config.title }}</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-12 icon" v-for="icons of iconList">
-                <h2>{{ icons.type }}</h2>
+  <OneModal :title="config.title" :show.sync="config.show" size="large">
+    <div class="row">
+      <div class="col-md-12 icon" v-for="icons of iconList">
+        <h2>{{ icons.type }}</h2>
 
-                <ul class="bs-glyphicons">
-                  <li v-for="icon of icons.iconList" @click="selected = icon">
-                    <i :class="['fa', icon]"></i>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="pull-left">
-              选中 <span v-if="selected" class="icon-selected"><i :class="['fa', selected]"></i></span>
-            </div>
-            <button type="button" class="btn btn-default " data-dismiss="modal" @click="close()">取消</button>
-            <button type="button" class="btn btn-primary" @click="ok()">确认</button>
-          </div>
-        </div>
+        <ul class="bs-glyphicons">
+          <li v-for="icon of icons.iconList" @click="selected = icon">
+            <i :class="['fa', icon]"></i>
+          </li>
+        </ul>
       </div>
     </div>
-  </OneTransition>
+
+    <div class="modal-footer" slot="footer">
+      <div class="pull-left">
+        选中 <span v-if="selected" class="icon-selected"><i :class="['fa', selected]"></i></span>
+      </div>
+      <button type="button" class="btn btn-default " @click="close()">取消</button>
+      <button type="button" class="btn btn-primary" @click="ok()">确认</button>
+    </div>
+  </OneModal>
 </template>
 
 <script>
@@ -58,7 +45,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .icon-selected {
     margin-top: 5px;
     margin-left: 15px;

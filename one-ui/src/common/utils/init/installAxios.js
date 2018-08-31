@@ -44,6 +44,9 @@ function addInterceptor () {
       const result = response.data
       if (!result.ok) {
         handlerError(result)
+        console.warn(response.config.method + ' : ' + response.config.url)
+        console.warn(response.config)
+        console.warn(result)
       }
     }
     progress.done()
@@ -83,6 +86,9 @@ export default function () {
   // 将系统API绑定到Vue上面
   Vue.prototype.$api = api
   Vue.prototype.$axios = axios
+
+  // TODO 设置请求失效时间，需要搭配接口重试一起使用，否则接口调用报错但是又没有反馈
+  // axios.defaults.timeout = 5000
 
   addInterceptor()
 }

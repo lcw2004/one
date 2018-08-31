@@ -1,12 +1,5 @@
 <template>
   <div class="login-container" @keyup.enter="login">
-    <!--[if lte IE 8]>
-    <div>
-      <h4>温馨提示：</h4>
-      <p>你使用的浏览器版本过低。为了获得更好的浏览体验，我们强烈建议您 <a href="http://browsehappy.com" target="_blank">升级</a> 到最新版本的IE浏览器，或者使用较新版本的 Chrome、Firefox、Safari 等。</p>
-    </div>
-    <![endif]-->
-
     <!-- BACKGROUND IMAGE -->
     <!--===================================================-->
     <div class="login-bg-img login-bg-img-balloon"></div>
@@ -16,7 +9,7 @@
     <div class="login-header">
       <div class="login-header-title">
         <a>
-          <span>One Base System</span>
+          <span>{{ systemInfo.fullName }}</span>
         </a>
       </div>
     </div>
@@ -27,19 +20,7 @@
     <div class="login-body">
       <div class="login-body-panel">
         <div class="panel-body">
-          <p class="login-body-panel-head">欢迎登录 One Base System</p>
-
-          <!-- <div class="row">
-            <div class="col-md-12">
-              您已经登录，请点击头像确认。
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="login-user-img"></div>
-            </div>
-          </div> -->
+          <p class="login-body-panel-head">欢迎登录 {{ systemInfo.shortName }}</p>
 
           <form class="form login-form">
             <div class="row">
@@ -47,7 +28,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon login-icon"><i class="fa fa-user" style="width: 15px;"></i></div>
-                    <input type="text" id="username" v-focus v-model="loginInfo.username" class="form-control" style="height: 38px" placeholder="登录名">
+                    <input type="text" id="username" v-focus v-model.trim="loginInfo.username" class="form-control" style="height: 38px" placeholder="请输入登录账号">
                   </div>
                 </div>
               </div>
@@ -58,13 +39,13 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon login-icon"><i class="fa fa-asterisk" style="width: 15px;"></i></div>
-                    <input type="password" id="password" v-model="loginInfo.password" class="form-control" style="height: 38px" placeholder="密码">
+                    <input type="password" id="password" v-model="loginInfo.password" class="form-control" style="height: 38px" placeholder="请输入密码">
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="row" v-if="isVerifyCode">
+            <div class="row" v-if="isVerifyCode" style="margin-bottom: 10px">
               <div class="form-group">
                 <div class="col-md-9 col-xs-9">
                   <div class="input-group">
@@ -82,11 +63,7 @@
 
             <div class="row" v-if="errorMessage">
               <div class="col-md-12">
-                <div class="form-group">
-                  <div class="input-group">
-                    <p class="form-control-static text-red">{{ errorMessage }}</p>
-                  </div>
-                </div>
+                <p class="form-control-static text-red login-error">{{ errorMessage }}</p>
               </div>
             </div>
 
@@ -117,15 +94,24 @@
     <!--===================================================-->
 
     <footer class="navbar-fixed-bottom login-footer">
-      Copyright &copy; 2012-2016 <a>One Base System</a> - Powered By <a href="https://github.com/thinkgem/jeesite" target="_blank">JeeSite</a> V1.1.0
+      Copyright &copy; 2012-2016 <a>{{ systemInfo.fullName }}</a> - Powered By <a :href="systemInfo.powerByLink" target="_blank">{{ systemInfo.powerByName }}</a> {{ systemInfo.version }}
     </footer>
   </div>
 </template>
 
 <script>
-import VerifyCodeImg from '../../common/components/form/verify-code/VerifyCodeImg'
-import { getParameterByName } from '@utils/common.js'
+import VerifyCodeImg from '@components/form/verify-code/VerifyCodeImg'
+import { getUrlQueryValue } from '@utils/common'
 import api from '@api'
+
+let systemInfo = {
+  fullName: 'One Admin System',
+  shortName: 'One',
+  englishName: 'One',
+  version: 'V1.2.4',
+  powerByName: 'lcw2004',
+  powerByLink: 'https://github.com/lcw2004'
+}
 
 export default {
   components: {
@@ -136,6 +122,7 @@ export default {
       isVerifyCode: false, // 是否显示验证码
       timestamp: '', // 验证码时间戳
       loginInfo: {
+        userType: 1,
         username: '',
         password: '',
         isRememberMe: false,
@@ -147,8 +134,10 @@ export default {
       loginBtnText: '登录'
     }
   },
-  mounted () {
-    this.checkIsLogin()
+  computed: {
+    systemInfo: function () {
+      return systemInfo
+    }
   },
   methods: {
     checkIsLogin () {
@@ -162,6 +151,16 @@ export default {
         }
       })
     },
+
+    loadSystemInfo () {
+      api.system.systemInfo().then((response) => {
+        let result = response.data
+        if (result.ok) {
+          this.systemInfo = result.data
+        }
+      })
+    },
+
     /**
      * 登录接口
      */
@@ -194,6 +193,8 @@ export default {
           this.errorMessage = result.message
           this.isVerifyCode = true
           this.focusOnVerifyCode()
+        } else {
+          this.errorMessage = result.message
         }
         this.refreshVerifyCode()
         this.afterLoginFail()
@@ -245,6 +246,7 @@ export default {
     beforeLogin () {
       this.loginBtnDisabled = true
       this.loginBtnText = '登录中'
+      this.errorMessage = null
     },
     /**
      * 登录失败后将用户按钮置为可用
@@ -262,8 +264,8 @@ export default {
     },
     handlerForward (resultBody) {
       // 如果有重定向URL，则先跳转到重定向的页面
-      let redirectUri = getParameterByName('redirectUri')
-      let authUrl = getParameterByName('authUrl')
+      let redirectUri = getUrlQueryValue('redirectUri')
+      let authUrl = getUrlQueryValue('authUrl')
       if (redirectUri) {
         let newUrl = authUrl + '?redirectUri=' + redirectUri + '&authCode=' + resultBody.authCode
         window.location.href = newUrl
@@ -282,7 +284,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   /*登录 Start */
   .login-container {
     background-color: #212124;
@@ -373,7 +375,7 @@ export default {
   }
 
   .login-footer {
-    font-size: 15px;
+    font-size: 13px;
     color: #e0e0e0;
   }
 
@@ -403,7 +405,6 @@ export default {
   }
 
   .login-user-img {
-    background-image: url("./images/lnavha_pic.png");
     height: 80px;
     width: 80px;
     background-size: 80px;
@@ -413,5 +414,8 @@ export default {
     margin-bottom: 10px;
   }
 
-  /*登录 End */
+  .login-error {
+    text-align: left;
+    padding-top: 0 !important;
+  }
 </style>

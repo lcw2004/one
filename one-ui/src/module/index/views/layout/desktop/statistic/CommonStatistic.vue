@@ -44,8 +44,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
 .ion {
   font-size: 90px;
+}
+.small-box {
+  &:hover {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, .3);
+  }
 }
 </style>

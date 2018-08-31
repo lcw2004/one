@@ -4,7 +4,7 @@
       <div class="box-body">
         <!--Query Start-->
         <form class="form-horizontal">
-          <div class="row row-margin-bottom">
+          <div class="row margin-bottom-10">
             <div class="col-md-4">
               <FormGroup label="角色名称">
                 <input class="form-control" type="text" placeholder="角色名称" v-model="param.roleName">
@@ -29,6 +29,7 @@
                   <th style="width: 10px">#</th>
                   <th>角色名称</th>
                   <th>数据范围</th>
+                  <th>排序号</th>
                   <th>备注</th>
                   <th>操作</th>
                 </tr>
@@ -40,7 +41,8 @@
                   <td>
                     <DictLabel type="sys_data_scope" :value="obj.dataScope"></DictLabel>
                   </td>
-                  <td>{{ obj.remarks }}</td>
+                  <td>{{ obj.orderIndex }}</td>
+                  <td>{{ obj.remarks | limitLength(30) }}</td>
                   <td>
                     <router-link :to='"/system/role/" + obj.id + "/form"'>修改</router-link>
                     <a @click="deleteData(obj.id)" v-if="obj.isDefault == 0">删除</a>
@@ -83,14 +85,6 @@ export default {
           }
         })
       })
-    }
-  },
-  watch: {
-    'param': {
-      handler: function () {
-        this.query()
-      },
-      deep: true
     }
   }
 }

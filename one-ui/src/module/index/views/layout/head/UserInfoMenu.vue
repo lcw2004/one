@@ -1,14 +1,13 @@
 <template>
   <li class="dropdown user user-menu" :class="{ open: isOpen }">
     <a class="dropdown-toggle" data-toggle="dropdown" @click="toggole()">
-      <img src="static/adminlte/img/user2-160x160.jpg" class="user-image" alt="User Image">
-      <span class="hidden-xs">{{ userInfo.name }}</span>
+      <img src="static/images/head_man.png" class="user-image" alt="User Image">
+      <span class="hidden-xs">{{ userInfo.name | limitLength(4) }}</span>
     </a>
     <ul class="dropdown-menu">
       <!-- User image -->
       <li class="user-header">
-        <img src="static/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
+        <img src="static/images/head_man.png" class="img-circle" alt="User Image">
         <p>
           {{ userInfo.name }}
           <small style="margin-top: 10px">当前时间：{{ systemTimeStr }}</small>
@@ -32,7 +31,7 @@
       <!-- Menu Footer-->
       <li class="user-footer">
         <div class="pull-left">
-          <router-link to='/personal/user-info' class="btn btn-default btn-flat">个人信息</router-link>
+          <a class="btn btn-default btn-flat" @click="userInfoPage()">个人信息</a>
         </div>
         <div class="pull-right">
           <a class="btn btn-default btn-flat" @click="logout">退出登录</a>
@@ -50,14 +49,16 @@ export default {
     }
   },
   methods: {
-    toggole: function () {
+    toggole () {
       this.isOpen = !this.isOpen
     },
-    logout: function () {
-      this.$api.system.logout().then((response) => {
-        this.$store.dispatch('removeUserInfo')
-        window.location.href = 'login.html'
-      })
+    logout () {
+      this.$store.dispatch('logout')
+    },
+    userInfoPage () {
+      this.$store.dispatch('activePageTitle', '个人信息')
+      this.$router.push('/personal/user-info')
+      this.isOpen = false
     }
   },
   computed: {

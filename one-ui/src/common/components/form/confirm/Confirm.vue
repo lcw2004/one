@@ -5,7 +5,7 @@
         <div class="modal-dialog" :class="modelSize">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="close()">
+              <button type="button" class="close" aria-label="Close" @click="close()">
                 <span aria-hidden="true">×</span>
               </button>
               <h4 class="modal-title">{{ title }}</h4>
@@ -19,7 +19,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn" :class="cancelBtnStyle" data-dismiss="modal" @click="cancel()">{{ cancelBtnText }}</button>
+              <button type="button" class="btn" :class="cancelBtnStyle" @click="cancel()">{{ cancelBtnText }}</button>
               <button type="button" class="btn" :class="okBtnStyle" @click="ok()">{{ okBtnText }}</button>
             </div>
           </div>
@@ -130,7 +130,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .bounce-enter-active {
     animation: bounce-in .5s;
   }

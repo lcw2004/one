@@ -39,7 +39,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   .tree-indent {
     width: 16px;
     height: 16px;

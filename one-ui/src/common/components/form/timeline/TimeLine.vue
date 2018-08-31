@@ -15,7 +15,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" type="text/less">
   /*覆盖AdminLte的字体*/
   .timeline h3 {
     font-family: "Microsoft Yahei", "Hiragino Sans GB", "Helvetica Neue", Helvetica, tahoma, arial, Verdana, sans-serif;

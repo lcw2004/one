@@ -1,4 +1,6 @@
 import UploadMixin from './UploadMixin.js'
+import { clearInputFile } from '@utils/common'
+
 export default {
   mixins: [UploadMixin],
 
@@ -55,11 +57,11 @@ export default {
           picture.fileId = result.data.fileId
           this.fileIdList.push(picture.fileId)
         }
-        event.target.value = null
+        clearInputFile(event.target)
       }, response => {
         this.$notify.warn('上传文件失败，请重试！')
         picture.progressWidth = 0
-        event.target.value = null
+        clearInputFile(event.target)
       })
 
       this.fileList.push(picture)

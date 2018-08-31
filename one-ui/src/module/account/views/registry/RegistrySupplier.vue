@@ -1,6 +1,6 @@
 <template>
   <OutContainer title="供应商注册">
-    <div class="row row-margin-bottom">
+    <div class="row margin-bottom-10">
       <div class="col-md-12">
         &nbsp;
       </div>
@@ -38,7 +38,7 @@
       <div class="row">
         <div class="col-md-6">
           <FormGroup label="密码" :required="true">
-            <input type="password" class="form-control" v-model="user.password" v-validate="'required|password'" name="密码" maxlength="50">
+            <input type="password" class="form-control" v-model="user.password" v-validate="'required|password'" name="密码" maxlength="20">
           </FormGroup>
         </div>
         <div class="col-md-6">
@@ -49,7 +49,7 @@
       <div class="row">
         <div class="col-md-6">
           <FormGroup label="确认密码" :required="true">
-            <input type="password" class="form-control" v-model="user.passwordConfirm" v-validate="'required|confirmed:密码'" name="确认密码" maxlength="50">
+            <input type="password" class="form-control" v-model="user.passwordConfirm" v-validate="'required|confirmed:密码'" name="确认密码" maxlength="20">
           </FormGroup>
         </div>
         <div class="col-md-6">
@@ -88,7 +88,7 @@
           </FormGroup>
         </div>
         <div class="col-md-6">
-          <p class="help-block">请输入验证邮箱，您可通过该邮箱找回账号或者密码!</p>
+          <p class="help-block">请输入邮箱以接收验证码，也可通过该邮箱找回账号或密码！</p>
         </div>
       </div>
 
@@ -182,7 +182,7 @@ export default {
       if (this.user.email && this.user.email.trim()) {
         api.system.sendValidCode(this.user.email).then((response) => {
           if (response.data.ok) {
-            this.validCodeMessage = '验证码发送成功！验证码在5分钟内有效，请尽快完成注册。如果一分钟后还未收到验证码，请重新发送。'
+            this.validCodeMessage = '注册验证码已成功发送至邮箱，验证码在5分钟内有效，请尽快完成注册。如果一分钟后还未收到验证码，请点击重新发送。'
           } else {
             this.validCodeMessage = response.body.message
           }

@@ -27,8 +27,12 @@
               </td>
               <td>{{ obj.code }}</td>
               <td>
-                <router-link :to='"/system/area/" + obj.id + "/form"'>修改</router-link>
-                <a @click="deleteData(obj)">删除</a>
+                <Permission value="sys:area:edit">
+                  <router-link :to='"/system/area/" + obj.id + "/form"'>修改</router-link>
+                </Permission>
+                <Permission value="sys:area:delete">
+                  <a @click="deleteData(obj)">删除</a>
+                </Permission>
               </td>
             </tr>
           </tbody>

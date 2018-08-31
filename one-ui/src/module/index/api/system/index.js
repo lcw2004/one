@@ -1,11 +1,10 @@
 import axios from 'axios'
 
 export * from './login.js'
-export * from './purchase-type.js'
 export * from './registry.js'
 export * from './code-gen.js'
-export * from './score-template.js'
 export * from './message.js'
+export * from './schedule.js'
 
 export function getToken () {
   return axios.get(`/api/token`)
@@ -16,6 +15,23 @@ export function audit (params) {
 export function getTaskInfo (taskId) {
   return axios.get(`/api/flow/task/todo/${taskId}`)
 }
+export function getHistoryTaskInfo (taskId) {
+  return axios.get(`/api/flow/task/history/${taskId}`)
+}
+
+// 参数
+export function listConfig (params) {
+  return axios.get(`/api/sys/config`, {params: params})
+}
+export function getConfig (objId) {
+  return axios.get(`/api/sys/config/${objId}`)
+}
+export function saveConfig (obj) {
+  return axios.post(`/api/sys/config`, obj)
+}
+export function updateConfig (obj) {
+  return axios.put(`/api/sys/config`, obj)
+}
 
 // 字典
 export function listDictType () {
@@ -24,6 +40,7 @@ export function listDictType () {
 export function listDict (params) {
   return axios.get(`/api/sys/dict`, {params: params})
 }
+
 export function getDict (objId) {
   return axios.get(`/api/sys/dict/${objId}`)
 }
@@ -35,6 +52,18 @@ export function updateDict (obj) {
 }
 export function deleteDict (objId) {
   return axios.delete(`/api/sys/dict/${objId}`)
+}
+export function listDictData (dictId) {
+  return axios.get(`/api/sys/dict/${dictId}/data`)
+}
+export function saveDictData (dictId, obj) {
+  return axios.post(`/api/sys/dict/${dictId}/data`, obj)
+}
+export function updateDictData (dictId, obj) {
+  return axios.put(`/api/sys/dict/${dictId}/data`, obj)
+}
+export function deleteDictData (dictId, dataId) {
+  return axios.delete(`/api/sys/dict/${dictId}/data/${dataId}`)
 }
 
 // 角色
@@ -59,7 +88,7 @@ export function listHomeComponent (objId) {
 
 // 菜单
 export function getMenuTree () {
-  return axios.get('/api/sys/menu/tree')
+  return axios.get(`/api/sys/menu/tree`)
 }
 export function getMenu (objId) {
   return axios.get(`/api/sys/menu/${objId}`)
@@ -82,7 +111,7 @@ export function listTemplateType () {
   return axios.get(`/api/base/templateType`)
 }
 export function listTemplateByCode (code) {
-  return axios.get('/api/base/template', {params: {'templateTypeCode': code}})
+  return axios.get(`/api/base/template`, {params: {'templateTypeCode': code}})
 }
 export function listTemplate (params) {
   return axios.get(`/api/base/template`, {params: params})
@@ -102,7 +131,7 @@ export function deleteTemplate (objId) {
 
 // 机构
 export function getOfficeTree () {
-  return axios.get('/api/sys/office/tree')
+  return axios.get(`/api/sys/office/tree`)
 }
 export function getOffice (objId) {
   return axios.get(`/api/sys/office/${objId}`)
@@ -119,7 +148,7 @@ export function deleteOffice (objId) {
 
 // 区域
 export function getAreaTree () {
-  return axios.get('/api/sys/area/tree')
+  return axios.get(`/api/sys/area/tree`)
 }
 export function getArea (objId) {
   return axios.get(`/api/sys/area/${objId}`)
@@ -132,6 +161,9 @@ export function updateArea (obj) {
 }
 export function deleteArea (objId) {
   return axios.delete(`/api/sys/area/${objId}`)
+}
+export function listAreaByParentId (objId) {
+  return axios.get(`/api/sys/area/${objId}/child`)
 }
 
 // 工作流
@@ -148,7 +180,13 @@ export function deleteWorkflow (workflowId) {
   return axios.delete(`/api/flow/flowInfo/${workflowId}`)
 }
 export function listAuditLog (params) {
-  return axios.get(`/api/flow/auditLog`, {params: params})
+  return axios.get(`/api/flow/audit/log`, {params: params})
+}
+export function listAuditLogByAuditItemId (auditItemId) {
+  return axios.get(`/api/flow/audit/${auditItemId}/log`)
+}
+export function listAuditDetail (auditItemId) {
+  return axios.get(`/api/flow/audit/${auditItemId}/detail`)
 }
 
 // 编码
@@ -165,12 +203,14 @@ export function updateCodeSetting (setting) {
   return axios.put(`/api/base/codeSetting`, setting)
 }
 export function unlockCode (code) {
-  return axios.get(`/api/base/codeSetting/${code}/unlock`)
+  if (code) {
+    return axios.get(`/api/base/codeSetting/${code}/unlock`)
+  }
 }
 
 // 配置
 export function getConfigByType (configType) {
-  return axios.get(`/api/sys/config/${configType}`)
+  return axios.get(`/api/sys/config/type/${configType}`)
 }
 export function updateConfigByType (configType, configs) {
   return axios.post(`/api/sys/config/${configType}`, configs)
@@ -178,7 +218,7 @@ export function updateConfigByType (configType, configs) {
 
 // 归档目录
 export function getArchiveMenuTree () {
-  return axios.get('/api/base/archiveMenu/tree')
+  return axios.get(`/api/base/archiveMenu/tree`)
 }
 export function getArchiveMenu (menuId) {
   return axios.get(`/api/base/archiveMenu/${menuId}`)
@@ -191,4 +231,9 @@ export function updateArchiveMenu (archiveMenu) {
 }
 export function deleteArchiveMenu (menuId) {
   return axios.delete(`/api/base/archiveMenu/${menuId}`)
+}
+
+// 日志详情
+export function getSysLog (logId) {
+  return axios.get(`/api/sys/log/${logId}`)
 }

@@ -3,9 +3,9 @@
  */
 export default {
   methods: {
-    scrollToError () {
+    scrollToErrorByClass (selector) {
       setTimeout(() => {
-        const errorFirst = this.$el.querySelector('.has-error')
+        const errorFirst = this.$el.querySelector(selector)
         if (errorFirst) {
           const errorFirstInput = errorFirst.querySelector('input, select')
           if (errorFirstInput) {
@@ -16,6 +16,9 @@ export default {
           }
         }
       }, 100)
+    },
+    scrollToError () {
+      this.scrollToErrorByClass('.has-error')
     }
   }
 }

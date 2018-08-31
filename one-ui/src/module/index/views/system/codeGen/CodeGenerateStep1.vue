@@ -36,7 +36,7 @@
             </FormGroup>
           </div>
         </div>
-  
+
         <div class="row">
           <div class="col-md-6">
             <FormGroup label="是否覆盖">
@@ -46,13 +46,13 @@
             </FormGroup>
           </div>
         </div>
-  
+
         <template v-if="strategy.moduleType == 1">
           <div class="row">
             <div class="col-md-6">
               <FormGroup label="模块名称">
-                <select class="form-control" v-model="strategy.moduleName" v-validate="'required'" name="模块名称">
-                  <option v-for="module of moduleList" :value="module.moduleName" @click="selectModule(module)">{{ module.moduleName }}</option>
+                <select class="form-control" v-model="module" v-validate="'required'" name="模块名称">
+                  <option v-for="module of moduleList" :value="module">{{ module.moduleName }}</option>
                 </select>
               </FormGroup>
             </div>
@@ -95,7 +95,7 @@
             </div>
           </div>
         </template>
-  
+
         <div class="row">
           <div class="col-md-6">
             <FormGroup label="Entity前缀">
@@ -103,7 +103,7 @@
             </FormGroup>
           </div>
         </div>
-  
+
         <div class="row">
           <div class="col-md-6">
             <FormGroup label="Entity后缀">
@@ -112,14 +112,14 @@
           </div>
         </div>
       </div>
-  
+
       <div class="box-footer">
         <div class="col-md-6 col-sm-0"></div>
         <div class="col-md-2 col-sm-2">
           <button type="button" class="btn btn-block btn-primary" @click="nextStep()">下一步</button>
         </div>
       </div>
-  
+
       <SelectTableModal :config="config" v-model="strategy.tableList"></SelectTableModal>
   </div>
 </template>
@@ -147,7 +147,8 @@ export default {
         entityPrefix: '',
         entitySuffix: 'EO',
         tableList: ['crm_customer']
-      }
+      },
+      module: {}
     }
   },
   mounted () {
@@ -182,10 +183,6 @@ export default {
           this.$emit('input', this.strategy)
         }
       })
-    },
-    selectModule (module) {
-      this.strategy.moduleName = module.moduleName
-      this.strategy.modulePackage = module.modulePackage
     }
   },
   watch: {
@@ -196,6 +193,15 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    'module': {
+      handler: function () {
+        let packageName = this.module.modulePackage
+        this.strategy.moduleName = this.module.moduleName
+        this.strategy.modulePackage = this.module.modulePackage
+        this.strategy.moduleSimpleName = packageName.substring(packageName.lastIndexOf('.') + 1)
+      },
+      deep: true
     }
   }
 }

@@ -2,7 +2,7 @@
   <aside class="main-sidebar">
     <section class="sidebar">
       <UserPanel/>
-      <SearchForm/>
+      <!-- <SearchForm/> -->
       <LeftMenu/>
     </section>
   </aside>

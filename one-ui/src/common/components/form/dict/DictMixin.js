@@ -8,12 +8,16 @@ export default {
       type: String,
       required: true
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     value: {}
   },
   computed: {
     dictValue: {
       get: function () {
-        return this.value
+        return this.value === null || this.value === undefined ? '' : this.value + ''
       },
       set: function (newValue) {
         this.$emit('input', newValue)
@@ -29,6 +33,9 @@ export default {
   methods: {
     onChange () {
       this.$emit('change')
+    },
+    onClick () {
+      this.$emit('click')
     }
   }
 }
