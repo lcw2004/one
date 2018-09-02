@@ -1,6 +1,5 @@
 server:
-  port: 8080
-  context-parameters.office_path: D:\\zzoffice
+  port: 8081
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
@@ -19,8 +18,6 @@ logging.level:
   org.hibernate.SQL: error
   com.lcw.one: debug
 
-# Rest API前缀地址
-restPath: /api
 
 # App信息
 one:
@@ -56,37 +53,4 @@ spring.datasource:
     min-evictable-idle-time-millis: 300000
     validation-query: SELECT 'x' FROM DUAL
 
-#=============================#
-#=====   Email Settings  =====#
-#=============================#
-mail:
-  protocol: smtp
-  host: smtp.qq.com
-  port: 465
-  smtp:
-    socketFactory.port: 465
-    auth: true
-    starttls.enable: true
-    debug: true
-    starttls.required: true
-    socketFactory.fallback: false
-  from:
-    mail: 292232611@qq.com
-    name: 292232611
-  username: 292232611@qq.com
-  password: ezkbxarmubuqbigc
-
-#=============================#
-#=====   Redis Settings  =====#
-#=============================#
-spring.redis:
-  database: 0
-  host: 127.0.0.1
-  port: 6379
-  password:
-  pool:
-    max-active: 8
-    max-wait: -1
-    max-idle: 8
-    min-idle: 0
-  timeout: 0
+flyway.locations: classpath:/db

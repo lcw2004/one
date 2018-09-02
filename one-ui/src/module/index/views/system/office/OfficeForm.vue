@@ -104,46 +104,6 @@
               </div>
             </div>
           </section>
-
-          <section>
-            <h4 class="page-header">其他信息</h4>
-            <div class="row">
-              <div class="col-md-5">
-                <FormGroup label="资料费开户银行">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankName" maxlength="30"/>
-                </FormGroup>
-              </div>
-              <div class="col-md-5">
-                <FormGroup label="保证金银行">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankName" maxlength="30"/>
-                </FormGroup>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <FormGroup label="资料费账号">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankAccount" maxlength="20"/>
-                </FormGroup>
-              </div>
-              <div class="col-md-5">
-                <FormGroup label="保证金账号">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankAccount" maxlength="20"/>
-                </FormGroup>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-5">
-                <FormGroup label="资料费银行开户名">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.fileFeeBankUserName" maxlength="20"/>
-                </FormGroup>
-              </div>
-              <div class="col-md-5">
-                <FormGroup label="保证金银行开户名">
-                  <input type="text" class="form-control" v-model="obj.otherInfoMap.promiseFeeBankUserName" maxlength="20"/>
-                </FormGroup>
-              </div>
-            </div>
-          </section>
         </form>
       </div>
       <div class="box-footer">
@@ -198,12 +158,6 @@ export default {
         email: '',
         remarks: '',
         otherInfoMap: {
-          fileFeeBankName: '',
-          fileFeeBankAccount: '',
-          fileFeeBankUserName: '',
-          promiseFeeBankName: '',
-          promiseFeeBankAccount: '',
-          promiseFeeBankUserName: ''
         }
       },
       officeTreeModalConfig: {

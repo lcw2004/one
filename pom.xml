@@ -30,6 +30,7 @@
         <module>one-redis</module>
         <module>one-msg</module>
         <module>one-weixin</module>
+        <module>one-db-init</module>
     </modules>
 
     <properties>

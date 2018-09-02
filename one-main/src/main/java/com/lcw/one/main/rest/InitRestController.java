@@ -81,8 +81,6 @@ public class InitRestController {
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));
-        settingMap.put("isEnableSignIn", GlobalConfig.getBooleanValue("is_enable_sign_in"));
-        settingMap.put("isEnableBidCheck", GlobalConfig.getBooleanValue("is_enable_bid_check"));
         return settingMap;
     }
 
