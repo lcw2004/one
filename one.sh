@@ -7,22 +7,22 @@
 # export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 
 # set maven
-export M2_HOME=/opt/apache-maven-3.5.2
+export M2_HOME=/opt/apache-maven-3.3.9
 export PATH=$PATH:$M2_HOME/bin
 
-BASE_PATH="/home/one/one-extend"
-ONE_EXTEND_PATH=$BASE_PATH/one-extend
+BASE_PATH="/home/one"
+ONE_EXTEND_PATH=$BASE_PATH/one
 ONE_MAIN_PATH=$ONE_EXTEND_PATH/one-main
-ONE_CMS_FRONT_PATH=$ONE_EXTEND_PATH/one-cms-front
 ONE_UI_PATH=$ONE_EXTEND_PATH/one-ui
 ONE_MAIN_STATIC_PATH=$ONE_MAIN_PATH/src/main/resources/static
 ONE_JAR_PATH=$BASE_PATH/jar
 ONE_BAK_PATH=$ONE_JAR_PATH/bak
 ONE_MAIN_JAR=$ONE_JAR_PATH/one-main-0.0.1-SNAPSHOT.jar
-ONE_CMS_FRONT_JAR=$ONE_JAR_PATH/one-cms-front-0.0.1-SNAPSHOT.war
 USER_EMAIL="lcw2004@163.com"
 USER_NAME="lcw2004"
-GIT_PASSWORD="0e1d329a06"
+GIT_PASSWORD="------"
+GIT_URL="https://github.com/lcw2004/one.git"
+#GIT_URL=https://$USER_NAME:$GIT_PASSWORD@github.com/lcw2004/one.git
 
 function print () {
     echo ""
@@ -36,7 +36,7 @@ function pull_code () {
     print "1. pull code"
     cd  $ONE_EXTEND_PATH;
     git config core.filemode false
-    git pull https://$USER_NAME:$GIT_PASSWORD@git.oschina.net/lcw2004/one-extend.git master;
+    git pull $GIT_URL master;
 }
 
 # 编译前端工程
@@ -72,14 +72,12 @@ function build_maven () {
 function backup (){
     print "4. backup"
     cp "$ONE_JAR_PATH/one-main-0.0.1-SNAPSHOT.jar" "$ONE_BAK_PATH/one-main-0.0.1-SNAPSHOT.jar.`date +%Y-%m-%d-%H-%M-%S`"
-    cp "$ONE_JAR_PATH/one-cms-front-0.0.1-SNAPSHOT.war" "$ONE_BAK_PATH/one-cms-front-0.0.1-SNAPSHOT.war.`date +%Y-%m-%d-%H-%M-%S`"
 }
 
 # 拷贝Jar包
 function copy_jar () {
     print "5. copy jar file"
     cp "$ONE_MAIN_PATH/target/one-main-0.0.1-SNAPSHOT.jar" "$ONE_MAIN_JAR"
-    cp "$ONE_CMS_FRONT_PATH/target/one-cms-front-0.0.1-SNAPSHOT.war" "$ONE_CMS_FRONT_JAR"
 }
 
 # 杀死进程
@@ -107,14 +105,12 @@ function kill_progress () {
 function kill_all () {
     print "6. shut down"
     kill_progress "$ONE_MAIN_JAR"
-    kill_progress "$ONE_CMS_FRONT_JAR"
 }
 
 # 启动程序
 function start () {
     print "7. start one-extend"
     nohup /usr/bin/java -jar -Xms100m -Xmx500m $ONE_MAIN_JAR --spring.config.location=$BASE_PATH/one_main.yml --logging.path=$BASE_PATH/log/one-main > /dev/null 2>&1 &
-    nohup /usr/bin/java -jar -Xms100m -Xmx100m $ONE_CMS_FRONT_JAR --spring.config.location=$BASE_PATH/one_cms_front.yml --logging.path=$BASE_PATH/log/one-cms-front > /dev/null 2>&1 &
 
     sleep 3
     status
@@ -135,7 +131,6 @@ function check_status () {
 function status(){
     print "check status"
     check_status "$ONE_MAIN_JAR"
-    check_status "$ONE_CMS_FRONT_JAR"
 }
 
 # 更新代码并编译运行

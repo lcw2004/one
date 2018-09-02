@@ -142,11 +142,11 @@ export default {
         moduleType: 1,
         isOverWrite: 1,
         moduleName: 'one-crm',
-        moduleSimpleName: 'crm',
-        modulePackage: 'com.lcw.one.crm',
+        moduleSimpleName: 'msg',
+        modulePackage: 'com.lcw.one.msg',
         entityPrefix: '',
         entitySuffix: 'EO',
-        tableList: ['crm_customer']
+        tableList: []
       },
       module: {}
     }
