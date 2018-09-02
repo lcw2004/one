@@ -20,7 +20,7 @@ ONE_BAK_PATH=$ONE_JAR_PATH/bak
 ONE_MAIN_JAR=$ONE_JAR_PATH/one-main-0.0.1-SNAPSHOT.jar
 USER_EMAIL="lcw2004@163.com"
 USER_NAME="lcw2004"
-GIT_PASSWORD="------"
+GIT_PASSWORD="******"
 GIT_URL="https://github.com/lcw2004/one.git"
 #GIT_URL=https://$USER_NAME:$GIT_PASSWORD@github.com/lcw2004/one.git
 
