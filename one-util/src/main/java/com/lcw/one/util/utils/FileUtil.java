@@ -1,16 +1,16 @@
 package com.lcw.one.util.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.*;
 
-
 public class FileUtil extends FileUtils {
 
     private static final int BUFF_SIZE = 1024;
-    private static Logger log = Logger.getLogger(FileUtil.class);
+    private static Logger log = LoggerFactory.getLogger(FileUtil.class);
 
     public static void copyFile(String src, String target) {
         InputStream in = null;
