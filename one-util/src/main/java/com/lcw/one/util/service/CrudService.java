@@ -79,7 +79,7 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
     }
 
     public T get(ID id) {
-        T t = (T) dao.findOne(id);
+        T t = (T) dao.getOne(id);
         loadTreeParent(t);
         return t;
     }
@@ -93,7 +93,7 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
     private void loadTreeParent(T t) {
         if (t instanceof TreeEntity) {
             TreeEntity treeEntity = (TreeEntity) t;
-            treeEntity.setParent((TreeEntity) dao.findOne(treeEntity.getParentId()));
+            treeEntity.setParent((TreeEntity) dao.getOne(treeEntity.getParentId()));
         }
     }
 
