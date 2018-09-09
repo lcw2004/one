@@ -31,6 +31,7 @@
         <module>one-msg</module>
         <module>one-weixin</module>
         <module>one-db-init</module>
+        <module>one-test</module>
     </modules>
 
     <properties>
