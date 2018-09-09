@@ -1,9 +1,45 @@
 server:
-  port: 8081
+  port: 8080
+  servlet.context-parameters.office_path: D:\\zzoffice
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
+spring:
+  thymeleaf.cache: false
+  mvc:
+    static-path-pattern: /**
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 30MB
+  activiti:
+    check-process-definitions: false
+logging.level:
+  org.springframework: error
+  org.apache.shiro: error
+  org.hibernate.SQL: error
+  com.lcw.one: debug
 
+
+# Rest API前缀地址
+restPath: /api
+
+# App信息
+one:
+  application:
+    name: One Admin System
+    shortName: One
+    version: V1.2
+    powerByName: lcw2004
+    powerByLink: https://github.com/lcw2004
+  # 文件服务文件存储地址
+  file:
+    path: D:\Files
+    temp: D:\Files\temp
+  url: http://localhost:9000
+  weixin:
+    appId: wxa5b74cf00bb65181
+    appSecret: e105d543814851868a8e90c849bb0d82
 
 #=============================#
 #===== Database Settings =====#

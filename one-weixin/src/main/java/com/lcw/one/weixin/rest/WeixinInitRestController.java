@@ -65,7 +65,7 @@ public class WeixinInitRestController {
         settingMap.put("appName", environment.getProperty("one.application.name"));
         settingMap.put("appShortName", environment.getProperty("one.application.shortName"));
         settingMap.put("appVersion", environment.getProperty("one.application.version"));
-        String maxFileSizeShow = environment.getProperty("spring.http.multipart.max-file-size");
+        String maxFileSizeShow = environment.getProperty("spring.servlet.multipart.max-file-size");
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));

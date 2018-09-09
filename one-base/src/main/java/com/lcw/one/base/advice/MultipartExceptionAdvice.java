@@ -20,7 +20,7 @@ public class MultipartExceptionAdvice {
 
     private static final Logger logger = LoggerFactory.getLogger(MultipartExceptionAdvice.class);
 
-    @Value("${spring.http.multipart.max-file-size}")
+    @Value("${spring.servlet.multipart.max-file-size}")
     private String maxFileSize;
 
     @ResponseStatus(HttpStatus.OK)

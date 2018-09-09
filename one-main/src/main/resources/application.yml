@@ -1,6 +1,6 @@
 server:
   port: 8080
-  context-parameters.office_path: D:\\zzoffice
+  servlet.context-parameters.office_path: D:\\zzoffice
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
@@ -8,7 +8,8 @@ spring:
   thymeleaf.cache: false
   mvc:
     static-path-pattern: /**
-  http.multipart:
+  servlet:
+    multipart:
       max-request-size: 30MB
       max-file-size: 30MB
   activiti:
