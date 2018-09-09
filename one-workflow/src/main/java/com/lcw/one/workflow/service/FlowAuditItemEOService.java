@@ -22,7 +22,7 @@ public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, Flow
      * @param auditItemId 审核事项ID
      */
     public void updateStateWhenReject(String auditItemId, String remark) {
-        FlowAuditItemEO flowAuditItemEO = dao.findOne(auditItemId);
+        FlowAuditItemEO flowAuditItemEO = dao.getOne(auditItemId);
         flowAuditItemEO.setIsFinished(FlowFinishEnum.FINISH.getValue());
         flowAuditItemEO.setIsEffective(FlowEffectiveEnum.NOT_EFFECTIVE.getValue());
         flowAuditItemEO.setAuditStatus(AuditStatusEnum.REJECT.getValue());
@@ -36,7 +36,7 @@ public class FlowAuditItemEOService extends CrudService<FlowAuditItemEODao, Flow
      * @param auditItemId 审核事项ID
      */
     public void updateStateWhenPass(String auditItemId) {
-        FlowAuditItemEO flowAuditItemEO = dao.findOne(auditItemId);
+        FlowAuditItemEO flowAuditItemEO = dao.getOne(auditItemId);
         flowAuditItemEO.setIsFinished(FlowFinishEnum.FINISH.getValue());
         flowAuditItemEO.setIsEffective(FlowEffectiveEnum.EFFECTIVE.getValue());
         flowAuditItemEO.setEffectTime(new Date());

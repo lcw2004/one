@@ -44,7 +44,7 @@ public class SysRoleEOService extends CrudService<SysRoleEODao, SysRoleEO, Strin
 
     @Override
     public SysRoleEO get(String id) {
-        SysRoleEO sysRoleEO = dao.findOne(id);
+        SysRoleEO sysRoleEO = dao.getOne(id);
         sysRoleEO.setSysMenuEOList(sysMenuEODao.listSysMenuEOByRoleId(id));
         for (SysMenuEO sysMenuEO: sysRoleEO.getSysMenuEOList()) {
             sysRoleEO.getSysMenuEOIdList().add(sysMenuEO.getId());

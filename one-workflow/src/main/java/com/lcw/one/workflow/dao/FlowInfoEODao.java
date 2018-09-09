@@ -29,7 +29,7 @@ public class FlowInfoEODao extends BaseRepositoryImpl<FlowInfoEO, String> {
         }
 
         for (FlowInfoEO flowInfoEO : processStateList) {
-            FlowInfoEO flowInfoEOInDb = findOne(flowInfoEO.getProcessKey());
+            FlowInfoEO flowInfoEOInDb = getOne(flowInfoEO.getProcessKey());
             if (flowInfoEOInDb != null) {
                 flowInfoEO.setProcessState(ProcessStateEOEnum.UPDATED.getValue());
             } else {
