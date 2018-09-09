@@ -57,3 +57,38 @@ spring.datasource:
     time-between-eviction-runs-millis: 60000
     min-evictable-idle-time-millis: 300000
     validation-query: SELECT 'x' FROM DUAL
+
+#=============================#
+#=====   Email Settings  =====#
+#=============================#
+mail:
+  protocol: smtp
+  host: smtp.qq.com
+  port: 465
+  smtp:
+    socketFactory.port: 465
+    auth: true
+    starttls.enable: true
+    debug: true
+    starttls.required: true
+    socketFactory.fallback: false
+  from:
+    mail: 292232611@qq.com
+    name: 292232611
+  username: 292232611@qq.com
+  password: ezkbxarmubuqbigc
+
+#=============================#
+#=====   Redis Settings  =====#
+#=============================#
+spring.redis:
+  database: 0
+  host: 127.0.0.1
+  port: 6379
+  password:
+  jedis.pool:
+    max-active: 8
+    max-wait: -1ms
+    max-idle: 8
+    min-idle: 0
+  timeout: 0ms
