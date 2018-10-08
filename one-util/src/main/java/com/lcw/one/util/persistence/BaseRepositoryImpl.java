@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +53,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         }
 
         if (StringUtils.isNotEmpty(oldParentIds)) {
-            List<TreeEntity> treeEntityList = list("from " + entity.getClass().getSimpleName() + " where parent_ids like ?", "%," + treeEntity.getId() + ",%");
+            List<TreeEntity> treeEntityList = list("from " + entity.getClass().getSimpleName() + " where parent_ids like ?1", "%," + treeEntity.getId() + ",%");
             if (CollectionUtils.isNotEmpty(treeEntityList)) {
                 for (TreeEntity childTreeEntity : treeEntityList) {
                     childTreeEntity.setParentIds(childTreeEntity.getParentIds().replace(oldParentIds, treeEntity.getParentIds()));
@@ -77,7 +78,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
             treeEntity.setDelFlag(DeleteFlagEnum.DELETE.getValue());
             save((T) treeEntity);
 
-            String hql = "update " + jpaEntityInformation.getEntityName() + " set delFlag = '" + DeleteFlagEnum.DELETE.getValue() + "' where parentIds like ?";
+            String hql = "update " + jpaEntityInformation.getEntityName() + " set delFlag = '" + DeleteFlagEnum.DELETE.getValue() + "' where parentIds like ?1";
             executeUpdate(hql, "%" + treeEntity.getId() + ",%");
         }
     }
@@ -180,5 +181,17 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
     public <E> List<E> executeList(String hql, Map<String, Object> params) {
         Query query = RepositoryUtils.getQueryWithParamMap(entityManager, hql, params);
         return query.getResultList();
+    }
+
+    public static <K, V> Map<K, V> rowToMap(List<V[]> rows) {
+        Map<K, V> countMap = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(rows)) {
+            for (Object[] obj : rows) {
+                K key = (K) obj[0];
+                V value = (V) obj[1];
+                countMap.put(key, value);
+            }
+        }
+        return countMap;
     }
 }

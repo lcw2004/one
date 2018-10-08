@@ -3,6 +3,7 @@ package com.lcw.one.util.utils;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 计算工具类
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class MathUtils {
 
-    private static final int DEFAULT_SCALE = 10;
+    private static final int DEFAULT_SCALE = 2;
 
     /**
      * 加法（value1 + value2）
@@ -25,6 +26,39 @@ public class MathUtils {
         BigDecimal b1 = new BigDecimal(Double.toString(value1));
         BigDecimal b2 = new BigDecimal(Double.toString(value2));
         return b1.add(b2).doubleValue();
+    }
+
+    /**
+     * 加法
+     * @param value1
+     * @param values
+     * @return
+     */
+    public static double add(Double value1, Double... values) {
+        BigDecimal b1 = new BigDecimal(Double.toString(value1));
+        for (Double val: values) {
+            if (val != null) {
+                b1 = b1.add(new BigDecimal(Double.toString(val)));
+            }
+        }
+        return b1.doubleValue();
+    }
+
+    /**
+     * 加法
+     * @param values
+     * @return
+     */
+    public static double add(List<Double> values) {
+        BigDecimal b1 = new BigDecimal(0D);
+        if (CollectionUtils.isNotEmpty(values)) {
+            for (Double val: values) {
+                if (val != null) {
+                    b1 = b1.add(new BigDecimal(Double.toString(val)));
+                }
+            }
+        }
+        return b1.doubleValue();
     }
 
     /**
@@ -138,6 +172,20 @@ public class MathUtils {
      */
     public static double divide(double value1, double value2) {
         return divide(value1, value2, DEFAULT_SCALE, BigDecimal.ROUND_HALF_UP);
+    }
+
+    /**
+     * 安全除，如果为被除数为0则返回0
+     * @param value1
+     * @param value2
+     * @return
+     */
+    public static double divideSafe(double value1, double value2) {
+        if (value1 == 0D || value2 == 0D) {
+            return 0D;
+        } else {
+            return divide(value1, value2);
+        }
     }
 
     /**

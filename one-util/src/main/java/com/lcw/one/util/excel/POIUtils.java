@@ -179,7 +179,9 @@ public class POIUtils {
      * @param sheet sheet
      */
     public static void autoSize(Sheet sheet) {
-        autoSize(sheet, sheet.getLastRowNum());
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
+            autoSize(sheet, i);
+        }
     }
 
     /**
@@ -193,9 +195,9 @@ public class POIUtils {
         if (row != null) {
             for (int i = 0; i < row.getPhysicalNumberOfCells(); i++) {
                 sheet.autoSizeColumn(i, true);
-                if (sheet.getColumnWidth(i) == 0) {
-                    sheet.setColumnWidth(i, 100);
-                }
+//                if (sheet.getColumnWidth(i) == 0) {
+//                    sheet.setColumnWidth(i, 100);
+//                }
             }
         }
     }

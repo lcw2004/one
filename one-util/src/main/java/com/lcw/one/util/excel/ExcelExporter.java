@@ -53,7 +53,7 @@ public class ExcelExporter {
      *
      * @param dataList 数据
      */
-    public void export(List dataList) {
+    public void  export(List dataList) {
         if (CollectionUtils.isEmpty(dataList)) {
             return;
         }
@@ -129,7 +129,16 @@ public class ExcelExporter {
      *
      */
     protected void initHead() {
-        Row headerRow = sheet.createRow(this.currentRowNum++);
+        initHead(this.currentRowNum++);
+    }
+
+
+    /**
+     * 初始化Excel标题
+     *
+     */
+    protected void initHead(int currentRowNum) {
+        Row headerRow = sheet.createRow(currentRowNum);
         headerRow.setHeightInPoints(25);
         for (ExcelFieldRule excelFieldRule : excelClassRule.getFieldRuleList()) {
             Cell cell = headerRow.createCell(excelFieldRule.getIndex());
@@ -150,7 +159,6 @@ public class ExcelExporter {
         }
     }
 
-
     /**
      * 添加数据到Excel文档
      *
@@ -168,11 +176,13 @@ public class ExcelExporter {
      */
     protected <T> void addData(List<T> dataList, int startRowNum) {
         // 对数据按指定的排序号排序
-        ObjectUtils.orderList(dataList, this.excelClassRule.getOrderField());
+        if(StringUtils.isNotEmpty(this.excelClassRule.getOrderField())) {
+            ObjectUtils.orderList(dataList, this.excelClassRule.getOrderField());
+        }
 
         this.currentRowNum = startRowNum;
         for (T data : dataList) {
-            Row dataRow = sheet.createRow(this.currentRowNum++);
+            Row dataRow = POIUtils.createRow(sheet, this.currentRowNum++);
             dataRow.setHeightInPoints(DEFAULT_HEIGHT_IN_POINTS);
             for (ExcelFieldRule excelFieldRule : excelClassRule.getFieldRuleList()) {
                 Object value = Reflections.invokeGetter(data, excelFieldRule.getFieldName());
@@ -190,4 +200,5 @@ public class ExcelExporter {
     public void setTitle(String title) {
         this.title = title;
     }
+
 }

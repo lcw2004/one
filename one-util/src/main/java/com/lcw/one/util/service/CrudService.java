@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Serializable> {
@@ -19,10 +20,6 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
 
     @Autowired
     protected D dao;
-
-    public void flush() {
-        dao.flush();
-    }
 
     public D getDao() {
         return dao;
@@ -43,7 +40,7 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
         if (CollectionUtils.isEmpty(entityList)) {
             return null;
         }
-        dao.save(entityList);
+        dao.saveAll(entityList);
         return entityList;
     }
 
@@ -68,20 +65,26 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
 
     @Transactional
     public void delete(ID id) {
-        dao.delete(id);
+        dao.deleteById(id);
     }
 
     @Transactional
     public void delete(ID... ids) {
-        for (ID id : ids) {
-            dao.delete(id);
-        }
+        dao.deleteInBatch(Arrays.asList(ids));
     }
 
     public T get(ID id) {
-        T t = (T) dao.findOne(id);
-        loadTreeParent(t);
+        T t = null;
+        Optional<T> optional = dao.findById(id);
+        if (optional.isPresent()) {
+            t = optional.get();
+            loadTreeParent(t);
+        }
         return t;
+    }
+
+    public T findById(ID id) {
+        return (T) dao.findById(id).get();
     }
 
     public T getOne(ID id) {
@@ -93,7 +96,7 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
     private void loadTreeParent(T t) {
         if (t instanceof TreeEntity) {
             TreeEntity treeEntity = (TreeEntity) t;
-            treeEntity.setParent((TreeEntity) dao.findOne(treeEntity.getParentId()));
+            treeEntity.setParent((TreeEntity) this.get((ID) treeEntity.getParentId()));
         }
     }
 
@@ -101,5 +104,8 @@ public abstract class CrudService<D extends BaseRepositoryImpl, T, ID extends Se
         return dao.findAll();
     }
 
+    public void flush() {
+        dao.flush();
+    }
 
 }

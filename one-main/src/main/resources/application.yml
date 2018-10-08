@@ -1,6 +1,6 @@
 server:
   port: 8080
-  context-parameters.office_path: D:\\zzoffice
+  servlet.context-parameters.office_path: D:\\zzoffice
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
@@ -8,11 +8,9 @@ spring:
   thymeleaf.cache: false
   mvc:
     static-path-pattern: /**
-  http.multipart:
+  servlet.multipart:
       max-request-size: 30MB
       max-file-size: 30MB
-  activiti:
-    check-process-definitions: false
 logging.level:
   org.springframework: error
   org.apache.shiro: error
@@ -30,10 +28,18 @@ one:
     version: V1.2
     powerByName: lcw2004
     powerByLink: https://github.com/lcw2004
-  # 文件服务文件存储地址
   file:
-    path: D:\Files
+    type: local
     temp: D:\Files\temp
+    local:
+      path: D:\Files
+    oss:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      accessKeyId: test
+      accessKeySecret: test
+      bucketName: dev
+    local-oss:
+      max-time: 7
   url: http://localhost:9000
   weixin:
     appId: wxa5b74cf00bb65181
@@ -55,6 +61,9 @@ spring.datasource:
     time-between-eviction-runs-millis: 60000
     min-evictable-idle-time-millis: 300000
     validation-query: SELECT 'x' FROM DUAL
+spring.jpa.properties.hibernate:
+    dialect: org.hibernate.dialect.MySQL5Dialect
+    hql.bulk_id_strategy: org.hibernate.hql.spi.id.inline.InlineIdsOrClauseBulkIdStrategy
 
 #=============================#
 #=====   Email Settings  =====#
@@ -84,9 +93,8 @@ spring.redis:
   host: 127.0.0.1
   port: 6379
   password:
-  pool:
+  lettuce.pool:
     max-active: 8
-    max-wait: -1
+    max-wait: -1ms
     max-idle: 8
     min-idle: 0
-  timeout: 0

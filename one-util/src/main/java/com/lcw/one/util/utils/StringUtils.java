@@ -20,6 +20,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
     }
 
+    public static String zeroString(String input) {
+        if (isEmpty(input)) {
+            return "0";
+        } else {
+            return input;
+        }
+    }
+
     public static String listToString(List stringList) {
         return listToString(stringList, ",");
     }

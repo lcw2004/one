@@ -1,16 +1,18 @@
 package com.lcw.one.util.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.*;
-
+import java.util.Date;
 
 public class FileUtil extends FileUtils {
 
-    private static final int BUFF_SIZE = 1024;
-    private static Logger log = Logger.getLogger(FileUtil.class);
+    public static final int BUFF_SIZE = 1024 * 10;
+    private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+    public static String FILE_SEPARATOR = "/";
 
     public static void copyFile(String src, String target) {
         InputStream in = null;
@@ -133,7 +135,7 @@ public class FileUtil extends FileUtils {
     public static boolean delFile(String fileName) {
         File file = new File(fileName);
         if (!file.exists()) {
-            log.info(fileName + " 文件不存在!");
+            logger.info(fileName + " 文件不存在!");
             return true;
         } else {
             if (file.isFile()) {
@@ -154,14 +156,14 @@ public class FileUtil extends FileUtils {
         File file = new File(fileName);
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
-                log.info("删除单个文件 " + fileName + " 成功!");
+                logger.info("删除单个文件 " + fileName + " 成功!");
                 return true;
             } else {
-                log.info("删除单个文件 " + fileName + " 失败!");
+                logger.info("删除单个文件 " + fileName + " 失败!");
                 return false;
             }
         } else {
-            log.info(fileName + " 文件不存在!");
+            logger.info(fileName + " 文件不存在!");
             return true;
         }
     }
@@ -179,7 +181,7 @@ public class FileUtil extends FileUtils {
         }
         File dirFile = new File(dirNames);
         if (!dirFile.exists() || !dirFile.isDirectory()) {
-            log.info(dirNames + " 目录不存在!");
+            logger.info(dirNames + " 目录不存在!");
             return true;
         }
         boolean flag = true;
@@ -207,15 +209,15 @@ public class FileUtil extends FileUtils {
             }
         }
         if (!flag) {
-            log.info("删除目录失败!");
+            logger.info("删除目录失败!");
             return false;
         }
         // 删除当前目录
         if (dirFile.delete()) {
-            log.info("删除目录 " + dirName + " 成功!");
+            logger.info("删除目录 " + dirName + " 成功!");
             return true;
         } else {
-            log.info("删除目录 " + dirName + " 失败!");
+            logger.info("删除目录 " + dirName + " 失败!");
             return false;
         }
 
@@ -270,4 +272,8 @@ public class FileUtil extends FileUtils {
         }
     }
 
+    public static String generateFilePath(String fileType) {
+        String path = DateUtils.dateToString(new Date(), "yyyy" + FILE_SEPARATOR + "MM" + FILE_SEPARATOR + "dd");
+        return path + FILE_SEPARATOR + UUID.randomUUID() + "." + fileType;
+    }
 }
