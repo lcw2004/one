@@ -88,6 +88,7 @@ public class UserManagerImportService extends UserImportService<ManageUserVO> {
             userInfoEO.setAccount(manageUser.getAccount());
             userInfoEO.setName(manageUser.getName());
             userInfoEO.setUserContactInfo(userContactInfoEO);
+            userInfoEO.setType(UserInfoTypeEnum.MANAGER.getValue());
 
             UserManagerEO userManagerEO = new UserManagerEO();
             userManagerEO.setPassword(GlobalConfig.getValue("system_default_password"));

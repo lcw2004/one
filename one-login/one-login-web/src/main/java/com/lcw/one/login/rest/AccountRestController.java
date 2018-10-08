@@ -1,8 +1,8 @@
 package com.lcw.one.login.rest;
 
 import com.lcw.one.base.service.VerifyCodeService;
+import com.lcw.one.baseInfo.service.BaseTemplateEOService;
 import com.lcw.one.notify.service.IMessageSenderService;
-import com.lcw.one.sys.service.BaseTemplateEOService;
 import com.lcw.one.user.constant.VerifyCodeTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
@@ -50,10 +50,10 @@ public class AccountRestController {
     private UserInfoEOService userInfoEOService;
 
     @Autowired
-    private VerifyCodeService verifyCodeService;
+    private BaseTemplateEOService baseTemplateEOService;
 
     @Autowired
-    private BaseTemplateEOService baseTemplateEOService;
+    private VerifyCodeService verifyCodeService;
 
     public void validImageVerifyCode(HttpServletRequest request, String captcha) {
         String cookieValue = CookieUtils.getCookieValue(request);

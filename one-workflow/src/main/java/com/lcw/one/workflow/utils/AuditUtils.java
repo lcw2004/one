@@ -1,4 +1,4 @@
-package com.lcw.one.workflow;
+package com.lcw.one.workflow.utils;
 
 import com.lcw.one.util.utils.Reflections;
 import com.lcw.one.workflow.entity.FlowAuditItemDetailEO;

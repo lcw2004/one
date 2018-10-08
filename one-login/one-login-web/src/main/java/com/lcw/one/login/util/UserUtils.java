@@ -9,8 +9,10 @@ import com.lcw.one.sys.service.SysMenuEOService;
 import com.lcw.one.sys.service.SysRoleEOService;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserContactInfoEO;
+import com.lcw.one.user.entity.UserExpertEO;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.entity.UserManagerEO;
+import com.lcw.one.user.service.UserExpertEOService;
 import com.lcw.one.user.service.UserInfoEOService;
 import com.lcw.one.user.service.UserManagerEOService;
 import com.lcw.one.base.config.GlobalConfig;
@@ -40,6 +42,7 @@ public class UserUtils {
 
     private static UserInfoEOService userService = SpringContextHolder.getBean(UserInfoEOService.class);
     private static UserManagerEOService userManagerEOService = SpringContextHolder.getBean(UserManagerEOService.class);
+    private static UserExpertEOService userExpertEOService = SpringContextHolder.getBean(UserExpertEOService.class);
     private static SysMenuEOService sysMenuService = SpringContextHolder.getBean(SysMenuEOService.class);
     private static SysRoleEOService sysRoleEOService = SpringContextHolder.getBean(SysRoleEOService.class);
     private static RedisUtil redisUtil = SpringContextHolder.getBean(RedisUtil.class);
@@ -99,6 +102,15 @@ public class UserUtils {
                 UserManagerEO userManagerEO = userManagerEOService.get(userInfoEO.getUserId());
                 if (userManagerEO != null) {
                     office = ObjectUtils.clone(userManagerEO.getSysOffice());
+                    office.setParent(null);
+                    office.setArea(null);
+                    CacheUtils.putCache(CURRENT_OFFICE, office);
+                }
+            } else if (userInfoEO.getType() == UserInfoTypeEnum.EXPERT.getValue()) {
+                UserExpertEO userExpertEO = userExpertEOService.get(userInfoEO.getUserId());
+                if (userExpertEO != null && StringUtils.isNotEmpty(userExpertEO.getOfficeId())) {
+                    SysOfficeEO sysOfficeEO = userExpertEO.getSysOffice();
+                    office = ObjectUtils.clone(sysOfficeEO);
                     office.setParent(null);
                     office.setArea(null);
                     CacheUtils.putCache(CURRENT_OFFICE, office);

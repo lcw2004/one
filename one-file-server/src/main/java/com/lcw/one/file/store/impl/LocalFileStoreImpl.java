@@ -1,27 +1,29 @@
 package com.lcw.one.file.store.impl;
 
+import com.lcw.one.file.bean.constant.FileStoreTypeEnum;
 import com.lcw.one.file.store.IFileStore;
 import com.lcw.one.util.exception.OneBaseException;
-import com.lcw.one.util.utils.DateUtils;
 import com.lcw.one.util.utils.FileUtil;
 import com.lcw.one.util.utils.IOUtils;
-import com.lcw.one.util.utils.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.Date;
 
 @Service
 public class LocalFileStoreImpl implements IFileStore {
 
-    @Value("${one.file.path}")
+    @Value("${one.file.local.path}")
     private String basePath;
 
     @Override
-    public String storeFile(InputStream is, String fileExtension) throws IOException {
-        String path = generateFilePath(fileExtension);
-        String fullPath = getBatPath() + path;
+    public String getStoreType() {
+        return FileStoreTypeEnum.LOCAL.getValue();
+    }
+
+    @Override
+    public void storeFile(InputStream is, String relativePath) throws IOException {
+        String fullPath = getBasePath() + relativePath;
         File file = new File(fullPath);
 
         // 检查父目录是否存在
@@ -29,51 +31,70 @@ public class LocalFileStoreImpl implements IFileStore {
 
         // 存储文件
         FileUtil.copyInputStreamToFile(is, file);
-        return path;
     }
 
     @Override
-    public InputStream loadFile(String path) {
-        InputStream is;
+    public void loadFile(String relativePath, OutputStream os) {
+        InputStream is = null;
         try {
-            String fullPath = getBatPath() + path;
+            String fullPath = getBasePath() + relativePath;
+            is = new FileInputStream(new File(fullPath));
+            IOUtils.copy(is, os, FileUtil.BUFF_SIZE);
+        } catch (FileNotFoundException e) {
+            throw new OneBaseException("文件[" + relativePath + "]不存在");
+        } catch (IOException e) {
+            throw new OneBaseException("读取文件[" + relativePath + "]不存在");
+        } finally {
+            IOUtils.closeQuietly(is);
+        }
+    }
+
+    @Override
+    public InputStream loadFile(String relativePath) {
+        InputStream is = null;
+        try {
+            String fullPath = getBasePath() + relativePath;
             is = new FileInputStream(new File(fullPath));
         } catch (FileNotFoundException e) {
-            throw new OneBaseException("文件[" + path + "]不存在");
+            throw new OneBaseException("文件[" + relativePath + "]不存在");
         }
         return is;
     }
 
     @Override
-    public byte[] loadFileBytes(String path) {
+    public byte[] loadFileBytes(String relativePath) {
         byte[] bytes;
         InputStream is = null;
         try {
-            String fullPath = getBatPath() + path;
+            String fullPath = getBasePath() + relativePath;
             is = new FileInputStream(new File(fullPath));
-
             bytes = IOUtils.readFully(is);
         } catch (FileNotFoundException e) {
-            throw new OneBaseException("文件[" + path + "]不存在");
+            throw new OneBaseException("文件[" + relativePath + "]不存在");
         } catch (IOException e) {
-            throw new OneBaseException("读取文件[" + path + "]失败");
+            throw new OneBaseException("读取文件[" + relativePath + "]失败");
         } finally {
             IOUtils.closeQuietly(is);
         }
         return bytes;
     }
 
-    private static String generateFilePath(String fileType) {
-        String path = DateUtils.dateToString(new Date(), "yyyy" + File.separator + "MM" + File.separator + "dd");
-        return path + File.separator + UUID.randomUUID() + "." + fileType;
+    @Override
+    public boolean isExists(String relativePath) {
+        return FileUtil.exists(getBasePath() + relativePath);
+    }
+
+    @Override
+    public void delete(String relativePath) {
+        FileUtil.deleteFile(getBasePath() + relativePath);
     }
 
     /**
      * 在基础路径上面补上路劲分隔符
      */
-    private String getBatPath() {
+    private String getBasePath() {
         if (!(basePath.endsWith("\\") || basePath.endsWith("/"))) {
-            basePath = basePath + File.separator;
+            basePath = basePath + FileUtil.FILE_SEPARATOR;
         }
         return basePath;
     }

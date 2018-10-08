@@ -33,7 +33,7 @@ public class SysDictDataEODao extends BaseRepositoryImpl<SysDictDataEO, String> 
     }
 
     public void deleteByDictId(String dictId) {
-        executeUpdate("delete from SysDictDataEO where dictId = ?1 order by sort", dictId);
+        executeUpdate("delete from SysDictDataEO where dictId = ?1", dictId);
     }
 
     public Integer getNextSort(String dictId) {

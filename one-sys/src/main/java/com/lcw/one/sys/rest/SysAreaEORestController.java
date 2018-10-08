@@ -70,7 +70,7 @@ public class SysAreaEORestController {
 
     @ApiOperation(value = "子节点列表")
     @GetMapping("/{areaId}/child")
-    public ResponseMessage<List<TreeEntity>> getChildListByAreaId(@PathVariable String areaId) {
+    public ResponseMessage<List<SysAreaEO>> getChildListByAreaId(@PathVariable String areaId) {
         return Result.success(sysAreaEOService.listByParentId(areaId));
     }
 

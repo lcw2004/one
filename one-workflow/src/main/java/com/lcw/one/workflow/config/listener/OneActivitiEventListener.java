@@ -4,7 +4,7 @@ import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.SpringContextHolder;
 import com.lcw.one.workflow.audit.IActivitiAssign;
 import com.lcw.one.workflow.bean.constant.FlowAssignTypeEnum;
-import com.lcw.one.workflow.config.ThreadLocalContext;
+import com.lcw.one.workflow.utils.ThreadLocalContext;
 import com.lcw.one.workflow.entity.FlowInfoEO;
 import com.lcw.one.workflow.entity.FlowTaskInfoEO;
 import com.lcw.one.workflow.service.FlowInfoEOService;

@@ -7,6 +7,7 @@ import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
+import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
@@ -36,6 +37,9 @@ public class InitRestController {
     private Environment environment;
 
     @Autowired
+    private UserSupplierEOService userSupplierEOService;
+
+    @Autowired
     private UserInfoEOService userInfoEOService;
 
     @Autowired
@@ -56,6 +60,7 @@ public class InitRestController {
         result.put("userOffice", UserUtils.getUserOffice());
         result.put("sysDict", DictUtils.getDictMap());
         result.put("sysSetting", listSetting(request));
+        result.put("isNeedPerfectSupplierInfo", isNeedPerfectSupplierInfo(loginUser));
         if (loginUser.getUserType() == UserInfoTypeEnum.SUPPLIER.getValue()) {
             result.put("supplierId", LoginUserUtils.getLoginSupplierId(token));
         }
@@ -77,10 +82,13 @@ public class InitRestController {
         settingMap.put("appName", environment.getProperty("one.application.name"));
         settingMap.put("appShortName", environment.getProperty("one.application.shortName"));
         settingMap.put("appVersion", environment.getProperty("one.application.version"));
-        String maxFileSizeShow = environment.getProperty("spring.http.multipart.max-file-size");
+        String maxFileSizeShow = environment.getProperty("spring.servlet.multipart.max-file-size");
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));
+        settingMap.put("isEnableSignIn", GlobalConfig.getBooleanValue("is_enable_sign_in"));
+        settingMap.put("isEnableBidCheck", GlobalConfig.getBooleanValue("is_enable_bid_check"));
+        settingMap.put("supplierPurchaseTypeMax", GlobalConfig.getIntegerValue("supplier_purchase_type_max", 10));
         return settingMap;
     }
 
@@ -89,6 +97,18 @@ public class InitRestController {
             return 0;
         }
         return StringUtils.calculateFileBites(maxFileSizeStr);
+    }
+
+    /**
+     * 判断是否需要完善供应商信息
+     * @return
+     */
+    private Boolean isNeedPerfectSupplierInfo(LoginUser loginUser) {
+        // 非供应商用户不需要完善登录信息
+        if (loginUser.getUserType() != UserInfoTypeEnum.SUPPLIER.getValue()) {
+            return false;
+        }
+        return userSupplierEOService.isNeedPrefect(loginUser.getSupplierId());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.lcw.one.sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,6 +26,7 @@ public class SysFileEO {
     private String userId;
     private String contentType;
     private Integer permissionType;
+    private String storeType;
 
     @Id
     @Column(name = "file_id")
@@ -135,6 +137,16 @@ public class SysFileEO {
 
     public void setPermissionType(Integer permissionType) {
         this.permissionType = permissionType;
+    }
+
+    @Basic
+    @Column(name = "store_type")
+    public String getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
     }
 
     @Override
