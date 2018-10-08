@@ -7,7 +7,6 @@ import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.bean.LoginUser;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
@@ -37,9 +36,6 @@ public class InitRestController {
     private Environment environment;
 
     @Autowired
-    private UserSupplierEOService userSupplierEOService;
-
-    @Autowired
     private UserInfoEOService userInfoEOService;
 
     @Autowired
@@ -60,7 +56,6 @@ public class InitRestController {
         result.put("userOffice", UserUtils.getUserOffice());
         result.put("sysDict", DictUtils.getDictMap());
         result.put("sysSetting", listSetting(request));
-        result.put("isNeedPerfectSupplierInfo", isNeedPerfectSupplierInfo(loginUser));
         if (loginUser.getUserType() == UserInfoTypeEnum.SUPPLIER.getValue()) {
             result.put("supplierId", LoginUserUtils.getLoginSupplierId(token));
         }
@@ -97,18 +92,6 @@ public class InitRestController {
             return 0;
         }
         return StringUtils.calculateFileBites(maxFileSizeStr);
-    }
-
-    /**
-     * 判断是否需要完善供应商信息
-     * @return
-     */
-    private Boolean isNeedPerfectSupplierInfo(LoginUser loginUser) {
-        // 非供应商用户不需要完善登录信息
-        if (loginUser.getUserType() != UserInfoTypeEnum.SUPPLIER.getValue()) {
-            return false;
-        }
-        return userSupplierEOService.isNeedPrefect(loginUser.getSupplierId());
     }
 
 }

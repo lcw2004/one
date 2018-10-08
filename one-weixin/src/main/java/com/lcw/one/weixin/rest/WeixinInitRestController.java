@@ -5,7 +5,6 @@ import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.DateUtils;
@@ -31,9 +30,6 @@ public class WeixinInitRestController {
 
     @Autowired
     private Environment environment;
-
-    @Autowired
-    private UserSupplierEOService userSupplierEOService;
 
     @Autowired
     private UserInfoEOService userInfoEOService;

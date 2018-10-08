@@ -51,6 +51,12 @@
             <artifactId>ehcache-web</artifactId>
             <version>2.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.lcw.one</groupId>
+            <artifactId>one-notify</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- EHCACHE end -->
     </dependencies>
 

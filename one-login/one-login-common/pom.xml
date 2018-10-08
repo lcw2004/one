@@ -21,11 +21,6 @@
             <artifactId>one-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.lcw.one</groupId>
-            <artifactId>one-bidding-user</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
 </project>
