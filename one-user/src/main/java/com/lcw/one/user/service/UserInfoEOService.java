@@ -118,12 +118,12 @@ public class UserInfoEOService extends CrudService<UserInfoEODao, UserInfoEO, St
     /**
      * 判断手机号码是否存在
      *
-     * @param phone
+     * @param mobile
      * @param excludeUserId
      * @return
      */
-    public boolean isExistByPhone(String phone, String excludeUserId) {
-        return dao.isExistByPhone(phone, excludeUserId);
+    public boolean isExistByMobile(String mobile, String excludeUserId) {
+        return dao.isExistByMobile(mobile, excludeUserId);
     }
 
     /**
@@ -140,9 +140,11 @@ public class UserInfoEOService extends CrudService<UserInfoEODao, UserInfoEO, St
         if (isExistByAccount(userInfoEO.getType(), userInfoEO.getAccount(), userInfoEO.getUserId())) {
             throw new OneBaseException("用户账户[" + userInfoEO.getAccount() + "]已经存在");
         }
-        if (isExistByPhone(userInfoEO.getUserContactInfo().getMobile(), userInfoEO.getUserId())) {
-            throw new OneBaseException("用户手机号码[" + userInfoEO.getUserContactInfo().getMobile() + "]已经存在");
-        }
+//        if (StringUtils.isNotEmpty(userInfoEO.getUserContactInfo().getMobile())) {
+//            if (isExistByMobile(userInfoEO.getUserContactInfo().getMobile(), userInfoEO.getUserId())) {
+//                throw new OneBaseException("用户手机号码[" + userInfoEO.getUserContactInfo().getMobile() + "]已经存在");
+//            }
+//        }
     }
 
     /**

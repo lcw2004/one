@@ -24,6 +24,8 @@ public class ExcelClassRule {
      */
     private List<ExcelFieldRule> fieldRuleList;
 
+    private Integer index = 0;
+
     public ExcelClassRule() {
     }
     public ExcelClassRule(Class clazz) {
@@ -34,7 +36,9 @@ public class ExcelClassRule {
         if (this.getFieldRuleList() == null) {
             this.fieldRuleList = new ArrayList<>();
         }
-        excelFieldRule.setIndex(this.fieldRuleList.size());
+        if (excelFieldRule.getIndex() == null) {
+            excelFieldRule.setIndex(this.index++);
+        }
         this.fieldRuleList.add(excelFieldRule);
     }
 
@@ -92,4 +96,11 @@ public class ExcelClassRule {
         this.fieldRuleList = fieldRuleList;
     }
 
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
 }

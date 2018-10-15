@@ -4,6 +4,8 @@ import com.lcw.one.base.utils.LoginUserUtils;
 import com.lcw.one.sys.entity.SysLogEO;
 import com.lcw.one.sys.service.SysLogEOService;
 import com.lcw.one.util.constant.YesOrNoEnum;
+import com.lcw.one.util.exception.LoginInvalidException;
+import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.utils.*;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,7 +21,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Aspect
@@ -113,11 +117,18 @@ public class WebLogAspect {
 
             // 记录异常信息
             if (exception != null) {
-                sysLog.setRemark(Exceptions.getStackTraceAsString(exception));
                 sysLog.setIsFail(YesOrNoEnum.YES.getValue());
+                sysLog.setIsError(isError(exception) ? YesOrNoEnum.YES.getValue() : YesOrNoEnum.NO.getValue());
+                if (isError(exception)) { // 如果是非受检异常，记录所有的异常信息
+                    sysLog.setRemark(Exceptions.getStackTraceAsString(exception));
+                } else { // 记录简单异常信息
+                    sysLog.setRemark(exception.getClass().getSimpleName() + ":" + exception.getMessage());
+                }
             }
 
-            sysLogEOService.save(sysLog);
+            if (!isIgnore(sysLog)) {
+                sysLogEOService.save(sysLog);
+            }
 
             logger.info("---- Http LogId: {}", sysLog.getLogId());
         } catch (Exception e) {
@@ -125,5 +136,37 @@ public class WebLogAspect {
         }
     }
 
+    /**
+     * 是否受检异常
+     * @param e
+     * @return
+     */
+    private static boolean isError(Exception e) {
+        return !(e.getClass() == OneBaseException.class || e.getClass() == LoginInvalidException.class);
+    }
+
+    /**
+     * 是否忽略
+     * @param sysLog
+     * @return
+     */
+    private static boolean isIgnore(SysLogEO sysLog) {
+        if (sysLog.getExecuteTime() > EXECUTE_TIME_MAX) {
+            return false;
+        }
+
+        return HTTP_URL_IGNORE_LIST.contains(sysLog.getHttpUri());
+
+    }
+
+    /**
+     * 超过100毫秒就记录一下
+     */
+    private static final int EXECUTE_TIME_MAX = 100;
+
+    /**
+     * 需要忽略的URL地址
+     */
+    private static final List<String> HTTP_URL_IGNORE_LIST = Arrays.asList("/api/msg/message", "/api/isLogin", "/error");
 
 }

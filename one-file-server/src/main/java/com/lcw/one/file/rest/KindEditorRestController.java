@@ -1,10 +1,11 @@
 package com.lcw.one.file.rest;
 
 import com.lcw.one.file.service.SysFileEOService;
-import com.lcw.one.sys.constant.SysFilePermissionTypeEnum;
+import com.lcw.one.file.bean.constant.FilePermissionTypeEnum;
 import com.lcw.one.sys.entity.SysFileEO;
 import com.lcw.one.util.exception.OneBaseException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/${restPath}/sys/file")
-@Api(description = "系统 - 文件")
+@Api(description = "系统 - Kind文件")
 public class KindEditorRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(KindEditorRestController.class);
@@ -32,10 +33,11 @@ public class KindEditorRestController {
     @Autowired
     private SysFileEOService sysFileEOService;
 
+    @ApiOperation("Kind文件上传")
     @PostMapping(path = "/kind-upload")
     public Map<String, Object> upload(String userId, @RequestParam("imgFile") MultipartFile file) {
         try {
-            SysFileEO sysFile = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType(), SysFilePermissionTypeEnum.OUTER.getValue());
+            SysFileEO sysFile = sysFileEOService.saveSysFile(userId, file.getInputStream(), file.getOriginalFilename(), file.getContentType(), FilePermissionTypeEnum.OUTER.getValue());
             return success(interfaceUrl + "/api/sys/file/" + sysFile.getFileId() + "/download-ext");
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
@@ -53,7 +55,6 @@ public class KindEditorRestController {
         result.put("message", message);
         return result;
     }
-
 
     private Map<String, Object> success(String url) {
         Map<String, Object> result = new HashMap<>();

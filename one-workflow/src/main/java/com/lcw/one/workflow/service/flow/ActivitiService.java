@@ -6,7 +6,7 @@ import com.lcw.one.util.utils.CollectionUtils;
 import com.lcw.one.workflow.bean.TaskInfoBean;
 import com.lcw.one.workflow.bean.TaskQueryCondition;
 import com.lcw.one.workflow.bean.WorkFlowBean;
-import com.lcw.one.workflow.config.ThreadLocalContext;
+import com.lcw.one.workflow.utils.ThreadLocalContext;
 import com.lcw.one.workflow.service.FlowTaskInfoEOService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;

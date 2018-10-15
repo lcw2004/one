@@ -50,10 +50,10 @@ public class AccountRestController {
     private UserInfoEOService userInfoEOService;
 
     @Autowired
-    private VerifyCodeService verifyCodeService;
+    private BaseTemplateEOService baseTemplateEOService;
 
     @Autowired
-    private BaseTemplateEOService baseTemplateEOService;
+    private VerifyCodeService verifyCodeService;
 
     public void validImageVerifyCode(HttpServletRequest request, String captcha) {
         String cookieValue = CookieUtils.getCookieValue(request);

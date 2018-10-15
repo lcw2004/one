@@ -103,7 +103,6 @@ public class ObjectUtils {
         return map;
     }
 
-
     /**
      * 将对象List按指定字段值转为该字段值的列表
      *
@@ -125,7 +124,6 @@ public class ObjectUtils {
         }
         return fList;
     }
-
 
     /**
      * 将对象List按指定字段值转为该字段值的列表

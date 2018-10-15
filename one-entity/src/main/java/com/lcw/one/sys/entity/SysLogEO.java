@@ -107,6 +107,15 @@ public class SysLogEO {
 	@Column(name = "is_fail")
 	private Integer isFail;
 
+    /**
+     * 是否是系统异常
+     * 0 - 系统异常（OneBaseException等系统异常），即系统的一些用户处理业务信息的一次
+     * 1 - 系统错误，即系统的一些没有处理过的程序异常，比如空指针等异常
+     */
+    @Basic
+    @Column(name = "is_error")
+    private Integer isError;
+
 	/**
 	 * 备注
 	 */
@@ -236,5 +245,13 @@ public class SysLogEO {
 
     public void setIsFail(Integer isFail) {
         this.isFail = isFail;
+    }
+
+    public Integer getIsError() {
+        return isError;
+    }
+
+    public void setIsError(Integer isError) {
+        this.isError = isError;
     }
 }

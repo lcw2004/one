@@ -5,7 +5,6 @@ import com.lcw.one.base.utils.DictUtils;
 import com.lcw.one.user.constant.UserInfoTypeEnum;
 import com.lcw.one.user.entity.UserInfoEO;
 import com.lcw.one.user.service.UserInfoEOService;
-import com.lcw.one.user.service.UserSupplierEOService;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.DateUtils;
@@ -31,9 +30,6 @@ public class WeixinInitRestController {
 
     @Autowired
     private Environment environment;
-
-    @Autowired
-    private UserSupplierEOService userSupplierEOService;
 
     @Autowired
     private UserInfoEOService userInfoEOService;
@@ -65,7 +61,7 @@ public class WeixinInitRestController {
         settingMap.put("appName", environment.getProperty("one.application.name"));
         settingMap.put("appShortName", environment.getProperty("one.application.shortName"));
         settingMap.put("appVersion", environment.getProperty("one.application.version"));
-        String maxFileSizeShow = environment.getProperty("spring.http.multipart.max-file-size");
+        String maxFileSizeShow = environment.getProperty("spring.servlet.multipart.max-file-size");
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));

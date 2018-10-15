@@ -79,4 +79,8 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
     public static int boolToInt(boolean value) {
         return value ? 1 : 0;
     }
+
+    public static boolean isEquals(Double value1, Double value2) {
+        return compareTo(value1, value2) == 0;
+    }
 }

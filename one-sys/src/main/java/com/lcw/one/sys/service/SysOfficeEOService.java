@@ -30,12 +30,14 @@ public class SysOfficeEOService extends TreeEntityService<SysOfficeEODao, SysOff
     @Override
     public SysOfficeEO get(String id) {
         SysOfficeEO sysOfficeEO = super.get(id);
-        if (StringUtils.isNotEmpty(sysOfficeEO.getAreaId())) {
-            sysOfficeEO.setArea(sysAreaEOService.get(sysOfficeEO.getAreaId()));
-        }
-        if (StringUtils.isNotEmpty(sysOfficeEO.getOtherInfo())) {
-            Type type = new TypeToken<Map<String, String>>() {}.getType();
-            sysOfficeEO.setOtherInfoMap(GsonUtil.fromJson(sysOfficeEO.getOtherInfo(), type));
+        if (sysOfficeEO != null) {
+            if (StringUtils.isNotEmpty(sysOfficeEO.getAreaId())) {
+                sysOfficeEO.setArea(sysAreaEOService.get(sysOfficeEO.getAreaId()));
+            }
+            if (StringUtils.isNotEmpty(sysOfficeEO.getOtherInfo())) {
+                Type type = new TypeToken<Map<String, String>>() {}.getType();
+                sysOfficeEO.setOtherInfoMap(GsonUtil.fromJson(sysOfficeEO.getOtherInfo(), type));
+            }
         }
         return sysOfficeEO;
     }

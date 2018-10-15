@@ -62,11 +62,11 @@ public class UserInfoEODao extends BaseRepositoryImpl<UserInfoEO, String> {
         return count > 0;
     }
 
-    public boolean isExistByPhone(String phone, String excludeUserId) {
+    public boolean isExistByMobile(String mobile, String excludeUserId) {
         Map<String, Object> paramMap = new HashMap<>();
         StringBuilder hql = new StringBuilder();
-        hql.append(" select count(u) from UserInfoEO u where u.userContactInfo.phone = :phone ");
-        paramMap.put("phone", phone);
+        hql.append(" select count(u) from UserInfoEO u where u.userContactInfo.mobile = :mobile ");
+        paramMap.put("mobile", mobile);
         if (StringUtils.isNotEmpty(excludeUserId)) {
             hql.append(" and u.userId != :excludeUserId");
             paramMap.put("excludeUserId", excludeUserId);

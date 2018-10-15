@@ -19,7 +19,7 @@ public class ExcelFieldRule {
     /**
      * 在Excel中的列号
      */
-    private int index;
+    private Integer index;
 
     /**
      * 是否可以为空：true - 可以，false - 不可以
@@ -56,9 +56,16 @@ public class ExcelFieldRule {
     public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass) {
         this.fieldName = fieldName;
         this.title = title;
-        this.index = index;
         this.nullable = nullable;
         this.fieldClass = fieldClass;
+    }
+
+    public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass, Integer index) {
+        this.fieldName = fieldName;
+        this.title = title;
+        this.nullable = nullable;
+        this.fieldClass = fieldClass;
+        this.index = index;
     }
 
     public ExcelFieldRule(String fieldName, String title, boolean nullable, Class fieldClass, String dictType) {
@@ -91,11 +98,11 @@ public class ExcelFieldRule {
         this.title = title;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(Integer index) {
         this.index = index;
     }
 

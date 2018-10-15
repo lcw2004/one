@@ -13,11 +13,6 @@
     <dependencies>
         <dependency>
             <groupId>com.lcw.one</groupId>
-            <artifactId>one-base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lcw.one</groupId>
             <artifactId>one-redis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -31,9 +26,15 @@
             <artifactId>one-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter-basic</artifactId>
+            <artifactId>activiti-engine</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
             <version>${activiti.version}</version>
         </dependency>
     </dependencies>

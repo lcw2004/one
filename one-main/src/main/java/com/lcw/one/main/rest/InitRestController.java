@@ -77,10 +77,13 @@ public class InitRestController {
         settingMap.put("appName", environment.getProperty("one.application.name"));
         settingMap.put("appShortName", environment.getProperty("one.application.shortName"));
         settingMap.put("appVersion", environment.getProperty("one.application.version"));
-        String maxFileSizeShow = environment.getProperty("spring.http.multipart.max-file-size");
+        String maxFileSizeShow = environment.getProperty("spring.servlet.multipart.max-file-size");
         settingMap.put("maxFileSize", getMaxFileSize(maxFileSizeShow));
         settingMap.put("maxFileSizeShow", maxFileSizeShow);
         settingMap.put("basePath", RequestUtils.getBasePath(request));
+        settingMap.put("isEnableSignIn", GlobalConfig.getBooleanValue("is_enable_sign_in"));
+        settingMap.put("isEnableBidCheck", GlobalConfig.getBooleanValue("is_enable_bid_check"));
+        settingMap.put("supplierPurchaseTypeMax", GlobalConfig.getIntegerValue("supplier_purchase_type_max", 10));
         return settingMap;
     }
 

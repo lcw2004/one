@@ -46,12 +46,12 @@ public abstract class TreeEntityService<D extends BaseRepositoryImpl, T extends 
 
     public abstract T getTopEntity();
 
-    public TreeEntity listAsTree() {
+    public T listAsTree() {
         TreeEntity treeEntity = organizeListAsTree(getTopEntity(), findAll());
-        return treeEntity;
+        return (T) treeEntity;
     }
 
-    public List<TreeEntity> listByParentId(String parentId) {
+    public List<T> listByParentId(String parentId) {
         return dao.list("from " + getDao().getJpaEntityInformation().getEntityName() + " where parentId = ?1", parentId);
     }
 
@@ -65,7 +65,7 @@ public abstract class TreeEntityService<D extends BaseRepositoryImpl, T extends 
 
     private void recursionSetParentIds (TreeEntity parentEntity) {
         logger.info("Sync parentIds of [{}]", parentEntity.getName());
-        List<TreeEntity> treeEntityList = listByParentId(parentEntity.getId());
+        List<T> treeEntityList = listByParentId(parentEntity.getId());
         if (CollectionUtils.isNotEmpty(treeEntityList)) {
             // 更新子节点的parentIds
             String parentIds = getParentIds(parentEntity);

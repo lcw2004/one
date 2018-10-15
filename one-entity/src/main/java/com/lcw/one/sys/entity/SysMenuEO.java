@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "sys_menu")
 public class SysMenuEO extends TreeEntity<SysMenuEO>{
 
+    private String type;
     private String href;
     private String icon;
     private Integer sort;
@@ -19,6 +20,17 @@ public class SysMenuEO extends TreeEntity<SysMenuEO>{
     private String permission;
     private String remarks;
     private Integer isShowInMenu = 0;
+
+
+    @Basic
+    @Column(name = "type")
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     @Basic
     @Column(name = "href")

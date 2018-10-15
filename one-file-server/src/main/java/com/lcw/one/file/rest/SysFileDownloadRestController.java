@@ -1,13 +1,12 @@
 package com.lcw.one.file.rest;
 
 import com.lcw.one.file.service.SysFileEOService;
-import com.lcw.one.file.store.IFileStore;
+import com.lcw.one.file.store.FileStoreFactory;
 import com.lcw.one.sys.entity.SysFileEO;
 import com.lcw.one.util.exception.OneBaseException;
 import com.lcw.one.util.http.ResponseMessage;
 import com.lcw.one.util.http.Result;
 import com.lcw.one.util.utils.cipher.Encodes;
-import com.lcw.one.util.utils.IOUtils;
 import com.lcw.one.util.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 @RestController
 @RequestMapping(value = "/${restPath}/sys/file")
@@ -35,7 +32,7 @@ public class SysFileDownloadRestController {
     private SysFileEOService sysFileEOService;
 
     @Autowired
-    private IFileStore iFileStore;
+    private FileStoreFactory fileStoreFactory;
 
     @ApiOperation("获取文件信息")
     @GetMapping("/{fileId}")
@@ -55,25 +52,18 @@ public class SysFileDownloadRestController {
             throw new OneBaseException("FileId[" + fileId + "]不存在");
         }
 
-        InputStream is = null;
-        OutputStream os = null;
         try {
             if (StringUtils.isEmpty(fileName)) {
                 fileName = sysFileEO.getFileName();
             }
-
             response.setHeader("Content-Disposition", "attachment; filename=" + Encodes.urlEncode(fileName + "." + sysFileEO.getFileType()));
             response.setContentType(sysFileEO.getContentType());
-            is = iFileStore.loadFile(sysFileEO.getSavePath());
-            os = response.getOutputStream();
-            IOUtils.copy(is, os);
-            os.flush();
+
+            fileStoreFactory.instance(sysFileEO.getStoreType()).loadFile(sysFileEO.getSavePath(), response.getOutputStream());
+            response.getOutputStream().flush();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             throw new OneBaseException("下载文件失败，请重试");
-        } finally {
-            IOUtils.closeQuietly(is);
-            IOUtils.closeQuietly(os);
         }
     }
 
