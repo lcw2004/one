@@ -1,6 +1,5 @@
 server:
-  port: 18080
-  servlet.context-parameters.office_path: D:\\zzoffice
+  port: 8080
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript
@@ -80,10 +79,10 @@ mail:
     starttls.required: true
     socketFactory.fallback: false
   from:
-    mail: 292232611@qq.com
-    name: 292232611
-  username: 292232611@qq.com
-  password: ezkbxarmubuqbigc
+    mail: test@qq.com
+    name: test
+  username: test@qq.com
+  password: test
 
 #=============================#
 #=====   Redis Settings  =====#

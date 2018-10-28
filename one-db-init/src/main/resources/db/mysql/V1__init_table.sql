@@ -391,6 +391,7 @@ CREATE TABLE `sys_log`  (
   `method_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '执行方法',
   `operation_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `is_fail` int(11) NULL DEFAULT NULL,
+  `is_error` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志表' ROW_FORMAT = Dynamic;
 

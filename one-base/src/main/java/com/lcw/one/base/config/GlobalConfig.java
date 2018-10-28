@@ -108,6 +108,6 @@ public class GlobalConfig {
     }
 
     public static Boolean getBooleanValue(String key) {
-        return getBooleanValue(key, null);
+        return getBooleanValue(key, false);
     }
 }
