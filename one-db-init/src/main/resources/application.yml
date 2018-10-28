@@ -78,4 +78,4 @@ spring.redis:
     max-idle: 8
     min-idle: 0
 
-flyway.locations: classpath:/db/mysql
+spring.flyway.locations: classpath:/db/mysql
