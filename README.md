@@ -31,25 +31,33 @@
 -   vuex
 -   vue-router
 -   axios
+-   element-ui
 -   webpack
 -   [AdminLTE](https://github.com/almasaeed2010/AdminLTE "https://github.com/almasaeed2010/AdminLTE")
 
 # 文档
 更多项目的文档请参考 [项目wiki](https://github.com/lcw2004/one/wiki)
 
-[项目结构说明](https://github.com/lcw2004/one/wiki/%25E5%25B7%25A5%25E7%25A8%258B%25E7%25BB%2593%25E6%259E%2584%25E8%25AF%25B4%25E6%2598%258E)
+* [工程结构说明](https://github.com/lcw2004/one/wiki/工程结构说明)
+* 后端开发
+  + [基础数据初始化](https://github.com/lcw2004/one/wiki/后端开发-基础数据初始化)
+  + [启动后端工程](https://github.com/lcw2004/one/wiki/后端开发-启动后端工程)
+  + [异常处理](https://github.com/lcw2004/one/wiki/后端开发-异常处理)
+  + [后端参数验证](https://github.com/lcw2004/one/wiki/后端开发-后端参数验证)
+  + [Excel导入导出](https://github.com/lcw2004/one/wiki/后端开发-excel导入导出)
+  + [获取当前用户信息](https://github.com/lcw2004/one/wiki/后端开发-获取当前用户信息)
+* 前端开发
+  + [启动前端工程](https://github.com/lcw2004/one/wiki/前端开发-启动前端工程)
+  + VUE组件
+    - [Form表单](https://github.com/lcw2004/one/wiki/前端开发-vue组件-form表单)
+    - [表单验证](https://github.com/lcw2004/one/wiki/前端开发-vue组件-表单验证)
+  + [前端打包优化](https://github.com/lcw2004/one/wiki/前端开发-前端打包优化)
+  + [开发技巧](https://github.com/lcw2004/one/wiki/前端开发-开发技巧)
+* [生产环境打包](https://github.com/lcw2004/one/wiki/打包)
+* [开发新模块示例](https://github.com/lcw2004/one/wiki/开发新模块示例)
+* [优化](https://github.com/lcw2004/one/wiki/优化)
+* [常见问题](https://github.com/lcw2004/one/wiki/常见问题)
 
-[后端接口开发](https://github.com/lcw2004/one/wiki/%E5%BC%80%E5%8F%91%EF%BC%88%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%EF%BC%89)
-
-[前端界面开发](https://github.com/lcw2004/one/wiki/%E5%BC%80%E5%8F%91%EF%BC%88%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%EF%BC%89)
-
-[生产环境打包](https://github.com/lcw2004/one/wiki/%E6%89%93%E5%8C%85)
-
-[优化](https://github.com/lcw2004/one/wiki/%E4%BC%98%E5%8C%96)
-
-# 数据库
-
--   数据库：暂时未提供数据库初始化代码（后期加上），只能提供一个navicat导出的SQL文件，document/one - mysql(navicat).sql
 
 # 运行程序
 
@@ -113,7 +121,6 @@
 
 	-   [X] 字典管理
 	-   [X] 菜单管理
-	-   [X] 菜单栏显示菜单的LOGO
 	-   [X] 角色管理
 	-   [X] 用户管理
 	-   [X] 机构管理
