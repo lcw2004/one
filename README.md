@@ -40,20 +40,24 @@
 
 * [工程结构说明](https://github.com/lcw2004/one/wiki/工程结构说明)
 * 后端开发
-  + [基础数据初始化](https://github.com/lcw2004/one/wiki/后端开发-基础数据初始化)
-  + [启动后端工程](https://github.com/lcw2004/one/wiki/后端开发-启动后端工程)
-  + [异常处理](https://github.com/lcw2004/one/wiki/后端开发-异常处理)
-  + [后端参数验证](https://github.com/lcw2004/one/wiki/后端开发-后端参数验证)
-  + [Excel导入导出](https://github.com/lcw2004/one/wiki/后端开发-excel导入导出)
-  + [获取当前用户信息](https://github.com/lcw2004/one/wiki/后端开发-获取当前用户信息)
+  * [基础数据初始化](https://github.com/lcw2004/one/wiki/后端开发-基础数据初始化)
+  * [启动后端工程](https://github.com/lcw2004/one/wiki/后端开发-启动后端工程)
+  * [异常处理](https://github.com/lcw2004/one/wiki/后端开发-异常处理)
+  * [后端参数验证](https://github.com/lcw2004/one/wiki/后端开发-后端参数验证)
+  * [Excel导入导出](https://github.com/lcw2004/one/wiki/后端开发-excel导入导出)
+  * [获取当前用户信息](https://github.com/lcw2004/one/wiki/后端开发-获取当前用户信息)
 * 前端开发
-  + [启动前端工程](https://github.com/lcw2004/one/wiki/前端开发-启动前端工程)
-  + VUE组件
-    - [Form表单](https://github.com/lcw2004/one/wiki/前端开发-vue组件-form表单)
-    - [表单验证](https://github.com/lcw2004/one/wiki/前端开发-vue组件-表单验证)
-  + [前端打包优化](https://github.com/lcw2004/one/wiki/前端开发-前端打包优化)
-  + [开发技巧](https://github.com/lcw2004/one/wiki/前端开发-开发技巧)
-* [生产环境打包](https://github.com/lcw2004/one/wiki/打包)
+  * [前端工程说明](https://github.com/lcw2004/one/wiki/前端开发-前端工程说明)
+  * [启动前端工程](https://github.com/lcw2004/one/wiki/前端开发-启动前端工程)
+  * [前端打包优化](https://github.com/lcw2004/one/wiki/前端开发-前端打包优化)
+  * [开发技巧](https://github.com/lcw2004/one/wiki/前端开发-开发技巧)
+  * 常用VUE组件
+    * [Form表单](https://github.com/lcw2004/one/wiki/前端开发-vue组件-form表单)
+    * [表单验证](https://github.com/lcw2004/one/wiki/前端开发-vue组件-表单验证)
+* 生产环境打包
+  * [打包步骤](https://github.com/lcw2004/one/wiki/生产环境打包-打包步骤)
+  * [打包脚本](https://github.com/lcw2004/one/wiki/生产环境打包-打包脚本)
+  * [持续集成](https://github.com/lcw2004/one/wiki/生产环境打包-持续集成)
 * [开发新模块示例](https://github.com/lcw2004/one/wiki/开发新模块示例)
 * [优化](https://github.com/lcw2004/one/wiki/优化)
 * [常见问题](https://github.com/lcw2004/one/wiki/常见问题)
