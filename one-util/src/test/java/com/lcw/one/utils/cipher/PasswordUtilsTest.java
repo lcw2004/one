@@ -1,6 +1,5 @@
 package com.lcw.one.utils.cipher;
 
-
 import com.lcw.one.util.utils.cipher.password.IPassWordUtil;
 import com.lcw.one.util.utils.cipher.password.MD5PasswordUtil;
 import com.lcw.one.util.utils.cipher.password.PasswordUtils;
