@@ -15,9 +15,9 @@ one:
       path: D:\Files
     oss:
       endpoint: oss-cn-shenzhen.aliyuncs.com
-      accessKeyId: LTAIR9ovIy10ZFNd
-      accessKeySecret: 987SmrPOuQoEF46KqMN8gXdhABH6GD
-      bucketName: bairui-dev
+      accessKeyId: --
+      accessKeySecret: --
+      bucketName: --
 	local-oss:
 	  max-time: 
 ```
