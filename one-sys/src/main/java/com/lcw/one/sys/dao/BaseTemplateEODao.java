@@ -4,12 +4,12 @@ import com.lcw.one.baseInfo.entity.BaseTemplateEO;
 import com.lcw.one.util.persistence.BaseRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.JpaEntityInformationSupport;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component
+@Repository
 public class BaseTemplateEODao extends BaseRepositoryImpl<BaseTemplateEO, String> {
 
     @Autowired
